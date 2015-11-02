@@ -1,0 +1,12 @@
+---a/net/minecraft/server/gui/IUpdatePlayerListBox.java
++++b/net/minecraft/server/gui/IUpdatePlayerListBox.java
+@@ -1,7 +1,7 @@
+ package net.minecraft.server.gui;
+ 
+-public interface IUpdatePlayerListBox
+-{
++public interface IUpdatePlayerListBox {
++
+     void update();
+-}
++}

@@ -1,0 +1,2804 @@
+---a/net/minecraft/entity/player/EntityPlayer.java
++++b/net/minecraft/entity/player/EntityPlayer.java
+@@ -1,15 +1,11 @@
+ package net.minecraft.entity.player;
+ 
+-import com.google.common.base.Charsets;
+-import com.google.common.collect.Lists;
+-import com.mojang.authlib.GameProfile;
++import java.util.ArrayList;
+ import java.util.Collection;
+ import java.util.Iterator;
+ import java.util.List;
+ import java.util.UUID;
++
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockBed;
+ import net.minecraft.block.BlockDirectional;
+@@ -48,6 +48,7 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.nbt.NBTTagList;
+ import net.minecraft.network.play.server.S12PacketEntityVelocity;
++import net.minecraft.network.play.server.S2FPacketSetSlot;
+ import net.minecraft.potion.Potion;
+ import net.minecraft.scoreboard.IScoreObjectiveCriteria;
+ import net.minecraft.scoreboard.Score;
+@@ -75,17 +75,30 @@
+ import net.minecraft.world.LockCode;
+ import net.minecraft.world.World;
+ import net.minecraft.world.WorldSettings;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
++import net.minecraft.world.gen.ChunkProviderServer;
+ 
+-public abstract class EntityPlayer extends EntityLivingBase
+-{
++import org.bukkit.craftbukkit.entity.CraftHumanEntity;
++import org.bukkit.craftbukkit.entity.CraftItem;
++import org.bukkit.craftbukkit.inventory.CraftItemStack;
++import org.bukkit.entity.Player;
++import org.bukkit.event.entity.EntityCombustByEntityEvent;
++import org.bukkit.event.player.PlayerBedEnterEvent;
++import org.bukkit.event.player.PlayerBedLeaveEvent;
++import org.bukkit.event.player.PlayerDropItemEvent;
++import org.bukkit.event.player.PlayerItemConsumeEvent;
++import org.bukkit.event.player.PlayerVelocityEvent;
++
++import com.google.common.base.Charsets;
++import com.google.common.collect.Lists;
++import com.mojang.authlib.GameProfile;
++
++public abstract class EntityPlayer extends EntityLivingBase {
++
+     public InventoryPlayer inventory = new InventoryPlayer(this);
+     private InventoryEnderChest theInventoryEnderChest = new InventoryEnderChest();
+     public Container inventoryContainer;
+     public Container openContainer;
+-    protected FoodStats foodStats = new FoodStats();
++    protected FoodStats foodStats = new FoodStats(this); // CraftBukkit - add "this" to constructor
+     protected int flyToggleTimer;
+     public float prevCameraYaw;
+     public float cameraYaw;
+@@ -95,18 +95,16 @@
+     public double field_71094_bP;
+     public double field_71095_bQ;
+     public double field_71085_bR;
+-    protected boolean sleeping;
++    public boolean sleeping; // SpigotMCP -- Apply access transformation
+     public BlockPos playerLocation;
+-    private int sleepTimer;
++    public int sleepTimer; // SpigotMCP -- Apply access transformation
+     public float renderOffsetX;
+-    @SideOnly(Side.CLIENT)
+-    public float renderOffsetY;
+     public float renderOffsetZ;
+     private BlockPos spawnChunk;
+     private boolean spawnForced;
+     private BlockPos startMinecartRidingCoordinate;
+     public PlayerCapabilities capabilities = new PlayerCapabilities();
++    public int oldLevel = -1; // CraftBukkit - add field
+     public int experienceLevel;
+     public int experienceTotal;
+     public float experience;
+@@ -118,161 +118,137 @@
+     private final GameProfile gameProfile;
+     private boolean hasReducedDebug = false;
+     public EntityFishHook fishEntity;
++
++    // CraftBukkit start
++    public boolean fauxSleeping;
++    public String spawnWorld = "";
++
++    @Override
++    public CraftHumanEntity getBukkitEntity() {
++        return (CraftHumanEntity) super.getBukkitEntity();
++    }
++
++    // CraftBukkit end
+     private static final String __OBFID = "CL_00001711";
+ 
+-    public EntityPlayer(World worldIn, GameProfile p_i45324_2_)
+-    {
++    public EntityPlayer(World worldIn, GameProfile p_i45324_2_) {
+         super(worldIn);
+         this.entityUniqueID = getUUID(p_i45324_2_);
+         this.gameProfile = p_i45324_2_;
+         this.inventoryContainer = new ContainerPlayer(this.inventory, !worldIn.isRemote, this);
+         this.openContainer = this.inventoryContainer;
+         BlockPos blockpos = worldIn.getSpawnPoint();
+-        this.setLocationAndAngles((double)blockpos.getX() + 0.5D, (double)(blockpos.getY() + 1), (double)blockpos.getZ() + 0.5D, 0.0F, 0.0F);
++        this.setLocationAndAngles((double) blockpos.getX() + 0.5D, (double) (blockpos.getY() + 1), (double) blockpos.getZ() + 0.5D, 0.0F, 0.0F);
+         this.field_70741_aB = 180.0F;
+         this.fireResistance = 20;
+     }
+ 
+-    protected void applyEntityAttributes()
+-    {
++    protected void applyEntityAttributes() {
+         super.applyEntityAttributes();
+         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0D);
+         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.10000000149011612D);
+     }
+ 
+-    protected void entityInit()
+-    {
++    protected void entityInit() {
+         super.entityInit();
+-        this.dataWatcher.addObject(16, Byte.valueOf((byte)0));
++        this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
+         this.dataWatcher.addObject(17, Float.valueOf(0.0F));
+         this.dataWatcher.addObject(18, Integer.valueOf(0));
+-        this.dataWatcher.addObject(10, Byte.valueOf((byte)0));
++        this.dataWatcher.addObject(10, Byte.valueOf((byte) 0));
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public ItemStack getItemInUse()
+-    {
+-        return this.itemInUse;
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public int getItemInUseCount()
+-    {
+-        return this.itemInUseCount;
+-    }
+-
+-    public boolean isUsingItem()
+-    {
++    public boolean isUsingItem() {
+         return this.itemInUse != null;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public int getItemInUseDuration()
+-    {
+-        return this.isUsingItem() ? this.itemInUse.getMaxItemUseDuration() - this.itemInUseCount : 0;
+-    }
+-
+-    public void stopUsingItem()
+-    {
+-        if (this.itemInUse != null)
+-        {
++    public void stopUsingItem() {
++        if (this.itemInUse != null) {
+             this.itemInUse.onPlayerStoppedUsing(this.worldObj, this, this.itemInUseCount);
+         }
+ 
+         this.clearItemInUse();
+     }
+ 
+-    public void clearItemInUse()
+-    {
++    public void clearItemInUse() {
+         this.itemInUse = null;
+         this.itemInUseCount = 0;
+ 
+-        if (!this.worldObj.isRemote)
+-        {
++        if (!this.worldObj.isRemote) {
+             this.setEating(false);
+         }
+     }
+ 
+-    public boolean isBlocking()
+-    {
++    public boolean isBlocking() {
+         return this.isUsingItem() && this.itemInUse.getItem().getItemUseAction(this.itemInUse) == EnumAction.BLOCK;
+     }
+ 
+-    public void onUpdate()
+-    {
++    public void onUpdate() {
+         this.noClip = this.isSpectator();
+ 
+-        if (this.isSpectator())
+-        {
++        if (this.isSpectator()) {
+             this.onGround = false;
+         }
+ 
+-        if (this.itemInUse != null)
+-        {
++        if (this.itemInUse != null) {
+             ItemStack itemstack = this.inventory.getCurrentItem();
+ 
+-            if (itemstack == this.itemInUse)
+-            {
+-                if (this.itemInUseCount <= 25 && this.itemInUseCount % 4 == 0)
+-                {
++            if (itemstack == this.itemInUse) {
++                if (this.itemInUseCount <= 25 && this.itemInUseCount % 4 == 0) {
+                     this.updateItemUse(itemstack, 5);
+                 }
+ 
+-                if (--this.itemInUseCount == 0 && !this.worldObj.isRemote)
+-                {
++                if (--this.itemInUseCount == 0 && !this.worldObj.isRemote) {
+                     this.onItemUseFinish();
+                 }
+-            }
+-            else
+-            {
++            } else {
+                 this.clearItemInUse();
+             }
+         }
+ 
+-        if (this.xpCooldown > 0)
+-        {
++        if (this.xpCooldown > 0) {
+             --this.xpCooldown;
+         }
+ 
+-        if (this.isPlayerSleeping())
+-        {
++        if (this.isPlayerSleeping()) {
+             ++this.sleepTimer;
+ 
+-            if (this.sleepTimer > 100)
+-            {
++            if (this.sleepTimer > 100) {
+                 this.sleepTimer = 100;
+             }
+ 
+-            if (!this.worldObj.isRemote)
+-            {
+-                if (!this.isInBed())
+-                {
++            if (!this.worldObj.isRemote) {
++                if (!this.isInBed()) {
+                     this.wakeUpPlayer(true, true, false);
+-                }
+-                else if (this.worldObj.isDaytime())
+-                {
++                } else if (this.worldObj.isDaytime()) {
+                     this.wakeUpPlayer(false, true, true);
+                 }
+             }
+-        }
+-        else if (this.sleepTimer > 0)
+-        {
++        } else if (this.sleepTimer > 0) {
+             ++this.sleepTimer;
+ 
+-            if (this.sleepTimer >= 110)
+-            {
++            if (this.sleepTimer >= 110) {
+                 this.sleepTimer = 0;
+             }
+         }
+ 
+         super.onUpdate();
+ 
+-        if (!this.worldObj.isRemote && this.openContainer != null && !this.openContainer.canInteractWith(this))
+-        {
++        if (!this.worldObj.isRemote && this.openContainer != null && !this.openContainer.canInteractWith(this)) {
+             this.closeScreen();
+             this.openContainer = this.inventoryContainer;
+         }
+ 
+-        if (this.isBurning() && this.capabilities.disableDamage)
+-        {
++        if (this.isBurning() && this.capabilities.disableDamage) {
+             this.extinguish();
+         }
+ 
+@@ -286,33 +286,27 @@
+         double d1 = this.posZ - this.field_71085_bR;
+         double d2 = 10.0D;
+ 
+-        if (d5 > d2)
+-        {
++        if (d5 > d2) {
+             this.field_71091_bM = this.field_71094_bP = this.posX;
+         }
+ 
+-        if (d1 > d2)
+-        {
++        if (d1 > d2) {
+             this.field_71097_bO = this.field_71085_bR = this.posZ;
+         }
+ 
+-        if (d0 > d2)
+-        {
++        if (d0 > d2) {
+             this.field_71096_bN = this.field_71095_bQ = this.posY;
+         }
+ 
+-        if (d5 < -d2)
+-        {
++        if (d5 < -d2) {
+             this.field_71091_bM = this.field_71094_bP = this.posX;
+         }
+ 
+-        if (d1 < -d2)
+-        {
++        if (d1 < -d2) {
+             this.field_71097_bO = this.field_71085_bR = this.posZ;
+         }
+ 
+-        if (d0 < -d2)
+-        {
++        if (d0 < -d2) {
+             this.field_71096_bN = this.field_71095_bQ = this.posY;
+         }
+ 
+@@ -320,18 +320,15 @@
+         this.field_71085_bR += d1 * 0.25D;
+         this.field_71095_bQ += d0 * 0.25D;
+ 
+-        if (this.ridingEntity == null)
+-        {
++        if (this.ridingEntity == null) {
+             this.startMinecartRidingCoordinate = null;
+         }
+ 
+-        if (!this.worldObj.isRemote)
+-        {
++        if (!this.worldObj.isRemote) {
+             this.foodStats.onUpdate(this);
+             this.triggerAchievement(StatList.minutesPlayedStat);
+ 
+-            if (this.isEntityAlive())
+-            {
++            if (this.isEntityAlive()) {
+                 this.triggerAchievement(StatList.timeSinceDeathStat);
+             }
+         }
+@@ -340,85 +340,98 @@
+         double d3 = MathHelper.clamp_double(this.posX, -2.9999999E7D, 2.9999999E7D);
+         double d4 = MathHelper.clamp_double(this.posZ, -2.9999999E7D, 2.9999999E7D);
+ 
+-        if (d3 != this.posX || d4 != this.posZ)
+-        {
++        if (d3 != this.posX || d4 != this.posZ) {
+             this.setPosition(d3, this.posY, d4);
+         }
+     }
+ 
+-    public int getMaxInPortalTime()
+-    {
++    public int getMaxInPortalTime() {
+         return this.capabilities.disableDamage ? 0 : 80;
+     }
+ 
+-    protected String getSwimSound()
+-    {
++    protected String getSwimSound() {
+         return "game.player.swim";
+     }
+ 
+-    protected String getSplashSound()
+-    {
++    protected String getSplashSound() {
+         return "game.player.swim.splash";
+     }
+ 
+-    public int getPortalCooldown()
+-    {
++    public int getPortalCooldown() {
+         return 10;
+     }
+ 
+-    public void playSound(String name, float volume, float pitch)
+-    {
++    public void playSound(String name, float volume, float pitch) {
+         this.worldObj.playSoundToNearExcept(this, name, volume, pitch);
+     }
+ 
+-    protected void updateItemUse(ItemStack itemStackIn, int p_71010_2_)
+-    {
+-        if (itemStackIn.getItemUseAction() == EnumAction.DRINK)
+-        {
++    protected void updateItemUse(ItemStack itemStackIn, int p_71010_2_) {
++        if (itemStackIn.getItemUseAction() == EnumAction.DRINK) {
+             this.playSound("random.drink", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+         }
+ 
+-        if (itemStackIn.getItemUseAction() == EnumAction.EAT)
+-        {
+-            for (int j = 0; j < p_71010_2_; ++j)
+-            {
+-                Vec3 vec3 = new Vec3(((double)this.rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
+-                vec3 = vec3.rotatePitch(-this.rotationPitch * (float)Math.PI / 180.0F);
+-                vec3 = vec3.rotateYaw(-this.rotationYaw * (float)Math.PI / 180.0F);
+-                double d0 = (double)(-this.rand.nextFloat()) * 0.6D - 0.3D;
+-                Vec3 vec31 = new Vec3(((double)this.rand.nextFloat() - 0.5D) * 0.3D, d0, 0.6D);
+-                vec31 = vec31.rotatePitch(-this.rotationPitch * (float)Math.PI / 180.0F);
+-                vec31 = vec31.rotateYaw(-this.rotationYaw * (float)Math.PI / 180.0F);
+-                vec31 = vec31.addVector(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
++        if (itemStackIn.getItemUseAction() == EnumAction.EAT) {
++            for (int j = 0; j < p_71010_2_; ++j) {
++                Vec3 vec3 = new Vec3(((double) this.rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
++                vec3 = vec3.rotatePitch(-this.rotationPitch * (float) Math.PI / 180.0F);
++                vec3 = vec3.rotateYaw(-this.rotationYaw * (float) Math.PI / 180.0F);
++                double d0 = (double) (-this.rand.nextFloat()) * 0.6D - 0.3D;
++                Vec3 vec31 = new Vec3(((double) this.rand.nextFloat() - 0.5D) * 0.3D, d0, 0.6D);
++                vec31 = vec31.rotatePitch(-this.rotationPitch * (float) Math.PI / 180.0F);
++                vec31 = vec31.rotateYaw(-this.rotationYaw * (float) Math.PI / 180.0F);
++                vec31 = vec31.addVector(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ);
+ 
+-                if (itemStackIn.getHasSubtypes())
+-                {
+-                    this.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, vec31.xCoord, vec31.yCoord, vec31.zCoord, vec3.xCoord, vec3.yCoord + 0.05D, vec3.zCoord, new int[] {Item.getIdFromItem(itemStackIn.getItem()), itemStackIn.getMetadata()});
++                if (itemStackIn.getHasSubtypes()) {
++                    this.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, vec31.xCoord, vec31.yCoord, vec31.zCoord, vec3.xCoord, vec3.yCoord + 0.05D, vec3.zCoord, new int[]{Item.getIdFromItem(itemStackIn.getItem()), itemStackIn.getMetadata()});
++                } else {
++                    this.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, vec31.xCoord, vec31.yCoord, vec31.zCoord, vec3.xCoord, vec3.yCoord + 0.05D, vec3.zCoord, new int[]{Item.getIdFromItem(itemStackIn.getItem())});
+                 }
+-                else
+-                {
+-                    this.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, vec31.xCoord, vec31.yCoord, vec31.zCoord, vec3.xCoord, vec3.yCoord + 0.05D, vec3.zCoord, new int[] {Item.getIdFromItem(itemStackIn.getItem())});
+-                }
+             }
+ 
+-            this.playSound("random.eat", 0.5F + 0.5F * (float)this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
++            this.playSound("random.eat", 0.5F + 0.5F * (float) this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+         }
+     }
+ 
+-    protected void onItemUseFinish()
+-    {
+-        if (this.itemInUse != null)
+-        {
++    protected void onItemUseFinish() {
++        if (this.itemInUse != null) {
+             this.updateItemUse(this.itemInUse, 16);
+             int i = this.itemInUse.stackSize;
++
++            // CraftBukkit start - fire PlayerItemConsumeEvent
++            org.bukkit.inventory.ItemStack craftItem = CraftItemStack.asBukkitCopy(this.itemInUse);
++            PlayerItemConsumeEvent event = new PlayerItemConsumeEvent((Player) this.getBukkitEntity(), craftItem);
++            worldObj.getServer().getPluginManager().callEvent(event);
++
++            if (event.isCancelled()) {
++                // Update client
++                if (this instanceof EntityPlayer) {
++                    ((EntityPlayerMP) this).playerNetServerHandler.sendPacket(new S2FPacketSetSlot((byte) 0, openContainer.getSlotFromInventory((IInventory) this.inventory, this.inventory.currentItem).slotIndex, this.itemInUse));
++                    // Spigot Start
++                    ((EntityPlayerMP) this).getBukkitEntity().updateInventory();
++                    ((EntityPlayerMP) this).getBukkitEntity().updateScaledHealth();
++                    // Spigot End
++                }
++                return;
++            }
++
++            // Plugin modified the item, process it but don't remove it
++            if (!craftItem.equals(event.getItem())) {
++                CraftItemStack.asNMSCopy(event.getItem()).onItemUseFinish(this.worldObj, this);
++
++                // Update client
++                if (this instanceof EntityPlayer) {
++                    ((EntityPlayerMP) this).playerNetServerHandler.sendPacket(new S2FPacketSetSlot((byte) 0, openContainer.getSlotFromInventory((IInventory) this.inventory, this.inventory.currentItem).slotIndex, this.itemInUse));
++                }
++                return;
++            }
++            // CraftBukkit end
++
+             ItemStack itemstack = this.itemInUse.onItemUseFinish(this.worldObj, this);
+ 
+-            if (itemstack != this.itemInUse || itemstack != null && itemstack.stackSize != i)
+-            {
++            if (itemstack != this.itemInUse || itemstack != null && itemstack.stackSize != i) {
+                 this.inventory.mainInventory[this.inventory.currentItem] = itemstack;
+ 
+-                if (itemstack.stackSize == 0)
+-                {
++                if (itemstack.stackSize == 0) {
+                     this.inventory.mainInventory[this.inventory.currentItem] = null;
+                 }
+             }
+@@ -427,66 +427,19 @@
+         }
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public void handleHealthUpdate(byte p_70103_1_)
+-    {
+-        if (p_70103_1_ == 9)
+-        {
+-            this.onItemUseFinish();
+-        }
+-        else if (p_70103_1_ == 23)
+-        {
+-            this.hasReducedDebug = false;
+-        }
+-        else if (p_70103_1_ == 22)
+-        {
+-            this.hasReducedDebug = true;
+-        }
+-        else
+-        {
+-            super.handleHealthUpdate(p_70103_1_);
+-        }
+-    }
+-
+-    protected boolean isMovementBlocked()
+-    {
++    protected boolean isMovementBlocked() {
+         return this.getHealth() <= 0.0F || this.isPlayerSleeping();
+     }
+ 
+-    protected void closeScreen()
+-    {
++    public void closeScreen() {
+         this.openContainer = this.inventoryContainer;
+     }
+ 
+-    public void updateRidden()
+-    {
+-        if (!this.worldObj.isRemote && this.isSneaking())
+-        {
+-            this.mountEntity((Entity)null);
++    public void updateRidden() {
++        if (!this.worldObj.isRemote && this.isSneaking()) {
++            this.mountEntity((Entity) null);
+             this.setSneaking(false);
+-        }
+-        else
+-        {
++        } else {
+             double d0 = this.posX;
+             double d1 = this.posY;
+             double d2 = this.posZ;
+@@ -477,47 +477,32 @@
+             this.cameraYaw = 0.0F;
+             this.addMountedMovementStat(this.posX - d0, this.posY - d1, this.posZ - d2);
+ 
+-            if (this.ridingEntity instanceof EntityPig)
+-            {
++            if (this.ridingEntity instanceof EntityPig) {
+                 this.rotationPitch = f1;
+                 this.rotationYaw = f;
+-                this.renderYawOffset = ((EntityPig)this.ridingEntity).renderYawOffset;
++                this.renderYawOffset = ((EntityPig) this.ridingEntity).renderYawOffset;
+             }
+         }
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public void preparePlayerToSpawn()
+-    {
+-        this.setSize(0.6F, 1.8F);
+-        super.preparePlayerToSpawn();
+-        this.setHealth(this.getMaxHealth());
+-        this.deathTime = 0;
+-    }
+-
+-    protected void updateEntityActionState()
+-    {
++    protected void updateEntityActionState() {
+         super.updateEntityActionState();
+         this.updateArmSwingProgress();
+         this.rotationYawHead = this.rotationYaw;
+     }
+ 
+-    public void onLivingUpdate()
+-    {
+-        if (this.flyToggleTimer > 0)
+-        {
++    public void onLivingUpdate() {
++        if (this.flyToggleTimer > 0) {
+             --this.flyToggleTimer;
+         }
+ 
+-        if (this.worldObj.getDifficulty() == EnumDifficulty.PEACEFUL && this.worldObj.getGameRules().getGameRuleBooleanValue("naturalRegeneration"))
+-        {
+-            if (this.getHealth() < this.getMaxHealth() && this.ticksExisted % 20 == 0)
+-            {
+-                this.heal(1.0F);
++        if (this.worldObj.getDifficulty() == EnumDifficulty.PEACEFUL && this.worldObj.getGameRules().getGameRuleBooleanValue("naturalRegeneration")) {
++            if (this.getHealth() < this.getMaxHealth() && this.ticksExisted % 20 == 0) {
++                // CraftBukkit - added regain reason of "REGEN" for filtering purposes.
++                this.heal(1.0F, org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason.REGEN);
+             }
+ 
+-            if (this.foodStats.needFood() && this.ticksExisted % 10 == 0)
+-            {
++            if (this.foodStats.needFood() && this.ticksExisted % 10 == 0) {
+                 this.foodStats.setFoodLevel(this.foodStats.getFoodLevel() + 1);
+             }
+         }
+@@ -527,108 +527,91 @@
+         super.onLivingUpdate();
+         IAttributeInstance iattributeinstance = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+ 
+-        if (!this.worldObj.isRemote)
+-        {
+-            iattributeinstance.setBaseValue((double)this.capabilities.getWalkSpeed());
++        if (!this.worldObj.isRemote) {
++            iattributeinstance.setBaseValue((double) this.capabilities.getWalkSpeed());
+         }
+ 
+         this.jumpMovementFactor = this.speedInAir;
+ 
+-        if (this.isSprinting())
+-        {
+-            this.jumpMovementFactor = (float)((double)this.jumpMovementFactor + (double)this.speedInAir * 0.3D);
++        if (this.isSprinting()) {
++            this.jumpMovementFactor = (float) ((double) this.jumpMovementFactor + (double) this.speedInAir * 0.3D);
+         }
+ 
+-        this.setAIMoveSpeed((float)iattributeinstance.getAttributeValue());
++        this.setAIMoveSpeed((float) iattributeinstance.getAttributeValue());
+         float f = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+-        float f1 = (float)(Math.atan(-this.motionY * 0.20000000298023224D) * 15.0D);
++        float f1 = (float) (org.bukkit.craftbukkit.TrigMath.atan(-this.motionY * 0.20000000298023224D) * 15.0D); // CraftBukkit
+ 
+-        if (f > 0.1F)
+-        {
++        if (f > 0.1F) {
+             f = 0.1F;
+         }
+ 
+-        if (!this.onGround || this.getHealth() <= 0.0F)
+-        {
++        if (!this.onGround || this.getHealth() <= 0.0F) {
+             f = 0.0F;
+         }
+ 
+-        if (this.onGround || this.getHealth() <= 0.0F)
+-        {
++        if (this.onGround || this.getHealth() <= 0.0F) {
+             f1 = 0.0F;
+         }
+ 
+         this.cameraYaw += (f - this.cameraYaw) * 0.4F;
+         this.cameraPitch += (f1 - this.cameraPitch) * 0.8F;
+ 
+-        if (this.getHealth() > 0.0F && !this.isSpectator())
+-        {
++        if (this.getHealth() > 0.0F && !this.isSpectator()) {
+             AxisAlignedBB axisalignedbb = null;
+ 
+-            if (this.ridingEntity != null && !this.ridingEntity.isDead)
+-            {
++            if (this.ridingEntity != null && !this.ridingEntity.isDead) {
+                 axisalignedbb = this.getEntityBoundingBox().union(this.ridingEntity.getEntityBoundingBox()).expand(1.0D, 0.0D, 1.0D);
+-            }
+-            else
+-            {
++            } else {
+                 axisalignedbb = this.getEntityBoundingBox().expand(1.0D, 0.5D, 1.0D);
+             }
+ 
+             List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, axisalignedbb);
+ 
+-            for (int i = 0; i < list.size(); ++i)
+-            {
+-                Entity entity = (Entity)list.get(i);
++            if (this.canBePushed()) { // Spigot: Add this.ae() condition (second !this.isDead near bottom of EntityLiving)
++                for (int i = 0; i < list.size(); ++i) {
++                    Entity entity = (Entity) list.get(i);
+ 
+-                if (!entity.isDead)
+-                {
+-                    this.collideWithPlayer(entity);
++                    if (!entity.isDead) {
++                        this.collideWithPlayer(entity);
++                    }
+                 }
+-            }
++            } // Spigot
+         }
+     }
+ 
+-    private void collideWithPlayer(Entity p_71044_1_)
+-    {
++    private void collideWithPlayer(Entity p_71044_1_) {
+         p_71044_1_.onCollideWithPlayer(this);
+     }
+ 
+-    public int getScore()
+-    {
++    public int getScore() {
+         return this.dataWatcher.getWatchableObjectInt(18);
+     }
+ 
+-    public void setScore(int p_85040_1_)
+-    {
++    public void setScore(int p_85040_1_) {
+         this.dataWatcher.updateObject(18, Integer.valueOf(p_85040_1_));
+     }
+ 
+-    public void addScore(int p_85039_1_)
+-    {
++    public void addScore(int p_85039_1_) {
+         int j = this.getScore();
+         this.dataWatcher.updateObject(18, Integer.valueOf(j + p_85039_1_));
+     }
+ 
+-    public void onDeath(DamageSource cause)
+-    {
++    public void onDeath(DamageSource cause) {
+         super.onDeath(cause);
+         this.setSize(0.2F, 0.2F);
+         this.setPosition(this.posX, this.posY, this.posZ);
+         this.motionY = 0.10000000149011612D;
+ 
+-        if (this.getName().equals("Notch"))
+-        {
++        if (this.getName().equals("Notch")) {
+             this.dropItem(new ItemStack(Items.apple, 1), true, false);
+         }
+ 
+-        if (!this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
+-        {
++        if (!this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) {
+             this.inventory.dropAllItems();
+         }
+ 
+-        if (cause != null)
+-        {
+-            this.motionX = (double)(-MathHelper.cos((this.attackedAtYaw + this.rotationYaw) * (float)Math.PI / 180.0F) * 0.1F);
+-            this.motionZ = (double)(-MathHelper.sin((this.attackedAtYaw + this.rotationYaw) * (float)Math.PI / 180.0F) * 0.1F);
+-        }
+-        else
+-        {
++        if (cause != null) {
++            this.motionX = (double) (-MathHelper.cos((this.attackedAtYaw + this.rotationYaw) * (float) Math.PI / 180.0F) * 0.1F);
++            this.motionZ = (double) (-MathHelper.sin((this.attackedAtYaw + this.rotationYaw) * (float) Math.PI / 180.0F) * 0.1F);
++        } else {
+             this.motionX = this.motionZ = 0.0D;
+         }
+ 
+@@ -640,56 +640,47 @@
+         this.func_175145_a(StatList.timeSinceDeathStat);
+     }
+ 
+-    protected String getHurtSound()
+-    {
++    protected String getHurtSound() {
+         return "game.player.hurt";
+     }
+ 
+-    protected String getDeathSound()
+-    {
++    protected String getDeathSound() {
+         return "game.player.die";
+     }
+ 
+-    public void addToPlayerScore(Entity entityIn, int amount)
+-    {
++    public void addToPlayerScore(Entity entityIn, int amount) {
+         this.addScore(amount);
+-        Collection collection = this.getWorldScoreboard().getObjectivesFromCriteria(IScoreObjectiveCriteria.totalKillCount);
++        // CraftBukkit - Get our scores instead
++        Collection<Score> collection = this.worldObj.getServer().getScoreboardManager().getScoreboardScores(IScoreObjectiveCriteria.totalKillCount, this.getName(), new ArrayList());
+ 
+-        if (entityIn instanceof EntityPlayer)
+-        {
++        if (entityIn instanceof EntityPlayer) {
+             this.triggerAchievement(StatList.playerKillsStat);
+-            collection.addAll(this.getWorldScoreboard().getObjectivesFromCriteria(IScoreObjectiveCriteria.playerKillCount));
++            // CraftBukkit - Get our scores instead
++            this.worldObj.getServer().getScoreboardManager().getScoreboardScores(IScoreObjectiveCriteria.playerKillCount, this.getName(), collection);
+             collection.addAll(this.func_175137_e(entityIn));
+-        }
+-        else
+-        {
++        } else {
+             this.triggerAchievement(StatList.mobKillsStat);
+         }
+ 
+         Iterator iterator = collection.iterator();
+ 
+-        while (iterator.hasNext())
+-        {
+-            ScoreObjective scoreobjective = (ScoreObjective)iterator.next();
+-            Score score = this.getWorldScoreboard().getValueFromObjective(this.getName(), scoreobjective);
++        while (iterator.hasNext()) {
++            Score score = (Score) iterator.next(); // CraftBukkit - Use our scores instead
++
+             score.func_96648_a();
+         }
+     }
+ 
+-    private Collection func_175137_e(Entity p_175137_1_)
+-    {
++    private Collection func_175137_e(Entity p_175137_1_) {
+         ScorePlayerTeam scoreplayerteam = this.getWorldScoreboard().getPlayersTeam(this.getName());
+ 
+-        if (scoreplayerteam != null)
+-        {
++        if (scoreplayerteam != null) {
+             int i = scoreplayerteam.func_178775_l().getColorIndex();
+ 
+-            if (i >= 0 && i < IScoreObjectiveCriteria.field_178793_i.length)
+-            {
++            if (i >= 0 && i < IScoreObjectiveCriteria.field_178793_i.length) {
+                 Iterator iterator = this.getWorldScoreboard().getObjectivesFromCriteria(IScoreObjectiveCriteria.field_178793_i[i]).iterator();
+ 
+-                while (iterator.hasNext())
+-                {
+-                    ScoreObjective scoreobjective = (ScoreObjective)iterator.next();
++                while (iterator.hasNext()) {
++                    ScoreObjective scoreobjective = (ScoreObjective) iterator.next();
+                     Score score = this.getWorldScoreboard().getValueFromObjective(p_175137_1_.getName(), scoreobjective);
+                     score.func_96648_a();
+                 }
+@@ -699,12 +699,10 @@
+ 
+         ScorePlayerTeam scoreplayerteam1 = this.getWorldScoreboard().getPlayersTeam(p_175137_1_.getName());
+ 
+-        if (scoreplayerteam1 != null)
+-        {
++        if (scoreplayerteam1 != null) {
+             int j = scoreplayerteam1.func_178775_l().getColorIndex();
+ 
+-            if (j >= 0 && j < IScoreObjectiveCriteria.field_178792_h.length)
+-            {
++            if (j >= 0 && j < IScoreObjectiveCriteria.field_178792_h.length) {
+                 return this.getWorldScoreboard().getObjectivesFromCriteria(IScoreObjectiveCriteria.field_178792_h[j]);
+             }
+         }
+@@ -712,65 +712,78 @@
+         return Lists.newArrayList();
+     }
+ 
+-    public EntityItem dropOneItem(boolean p_71040_1_)
+-    {
++    public EntityItem dropOneItem(boolean p_71040_1_) {
++        // Called only when dropped by Q or CTRL-Q
+         return this.dropItem(this.inventory.decrStackSize(this.inventory.currentItem, p_71040_1_ && this.inventory.getCurrentItem() != null ? this.inventory.getCurrentItem().stackSize : 1), false, true);
+     }
+ 
+-    public EntityItem dropPlayerItemWithRandomChoice(ItemStack itemStackIn, boolean unused)
+-    {
++    public EntityItem dropPlayerItemWithRandomChoice(ItemStack itemStackIn, boolean unused) {
+         return this.dropItem(itemStackIn, false, false);
+     }
+ 
+-    public EntityItem dropItem(ItemStack droppedItem, boolean dropAround, boolean traceItem)
+-    {
+-        if (droppedItem == null)
+-        {
++    public EntityItem dropItem(ItemStack droppedItem, boolean dropAround, boolean traceItem) {
++        if (droppedItem == null) {
+             return null;
+-        }
+-        else if (droppedItem.stackSize == 0)
+-        {
++        } else if (droppedItem.stackSize == 0) {
+             return null;
+-        }
+-        else
+-        {
+-            double d0 = this.posY - 0.30000001192092896D + (double)this.getEyeHeight();
++        } else {
++            double d0 = this.posY - 0.30000001192092896D + (double) this.getEyeHeight();
+             EntityItem entityitem = new EntityItem(this.worldObj, this.posX, d0, this.posZ, droppedItem);
+             entityitem.setPickupDelay(40);
+ 
+-            if (traceItem)
+-            {
++            if (traceItem) {
+                 entityitem.setThrower(this.getName());
+             }
+ 
+             float f;
+             float f1;
+ 
+-            if (dropAround)
+-            {
++            if (dropAround) {
+                 f = this.rand.nextFloat() * 0.5F;
+-                f1 = this.rand.nextFloat() * (float)Math.PI * 2.0F;
+-                entityitem.motionX = (double)(-MathHelper.sin(f1) * f);
+-                entityitem.motionZ = (double)(MathHelper.cos(f1) * f);
++                f1 = this.rand.nextFloat() * (float) Math.PI * 2.0F;
++                entityitem.motionX = (double) (-MathHelper.sin(f1) * f);
++                entityitem.motionZ = (double) (MathHelper.cos(f1) * f);
+                 entityitem.motionY = 0.20000000298023224D;
+-            }
+-            else
+-            {
++            } else {
+                 f = 0.3F;
+-                entityitem.motionX = (double)(-MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * f);
+-                entityitem.motionZ = (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * f);
+-                entityitem.motionY = (double)(-MathHelper.sin(this.rotationPitch / 180.0F * (float)Math.PI) * f + 0.1F);
+-                f1 = this.rand.nextFloat() * (float)Math.PI * 2.0F;
++                entityitem.motionX = (double) (-MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI) * f);
++                entityitem.motionZ = (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI) * f);
++                entityitem.motionY = (double) (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI) * f + 0.1F);
++                f1 = this.rand.nextFloat() * (float) Math.PI * 2.0F;
+                 f = 0.02F * this.rand.nextFloat();
+-                entityitem.motionX += Math.cos((double)f1) * (double)f;
+-                entityitem.motionY += (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F);
+-                entityitem.motionZ += Math.sin((double)f1) * (double)f;
++                entityitem.motionX += Math.cos((double) f1) * (double) f;
++                entityitem.motionY += (double) ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F);
++                entityitem.motionZ += Math.sin((double) f1) * (double) f;
+             }
+ 
++            // CraftBukkit start - fire PlayerDropItemEvent
++            Player player = (Player) this.getBukkitEntity();
++            CraftItem drop = new CraftItem(this.worldObj.getServer(), entityitem);
++
++            PlayerDropItemEvent event = new PlayerDropItemEvent(player, drop);
++            this.worldObj.getServer().getPluginManager().callEvent(event);
++
++            if (event.isCancelled()) {
++                org.bukkit.inventory.ItemStack cur = player.getInventory().getItemInHand();
++                if (traceItem && (cur == null || cur.getAmount() == 0)) {
++                    // The complete stack was dropped
++                    player.getInventory().setItemInHand(drop.getItemStack());
++                } else if (traceItem && cur.isSimilar(drop.getItemStack()) && drop.getItemStack().getAmount() == 1) {
++                    // Only one item is dropped
++                    cur.setAmount(cur.getAmount() + 1);
++                    player.getInventory().setItemInHand(cur);
++                } else {
++                    // Fallback
++                    player.getInventory().addItem(drop.getItemStack());
++                }
++                return null;
++            }
++            // CraftBukkit end
++
+             this.joinEntityItemWithWorld(entityitem);
+ 
+-            if (traceItem)
+-            {
++            if (traceItem) {
+                 this.triggerAchievement(StatList.dropStat);
+             }
+ 
+@@ -778,37 +778,30 @@
+         }
+     }
+ 
+-    protected void joinEntityItemWithWorld(EntityItem p_71012_1_)
+-    {
++    public void joinEntityItemWithWorld(EntityItem p_71012_1_) {
+         this.worldObj.spawnEntityInWorld(p_71012_1_);
+     }
+ 
+-    public float getToolDigEfficiency(Block p_180471_1_)
+-    {
++    public float getToolDigEfficiency(Block p_180471_1_) {
+         float f = this.inventory.getStrVsBlock(p_180471_1_);
+ 
+-        if (f > 1.0F)
+-        {
++        if (f > 1.0F) {
+             int i = EnchantmentHelper.getEfficiencyModifier(this);
+             ItemStack itemstack = this.inventory.getCurrentItem();
+ 
+-            if (i > 0 && itemstack != null)
+-            {
+-                f += (float)(i * i + 1);
++            if (i > 0 && itemstack != null) {
++                f += (float) (i * i + 1);
+             }
+         }
+ 
+-        if (this.isPotionActive(Potion.digSpeed))
+-        {
+-            f *= 1.0F + (float)(this.getActivePotionEffect(Potion.digSpeed).getAmplifier() + 1) * 0.2F;
++        if (this.isPotionActive(Potion.digSpeed)) {
++            f *= 1.0F + (float) (this.getActivePotionEffect(Potion.digSpeed).getAmplifier() + 1) * 0.2F;
+         }
+ 
+-        if (this.isPotionActive(Potion.digSlowdown))
+-        {
++        if (this.isPotionActive(Potion.digSlowdown)) {
+             float f1 = 1.0F;
+ 
+-            switch (this.getActivePotionEffect(Potion.digSlowdown).getAmplifier())
+-            {
++            switch (this.getActivePotionEffect(Potion.digSlowdown).getAmplifier()) {
+                 case 0:
+                     f1 = 0.3F;
+                     break;
+@@ -826,26 +826,22 @@
+             f *= f1;
+         }
+ 
+-        if (this.isInsideOfMaterial(Material.water) && !EnchantmentHelper.getAquaAffinityModifier(this))
+-        {
++        if (this.isInsideOfMaterial(Material.water) && !EnchantmentHelper.getAquaAffinityModifier(this)) {
+             f /= 5.0F;
+         }
+ 
+-        if (!this.onGround)
+-        {
++        if (!this.onGround) {
+             f /= 5.0F;
+         }
+ 
+         return f;
+     }
+ 
+-    public boolean canHarvestBlock(Block p_146099_1_)
+-    {
++    public boolean canHarvestBlock(Block p_146099_1_) {
+         return this.inventory.func_146025_b(p_146099_1_);
+     }
+ 
+-    public void readEntityFromNBT(NBTTagCompound tagCompund)
+-    {
++    public void readEntityFromNBT(NBTTagCompound tagCompund) {
+         super.readEntityFromNBT(tagCompund);
+         this.entityUniqueID = getUUID(this.gameProfile);
+         NBTTagList nbttaglist = tagCompund.getTagList("Inventory", 10);
+@@ -858,21 +858,18 @@
+         this.experienceTotal = tagCompund.getInteger("XpTotal");
+         this.xpSeed = tagCompund.getInteger("XpSeed");
+ 
+-        if (this.xpSeed == 0)
+-        {
++        if (this.xpSeed == 0) {
+             this.xpSeed = this.rand.nextInt();
+         }
+ 
+         this.setScore(tagCompund.getInteger("Score"));
+ 
+-        if (this.sleeping)
+-        {
++        if (this.sleeping) {
+             this.playerLocation = new BlockPos(this);
+             this.wakeUpPlayer(true, true, false);
+         }
+ 
+-        if (tagCompund.hasKey("SpawnX", 99) && tagCompund.hasKey("SpawnY", 99) && tagCompund.hasKey("SpawnZ", 99))
+-        {
++        // CraftBukkit start
++        this.spawnWorld = tagCompund.getString("SpawnWorld");
++        if ("".equals(spawnWorld)) {
++            this.spawnWorld = this.worldObj.getServer().getWorlds().get(0).getName();
++        }
++        // CraftBukkit end
++
++        if (tagCompund.hasKey("SpawnX", 99) && tagCompund.hasKey("SpawnY", 99) && tagCompund.hasKey("SpawnZ", 99)) {
+             this.spawnChunk = new BlockPos(tagCompund.getInteger("SpawnX"), tagCompund.getInteger("SpawnY"), tagCompund.getInteger("SpawnZ"));
+             this.spawnForced = tagCompund.getBoolean("SpawnForced");
+         }
+@@ -880,28 +880,26 @@
+         this.foodStats.readNBT(tagCompund);
+         this.capabilities.readCapabilitiesFromNBT(tagCompund);
+ 
+-        if (tagCompund.hasKey("EnderItems", 9))
+-        {
++        if (tagCompund.hasKey("EnderItems", 9)) {
+             NBTTagList nbttaglist1 = tagCompund.getTagList("EnderItems", 10);
+             this.theInventoryEnderChest.loadInventoryFromNBT(nbttaglist1);
+         }
++        tagCompund.setString("SpawnWorld", spawnWorld); // CraftBukkit - fixes bed spawns for multiworld worlds
+     }
+ 
+-    public void writeEntityToNBT(NBTTagCompound tagCompound)
+-    {
++    public void writeEntityToNBT(NBTTagCompound tagCompound) {
+         super.writeEntityToNBT(tagCompound);
+         tagCompound.setTag("Inventory", this.inventory.writeToNBT(new NBTTagList()));
+         tagCompound.setInteger("SelectedItemSlot", this.inventory.currentItem);
+         tagCompound.setBoolean("Sleeping", this.sleeping);
+-        tagCompound.setShort("SleepTimer", (short)this.sleepTimer);
++        tagCompound.setShort("SleepTimer", (short) this.sleepTimer);
+         tagCompound.setFloat("XpP", this.experience);
+         tagCompound.setInteger("XpLevel", this.experienceLevel);
+         tagCompound.setInteger("XpTotal", this.experienceTotal);
+         tagCompound.setInteger("XpSeed", this.xpSeed);
+         tagCompound.setInteger("Score", this.getScore());
+ 
+-        if (this.spawnChunk != null)
+-        {
++        if (this.spawnChunk != null) {
+             tagCompound.setInteger("SpawnX", this.spawnChunk.getX());
+             tagCompound.setInteger("SpawnY", this.spawnChunk.getY());
+             tagCompound.setInteger("SpawnZ", this.spawnChunk.getZ());
+@@ -913,65 +913,48 @@
+         tagCompound.setTag("EnderItems", this.theInventoryEnderChest.saveInventoryToNBT());
+         ItemStack itemstack = this.inventory.getCurrentItem();
+ 
+-        if (itemstack != null && itemstack.getItem() != null)
+-        {
++        if (itemstack != null && itemstack.getItem() != null) {
+             tagCompound.setTag("SelectedItem", itemstack.writeToNBT(new NBTTagCompound()));
+         }
++        tagCompound.setString("SpawnWorld", spawnWorld); // CraftBukkit - fixes bed spawns for multiworld worlds
+     }
+ 
+-    public boolean attackEntityFrom(DamageSource source, float amount)
+-    {
+-        if (this.isEntityInvulnerable(source))
+-        {
++    public boolean attackEntityFrom(DamageSource source, float amount) {
++        if (this.isEntityInvulnerable(source)) {
+             return false;
+-        }
+-        else if (this.capabilities.disableDamage && !source.canHarmInCreative())
+-        {
++        } else if (this.capabilities.disableDamage && !source.canHarmInCreative()) {
+             return false;
+-        }
+-        else
+-        {
++        } else {
+             this.entityAge = 0;
+ 
+-            if (this.getHealth() <= 0.0F)
+-            {
++            if (this.getHealth() <= 0.0F) {
+                 return false;
+-            }
+-            else
+-            {
+-                if (this.isPlayerSleeping() && !this.worldObj.isRemote)
+-                {
++            } else {
++                if (this.isPlayerSleeping() && !this.worldObj.isRemote) {
+                     this.wakeUpPlayer(true, true, false);
+                 }
+ 
+-                if (source.isDifficultyScaled())
+-                {
+-                    if (this.worldObj.getDifficulty() == EnumDifficulty.PEACEFUL)
+-                    {
+-                        amount = 0.0F;
++                if (source.isDifficultyScaled()) {
++                    if (this.worldObj.getDifficulty() == EnumDifficulty.PEACEFUL) {
++                        return false; // CraftBukkit - f = 0.0f -> return false
+                     }
+ 
+-                    if (this.worldObj.getDifficulty() == EnumDifficulty.EASY)
+-                    {
++                    if (this.worldObj.getDifficulty() == EnumDifficulty.EASY) {
+                         amount = amount / 2.0F + 1.0F;
+                     }
+ 
+-                    if (this.worldObj.getDifficulty() == EnumDifficulty.HARD)
+-                    {
++                    if (this.worldObj.getDifficulty() == EnumDifficulty.HARD) {
+                         amount = amount * 3.0F / 2.0F;
+                     }
+                 }
+ 
+-                if (amount == 0.0F)
++                if (false && amount == 0.0F) // CraftBukkit - Don't filter out 0 damage
+                 {
+                     return false;
+-                }
+-                else
+-                {
++                } else {
+                     Entity entity = source.getEntity();
+ 
+-                    if (entity instanceof EntityArrow && ((EntityArrow)entity).shootingEntity != null)
+-                    {
+-                        entity = ((EntityArrow)entity).shootingEntity;
++                    if (entity instanceof EntityArrow && ((EntityArrow) entity).shootingEntity != null) {
++                        entity = ((EntityArrow) entity).shootingEntity;
+                     }
+ 
+                     return super.attackEntityFrom(source, amount);
+@@ -981,45 +981,61 @@
+         }
+     }
+ 
+-    public boolean canAttackPlayer(EntityPlayer other)
++    public boolean canAttackPlayer(EntityPlayer entityhuman) // SpigotMCP -- Change to entityhuman
+     {
+-        Team team = this.getTeam();
+-        Team team1 = other.getTeam();
+-        return team == null ? true : (!team.isSameTeam(team1) ? true : team.getAllowFriendlyFire());
++        // CraftBukkit start - Change to check OTHER player's scoreboard team according to API
++        // To summarize this method's logic, it's "Can parameter hurt this"
++        org.bukkit.scoreboard.Team team;
++        if (entityhuman instanceof EntityPlayer) {
++            EntityPlayerMP thatPlayer = (EntityPlayerMP) entityhuman;
++            team = thatPlayer.getBukkitEntity().getScoreboard().getPlayerTeam(thatPlayer.getBukkitEntity());
++            if (team == null || team.allowFriendlyFire()) {
++                return true;
++            }
++        } else {
++            // This should never be called, but is implemented anyway
++            org.bukkit.OfflinePlayer thisPlayer = entityhuman.worldObj.getServer().getOfflinePlayer(entityhuman.getName());
++            team = entityhuman.worldObj.getServer().getScoreboardManager().getMainScoreboard().getPlayerTeam(thisPlayer);
++            if (team == null || team.allowFriendlyFire()) {
++                return true;
++            }
++        }
++
++        if (this instanceof EntityPlayerMP) {
++            return !team.hasPlayer(((EntityPlayerMP) this).getBukkitEntity());
++        }
++        return !team.hasPlayer(this.worldObj.getServer().getOfflinePlayer(this.getName()));
++        // CraftBukkit end
+     }
+ 
+-    protected void damageArmor(float p_70675_1_)
+-    {
++    protected void damageArmor(float p_70675_1_) {
+         this.inventory.damageArmor(p_70675_1_);
+     }
+ 
+-    public int getTotalArmorValue()
+-    {
++    public int getTotalArmorValue() {
+         return this.inventory.getTotalArmorValue();
+     }
+ 
+-    public float getArmorVisibility()
+-    {
++    public float getArmorVisibility() {
+         int i = 0;
+         ItemStack[] aitemstack = this.inventory.armorInventory;
+         int j = aitemstack.length;
+ 
+-        for (int k = 0; k < j; ++k)
+-        {
++        for (int k = 0; k < j; ++k) {
+             ItemStack itemstack = aitemstack[k];
+ 
+-            if (itemstack != null)
+-            {
++            if (itemstack != null) {
+                 ++i;
+             }
+         }
+ 
+-        return (float)i / (float)this.inventory.armorInventory.length;
++        return (float) i / (float) this.inventory.armorInventory.length;
+     }
+ 
+-    protected void damageEntity(DamageSource damageSrc, float damageAmount)
++    // CraftBukkit start
++    protected boolean damageEntity(DamageSource damageSrc, float damageAmount) // void -> boolean
+     {
+-        if (!this.isEntityInvulnerable(damageSrc))
+-        {
+-            if (!damageSrc.isUnblockable() && this.isBlocking() && damageAmount > 0.0F)
+-            {
++        if (true) {
++            return super.damageEntity(damageSrc, damageAmount);
++        }
++        // CraftBukkit end
++        if (!this.isEntityInvulnerable(damageSrc)) {
++            if (!damageSrc.isUnblockable() && this.isBlocking() && damageAmount > 0.0F) {
+                 damageAmount = (1.0F + damageAmount) * 0.5F;
+             }
+ 
+@@ -1032,62 +1032,59 @@
+             damageAmount = Math.max(damageAmount - this.getAbsorptionAmount(), 0.0F);
+             this.setAbsorptionAmount(this.getAbsorptionAmount() - (f1 - damageAmount));
+ 
+-            if (damageAmount != 0.0F)
+-            {
++            if (damageAmount != 0.0F) {
+                 this.addExhaustion(damageSrc.getHungerDamage());
+                 float f2 = this.getHealth();
+                 this.setHealth(this.getHealth() - damageAmount);
+                 this.getCombatTracker().func_94547_a(damageSrc, f2, damageAmount);
+ 
+-                if (damageAmount < 3.4028235E37F)
+-                {
++                if (damageAmount < 3.4028235E37F) {
+                     this.addStat(StatList.damageTakenStat, Math.round(damageAmount * 10.0F));
+                 }
+             }
+         }
++        return false; // CraftBukkit
+     }
+ 
+-    public void openEditSign(TileEntitySign signTile) {}
++    public void openEditSign(TileEntitySign signTile) {
++    }
+ 
+-    public void openEditCommandBlock(CommandBlockLogic cmdBlockLogic) {}
++    public void openEditCommandBlock(CommandBlockLogic cmdBlockLogic) {
++    }
+ 
+-    public void displayVillagerTradeGui(IMerchant villager) {}
++    public void displayVillagerTradeGui(IMerchant villager) {
++    }
+ 
+-    public void displayGUIChest(IInventory chestInventory) {}
++    public void displayGUIChest(IInventory chestInventory) {
++    }
+ 
+-    public void displayGUIHorse(EntityHorse horse, IInventory horseInventory) {}
++    public void displayGUIHorse(EntityHorse horse, IInventory horseInventory) {
++    }
+ 
+-    public void displayGui(IInteractionObject guiOwner) {}
++    public void displayGui(IInteractionObject guiOwner) {
++    }
+ 
+-    public void displayGUIBook(ItemStack bookStack) {}
++    public void displayGUIBook(ItemStack bookStack) {
++    }
+ 
+-    public boolean interactWith(Entity p_70998_1_)
+-    {
+-        if (this.isSpectator())
+-        {
+-            if (p_70998_1_ instanceof IInventory)
+-            {
+-                this.displayGUIChest((IInventory)p_70998_1_);
++    public boolean interactWith(Entity p_70998_1_) {
++        if (this.isSpectator()) {
++            if (p_70998_1_ instanceof IInventory) {
++                this.displayGUIChest((IInventory) p_70998_1_);
+             }
+ 
+             return false;
+-        }
+-        else
+-        {
++        } else {
+             ItemStack itemstack = this.getCurrentEquippedItem();
+             ItemStack itemstack1 = itemstack != null ? itemstack.copy() : null;
+ 
+-            if (!p_70998_1_.interactFirst(this))
+-            {
+-                if (itemstack != null && p_70998_1_ instanceof EntityLivingBase)
+-                {
+-                    if (this.capabilities.isCreativeMode)
+-                    {
++            if (!p_70998_1_.interactFirst(this)) {
++                if (itemstack != null && p_70998_1_ instanceof EntityLivingBase) {
++                    if (this.capabilities.isCreativeMode) {
+                         itemstack = itemstack1;
+                     }
+ 
+-                    if (itemstack.interactWithEntity(this, (EntityLivingBase)p_70998_1_))
+-                    {
+-                        if (itemstack.stackSize <= 0 && !this.capabilities.isCreativeMode)
+-                        {
++                    if (itemstack.interactWithEntity(this, (EntityLivingBase) p_70998_1_)) {
++                        // CraftBukkit - bypass infinite items; <= 0 -> == 0
++                        if (itemstack.stackSize == 0 && !this.capabilities.isCreativeMode) {
+                             this.destroyCurrentEquippedItem();
+                         }
+ 
+@@ -1098,21 +1098,13 @@
+                 }
+ 
+                 return false;
+-            }
+-            else
+-            {
+-                if (itemstack != null && itemstack == this.getCurrentEquippedItem())
+-                {
+-                    if (itemstack.stackSize <= 0 && !this.capabilities.isCreativeMode)
+-                    {
++            } else {
++                if (itemstack != null && itemstack == this.getCurrentEquippedItem()) {
++                    if (itemstack.stackSize <= 0 && !this.capabilities.isCreativeMode) {
+                         this.destroyCurrentEquippedItem();
+-                    }
+-                    else if (itemstack.stackSize < itemstack1.stackSize && this.capabilities.isCreativeMode)
+-                    {
++                    } else if (itemstack.stackSize < itemstack1.stackSize && this.capabilities.isCreativeMode) {
+                         itemstack.stackSize = itemstack1.stackSize;
+                     }
+                 }
+@@ -1118,53 +1118,41 @@
+         }
+     }
+ 
+-    public ItemStack getCurrentEquippedItem()
+-    {
++    public ItemStack getCurrentEquippedItem() {
+         return this.inventory.getCurrentItem();
+     }
+ 
+-    public void destroyCurrentEquippedItem()
+-    {
+-        this.inventory.setInventorySlotContents(this.inventory.currentItem, (ItemStack)null);
++    public void destroyCurrentEquippedItem() {
++        this.inventory.setInventorySlotContents(this.inventory.currentItem, (ItemStack) null);
+     }
+ 
+-    public double getYOffset()
+-    {
++    public double getYOffset() {
+         return -0.35D;
+     }
+ 
+-    public void attackTargetEntityWithCurrentItem(Entity targetEntity)
+-    {
+-        if (targetEntity.canAttackWithItem())
+-        {
+-            if (!targetEntity.hitByEntity(this))
+-            {
+-                float f = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
++    public void attackTargetEntityWithCurrentItem(Entity targetEntity) {
++        if (targetEntity.canAttackWithItem()) {
++            if (!targetEntity.hitByEntity(this)) {
++                float f = (float) this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
+                 byte b0 = 0;
+                 float f1 = 0.0F;
+ 
+-                if (targetEntity instanceof EntityLivingBase)
+-                {
+-                    f1 = EnchantmentHelper.func_152377_a(this.getHeldItem(), ((EntityLivingBase)targetEntity).getCreatureAttribute());
+-                }
+-                else
+-                {
++                if (targetEntity instanceof EntityLivingBase) {
++                    f1 = EnchantmentHelper.func_152377_a(this.getHeldItem(), ((EntityLivingBase) targetEntity).getCreatureAttribute());
++                } else {
+                     f1 = EnchantmentHelper.func_152377_a(this.getHeldItem(), EnumCreatureAttribute.UNDEFINED);
+                 }
+ 
+                 int j = b0 + EnchantmentHelper.getKnockbackModifier(this);
+ 
+-                if (this.isSprinting())
+-                {
++                if (this.isSprinting()) {
+                     ++j;
+                 }
+ 
+-                if (f > 0.0F || f1 > 0.0F)
+-                {
++                if (f > 0.0F || f1 > 0.0F) {
+                     boolean flag = this.fallDistance > 0.0F && !this.onGround && !this.isOnLadder() && !this.isInWater() && !this.isPotionActive(Potion.blindness) && this.ridingEntity == null && targetEntity instanceof EntityLivingBase;
+ 
+-                    if (flag && f > 0.0F)
+-                    {
++                    if (flag && f > 0.0F) {
+                         f *= 1.5F;
+                     }
+ 
+@@ -1172,10 +1172,16 @@
+                     boolean flag1 = false;
+                     int i = EnchantmentHelper.getFireAspectModifier(this);
+ 
+-                    if (targetEntity instanceof EntityLivingBase && i > 0 && !targetEntity.isBurning())
+-                    {
+-                        flag1 = true;
+-                        targetEntity.setFire(1);
++                    if (targetEntity instanceof EntityLivingBase && i > 0 && !targetEntity.isBurning()) {
++                        // CraftBukkit start - Call a combust event when somebody hits with a fire enchanted item
++                        EntityCombustByEntityEvent combustEvent = new EntityCombustByEntityEvent(this.getBukkitEntity(), targetEntity.getBukkitEntity(), 1);
++                        org.bukkit.Bukkit.getPluginManager().callEvent(combustEvent);
++
++                        if (!combustEvent.isCancelled()) {
++                            flag1 = true;
++                            targetEntity.setFire(combustEvent.getDuration());
++                        }
++                        // CraftBukkit end
+                     }
+ 
+                     double d0 = targetEntity.motionX;
+@@ -1183,86 +1183,95 @@
+                     double d2 = targetEntity.motionZ;
+                     boolean flag2 = targetEntity.attackEntityFrom(DamageSource.causePlayerDamage(this), f);
+ 
+-                    if (flag2)
+-                    {
+-                        if (j > 0)
+-                        {
+-                            targetEntity.addVelocity((double)(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)j * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)j * 0.5F));
++                    if (flag2) {
++                        if (j > 0) {
++                            targetEntity.addVelocity((double) (-MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F) * (float) j * 0.5F), 0.1D, (double) (MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F) * (float) j * 0.5F));
+                             this.motionX *= 0.6D;
+                             this.motionZ *= 0.6D;
+                             this.setSprinting(false);
+                         }
+ 
+-                        if (targetEntity instanceof EntityPlayerMP && targetEntity.velocityChanged)
+-                        {
+-                            ((EntityPlayerMP)targetEntity).playerNetServerHandler.sendPacket(new S12PacketEntityVelocity(targetEntity));
+-                            targetEntity.velocityChanged = false;
+-                            targetEntity.motionX = d0;
+-                            targetEntity.motionY = d1;
+-                            targetEntity.motionZ = d2;
++                        if (targetEntity instanceof EntityPlayerMP && targetEntity.velocityChanged) {
++                            // CraftBukkit start - Add Velocity Event
++                            boolean cancelled = false;
++                            Player player = (Player) targetEntity.getBukkitEntity();
++                            org.bukkit.util.Vector velocity = new org.bukkit.util.Vector(d0, d1, d2);
++
++                            PlayerVelocityEvent event = new PlayerVelocityEvent(player, velocity.clone());
++                            worldObj.getServer().getPluginManager().callEvent(event);
++
++                            if (event.isCancelled()) {
++                                cancelled = true;
++                            } else if (!velocity.equals(event.getVelocity())) {
++                                player.setVelocity(velocity);
++                            }
++
++                            if (!cancelled) {
++                                ((EntityPlayerMP) targetEntity).playerNetServerHandler.sendPacket(new S12PacketEntityVelocity(targetEntity));
++                                targetEntity.velocityChanged = false;
++                                targetEntity.motionX = d0;
++                                targetEntity.motionY = d1;
++                                targetEntity.motionZ = d2;
++                            }
++                            // CraftBukkit end
+                         }
+ 
+-                        if (flag)
+-                        {
++                        if (flag) {
+                             this.onCriticalHit(targetEntity);
+                         }
+ 
+-                        if (f1 > 0.0F)
+-                        {
++                        if (f1 > 0.0F) {
+                             this.onEnchantmentCritical(targetEntity);
+                         }
+ 
+-                        if (f >= 18.0F)
+-                        {
++                        if (f >= 18.0F) {
+                             this.triggerAchievement(AchievementList.overkill);
+                         }
+ 
+                         this.setLastAttacker(targetEntity);
+ 
+-                        if (targetEntity instanceof EntityLivingBase)
+-                        {
+-                            EnchantmentHelper.func_151384_a((EntityLivingBase)targetEntity, this);
++                        if (targetEntity instanceof EntityLivingBase) {
++                            EnchantmentHelper.func_151384_a((EntityLivingBase) targetEntity, this);
+                         }
+ 
+                         EnchantmentHelper.func_151385_b(this, targetEntity);
+                         ItemStack itemstack = this.getCurrentEquippedItem();
+                         Object object = targetEntity;
+ 
+-                        if (targetEntity instanceof EntityDragonPart)
+-                        {
+-                            IEntityMultiPart ientitymultipart = ((EntityDragonPart)targetEntity).entityDragonObj;
++                        if (targetEntity instanceof EntityDragonPart) {
++                            IEntityMultiPart ientitymultipart = ((EntityDragonPart) targetEntity).entityDragonObj;
+ 
+-                            if (ientitymultipart instanceof EntityLivingBase)
+-                            {
+-                                object = (EntityLivingBase)ientitymultipart;
++                            if (ientitymultipart instanceof EntityLivingBase) {
++                                object = (EntityLivingBase) ientitymultipart;
+                             }
+                         }
+ 
+-                        if (itemstack != null && object instanceof EntityLivingBase)
+-                        {
+-                            itemstack.hitEntity((EntityLivingBase)object, this);
+-
+-                            if (itemstack.stackSize <= 0)
+-                            {
++                        if (itemstack != null && object instanceof EntityLivingBase) {
++                            itemstack.hitEntity((EntityLivingBase) object, this);
++                            // CraftBukkit - bypass infinite items; <= 0 -> == 0
++                            if (itemstack.stackSize == 0) {
+                                 this.destroyCurrentEquippedItem();
+                             }
+                         }
+ 
+-                        if (targetEntity instanceof EntityLivingBase)
+-                        {
++                        if (targetEntity instanceof EntityLivingBase) {
+                             this.addStat(StatList.damageDealtStat, Math.round(f * 10.0F));
+ 
+-                            if (i > 0)
+-                            {
+-                                targetEntity.setFire(i * 4);
++                            if (i > 0) {
++                                // CraftBukkit start - Call a combust event when somebody hits with a fire enchanted item
++                                EntityCombustByEntityEvent combustEvent = new EntityCombustByEntityEvent(this.getBukkitEntity(), targetEntity.getBukkitEntity(), i * 4);
++                                org.bukkit.Bukkit.getPluginManager().callEvent(combustEvent);
++
++                                if (!combustEvent.isCancelled()) {
++                                    targetEntity.setFire(combustEvent.getDuration());
++                                }
++                                // CraftBukkit end
+                             }
+                         }
+ 
+-                        this.addExhaustion(0.3F);
+-                    }
+-                    else if (flag1)
+-                    {
++                        this.addExhaustion(worldObj.spigotConfig.combatExhaustion); // Spigot - Change to use configurable value
++                    } else if (flag1) {
+                         targetEntity.extinguish();
+                     }
+                 }
+@@ -1269,88 +1269,83 @@
+         }
+     }
+ 
+-    public void onCriticalHit(Entity entityHit) {}
++    public void onCriticalHit(Entity entityHit) {
++    }
+ 
+-    public void onEnchantmentCritical(Entity entityHit) {}
++    public void onEnchantmentCritical(Entity entityHit) {
++    }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public void respawnPlayer() {}
+-
+-    public void setDead()
+-    {
++    public void setDead() {
+         super.setDead();
+         this.inventoryContainer.onContainerClosed(this);
+ 
+-        if (this.openContainer != null)
+-        {
++        if (this.openContainer != null) {
+             this.openContainer.onContainerClosed(this);
+         }
+     }
+ 
+-    public boolean isEntityInsideOpaqueBlock()
+-    {
++    public boolean isEntityInsideOpaqueBlock() {
+         return !this.sleeping && super.isEntityInsideOpaqueBlock();
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public boolean isUser()
+-    {
+-        return false;
+-    }
+-
+-    public GameProfile getGameProfile()
+-    {
++    public GameProfile getGameProfile() {
+         return this.gameProfile;
+     }
+ 
+-    public EntityPlayer.EnumStatus trySleep(BlockPos bedLocation)
+-    {
+-        if (!this.worldObj.isRemote)
+-        {
+-            if (this.isPlayerSleeping() || !this.isEntityAlive())
+-            {
++    public EntityPlayer.EnumStatus trySleep(BlockPos bedLocation) {
++        if (!this.worldObj.isRemote) {
++            if (this.isPlayerSleeping() || !this.isEntityAlive()) {
+                 return EntityPlayer.EnumStatus.OTHER_PROBLEM;
+             }
+ 
+-            if (!this.worldObj.provider.isSurfaceWorld())
+-            {
++            if (!this.worldObj.provider.isSurfaceWorld()) {
+                 return EntityPlayer.EnumStatus.NOT_POSSIBLE_HERE;
+             }
+ 
+-            if (this.worldObj.isDaytime())
+-            {
++            if (this.worldObj.isDaytime()) {
+                 return EntityPlayer.EnumStatus.NOT_POSSIBLE_NOW;
+             }
+ 
+-            if (Math.abs(this.posX - (double)bedLocation.getX()) > 3.0D || Math.abs(this.posY - (double)bedLocation.getY()) > 2.0D || Math.abs(this.posZ - (double)bedLocation.getZ()) > 3.0D)
+-            {
++            if (Math.abs(this.posX - (double) bedLocation.getX()) > 3.0D || Math.abs(this.posY - (double) bedLocation.getY()) > 2.0D || Math.abs(this.posZ - (double) bedLocation.getZ()) > 3.0D) {
+                 return EntityPlayer.EnumStatus.TOO_FAR_AWAY;
+             }
+ 
+             double d0 = 8.0D;
+             double d1 = 5.0D;
+-            List list = this.worldObj.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB((double)bedLocation.getX() - d0, (double)bedLocation.getY() - d1, (double)bedLocation.getZ() - d0, (double)bedLocation.getX() + d0, (double)bedLocation.getY() + d1, (double)bedLocation.getZ() + d0));
++            List list = this.worldObj.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB((double) bedLocation.getX() - d0, (double) bedLocation.getY() - d1, (double) bedLocation.getZ() - d0, (double) bedLocation.getX() + d0, (double) bedLocation.getY() + d1, (double) bedLocation.getZ() + d0));
+ 
+-            if (!list.isEmpty())
+-            {
++            if (!list.isEmpty()) {
+                 return EntityPlayer.EnumStatus.NOT_SAFE;
+             }
+         }
+ 
+-        if (this.isRiding())
+-        {
+-            this.mountEntity((Entity)null);
++        if (this.isRiding()) {
++            this.mountEntity((Entity) null);
+         }
+ 
++        // CraftBukkit start - fire PlayerBedEnterEvent
++        if (this.getBukkitEntity() instanceof Player) {
++            Player player = (Player) this.getBukkitEntity();
++            org.bukkit.block.Block bed = this.worldObj.getWorld().getBlockAt(bedLocation.getX(), bedLocation.getY(), bedLocation.getZ());
++
++            PlayerBedEnterEvent event = new PlayerBedEnterEvent(player, bed);
++            this.worldObj.getServer().getPluginManager().callEvent(event);
++
++            if (event.isCancelled()) {
++                return EnumStatus.OTHER_PROBLEM;
++            }
++        }
++        // CraftBukkit end
++
+         this.setSize(0.2F, 0.2F);
+ 
+-        if (this.worldObj.isBlockLoaded(bedLocation))
+-        {
+-            EnumFacing enumfacing = (EnumFacing)this.worldObj.getBlockState(bedLocation).getValue(BlockDirectional.FACING);
++        if (this.worldObj.isBlockLoaded(bedLocation)) {
++            EnumFacing enumfacing = (EnumFacing) this.worldObj.getBlockState(bedLocation).getValue(BlockDirectional.FACING);
+             float f = 0.5F;
+             float f1 = 0.5F;
+ 
+-            switch (EntityPlayer.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()])
+-            {
++            switch (EntityPlayer.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()]) {
+                 case 1:
+                     f1 = 0.9F;
+                     break;
+@@ -1366,32 +1366,30 @@
+             }
+ 
+             this.func_175139_a(enumfacing);
+-            this.setPosition((double)((float)bedLocation.getX() + f), (double)((float)bedLocation.getY() + 0.6875F), (double)((float)bedLocation.getZ() + f1));
++            this.setPosition((double) ((float) bedLocation.getX() + f), (double) ((float) bedLocation.getY() + 0.6875F), (double) ((float) bedLocation.getZ() + f1));
++        } else {
++            this.setPosition((double) ((float) bedLocation.getX() + 0.5F), (double) ((float) bedLocation.getY() + 0.6875F), (double) ((float) bedLocation.getZ() + 0.5F));
+         }
+-        else
+-        {
+-            this.setPosition((double)((float)bedLocation.getX() + 0.5F), (double)((float)bedLocation.getY() + 0.6875F), (double)((float)bedLocation.getZ() + 0.5F));
+-        }
+ 
+         this.sleeping = true;
+         this.sleepTimer = 0;
+         this.playerLocation = bedLocation;
+         this.motionX = this.motionZ = this.motionY = 0.0D;
+ 
+-        if (!this.worldObj.isRemote)
+-        {
++        if (!this.worldObj.isRemote) {
+             this.worldObj.updateAllPlayersSleepingFlag();
+         }
+ 
+         return EntityPlayer.EnumStatus.OK;
+     }
+ 
+-    private void func_175139_a(EnumFacing p_175139_1_)
+-    {
++    private void func_175139_a(EnumFacing p_175139_1_) {
+         this.renderOffsetX = 0.0F;
+         this.renderOffsetZ = 0.0F;
+ 
+-        switch (EntityPlayer.SwitchEnumFacing.FACING_LOOKUP[p_175139_1_.ordinal()])
+-        {
++        switch (EntityPlayer.SwitchEnumFacing.FACING_LOOKUP[p_175139_1_.ordinal()]) {
+             case 1:
+                 this.renderOffsetZ = -1.8F;
+                 break;
+@@ -1407,374 +1407,287 @@
+         }
+     }
+ 
+-    public void wakeUpPlayer(boolean p_70999_1_, boolean updateWorldFlag, boolean setSpawn)
+-    {
++    public void wakeUpPlayer(boolean p_70999_1_, boolean updateWorldFlag, boolean setSpawn) {
+         this.setSize(0.6F, 1.8F);
+         IBlockState iblockstate = this.worldObj.getBlockState(this.playerLocation);
+ 
+-        if (this.playerLocation != null && iblockstate.getBlock() == Blocks.bed)
+-        {
++        if (this.playerLocation != null && iblockstate.getBlock() == Blocks.bed) {
+             this.worldObj.setBlockState(this.playerLocation, iblockstate.withProperty(BlockBed.OCCUPIED, Boolean.valueOf(false)), 4);
+             BlockPos blockpos = BlockBed.getSafeExitLocation(this.worldObj, this.playerLocation, 0);
+ 
+-            if (blockpos == null)
+-            {
++            if (blockpos == null) {
+                 blockpos = this.playerLocation.up();
+             }
+ 
+-            this.setPosition((double)((float)blockpos.getX() + 0.5F), (double)((float)blockpos.getY() + 0.1F), (double)((float)blockpos.getZ() + 0.5F));
++            this.setPosition((double) ((float) blockpos.getX() + 0.5F), (double) ((float) blockpos.getY() + 0.1F), (double) ((float) blockpos.getZ() + 0.5F));
+         }
+ 
+         this.sleeping = false;
+ 
+-        if (!this.worldObj.isRemote && updateWorldFlag)
+-        {
++        if (!this.worldObj.isRemote && updateWorldFlag) {
+             this.worldObj.updateAllPlayersSleepingFlag();
+         }
+ 
++        // CraftBukkit start - fire PlayerBedLeaveEvent
++        if (this.getBukkitEntity() instanceof Player) {
++            Player player = (Player) this.getBukkitEntity();
++
++            org.bukkit.block.Block bed;
++            BlockPos blockposition = this.playerLocation;
++            if (blockposition != null) {
++                bed = this.worldObj.getWorld().getBlockAt(blockposition.getX(), blockposition.getY(), blockposition.getZ());
++            } else {
++                bed = this.worldObj.getWorld().getBlockAt(player.getLocation());
++            }
++
++            PlayerBedLeaveEvent event = new PlayerBedLeaveEvent(player, bed);
++            this.worldObj.getServer().getPluginManager().callEvent(event);
++        }
++        // CraftBukkit end
++
+         this.sleepTimer = p_70999_1_ ? 0 : 100;
+ 
+-        if (setSpawn)
+-        {
++        if (setSpawn) {
+             this.setSpawnPoint(this.playerLocation, false);
+         }
+     }
+ 
+-    private boolean isInBed()
+-    {
++    private boolean isInBed() {
+         return this.worldObj.getBlockState(this.playerLocation).getBlock() == Blocks.bed;
+     }
+ 
+-    public static BlockPos getBedSpawnLocation(World worldIn, BlockPos bedLocation, boolean forceSpawn)
+-    {
+-        if (worldIn.getBlockState(bedLocation).getBlock() != Blocks.bed)
+-        {
+-            if (!forceSpawn)
+-            {
++    public static BlockPos getBedSpawnLocation(World worldIn, BlockPos bedLocation, boolean forceSpawn) {
++        ((ChunkProviderServer) worldIn.chunkProvider).loadChunk(bedLocation.getX() >> 4, bedLocation.getZ() >> 4); // CraftBukkit
++        if (worldIn.getBlockState(bedLocation).getBlock() != Blocks.bed) {
++            if (!forceSpawn) {
+                 return null;
+-            }
+-            else
+-            {
++            } else {
+                 Material material = worldIn.getBlockState(bedLocation).getBlock().getMaterial();
+                 Material material1 = worldIn.getBlockState(bedLocation.up()).getBlock().getMaterial();
+                 boolean flag1 = !material.isSolid() && !material.isLiquid();
+                 boolean flag2 = !material1.isSolid() && !material1.isLiquid();
+                 return flag1 && flag2 ? bedLocation : null;
+             }
+-        }
+-        else
+-        {
++        } else {
+             return BlockBed.getSafeExitLocation(worldIn, bedLocation, 0);
+         }
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public float getBedOrientationInDegrees()
+-    {
+-        if (this.playerLocation != null)
+-        {
+-            EnumFacing enumfacing = (EnumFacing)this.worldObj.getBlockState(this.playerLocation).getValue(BlockDirectional.FACING);
+-
+-            switch (EntityPlayer.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()])
+-            {
+-                case 1:
+-                    return 90.0F;
+-                case 2:
+-                    return 270.0F;
+-                case 3:
+-                    return 0.0F;
+-                case 4:
+-                    return 180.0F;
+-            }
+-        }
+-
+-        return 0.0F;
+-    }
+-
+-    public boolean isPlayerSleeping()
+-    {
++    public boolean isPlayerSleeping() {
+         return this.sleeping;
+     }
+ 
+-    public boolean isPlayerFullyAsleep()
+-    {
++    public boolean isPlayerFullyAsleep() {
+         return this.sleeping && this.sleepTimer >= 100;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public int getSleepTimer()
+-    {
+-        return this.sleepTimer;
++
++    public void addChatComponentMessage(IChatComponent chatComponent) {
+     }
+ 
+-    public void addChatComponentMessage(IChatComponent chatComponent) {}
+-
+-    public BlockPos getBedLocation()
+-    {
++    public BlockPos getBedLocation() {
+         return this.spawnChunk;
+     }
+ 
+-    public boolean isSpawnForced()
+-    {
++    public boolean isSpawnForced() {
+         return this.spawnForced;
+     }
+ 
+-    public void setSpawnPoint(BlockPos pos, boolean forced)
+-    {
+-        if (pos != null)
+-        {
++    public void setSpawnPoint(BlockPos pos, boolean forced) {
++        if (pos != null) {
+             this.spawnChunk = pos;
+             this.spawnForced = forced;
+-        }
+-        else
+-        {
++            this.spawnWorld = this.worldObj.worldInfo.getWorldName(); // CraftBukkit
++        } else {
+             this.spawnChunk = null;
+             this.spawnForced = false;
++            this.spawnWorld = ""; // CraftBukkit
+         }
+     }
+ 
+-    public void triggerAchievement(StatBase achievementIn)
+-    {
++    public void triggerAchievement(StatBase achievementIn) {
+         this.addStat(achievementIn, 1);
+     }
+ 
+-    public void addStat(StatBase stat, int amount) {}
++    public void addStat(StatBase stat, int amount) {
++    }
+ 
+-    public void func_175145_a(StatBase p_175145_1_) {}
++    public void func_175145_a(StatBase p_175145_1_) {
++    }
+ 
+-    public void jump()
+-    {
++    public void jump() {
+         super.jump();
+         this.triggerAchievement(StatList.jumpStat);
+ 
+-        if (this.isSprinting())
+-        {
+-            this.addExhaustion(0.8F);
++        if (this.isSprinting()) {
++            this.addExhaustion(worldObj.spigotConfig.sprintExhaustion);
++        } else {
++            this.addExhaustion(worldObj.spigotConfig.walkExhaustion);
+         }
+-        else
+-        {
+-            this.addExhaustion(0.2F);
+-        }
+     }
+ 
+-    public void moveEntityWithHeading(float p_70612_1_, float p_70612_2_)
+-    {
++    public void moveEntityWithHeading(float p_70612_1_, float p_70612_2_) {
+         double d0 = this.posX;
+         double d1 = this.posY;
+         double d2 = this.posZ;
+ 
+-        if (this.capabilities.isFlying && this.ridingEntity == null)
+-        {
++        if (this.capabilities.isFlying && this.ridingEntity == null) {
+             double d3 = this.motionY;
+             float f2 = this.jumpMovementFactor;
+-            this.jumpMovementFactor = this.capabilities.getFlySpeed() * (float)(this.isSprinting() ? 2 : 1);
++            this.jumpMovementFactor = this.capabilities.getFlySpeed() * (float) (this.isSprinting() ? 2 : 1);
+             super.moveEntityWithHeading(p_70612_1_, p_70612_2_);
+             this.motionY = d3 * 0.6D;
+             this.jumpMovementFactor = f2;
+-        }
+-        else
+-        {
++        } else {
+             super.moveEntityWithHeading(p_70612_1_, p_70612_2_);
+         }
+ 
+         this.addMovementStat(this.posX - d0, this.posY - d1, this.posZ - d2);
+     }
+ 
+-    public float getAIMoveSpeed()
+-    {
+-        return (float)this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue();
++    public float getAIMoveSpeed() {
++        return (float) this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue();
+     }
+ 
+-    public void addMovementStat(double p_71000_1_, double p_71000_3_, double p_71000_5_)
+-    {
+-        if (this.ridingEntity == null)
+-        {
++    public void addMovementStat(double p_71000_1_, double p_71000_3_, double p_71000_5_) {
++        if (this.ridingEntity == null) {
+             int i;
+ 
+-            if (this.isInsideOfMaterial(Material.water))
+-            {
++            if (this.isInsideOfMaterial(Material.water)) {
+                 i = Math.round(MathHelper.sqrt_double(p_71000_1_ * p_71000_1_ + p_71000_3_ * p_71000_3_ + p_71000_5_ * p_71000_5_) * 100.0F);
+ 
+-                if (i > 0)
+-                {
++                if (i > 0) {
+                     this.addStat(StatList.distanceDoveStat, i);
+-                    this.addExhaustion(0.015F * (float)i * 0.01F);
++                    this.addExhaustion(0.015F * (float) i * 0.01F);
+                 }
+-            }
+-            else if (this.isInWater())
+-            {
++            } else if (this.isInWater()) {
+                 i = Math.round(MathHelper.sqrt_double(p_71000_1_ * p_71000_1_ + p_71000_5_ * p_71000_5_) * 100.0F);
+ 
+-                if (i > 0)
+-                {
++                if (i > 0) {
+                     this.addStat(StatList.distanceSwumStat, i);
+-                    this.addExhaustion(0.015F * (float)i * 0.01F);
++                    this.addExhaustion(0.015F * (float) i * 0.01F);
+                 }
+-            }
+-            else if (this.isOnLadder())
+-            {
+-                if (p_71000_3_ > 0.0D)
+-                {
+-                    this.addStat(StatList.distanceClimbedStat, (int)Math.round(p_71000_3_ * 100.0D));
++            } else if (this.isOnLadder()) {
++                if (p_71000_3_ > 0.0D) {
++                    this.addStat(StatList.distanceClimbedStat, (int) Math.round(p_71000_3_ * 100.0D));
+                 }
+-            }
+-            else if (this.onGround)
+-            {
++            } else if (this.onGround) {
+                 i = Math.round(MathHelper.sqrt_double(p_71000_1_ * p_71000_1_ + p_71000_5_ * p_71000_5_) * 100.0F);
+ 
+-                if (i > 0)
+-                {
++                if (i > 0) {
+                     this.addStat(StatList.distanceWalkedStat, i);
+ 
+-                    if (this.isSprinting())
+-                    {
++                    if (this.isSprinting()) {
+                         this.addStat(StatList.distanceSprintedStat, i);
+-                        this.addExhaustion(0.099999994F * (float)i * 0.01F);
+-                    }
+-                    else
+-                    {
+-                        if (this.isSneaking())
+-                        {
++                        this.addExhaustion(0.099999994F * (float) i * 0.01F);
++                    } else {
++                        if (this.isSneaking()) {
+                             this.addStat(StatList.distanceCrouchedStat, i);
+                         }
+ 
+-                        this.addExhaustion(0.01F * (float)i * 0.01F);
++                        this.addExhaustion(0.01F * (float) i * 0.01F);
+                     }
+                 }
+-            }
+-            else
+-            {
++            } else {
+                 i = Math.round(MathHelper.sqrt_double(p_71000_1_ * p_71000_1_ + p_71000_5_ * p_71000_5_) * 100.0F);
+ 
+-                if (i > 25)
+-                {
++                if (i > 25) {
+                     this.addStat(StatList.distanceFlownStat, i);
+                 }
+             }
+         }
+     }
+ 
+-    private void addMountedMovementStat(double p_71015_1_, double p_71015_3_, double p_71015_5_)
+-    {
+-        if (this.ridingEntity != null)
+-        {
++    private void addMountedMovementStat(double p_71015_1_, double p_71015_3_, double p_71015_5_) {
++        if (this.ridingEntity != null) {
+             int i = Math.round(MathHelper.sqrt_double(p_71015_1_ * p_71015_1_ + p_71015_3_ * p_71015_3_ + p_71015_5_ * p_71015_5_) * 100.0F);
+ 
+-            if (i > 0)
+-            {
+-                if (this.ridingEntity instanceof EntityMinecart)
+-                {
++            if (i > 0) {
++                if (this.ridingEntity instanceof EntityMinecart) {
+                     this.addStat(StatList.distanceByMinecartStat, i);
+ 
+-                    if (this.startMinecartRidingCoordinate == null)
+-                    {
++                    if (this.startMinecartRidingCoordinate == null) {
+                         this.startMinecartRidingCoordinate = new BlockPos(this);
+-                    }
+-                    else if (this.startMinecartRidingCoordinate.distanceSq((double)MathHelper.floor_double(this.posX), (double)MathHelper.floor_double(this.posY), (double)MathHelper.floor_double(this.posZ)) >= 1000000.0D)
+-                    {
++                    } else if (this.startMinecartRidingCoordinate.distanceSq((double) MathHelper.floor_double(this.posX), (double) MathHelper.floor_double(this.posY), (double) MathHelper.floor_double(this.posZ)) >= 1000000.0D) {
+                         this.triggerAchievement(AchievementList.onARail);
+                     }
+-                }
+-                else if (this.ridingEntity instanceof EntityBoat)
+-                {
++                } else if (this.ridingEntity instanceof EntityBoat) {
+                     this.addStat(StatList.distanceByBoatStat, i);
+-                }
+-                else if (this.ridingEntity instanceof EntityPig)
+-                {
++                } else if (this.ridingEntity instanceof EntityPig) {
+                     this.addStat(StatList.distanceByPigStat, i);
+-                }
+-                else if (this.ridingEntity instanceof EntityHorse)
+-                {
++                } else if (this.ridingEntity instanceof EntityHorse) {
+                     this.addStat(StatList.distanceByHorseStat, i);
+                 }
+             }
+         }
+     }
+ 
+-    public void fall(float distance, float damageMultiplier)
+-    {
+-        if (!this.capabilities.allowFlying)
+-        {
+-            if (distance >= 2.0F)
+-            {
+-                this.addStat(StatList.distanceFallenStat, (int)Math.round((double)distance * 100.0D));
++    public void fall(float distance, float damageMultiplier) {
++        if (!this.capabilities.allowFlying) {
++            if (distance >= 2.0F) {
++                this.addStat(StatList.distanceFallenStat, (int) Math.round((double) distance * 100.0D));
+             }
+ 
+             super.fall(distance, damageMultiplier);
+         }
+     }
+ 
+-    protected void resetHeight()
+-    {
+-        if (!this.isSpectator())
+-        {
++    protected void resetHeight() {
++        if (!this.isSpectator()) {
+             super.resetHeight();
+         }
+     }
+ 
+-    protected String getFallSoundString(int damageValue)
+-    {
++    protected String getFallSoundString(int damageValue) {
+         return damageValue > 4 ? "game.player.hurt.fall.big" : "game.player.hurt.fall.small";
+     }
+ 
+-    public void onKillEntity(EntityLivingBase entityLivingIn)
+-    {
+-        if (entityLivingIn instanceof IMob)
+-        {
++    public void onKillEntity(EntityLivingBase entityLivingIn) {
++        if (entityLivingIn instanceof IMob) {
+             this.triggerAchievement(AchievementList.killEnemy);
+         }
+ 
+-        EntityList.EntityEggInfo entityegginfo = (EntityList.EntityEggInfo)EntityList.entityEggs.get(Integer.valueOf(EntityList.getEntityID(entityLivingIn)));
++        EntityList.EntityEggInfo entityegginfo = (EntityList.EntityEggInfo) EntityList.entityEggs.get(Integer.valueOf(EntityList.getEntityID(entityLivingIn)));
+ 
+-        if (entityegginfo != null)
+-        {
++        if (entityegginfo != null) {
+             this.triggerAchievement(entityegginfo.field_151512_d);
+         }
+     }
+ 
+-    public void setInWeb()
+-    {
+-        if (!this.capabilities.isFlying)
+-        {
++    public void setInWeb() {
++        if (!this.capabilities.isFlying) {
+             super.setInWeb();
+         }
+     }
+ 
+-    public ItemStack getCurrentArmor(int slotIn)
+-    {
++    public ItemStack getCurrentArmor(int slotIn) {
+         return this.inventory.armorItemInSlot(slotIn);
+     }
+ 
+-    public void addExperience(int amount)
+-    {
++    public void addExperience(int amount) {
+         this.addScore(amount);
+         int j = Integer.MAX_VALUE - this.experienceTotal;
+ 
+-        if (amount > j)
+-        {
++        if (amount > j) {
+             amount = j;
+         }
+ 
+-        this.experience += (float)amount / (float)this.xpBarCap();
++        this.experience += (float) amount / (float) this.xpBarCap();
+ 
+-        for (this.experienceTotal += amount; this.experience >= 1.0F; this.experience /= (float)this.xpBarCap())
+-        {
+-            this.experience = (this.experience - 1.0F) * (float)this.xpBarCap();
++        for (this.experienceTotal += amount; this.experience >= 1.0F; this.experience /= (float) this.xpBarCap()) {
++            this.experience = (this.experience - 1.0F) * (float) this.xpBarCap();
+             this.addExperienceLevel(1);
+         }
+     }
+ 
+-    public int getXPSeed()
+-    {
++    public int getXPSeed() {
+         return this.xpSeed;
+     }
+ 
+-    public void removeExperienceLevel(int levels)
+-    {
++    public void removeExperienceLevel(int levels) {
+         this.experienceLevel -= levels;
+ 
+-        if (this.experienceLevel < 0)
+-        {
++        if (this.experienceLevel < 0) {
+             this.experienceLevel = 0;
+             this.experience = 0.0F;
+             this.experienceTotal = 0;
+@@ -1783,113 +1783,87 @@
+         this.xpSeed = this.rand.nextInt();
+     }
+ 
+-    public void addExperienceLevel(int levels)
+-    {
++    public void addExperienceLevel(int levels) {
+         this.experienceLevel += levels;
+ 
+-        if (this.experienceLevel < 0)
+-        {
++        if (this.experienceLevel < 0) {
+             this.experienceLevel = 0;
+             this.experience = 0.0F;
+             this.experienceTotal = 0;
+         }
+ 
+-        if (levels > 0 && this.experienceLevel % 5 == 0 && (float)this.lastXPSound < (float)this.ticksExisted - 100.0F)
+-        {
+-            float f = this.experienceLevel > 30 ? 1.0F : (float)this.experienceLevel / 30.0F;
++        if (levels > 0 && this.experienceLevel % 5 == 0 && (float) this.lastXPSound < (float) this.ticksExisted - 100.0F) {
++            float f = this.experienceLevel > 30 ? 1.0F : (float) this.experienceLevel / 30.0F;
+             this.worldObj.playSoundAtEntity(this, "random.levelup", f * 0.75F, 1.0F);
+             this.lastXPSound = this.ticksExisted;
+         }
+     }
+ 
+-    public int xpBarCap()
+-    {
++    public int xpBarCap() {
+         return this.experienceLevel >= 30 ? 112 + (this.experienceLevel - 30) * 9 : (this.experienceLevel >= 15 ? 37 + (this.experienceLevel - 15) * 5 : 7 + this.experienceLevel * 2);
+     }
+ 
+-    public void addExhaustion(float p_71020_1_)
+-    {
+-        if (!this.capabilities.disableDamage)
+-        {
+-            if (!this.worldObj.isRemote)
+-            {
++    public void addExhaustion(float p_71020_1_) {
++        if (!this.capabilities.disableDamage) {
++            if (!this.worldObj.isRemote) {
+                 this.foodStats.addExhaustion(p_71020_1_);
+             }
+         }
+     }
+ 
+-    public FoodStats getFoodStats()
+-    {
++    public FoodStats getFoodStats() {
+         return this.foodStats;
+     }
+ 
+-    public boolean canEat(boolean ignoreHunger)
+-    {
++    public boolean canEat(boolean ignoreHunger) {
+         return (ignoreHunger || this.foodStats.needFood()) && !this.capabilities.disableDamage;
+     }
+ 
+-    public boolean shouldHeal()
+-    {
++    public boolean shouldHeal() {
+         return this.getHealth() > 0.0F && this.getHealth() < this.getMaxHealth();
+     }
+ 
+-    public void setItemInUse(ItemStack stack, int duration)
+-    {
+-        if (stack != this.itemInUse)
+-        {
++    public void setItemInUse(ItemStack stack, int duration) {
++        if (stack != this.itemInUse) {
+             this.itemInUse = stack;
+             this.itemInUseCount = duration;
+ 
+-            if (!this.worldObj.isRemote)
+-            {
++            if (!this.worldObj.isRemote) {
+                 this.setEating(true);
+             }
+         }
+     }
+ 
+-    public boolean isAllowEdit()
+-    {
++    public boolean isAllowEdit() {
+         return this.capabilities.allowEdit;
+     }
+ 
+-    public boolean canPlayerEdit(BlockPos p_175151_1_, EnumFacing p_175151_2_, ItemStack p_175151_3_)
+-    {
+-        if (this.capabilities.allowEdit)
+-        {
++    public boolean canPlayerEdit(BlockPos p_175151_1_, EnumFacing p_175151_2_, ItemStack p_175151_3_) {
++        if (this.capabilities.allowEdit) {
+             return true;
+-        }
+-        else if (p_175151_3_ == null)
+-        {
++        } else if (p_175151_3_ == null) {
+             return false;
+-        }
+-        else
+-        {
++        } else {
+             BlockPos blockpos1 = p_175151_1_.offset(p_175151_2_.getOpposite());
+             Block block = this.worldObj.getBlockState(blockpos1).getBlock();
+             return p_175151_3_.canPlaceOn(block) || p_175151_3_.canEditBlocks();
+         }
+     }
+ 
+-    protected int getExperiencePoints(EntityPlayer player)
+-    {
+-        if (this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
+-        {
++    protected int getExperiencePoints(EntityPlayer player) {
++        if (this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) {
+             return 0;
+-        }
+-        else
+-        {
++        } else {
+             int i = this.experienceLevel * 7;
+             return i > 100 ? 100 : i;
+         }
+     }
+ 
+-    protected boolean isPlayer()
+-    {
++    protected boolean isPlayer() {
+         return true;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public boolean getAlwaysRenderNameTagForRender()
+-    {
+-        return true;
+-    }
+-
+-    public void clonePlayer(EntityPlayer oldPlayer, boolean respawnFromEnd)
+-    {
+-        if (respawnFromEnd)
+-        {
++    public void clonePlayer(EntityPlayer oldPlayer, boolean respawnFromEnd) {
++        if (respawnFromEnd) {
+             this.inventory.copyInventory(oldPlayer.inventory);
+             this.setHealth(oldPlayer.getHealth());
+             this.foodStats = oldPlayer.foodStats;
+@@ -1906,9 +1906,7 @@
+             this.experience = oldPlayer.experience;
+             this.setScore(oldPlayer.getScore());
+             this.teleportDirection = oldPlayer.teleportDirection;
+-        }
+-        else if (this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory"))
+-        {
++        } else if (this.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) {
+             this.inventory.copyInventory(oldPlayer.inventory);
+             this.experienceLevel = oldPlayer.experienceLevel;
+             this.experienceTotal = oldPlayer.experienceTotal;
+@@ -1920,82 +1920,55 @@
+         this.getDataWatcher().updateObject(10, Byte.valueOf(oldPlayer.getDataWatcher().getWatchableObjectByte(10)));
+     }
+ 
+-    protected boolean canTriggerWalking()
+-    {
++    protected boolean canTriggerWalking() {
+         return !this.capabilities.isFlying;
+     }
+ 
+-    public void sendPlayerAbilities() {}
++    public void sendPlayerAbilities() {
++    }
+ 
+-    public void setGameType(WorldSettings.GameType gameType) {}
++    public void setGameType(WorldSettings.GameType gameType) {
++    }
+ 
+-    public String getName()
+-    {
++    public String getName() {
+         return this.gameProfile.getName();
+     }
+ 
+-    public InventoryEnderChest getInventoryEnderChest()
+-    {
++    public InventoryEnderChest getInventoryEnderChest() {
+         return this.theInventoryEnderChest;
+     }
+ 
+-    public ItemStack getEquipmentInSlot(int slotIn)
+-    {
++    public ItemStack getEquipmentInSlot(int slotIn) {
+         return slotIn == 0 ? this.inventory.getCurrentItem() : this.inventory.armorInventory[slotIn - 1];
+     }
+ 
+-    public ItemStack getHeldItem()
+-    {
++    public ItemStack getHeldItem() {
+         return this.inventory.getCurrentItem();
+     }
+ 
+-    public void setCurrentItemOrArmor(int slotIn, ItemStack stack)
+-    {
++    public void setCurrentItemOrArmor(int slotIn, ItemStack stack) {
+         this.inventory.armorInventory[slotIn] = stack;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public boolean isInvisibleToPlayer(EntityPlayer player)
+-    {
+-        if (!this.isInvisible())
+-        {
+-            return false;
+-        }
+-        else if (player.isSpectator())
+-        {
+-            return false;
+-        }
+-        else
+-        {
+-            Team team = this.getTeam();
+-            return team == null || player == null || player.getTeam() != team || !team.func_98297_h();
+-        }
+-    }
+-
+     public abstract boolean isSpectator();
+ 
+-    public ItemStack[] getInventory()
+-    {
++    public ItemStack[] getInventory() {
+         return this.inventory.armorInventory;
+     }
+ 
+-    public boolean isPushedByWater()
+-    {
++    public boolean isPushedByWater() {
+         return !this.capabilities.isFlying;
+     }
+ 
+-    public Scoreboard getWorldScoreboard()
+-    {
++    public Scoreboard getWorldScoreboard() {
+         return this.worldObj.getScoreboard();
+     }
+ 
+-    public Team getTeam()
+-    {
++    public Team getTeam() {
+         return this.getWorldScoreboard().getPlayersTeam(this.getName());
+     }
+ 
+-    public IChatComponent getDisplayName()
+-    {
++    public IChatComponent getDisplayName() {
++        // CraftBukkit - todo: fun
+         ChatComponentText chatcomponenttext = new ChatComponentText(ScorePlayerTeam.formatPlayerName(this.getTeam(), this.getName()));
+         chatcomponenttext.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/msg " + this.getName() + " "));
+         chatcomponenttext.getChatStyle().setChatHoverEvent(this.func_174823_aP());
+@@ -2003,132 +2003,96 @@
+         return chatcomponenttext;
+     }
+ 
+-    public float getEyeHeight()
+-    {
++    public float getEyeHeight() {
+         float f = 1.62F;
+ 
+-        if (this.isPlayerSleeping())
+-        {
++        if (this.isPlayerSleeping()) {
+             f = 0.2F;
+         }
+ 
+-        if (this.isSneaking())
+-        {
++        if (this.isSneaking()) {
+             f -= 0.08F;
+         }
+ 
+         return f;
+     }
+ 
+-    public void setAbsorptionAmount(float amount)
+-    {
+-        if (amount < 0.0F)
+-        {
++    public void setAbsorptionAmount(float amount) {
++        if (amount < 0.0F) {
+             amount = 0.0F;
+         }
+ 
+         this.getDataWatcher().updateObject(17, Float.valueOf(amount));
+     }
+ 
+-    public float getAbsorptionAmount()
+-    {
++    public float getAbsorptionAmount() {
+         return this.getDataWatcher().getWatchableObjectFloat(17);
+     }
+ 
+-    public static UUID getUUID(GameProfile profile)
+-    {
++    public static UUID getUUID(GameProfile profile) {
+         UUID uuid = profile.getId();
+ 
+-        if (uuid == null)
+-        {
++        if (uuid == null) {
+             uuid = getOfflineUUID(profile.getName());
+         }
+ 
+         return uuid;
+     }
+ 
+-    public static UUID getOfflineUUID(String username)
+-    {
++    public static UUID getOfflineUUID(String username) {
+         return UUID.nameUUIDFromBytes(("OfflinePlayer:" + username).getBytes(Charsets.UTF_8));
+     }
+ 
+-    public boolean canOpen(LockCode code)
+-    {
+-        if (code.isEmpty())
+-        {
++    public boolean canOpen(LockCode code) {
++        if (code.isEmpty()) {
+             return true;
+-        }
+-        else
+-        {
++        } else {
+             ItemStack itemstack = this.getCurrentEquippedItem();
+             return itemstack != null && itemstack.hasDisplayName() ? itemstack.getDisplayName().equals(code.getLock()) : false;
+         }
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public boolean func_175148_a(EnumPlayerModelParts p_175148_1_)
+-    {
+-        return (this.getDataWatcher().getWatchableObjectByte(10) & p_175148_1_.getPartMask()) == p_175148_1_.getPartMask();
+-    }
+-
+-    public boolean sendCommandFeedback()
+-    {
++    public boolean sendCommandFeedback() {
+         return MinecraftServer.getServer().worldServers[0].getGameRules().getGameRuleBooleanValue("sendCommandFeedback");
+     }
+ 
+-    public boolean replaceItemInInventory(int p_174820_1_, ItemStack p_174820_2_)
+-    {
+-        if (p_174820_1_ >= 0 && p_174820_1_ < this.inventory.mainInventory.length)
+-        {
++    public boolean replaceItemInInventory(int p_174820_1_, ItemStack p_174820_2_) {
++        if (p_174820_1_ >= 0 && p_174820_1_ < this.inventory.mainInventory.length) {
+             this.inventory.setInventorySlotContents(p_174820_1_, p_174820_2_);
+             return true;
+-        }
+-        else
+-        {
++        } else {
+             int j = p_174820_1_ - 100;
+             int k;
+ 
+-            if (j >= 0 && j < this.inventory.armorInventory.length)
+-            {
++            if (j >= 0 && j < this.inventory.armorInventory.length) {
+                 k = j + 1;
+ 
+-                if (p_174820_2_ != null && p_174820_2_.getItem() != null)
+-                {
+-                    if (p_174820_2_.getItem() instanceof ItemArmor)
+-                    {
+-                        if (EntityLiving.getArmorPosition(p_174820_2_) != k)
+-                        {
++                if (p_174820_2_ != null && p_174820_2_.getItem() != null) {
++                    if (p_174820_2_.getItem() instanceof ItemArmor) {
++                        if (EntityLiving.getArmorPosition(p_174820_2_) != k) {
+                             return false;
+                         }
+-                    }
+-                    else if (k != 4 || p_174820_2_.getItem() != Items.skull && !(p_174820_2_.getItem() instanceof ItemBlock))
+-                    {
++                    } else if (k != 4 || p_174820_2_.getItem() != Items.skull && !(p_174820_2_.getItem() instanceof ItemBlock)) {
+                         return false;
+                     }
+                 }
+ 
+                 this.inventory.setInventorySlotContents(j + this.inventory.mainInventory.length, p_174820_2_);
+                 return true;
+-            }
+-            else
+-            {
++            } else {
+                 k = p_174820_1_ - 200;
+ 
+-                if (k >= 0 && k < this.theInventoryEnderChest.getSizeInventory())
+-                {
++                if (k >= 0 && k < this.theInventoryEnderChest.getSizeInventory()) {
+                     this.theInventoryEnderChest.setInventorySlotContents(k, p_174820_2_);
+                     return true;
+-                }
+-                else
+-                {
++                } else {
+                     return false;
+                 }
+             }
+         }
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public boolean hasReducedDebug()
+-    {
+-        return this.hasReducedDebug;
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public void setReducedDebug(boolean reducedDebug)
+-    {
+-        this.hasReducedDebug = reducedDebug;
+-    }
+-
+-    public static enum EnumChatVisibility
+-    {
++    public static enum EnumChatVisibility {
+         FULL(0, "options.chat.visibility.full"),
+         SYSTEM(1, "options.chat.visibility.system"),
+         HIDDEN(2, "options.chat.visibility.hidden");
+@@ -2150,43 +2150,31 @@
+ 
+         private static final String __OBFID = "CL_00001714";
+ 
+-        private EnumChatVisibility(int id, String resourceKey)
+-        {
++        private EnumChatVisibility(int id, String resourceKey) {
+             this.chatVisibility = id;
+             this.resourceKey = resourceKey;
+         }
+ 
+-        public int getChatVisibility()
+-        {
++        public int getChatVisibility() {
+             return this.chatVisibility;
+         }
+ 
+-        public static EntityPlayer.EnumChatVisibility getEnumChatVisibility(int id)
+-        {
++        public static EntityPlayer.EnumChatVisibility getEnumChatVisibility(int id) {
+             return ID_LOOKUP[id % ID_LOOKUP.length];
+         }
+ 
+-        @SideOnly(Side.CLIENT)
+-        public String getResourceKey()
+-        {
+-            return this.resourceKey;
+-        }
+-
+-        static
+-        {
++        static {
+             EntityPlayer.EnumChatVisibility[] var0 = values();
+             int var1 = var0.length;
+ 
+-            for (int var2 = 0; var2 < var1; ++var2)
+-            {
++            for (int var2 = 0; var2 < var1; ++var2) {
+                 EntityPlayer.EnumChatVisibility var3 = var0[var2];
+                 ID_LOOKUP[var3.chatVisibility] = var3;
+             }
+         }
+     }
+ 
+-    public static enum EnumStatus
+-    {
++    public static enum EnumStatus {
+         OK,
+         NOT_POSSIBLE_HERE,
+         NOT_POSSIBLE_NOW,
+@@ -2197,51 +2197,34 @@
+         private static final String __OBFID = "CL_00001712";
+     }
+ 
+-    static final class SwitchEnumFacing
+-        {
+-            static final int[] FACING_LOOKUP = new int[EnumFacing.values().length];
+-            private static final String __OBFID = "CL_00002188";
++    static final class SwitchEnumFacing {
+ 
+-            static
+-            {
+-                try
+-                {
+-                    FACING_LOOKUP[EnumFacing.SOUTH.ordinal()] = 1;
+-                }
+-                catch (NoSuchFieldError var4)
+-                {
+-                    ;
+-                }
++        static final int[] FACING_LOOKUP = new int[EnumFacing.values().length];
++        private static final String __OBFID = "CL_00002188";
+ 
+-                try
+-                {
+-                    FACING_LOOKUP[EnumFacing.NORTH.ordinal()] = 2;
+-                }
+-                catch (NoSuchFieldError var3)
+-                {
+-                    ;
+-                }
++        static {
++            try {
++                FACING_LOOKUP[EnumFacing.SOUTH.ordinal()] = 1;
++            } catch (NoSuchFieldError var4) {
++                ;
++            }
+ 
+-                try
+-                {
+-                    FACING_LOOKUP[EnumFacing.WEST.ordinal()] = 3;
+-                }
+-                catch (NoSuchFieldError var2)
+-                {
+-                    ;
+-                }
++            try {
++                FACING_LOOKUP[EnumFacing.NORTH.ordinal()] = 2;
++            } catch (NoSuchFieldError var3) {
++                ;
++            }
+ 
+-                try
+-                {
+-                    FACING_LOOKUP[EnumFacing.EAST.ordinal()] = 4;
+-                }
+-                catch (NoSuchFieldError var1)
+-                {
+-                    ;
+-                }
++            try {
++                FACING_LOOKUP[EnumFacing.WEST.ordinal()] = 3;
++            } catch (NoSuchFieldError var2) {
++                ;
+             }
++
++            try {
++                FACING_LOOKUP[EnumFacing.EAST.ordinal()] = 4;
++            } catch (NoSuchFieldError var1) {
++                ;
++            }
+         }
+-}
++    }
++}

@@ -1,0 +1,13 @@
+---a/net/minecraft/dispenser/ILocation.java
++++b/net/minecraft/dispenser/ILocation.java
+@@ -2,8 +2,8 @@
+ 
+ import net.minecraft.world.World;
+ 
+-public interface ILocation extends IPosition
+-{
++public interface ILocation extends IPosition {
++
+     World getWorld();
+-}
++}

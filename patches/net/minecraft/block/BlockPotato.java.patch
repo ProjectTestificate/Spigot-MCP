@@ -1,0 +1,41 @@
+---a/net/minecraft/block/BlockPotato.java
++++b/net/minecraft/block/BlockPotato.java
+@@ -7,31 +7,26 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.world.World;
+ 
+-public class BlockPotato extends BlockCrops
+-{
++public class BlockPotato extends BlockCrops {
++
+     private static final String __OBFID = "CL_00000286";
+ 
+-    protected Item getSeed()
+-    {
++    protected Item getSeed() {
+         return Items.potato;
+     }
+ 
+-    protected Item getCrop()
+-    {
++    protected Item getCrop() {
+         return Items.potato;
+     }
+ 
+-    public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune)
+-    {
++    public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune) {
+         super.dropBlockAsItemWithChance(worldIn, pos, state, chance, fortune);
+ 
+-        if (!worldIn.isRemote)
+-        {
+-            if (((Integer)state.getValue(AGE)).intValue() >= 7 && worldIn.rand.nextInt(50) == 0)
+-            {
++        if (!worldIn.isRemote) {
++            if (((Integer) state.getValue(AGE)).intValue() >= 7 && worldIn.rand.nextInt(50) == 0) {
+                 spawnAsEntity(worldIn, pos, new ItemStack(Items.poisonous_potato));
+             }
+         }
+     }
+-}
++}

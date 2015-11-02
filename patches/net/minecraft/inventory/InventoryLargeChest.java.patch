@@ -1,0 +1,257 @@
+---a/net/minecraft/inventory/InventoryLargeChest.java
++++b/net/minecraft/inventory/InventoryLargeChest.java
+@@ -1,5 +1,8 @@
+ package net.minecraft.inventory;
+ 
++import java.util.ArrayList;
++import java.util.List;
++
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.entity.player.InventoryPlayer;
+ import net.minecraft.item.ItemStack;
+@@ -9,167 +9,179 @@
+ import net.minecraft.world.ILockableContainer;
+ import net.minecraft.world.LockCode;
+ 
+-public class InventoryLargeChest implements ILockableContainer
+-{
++import org.bukkit.craftbukkit.entity.CraftHumanEntity;
++import org.bukkit.inventory.InventoryHolder;
++
++public class InventoryLargeChest implements ILockableContainer {
++
+     private String name;
+-    private ILockableContainer upperChest;
+-    private ILockableContainer lowerChest;
++    public ILockableContainer upperChest; // SpigotMCP -- Apply access transformation
++    public ILockableContainer lowerChest; // SpigotMCP -- Apply access transformation
+     private static final String __OBFID = "CL_00001507";
+ 
+-    public InventoryLargeChest(String p_i45905_1_, ILockableContainer p_i45905_2_, ILockableContainer p_i45905_3_)
+-    {
++    // CraftBukkit start - add fields and methods
++    public List transaction = new ArrayList();
++
++    public ItemStack[] getContents() {
++        ItemStack[] result = new ItemStack[this.getSizeInventory()];
++        for (int i = 0; i < result.length; i++) {
++            result[i] = this.getStackInSlot(i);
++        }
++        return result;
++    }
++
++    public void onOpen(CraftHumanEntity who) {
++        this.upperChest.onOpen(who);
++        this.lowerChest.onOpen(who);
++        transaction.add(who);
++    }
++
++    public void onClose(CraftHumanEntity who) {
++        this.upperChest.onClose(who);
++        this.lowerChest.onClose(who);
++        transaction.remove(who);
++    }
++
++    public List getViewers() {
++        return transaction;
++    }
++
++    public InventoryHolder getOwner() {
++        return null; // This method won't be called since CraftInventoryDoubleChest doesn't defer to here
++    }
++
++    public void setMaxStackSize(int size) {
++        this.upperChest.setMaxStackSize(size);
++        this.lowerChest.setMaxStackSize(size);
++    }
++    // CraftBukkit end
++
++    public InventoryLargeChest(String p_i45905_1_, ILockableContainer p_i45905_2_, ILockableContainer p_i45905_3_) {
+         this.name = p_i45905_1_;
+ 
+-        if (p_i45905_2_ == null)
+-        {
++        if (p_i45905_2_ == null) {
+             p_i45905_2_ = p_i45905_3_;
+         }
+ 
+-        if (p_i45905_3_ == null)
+-        {
++        if (p_i45905_3_ == null) {
+             p_i45905_3_ = p_i45905_2_;
+         }
+ 
+         this.upperChest = p_i45905_2_;
+         this.lowerChest = p_i45905_3_;
+ 
+-        if (p_i45905_2_.isLocked())
+-        {
++        if (p_i45905_2_.isLocked()) {
+             p_i45905_3_.setLockCode(p_i45905_2_.getLockCode());
+-        }
+-        else if (p_i45905_3_.isLocked())
+-        {
++        } else if (p_i45905_3_.isLocked()) {
+             p_i45905_2_.setLockCode(p_i45905_3_.getLockCode());
+         }
+     }
+ 
+-    public int getSizeInventory()
+-    {
++    public int getSizeInventory() {
+         return this.upperChest.getSizeInventory() + this.lowerChest.getSizeInventory();
+     }
+ 
+-    public boolean isPartOfLargeChest(IInventory inventoryIn)
+-    {
++    public boolean isPartOfLargeChest(IInventory inventoryIn) {
+         return this.upperChest == inventoryIn || this.lowerChest == inventoryIn;
+     }
+ 
+-    public String getName()
+-    {
++    public String getName() {
+         return this.upperChest.hasCustomName() ? this.upperChest.getName() : (this.lowerChest.hasCustomName() ? this.lowerChest.getName() : this.name);
+     }
+ 
+-    public boolean hasCustomName()
+-    {
++    public boolean hasCustomName() {
+         return this.upperChest.hasCustomName() || this.lowerChest.hasCustomName();
+     }
+ 
+-    public IChatComponent getDisplayName()
+-    {
+-        return (IChatComponent)(this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
++    public IChatComponent getDisplayName() {
++        return (IChatComponent) (this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+     }
+ 
+-    public ItemStack getStackInSlot(int index)
+-    {
++    public ItemStack getStackInSlot(int index) {
+         return index >= this.upperChest.getSizeInventory() ? this.lowerChest.getStackInSlot(index - this.upperChest.getSizeInventory()) : this.upperChest.getStackInSlot(index);
+     }
+ 
+-    public ItemStack decrStackSize(int index, int count)
+-    {
++    public ItemStack decrStackSize(int index, int count) {
+         return index >= this.upperChest.getSizeInventory() ? this.lowerChest.decrStackSize(index - this.upperChest.getSizeInventory(), count) : this.upperChest.decrStackSize(index, count);
+     }
+ 
+-    public ItemStack getStackInSlotOnClosing(int index)
+-    {
++    public ItemStack getStackInSlotOnClosing(int index) {
+         return index >= this.upperChest.getSizeInventory() ? this.lowerChest.getStackInSlotOnClosing(index - this.upperChest.getSizeInventory()) : this.upperChest.getStackInSlotOnClosing(index);
+     }
+ 
+-    public void setInventorySlotContents(int index, ItemStack stack)
+-    {
+-        if (index >= this.upperChest.getSizeInventory())
+-        {
++    public void setInventorySlotContents(int index, ItemStack stack) {
++        if (index >= this.upperChest.getSizeInventory()) {
+             this.lowerChest.setInventorySlotContents(index - this.upperChest.getSizeInventory(), stack);
+-        }
+-        else
+-        {
++        } else {
+             this.upperChest.setInventorySlotContents(index, stack);
+         }
+     }
+ 
+-    public int getInventoryStackLimit()
+-    {
+-        return this.upperChest.getInventoryStackLimit();
++    public int getInventoryStackLimit() {
++        return Math.min(this.upperChest.getInventoryStackLimit(), this.lowerChest.getInventoryStackLimit()); // CraftBukkit - check both sides
+     }
+ 
+-    public void markDirty()
+-    {
++    public void markDirty() {
+         this.upperChest.markDirty();
+         this.lowerChest.markDirty();
+     }
+ 
+-    public boolean isUseableByPlayer(EntityPlayer player)
+-    {
++    public boolean isUseableByPlayer(EntityPlayer player) {
+         return this.upperChest.isUseableByPlayer(player) && this.lowerChest.isUseableByPlayer(player);
+     }
+ 
+-    public void openInventory(EntityPlayer player)
+-    {
++    public void openInventory(EntityPlayer player) {
+         this.upperChest.openInventory(player);
+         this.lowerChest.openInventory(player);
+     }
+ 
+-    public void closeInventory(EntityPlayer player)
+-    {
++    public void closeInventory(EntityPlayer player) {
+         this.upperChest.closeInventory(player);
+         this.lowerChest.closeInventory(player);
+     }
+ 
+-    public boolean isItemValidForSlot(int index, ItemStack stack)
+-    {
++    public boolean isItemValidForSlot(int index, ItemStack stack) {
+         return true;
+     }
+ 
+-    public int getField(int id)
+-    {
++    public int getField(int id) {
+         return 0;
+     }
+ 
+-    public void setField(int id, int value) {}
++    public void setField(int id, int value) {
++    }
+ 
+-    public int getFieldCount()
+-    {
++    public int getFieldCount() {
+         return 0;
+     }
+ 
+-    public boolean isLocked()
+-    {
++    public boolean isLocked() {
+         return this.upperChest.isLocked() || this.lowerChest.isLocked();
+     }
+ 
+-    public void setLockCode(LockCode code)
+-    {
++    public void setLockCode(LockCode code) {
+         this.upperChest.setLockCode(code);
+         this.lowerChest.setLockCode(code);
+     }
+ 
+-    public LockCode getLockCode()
+-    {
++    public LockCode getLockCode() {
+         return this.upperChest.getLockCode();
+     }
+ 
+-    public String getGuiID()
+-    {
++    public String getGuiID() {
+         return this.upperChest.getGuiID();
+     }
+ 
+-    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn)
+-    {
++    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
+         return new ContainerChest(playerInventory, this, playerIn);
+     }
+ 
+-    public void clear()
+-    {
++    public void clear() {
+         this.upperChest.clear();
+         this.lowerChest.clear();
+     }
+-}
++}

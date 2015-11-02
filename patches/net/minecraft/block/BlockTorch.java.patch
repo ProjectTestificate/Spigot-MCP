@@ -1,0 +1,437 @@
+---a/net/minecraft/block/BlockTorch.java
++++b/net/minecraft/block/BlockTorch.java
+@@ -1,8 +1,6 @@
+ package net.minecraft.block;
+ 
+-import com.google.common.base.Predicate;
+ import java.util.Iterator;
+-import java.util.Random;
++
+ import net.minecraft.block.material.Material;
+ import net.minecraft.block.properties.IProperty;
+ import net.minecraft.block.properties.PropertyDirection;
+@@ -14,170 +14,132 @@
+ import net.minecraft.util.AxisAlignedBB;
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
+-import net.minecraft.util.EnumParticleTypes;
+-import net.minecraft.util.EnumWorldBlockLayer;
+ import net.minecraft.util.MovingObjectPosition;
+ import net.minecraft.util.Vec3;
+ import net.minecraft.world.World;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public class BlockTorch extends Block
+-{
+-    public static final PropertyDirection FACING = PropertyDirection.create("facing", new Predicate()
+-    {
++import com.google.common.base.Predicate;
++
++public class BlockTorch extends Block {
++
++    public static final PropertyDirection FACING = PropertyDirection.create("facing", new Predicate() {
++
+         private static final String __OBFID = "CL_00002054";
+-        public boolean apply(EnumFacing facing)
+-        {
++
++        public boolean apply(EnumFacing facing) {
+             return facing != EnumFacing.DOWN;
+         }
+-        public boolean apply(Object p_apply_1_)
+-        {
+-            return this.apply((EnumFacing)p_apply_1_);
++
++        public boolean apply(Object p_apply_1_) {
++            return this.apply((EnumFacing) p_apply_1_);
+         }
+     });
+     private static final String __OBFID = "CL_00000325";
+ 
+-    protected BlockTorch()
+-    {
++    protected BlockTorch() {
+         super(Material.circuits);
+         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
+         this.setTickRandomly(true);
+         this.setCreativeTab(CreativeTabs.tabDecorations);
+     }
+ 
+-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+-    {
++    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) {
+         return null;
+     }
+ 
+-    public boolean isOpaqueCube()
+-    {
++    public boolean isOpaqueCube() {
+         return false;
+     }
+ 
+-    public boolean isFullCube()
+-    {
++    public boolean isFullCube() {
+         return false;
+     }
+ 
+-    private boolean canPlaceOn(World worldIn, BlockPos pos)
+-    {
+-        if (World.doesBlockHaveSolidTopSurface(worldIn, pos))
+-        {
++    private boolean canPlaceOn(World worldIn, BlockPos pos) {
++        if (World.doesBlockHaveSolidTopSurface(worldIn, pos)) {
+             return true;
+-        }
+-        else
+-        {
++        } else {
+             Block block = worldIn.getBlockState(pos).getBlock();
+             return block instanceof BlockFence || block == Blocks.glass || block == Blocks.cobblestone_wall || block == Blocks.stained_glass;
+         }
+     }
+ 
+-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+-    {
++    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+         Iterator iterator = FACING.getAllowedValues().iterator();
+         EnumFacing enumfacing;
+ 
+-        do
+-        {
+-            if (!iterator.hasNext())
+-            {
++        do {
++            if (!iterator.hasNext()) {
+                 return false;
+             }
+ 
+-            enumfacing = (EnumFacing)iterator.next();
+-        }
+-        while (!this.canPlaceAt(worldIn, pos, enumfacing));
++            enumfacing = (EnumFacing) iterator.next();
++        } while (!this.canPlaceAt(worldIn, pos, enumfacing));
+ 
+         return true;
+     }
+ 
+-    private boolean canPlaceAt(World worldIn, BlockPos pos, EnumFacing facing)
+-    {
++    private boolean canPlaceAt(World worldIn, BlockPos pos, EnumFacing facing) {
+         BlockPos blockpos1 = pos.offset(facing.getOpposite());
+         boolean flag = facing.getAxis().isHorizontal();
+         return flag && worldIn.isBlockNormalCube(blockpos1, true) || facing.equals(EnumFacing.UP) && this.canPlaceOn(worldIn, blockpos1);
+     }
+ 
+-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+-    {
+-        if (this.canPlaceAt(worldIn, pos, facing))
+-        {
++    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
++        if (this.canPlaceAt(worldIn, pos, facing)) {
+             return this.getDefaultState().withProperty(FACING, facing);
+-        }
+-        else
+-        {
++        } else {
+             Iterator iterator = EnumFacing.Plane.HORIZONTAL.iterator();
+             EnumFacing enumfacing1;
+ 
+-            do
+-            {
+-                if (!iterator.hasNext())
+-                {
++            do {
++                if (!iterator.hasNext()) {
+                     return this.getDefaultState();
+                 }
+ 
+-                enumfacing1 = (EnumFacing)iterator.next();
+-            }
+-            while (!worldIn.isBlockNormalCube(pos.offset(enumfacing1.getOpposite()), true));
++                enumfacing1 = (EnumFacing) iterator.next();
++            } while (!worldIn.isBlockNormalCube(pos.offset(enumfacing1.getOpposite()), true));
+ 
+             return this.getDefaultState().withProperty(FACING, enumfacing1);
+         }
+     }
+ 
+-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+-    {
++    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+         this.checkForDrop(worldIn, pos, state);
+     }
+ 
+-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+-    {
++    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
+         this.onNeighborChangeInternal(worldIn, pos, state);
+     }
+ 
+-    protected boolean onNeighborChangeInternal(World worldIn, BlockPos pos, IBlockState state)
+-    {
+-        if (!this.checkForDrop(worldIn, pos, state))
+-        {
++    protected boolean onNeighborChangeInternal(World worldIn, BlockPos pos, IBlockState state) {
++        if (!this.checkForDrop(worldIn, pos, state)) {
+             return true;
+-        }
+-        else
+-        {
+-            EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
++        } else {
++            EnumFacing enumfacing = (EnumFacing) state.getValue(FACING);
+             EnumFacing.Axis axis = enumfacing.getAxis();
+             EnumFacing enumfacing1 = enumfacing.getOpposite();
+             boolean flag = false;
+ 
+-            if (axis.isHorizontal() && !worldIn.isBlockNormalCube(pos.offset(enumfacing1), true))
+-            {
++            if (axis.isHorizontal() && !worldIn.isBlockNormalCube(pos.offset(enumfacing1), true)) {
+                 flag = true;
+-            }
+-            else if (axis.isVertical() && !this.canPlaceOn(worldIn, pos.offset(enumfacing1)))
+-            {
++            } else if (axis.isVertical() && !this.canPlaceOn(worldIn, pos.offset(enumfacing1))) {
+                 flag = true;
+             }
+ 
+-            if (flag)
+-            {
++            if (flag) {
+                 this.dropBlockAsItem(worldIn, pos, state, 0);
+                 worldIn.setBlockToAir(pos);
+                 return true;
+-            }
+-            else
+-            {
++            } else {
+                 return false;
+             }
+         }
+     }
+ 
+-    protected boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state)
+-    {
+-        if (state.getBlock() == this && this.canPlaceAt(worldIn, pos, (EnumFacing)state.getValue(FACING)))
+-        {
++    protected boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state) {
++        if (state.getBlock() == this && this.canPlaceAt(worldIn, pos, (EnumFacing) state.getValue(FACING))) {
+             return true;
+-        }
+-        else
+-        {
+-            if (worldIn.getBlockState(pos).getBlock() == this)
+-            {
++        } else {
++            if (worldIn.getBlockState(pos).getBlock() == this) {
+                 this.dropBlockAsItem(worldIn, pos, state, 0);
+                 worldIn.setBlockToAir(pos);
+             }
+@@ -189,29 +189,20 @@
+         }
+     }
+ 
+-    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
+-    {
+-        EnumFacing enumfacing = (EnumFacing)worldIn.getBlockState(pos).getValue(FACING);
++    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end) {
++        EnumFacing enumfacing = (EnumFacing) worldIn.getBlockState(pos).getValue(FACING);
+         float f = 0.15F;
+ 
+-        if (enumfacing == EnumFacing.EAST)
+-        {
++        if (enumfacing == EnumFacing.EAST) {
+             this.setBlockBounds(0.0F, 0.2F, 0.5F - f, f * 2.0F, 0.8F, 0.5F + f);
+-        }
+-        else if (enumfacing == EnumFacing.WEST)
+-        {
++        } else if (enumfacing == EnumFacing.WEST) {
+             this.setBlockBounds(1.0F - f * 2.0F, 0.2F, 0.5F - f, 1.0F, 0.8F, 0.5F + f);
+-        }
+-        else if (enumfacing == EnumFacing.SOUTH)
+-        {
++        } else if (enumfacing == EnumFacing.SOUTH) {
+             this.setBlockBounds(0.5F - f, 0.2F, 0.0F, 0.5F + f, 0.8F, f * 2.0F);
+-        }
+-        else if (enumfacing == EnumFacing.NORTH)
+-        {
++        } else if (enumfacing == EnumFacing.NORTH) {
+             this.setBlockBounds(0.5F - f, 0.2F, 1.0F - f * 2.0F, 0.5F + f, 0.8F, 1.0F);
+-        }
+-        else
+-        {
++        } else {
+             f = 0.1F;
+             this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.6F, 0.5F + f);
+         }
+@@ -219,12 +219,10 @@
+         return super.collisionRayTrace(worldIn, pos, start, end);
+     }
+ 
+-    public IBlockState getStateFromMeta(int meta)
+-    {
++    public IBlockState getStateFromMeta(int meta) {
+         IBlockState iblockstate = this.getDefaultState();
+ 
+-        switch (meta)
+-        {
++        switch (meta) {
+             case 1:
+                 iblockstate = iblockstate.withProperty(FACING, EnumFacing.EAST);
+                 break;
+@@ -245,59 +245,11 @@
+         return iblockstate;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+-    {
+-        EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+-        double d0 = (double)pos.getX() + 0.5D;
+-        double d1 = (double)pos.getY() + 0.7D;
+-        double d2 = (double)pos.getZ() + 0.5D;
+-        double d3 = 0.22D;
+-        double d4 = 0.27D;
+-
+-        if (enumfacing.getAxis().isHorizontal())
+-        {
+-            EnumFacing enumfacing1 = enumfacing.getOpposite();
+-            worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4 * (double)enumfacing1.getFrontOffsetX(), d1 + d3, d2 + d4 * (double)enumfacing1.getFrontOffsetZ(), 0.0D, 0.0D, 0.0D, new int[0]);
+-            worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + d4 * (double)enumfacing1.getFrontOffsetX(), d1 + d3, d2 + d4 * (double)enumfacing1.getFrontOffsetZ(), 0.0D, 0.0D, 0.0D, new int[0]);
+-        }
+-        else
+-        {
+-            worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2, 0.0D, 0.0D, 0.0D, new int[0]);
+-            worldIn.spawnParticle(EnumParticleTypes.FLAME, d0, d1, d2, 0.0D, 0.0D, 0.0D, new int[0]);
+-        }
+-    }
+-
+-    public int getMetaFromState(IBlockState state)
+-    {
++    public int getMetaFromState(IBlockState state) {
+         byte b0 = 0;
+         int i;
+ 
+-        switch (BlockTorch.SwitchEnumFacing.FACING_LOOKUP[((EnumFacing)state.getValue(FACING)).ordinal()])
+-        {
++        switch (BlockTorch.SwitchEnumFacing.FACING_LOOKUP[((EnumFacing) state.getValue(FACING)).ordinal()]) {
+             case 1:
+                 i = b0 | 1;
+                 break;
+@@ -296,80 +296,51 @@
+         return i;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public EnumWorldBlockLayer getBlockLayer()
+-    {
+-        return EnumWorldBlockLayer.CUTOUT;
++    protected BlockState createBlockState() {
++        return new BlockState(this, new IProperty[]{FACING});
+     }
+ 
+-    protected BlockState createBlockState()
+-    {
+-        return new BlockState(this, new IProperty[] {FACING});
+-    }
++    static final class SwitchEnumFacing {
+ 
+-    static final class SwitchEnumFacing
+-        {
+-            static final int[] FACING_LOOKUP = new int[EnumFacing.values().length];
+-            private static final String __OBFID = "CL_00002053";
++        static final int[] FACING_LOOKUP = new int[EnumFacing.values().length];
++        private static final String __OBFID = "CL_00002053";
+ 
+-            static
+-            {
+-                try
+-                {
+-                    FACING_LOOKUP[EnumFacing.EAST.ordinal()] = 1;
+-                }
+-                catch (NoSuchFieldError var6)
+-                {
+-                    ;
+-                }
++        static {
++            try {
++                FACING_LOOKUP[EnumFacing.EAST.ordinal()] = 1;
++            } catch (NoSuchFieldError var6) {
++                ;
++            }
+ 
+-                try
+-                {
+-                    FACING_LOOKUP[EnumFacing.WEST.ordinal()] = 2;
+-                }
+-                catch (NoSuchFieldError var5)
+-                {
+-                    ;
+-                }
++            try {
++                FACING_LOOKUP[EnumFacing.WEST.ordinal()] = 2;
++            } catch (NoSuchFieldError var5) {
++                ;
++            }
+ 
+-                try
+-                {
+-                    FACING_LOOKUP[EnumFacing.SOUTH.ordinal()] = 3;
+-                }
+-                catch (NoSuchFieldError var4)
+-                {
+-                    ;
+-                }
++            try {
++                FACING_LOOKUP[EnumFacing.SOUTH.ordinal()] = 3;
++            } catch (NoSuchFieldError var4) {
++                ;
++            }
+ 
+-                try
+-                {
+-                    FACING_LOOKUP[EnumFacing.NORTH.ordinal()] = 4;
+-                }
+-                catch (NoSuchFieldError var3)
+-                {
+-                    ;
+-                }
++            try {
++                FACING_LOOKUP[EnumFacing.NORTH.ordinal()] = 4;
++            } catch (NoSuchFieldError var3) {
++                ;
++            }
+ 
+-                try
+-                {
+-                    FACING_LOOKUP[EnumFacing.DOWN.ordinal()] = 5;
+-                }
+-                catch (NoSuchFieldError var2)
+-                {
+-                    ;
+-                }
++            try {
++                FACING_LOOKUP[EnumFacing.DOWN.ordinal()] = 5;
++            } catch (NoSuchFieldError var2) {
++                ;
++            }
+ 
+-                try
+-                {
+-                    FACING_LOOKUP[EnumFacing.UP.ordinal()] = 6;
+-                }
+-                catch (NoSuchFieldError var1)
+-                {
+-                    ;
+-                }
++            try {
++                FACING_LOOKUP[EnumFacing.UP.ordinal()] = 6;
++            } catch (NoSuchFieldError var1) {
++                ;
+             }
+         }
+-}
++    }
++}

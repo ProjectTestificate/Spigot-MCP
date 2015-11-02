@@ -1,0 +1,13 @@
+---a/net/minecraft/network/INetHandler.java
++++b/net/minecraft/network/INetHandler.java
+@@ -2,8 +2,8 @@
+ 
+ import net.minecraft.util.IChatComponent;
+ 
+-public interface INetHandler
+-{
++public interface INetHandler {
++
+     void onDisconnect(IChatComponent reason);
+-}
++}

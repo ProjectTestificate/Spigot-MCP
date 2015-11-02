@@ -1,0 +1,51 @@
+---a/net/minecraft/entity/EnumCreatureType.java
++++b/net/minecraft/entity/EnumCreatureType.java
+@@ -6,8 +6,7 @@
+ import net.minecraft.entity.passive.EntityAnimal;
+ import net.minecraft.entity.passive.EntityWaterMob;
+ 
+-public enum EnumCreatureType
+-{
++public enum EnumCreatureType {
+     MONSTER(IMob.class, 70, Material.air, false, false),
+     CREATURE(EntityAnimal.class, 10, Material.air, true, true),
+     AMBIENT(EntityAmbientCreature.class, 15, Material.air, true, false),
+@@ -20,8 +20,7 @@
+ 
+     private static final String __OBFID = "CL_00001551";
+ 
+-    private EnumCreatureType(Class p_i1596_3_, int p_i1596_4_, Material p_i1596_5_, boolean p_i1596_6_, boolean p_i1596_7_)
+-    {
++    private EnumCreatureType(Class p_i1596_3_, int p_i1596_4_, Material p_i1596_5_, boolean p_i1596_6_, boolean p_i1596_7_) {
+         this.creatureClass = p_i1596_3_;
+         this.maxNumberOfCreature = p_i1596_4_;
+         this.creatureMaterial = p_i1596_5_;
+@@ -29,24 +29,19 @@
+         this.isAnimal = p_i1596_7_;
+     }
+ 
+-    public Class getCreatureClass()
+-    {
++    public Class getCreatureClass() {
+         return this.creatureClass;
+     }
+ 
+-    public int getMaxNumberOfCreature()
+-    {
++    public int getMaxNumberOfCreature() {
+         return this.maxNumberOfCreature;
+     }
+ 
+-    public boolean getPeacefulCreature()
+-    {
++    public boolean getPeacefulCreature() {
+         return this.isPeacefulCreature;
+     }
+ 
+-    public boolean getAnimal()
+-    {
++    public boolean getAnimal() {
+         return this.isAnimal;
+     }
+-}
++}

@@ -1,0 +1,16 @@
+---a/net/minecraft/stats/IStatType.java
++++b/net/minecraft/stats/IStatType.java
+@@ -1,7 +1,3 @@
+ package net.minecraft.stats;
+ 
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public interface IStatType
+-{
+-    @SideOnly(Side.CLIENT)
+-    String format(int p_75843_1_);
+-}
++public interface IStatType {
++
++}

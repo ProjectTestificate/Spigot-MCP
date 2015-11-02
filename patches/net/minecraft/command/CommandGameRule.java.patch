@@ -1,0 +1,139 @@
+---a/net/minecraft/command/CommandGameRule.java
++++b/net/minecraft/command/CommandGameRule.java
+@@ -2,6 +2,7 @@
+ 
+ import java.util.Iterator;
+ import java.util.List;
++
+ import net.minecraft.entity.player.EntityPlayerMP;
+ import net.minecraft.network.play.server.S19PacketEntityStatus;
+ import net.minecraft.server.MinecraftServer;
+@@ -9,39 +9,35 @@
+ import net.minecraft.util.ChatComponentText;
+ import net.minecraft.world.GameRules;
+ 
+-public class CommandGameRule extends CommandBase
+-{
++public class CommandGameRule extends CommandBase {
++
+     private static final String __OBFID = "CL_00000475";
+ 
+-    public String getName()
+-    {
++    public String getName() {
+         return "gamerule";
+     }
+ 
+-    public int getRequiredPermissionLevel()
+-    {
++    public int getRequiredPermissionLevel() {
+         return 2;
+     }
+ 
+-    public String getCommandUsage(ICommandSender sender)
+-    {
++    public String getCommandUsage(ICommandSender sender) {
+         return "commands.gamerule.usage";
+     }
+ 
+-    public void execute(ICommandSender sender, String[] args) throws CommandException
++    public void execute(ICommandSender sender, String[] args) throws CommandException // CraftBukkit - added throws // SpigotMCP NOTE -- Added by mcp
+     {
+-        GameRules gamerules = this.getGameRules();
++        GameRules gamerules = sender.getEntityWorld().getGameRules(); // Use current world
+         String s = args.length > 0 ? args[0] : "";
+         String s1 = args.length > 1 ? func_180529_a(args, 1) : "";
+ 
+-        switch (args.length)
+-        {
++        switch (args.length) {
+             case 0:
+                 sender.addChatMessage(new ChatComponentText(joinNiceString(gamerules.getRules())));
+                 break;
+             case 1:
+-                if (!gamerules.hasRule(s))
+-                {
+-                    throw new CommandException("commands.gamerule.norule", new Object[] {s});
++                if (!gamerules.hasRule(s)) {
++                    throw new CommandException("commands.gamerule.norule", new Object[]{s});
+                 }
+ 
+                 String s2 = gamerules.getGameRuleStringValue(s);
+@@ -50,9 +50,8 @@
+                 sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, gamerules.getInt(s));
+                 break;
+             default:
+-                if (gamerules.areSameType(s, GameRules.ValueType.BOOLEAN_VALUE) && !"true".equals(s1) && !"false".equals(s1))
+-                {
+-                    throw new CommandException("commands.generic.boolean.invalid", new Object[] {s1});
++                if (gamerules.areSameType(s, GameRules.ValueType.BOOLEAN_VALUE) && !"true".equals(s1) && !"false".equals(s1)) {
++                    throw new CommandException("commands.generic.boolean.invalid", new Object[]{s1});
+                 }
+ 
+                 gamerules.setOrCreateGameRule(s, s1);
+@@ -61,37 +61,27 @@
+         }
+     }
+ 
+-    public static void func_175773_a(GameRules p_175773_0_, String p_175773_1_)
+-    {
+-        if ("reducedDebugInfo".equals(p_175773_1_))
+-        {
++    public static void func_175773_a(GameRules p_175773_0_, String p_175773_1_) {
++        if ("reducedDebugInfo".equals(p_175773_1_)) {
+             int i = p_175773_0_.getGameRuleBooleanValue(p_175773_1_) ? 22 : 23;
+             Iterator iterator = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
+ 
+-            while (iterator.hasNext())
+-            {
+-                EntityPlayerMP entityplayermp = (EntityPlayerMP)iterator.next();
+-                entityplayermp.playerNetServerHandler.sendPacket(new S19PacketEntityStatus(entityplayermp, (byte)i));
++            while (iterator.hasNext()) {
++                EntityPlayerMP entityplayermp = (EntityPlayerMP) iterator.next();
++                entityplayermp.playerNetServerHandler.sendPacket(new S19PacketEntityStatus(entityplayermp, (byte) i));
+             }
+         }
+     }
+ 
+-    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
+-    {
+-        if (args.length == 1)
+-        {
++    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
++        if (args.length == 1) {
+             return getListOfStringsMatchingLastWord(args, this.getGameRules().getRules());
+-        }
+-        else
+-        {
+-            if (args.length == 2)
+-            {
++        } else {
++            if (args.length == 2) {
+                 GameRules gamerules = this.getGameRules();
+ 
+-                if (gamerules.areSameType(args[0], GameRules.ValueType.BOOLEAN_VALUE))
+-                {
+-                    return getListOfStringsMatchingLastWord(args, new String[] {"true", "false"});
++                if (gamerules.areSameType(args[0], GameRules.ValueType.BOOLEAN_VALUE)) {
++                    return getListOfStringsMatchingLastWord(args, new String[]{"true", "false"});
+                 }
+             }
+ 
+@@ -98,9 +98,7 @@
+         }
+     }
+ 
+-    private GameRules getGameRules()
+-    {
++    private GameRules getGameRules() {
+         return MinecraftServer.getServer().worldServerForDimension(0).getGameRules();
+     }
+-}
++
++    // CraftBukkit start - fix decompile error
++    @Override
++    public int compareTo(Object o) {
++        return compareTo((ICommand) o);
++    }
++    // CraftBukkit end
++}

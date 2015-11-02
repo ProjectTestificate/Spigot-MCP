@@ -1,0 +1,232 @@
+---a/net/minecraft/network/play/server/S44PacketWorldBorder.java
++++b/net/minecraft/network/play/server/S44PacketWorldBorder.java
+@@ -1,14 +1,14 @@
+ package net.minecraft.network.play.server;
+ 
+ import java.io.IOException;
++
+ import net.minecraft.network.INetHandler;
+ import net.minecraft.network.Packet;
+ import net.minecraft.network.PacketBuffer;
+ import net.minecraft.network.play.INetHandlerPlayClient;
+ import net.minecraft.world.border.WorldBorder;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public class S44PacketWorldBorder implements Packet
+-{
++
++public class S44PacketWorldBorder implements Packet {
++
+     private S44PacketWorldBorder.Action field_179795_a;
+     private int field_179793_b;
+     private double field_179794_c;
+@@ -22,9 +22,11 @@
+     private int field_179797_i;
+     private static final String __OBFID = "CL_00002292";
+ 
+-    public S44PacketWorldBorder() {}
++    public S44PacketWorldBorder() {
++    }
+ 
+-    public S44PacketWorldBorder(WorldBorder p_i45962_1_, S44PacketWorldBorder.Action p_i45962_2_)
+-    {
++    public S44PacketWorldBorder(WorldBorder p_i45962_1_, S44PacketWorldBorder.Action p_i45962_2_) {
+         this.field_179795_a = p_i45962_2_;
+         this.field_179794_c = p_i45962_1_.getCenterX();
+         this.field_179791_d = p_i45962_1_.getCenterZ();
+@@ -37,13 +37,11 @@
+         this.field_179796_h = p_i45962_1_.getWarningTime();
+     }
+ 
+-    public void readPacketData(PacketBuffer buf) throws IOException
+-    {
+-        this.field_179795_a = (S44PacketWorldBorder.Action)buf.readEnumValue(S44PacketWorldBorder.Action.class);
++    public void readPacketData(PacketBuffer buf) throws IOException {
++        this.field_179795_a = (S44PacketWorldBorder.Action) buf.readEnumValue(S44PacketWorldBorder.Action.class);
+ 
+-        switch (S44PacketWorldBorder.SwitchAction.field_179947_a[this.field_179795_a.ordinal()])
+-        {
++        switch (S44PacketWorldBorder.SwitchAction.field_179947_a[this.field_179795_a.ordinal()]) {
+             case 1:
+                 this.field_179792_e = buf.readDouble();
+                 break;
+@@ -73,12 +73,10 @@
+         }
+     }
+ 
+-    public void writePacketData(PacketBuffer buf) throws IOException
+-    {
++    public void writePacketData(PacketBuffer buf) throws IOException {
+         buf.writeEnumValue(this.field_179795_a);
+ 
+-        switch (S44PacketWorldBorder.SwitchAction.field_179947_a[this.field_179795_a.ordinal()])
+-        {
++        switch (S44PacketWorldBorder.SwitchAction.field_179947_a[this.field_179795_a.ordinal()]) {
+             case 1:
+                 buf.writeDouble(this.field_179792_e);
+                 break;
+@@ -109,51 +109,15 @@
+         }
+     }
+ 
+-    public void func_179787_a(INetHandlerPlayClient p_179787_1_)
+-    {
++    public void func_179787_a(INetHandlerPlayClient p_179787_1_) {
+         p_179787_1_.handleWorldBorder(this);
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public void func_179788_a(WorldBorder p_179788_1_)
+-    {
+-        switch (S44PacketWorldBorder.SwitchAction.field_179947_a[this.field_179795_a.ordinal()])
+-        {
+-            case 1:
+-                p_179788_1_.setTransition(this.field_179792_e);
+-                break;
+-            case 2:
+-                p_179788_1_.setTransition(this.field_179789_f, this.field_179792_e, this.field_179790_g);
+-                break;
+-            case 3:
+-                p_179788_1_.setCenter(this.field_179794_c, this.field_179791_d);
+-                break;
+-            case 4:
+-                p_179788_1_.setWarningDistance(this.field_179797_i);
+-                break;
+-            case 5:
+-                p_179788_1_.setWarningTime(this.field_179796_h);
+-                break;
+-            case 6:
+-                p_179788_1_.setCenter(this.field_179794_c, this.field_179791_d);
+-
+-                if (this.field_179790_g > 0L)
+-                {
+-                    p_179788_1_.setTransition(this.field_179789_f, this.field_179792_e, this.field_179790_g);
+-                }
+-                else
+-                {
+-                    p_179788_1_.setTransition(this.field_179792_e);
+-                }
+-
+-                p_179788_1_.setSize(this.field_179793_b);
+-                p_179788_1_.setWarningDistance(this.field_179797_i);
+-                p_179788_1_.setWarningTime(this.field_179796_h);
+-        }
++    public void processPacket(INetHandler handler) {
++        this.func_179787_a((INetHandlerPlayClient) handler);
+     }
+ 
+-    public void processPacket(INetHandler handler)
+-    {
+-        this.func_179787_a((INetHandlerPlayClient)handler);
+-    }
+-
+-    public static enum Action
+-    {
++    public static enum Action {
+         SET_SIZE,
+         LERP_SIZE,
+         SET_CENTER,
+@@ -169,69 +169,46 @@
+         private static final String __OBFID = "CL_00002290";
+     }
+ 
+-    static final class SwitchAction
+-        {
+-            static final int[] field_179947_a = new int[S44PacketWorldBorder.Action.values().length];
+-            private static final String __OBFID = "CL_00002291";
++    static final class SwitchAction {
+ 
+-            static
+-            {
+-                try
+-                {
+-                    field_179947_a[S44PacketWorldBorder.Action.SET_SIZE.ordinal()] = 1;
+-                }
+-                catch (NoSuchFieldError var6)
+-                {
+-                    ;
+-                }
++        static final int[] field_179947_a = new int[S44PacketWorldBorder.Action.values().length];
++        private static final String __OBFID = "CL_00002291";
+ 
+-                try
+-                {
+-                    field_179947_a[S44PacketWorldBorder.Action.LERP_SIZE.ordinal()] = 2;
+-                }
+-                catch (NoSuchFieldError var5)
+-                {
+-                    ;
+-                }
++        static {
++            try {
++                field_179947_a[S44PacketWorldBorder.Action.SET_SIZE.ordinal()] = 1;
++            } catch (NoSuchFieldError var6) {
++                ;
++            }
+ 
+-                try
+-                {
+-                    field_179947_a[S44PacketWorldBorder.Action.SET_CENTER.ordinal()] = 3;
+-                }
+-                catch (NoSuchFieldError var4)
+-                {
+-                    ;
+-                }
++            try {
++                field_179947_a[S44PacketWorldBorder.Action.LERP_SIZE.ordinal()] = 2;
++            } catch (NoSuchFieldError var5) {
++                ;
++            }
+ 
+-                try
+-                {
+-                    field_179947_a[S44PacketWorldBorder.Action.SET_WARNING_BLOCKS.ordinal()] = 4;
+-                }
+-                catch (NoSuchFieldError var3)
+-                {
+-                    ;
+-                }
++            try {
++                field_179947_a[S44PacketWorldBorder.Action.SET_CENTER.ordinal()] = 3;
++            } catch (NoSuchFieldError var4) {
++                ;
++            }
+ 
+-                try
+-                {
+-                    field_179947_a[S44PacketWorldBorder.Action.SET_WARNING_TIME.ordinal()] = 5;
+-                }
+-                catch (NoSuchFieldError var2)
+-                {
+-                    ;
+-                }
++            try {
++                field_179947_a[S44PacketWorldBorder.Action.SET_WARNING_BLOCKS.ordinal()] = 4;
++            } catch (NoSuchFieldError var3) {
++                ;
++            }
+ 
+-                try
+-                {
+-                    field_179947_a[S44PacketWorldBorder.Action.INITIALIZE.ordinal()] = 6;
+-                }
+-                catch (NoSuchFieldError var1)
+-                {
+-                    ;
+-                }
++            try {
++                field_179947_a[S44PacketWorldBorder.Action.SET_WARNING_TIME.ordinal()] = 5;
++            } catch (NoSuchFieldError var2) {
++                ;
+             }
++
++            try {
++                field_179947_a[S44PacketWorldBorder.Action.INITIALIZE.ordinal()] = 6;
++            } catch (NoSuchFieldError var1) {
++                ;
++            }
+         }
+-}
++    }
++}

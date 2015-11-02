@@ -1,0 +1,68 @@
+---a/net/minecraft/block/material/MapColor.java
++++b/net/minecraft/block/material/MapColor.java
+@@ -1,10 +1,6 @@
+ package net.minecraft.block.material;
+ 
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public class MapColor
+-{
++public class MapColor {
++
+     public static final MapColor[] mapColorArray = new MapColor[64];
+     public static final MapColor airColor = new MapColor(0, 0);
+     public static final MapColor grassColor = new MapColor(1, 8368696);
+@@ -46,20 +46,14 @@
+     public final int colorIndex;
+     private static final String __OBFID = "CL_00000544";
+ 
+-    private MapColor(int index, int color)
+-    {
+-        if (index >= 0 && index <= 63)
+-        {
++    private MapColor(int index, int color) {
++        if (index >= 0 && index <= 63) {
+             this.colorIndex = index;
+             this.colorValue = color;
+             mapColorArray[index] = this;
+-        }
+-        else
+-        {
++        } else {
+             throw new IndexOutOfBoundsException("Map colour ID must be between 0 and 63 (inclusive)");
+         }
+     }
+-
+-    @SideOnly(Side.CLIENT)
+-    public int func_151643_b(int p_151643_1_)
+-    {
+-        short short1 = 220;
+-
+-        if (p_151643_1_ == 3)
+-        {
+-            short1 = 135;
+-        }
+-
+-        if (p_151643_1_ == 2)
+-        {
+-            short1 = 255;
+-        }
+-
+-        if (p_151643_1_ == 1)
+-        {
+-            short1 = 220;
+-        }
+-
+-        if (p_151643_1_ == 0)
+-        {
+-            short1 = 180;
+-        }
+-
+-        int j = (this.colorValue >> 16 & 255) * short1 / 255;
+-        int k = (this.colorValue >> 8 & 255) * short1 / 255;
+-        int l = (this.colorValue & 255) * short1 / 255;
+-        return -16777216 | j << 16 | k << 8 | l;
+-    }
+-}
++}

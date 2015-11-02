@@ -1,0 +1,87 @@
+---a/net/minecraft/item/ItemFishingRod.java
++++b/net/minecraft/item/ItemFishingRod.java
+@@ -5,46 +5,37 @@
+ import net.minecraft.entity.projectile.EntityFishHook;
+ import net.minecraft.stats.StatList;
+ import net.minecraft.world.World;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public class ItemFishingRod extends Item
+-{
++import org.bukkit.event.player.PlayerFishEvent;
++
++public class ItemFishingRod extends Item {
++
+     private static final String __OBFID = "CL_00000034";
+ 
+-    public ItemFishingRod()
+-    {
++    public ItemFishingRod() {
+         this.setMaxDamage(64);
+         this.setMaxStackSize(1);
+         this.setCreativeTab(CreativeTabs.tabTools);
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public boolean isFull3D()
+-    {
+-        return true;
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public boolean shouldRotateAroundWhenRendering()
+-    {
+-        return true;
+-    }
+-
+-    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
+-    {
+-        if (playerIn.fishEntity != null)
+-        {
++    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
++        if (playerIn.fishEntity != null) {
+             int i = playerIn.fishEntity.handleHookRetraction();
+             itemStackIn.damageItem(i, playerIn);
+             playerIn.swingItem();
+-        }
+-        else
+-        {
++        } else {
++            // CraftBukkit start
++            EntityFishHook hook = new EntityFishHook(worldIn, playerIn);
++            PlayerFishEvent playerFishEvent = new PlayerFishEvent((org.bukkit.entity.Player) playerIn.getBukkitEntity(), null, (org.bukkit.entity.Fish) hook.getBukkitEntity(), PlayerFishEvent.State.FISHING);
++            worldIn.getServer().getPluginManager().callEvent(playerFishEvent);
++
++            if (playerFishEvent.isCancelled()) {
++                playerIn.fishEntity = null;
++                return itemStackIn;
++            }
++            // CraftBukkit end
+             worldIn.playSoundAtEntity(playerIn, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+ 
+-            if (!worldIn.isRemote)
+-            {
+-                worldIn.spawnEntityInWorld(new EntityFishHook(worldIn, playerIn));
++            if (!worldIn.isRemote) {
++                worldIn.spawnEntityInWorld(hook); // CraftBukkit - moved creation up
+             }
+ 
+             playerIn.swingItem();
+@@ -55,14 +55,11 @@
+         return itemStackIn;
+     }
+ 
+-    public boolean isItemTool(ItemStack stack)
+-    {
++    public boolean isItemTool(ItemStack stack) {
+         return super.isItemTool(stack);
+     }
+ 
+-    public int getItemEnchantability()
+-    {
++    public int getItemEnchantability() {
+         return 1;
+     }
+-}
++}

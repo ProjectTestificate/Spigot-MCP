@@ -1,0 +1,604 @@
+---a/net/minecraft/item/crafting/RecipesBanners.java
++++b/net/minecraft/item/crafting/RecipesBanners.java
+@@ -10,390 +10,316 @@
+ import net.minecraft.tileentity.TileEntityBanner;
+ import net.minecraft.world.World;
+ 
+-public class RecipesBanners
+-{
++public class RecipesBanners {
++
+     private static final String __OBFID = "CL_00002160";
+ 
+-    void func_179534_a(CraftingManager p_179534_1_)
+-    {
++    void func_179534_a(CraftingManager p_179534_1_) {
+         EnumDyeColor[] aenumdyecolor = EnumDyeColor.values();
+         int i = aenumdyecolor.length;
+ 
+-        for (int j = 0; j < i; ++j)
+-        {
++        for (int j = 0; j < i; ++j) {
+             EnumDyeColor enumdyecolor = aenumdyecolor[j];
+-            p_179534_1_.addRecipe(new ItemStack(Items.banner, 1, enumdyecolor.getDyeDamage()), new Object[] {"###", "###", " | ", '#', new ItemStack(Blocks.wool, 1, enumdyecolor.getMetadata()), '|', Items.stick});
++            p_179534_1_.addRecipe(new ItemStack(Items.banner, 1, enumdyecolor.getDyeDamage()), new Object[]{"###", "###", " | ", '#', new ItemStack(Blocks.wool, 1, enumdyecolor.getMetadata()), '|', Items.stick});
+         }
+ 
+         p_179534_1_.addRecipe(new RecipesBanners.RecipeDuplicatePattern(null));
+         p_179534_1_.addRecipe(new RecipesBanners.RecipeAddPattern(null));
+     }
+ 
+-    static class RecipeAddPattern implements IRecipe
+-        {
+-            private static final String __OBFID = "CL_00002158";
++    public static class RecipeAddPattern extends ShapelessRecipes implements IRecipe { // CraftBukkit - added extends
+ 
+-            private RecipeAddPattern() {}
++        private static final String __OBFID = "CL_00002158";
+ 
+-            public boolean matches(InventoryCrafting p_77569_1_, World worldIn)
+-            {
+-                boolean flag = false;
++        // CraftBukkit start - Delegate to new parent class with bogus info
++        private RecipeAddPattern() {
++            super(new ItemStack(Items.banner, 0, 0), java.util.Arrays.asList(new ItemStack(Items.dye, 0, 5)));
++        }
++        // CraftBukkit end
+ 
+-                for (int i = 0; i < p_77569_1_.getSizeInventory(); ++i)
+-                {
+-                    ItemStack itemstack = p_77569_1_.getStackInSlot(i);
++        public boolean matches(InventoryCrafting p_77569_1_, World worldIn) {
++            boolean flag = false;
+ 
+-                    if (itemstack != null && itemstack.getItem() == Items.banner)
+-                    {
+-                        if (flag)
+-                        {
+-                            return false;
+-                        }
++            for (int i = 0; i < p_77569_1_.getSizeInventory(); ++i) {
++                ItemStack itemstack = p_77569_1_.getStackInSlot(i);
+ 
+-                        if (TileEntityBanner.getPatterns(itemstack) >= 6)
+-                        {
+-                            return false;
+-                        }
++                if (itemstack != null && itemstack.getItem() == Items.banner) {
++                    if (flag) {
++                        return false;
++                    }
+ 
+-                        flag = true;
++                    if (TileEntityBanner.getPatterns(itemstack) >= 6) {
++                        return false;
+                     }
+-                }
+ 
+-                if (!flag)
+-                {
+-                    return false;
++                    flag = true;
+                 }
+-                else
+-                {
+-                    return this.func_179533_c(p_77569_1_) != null;
+-                }
+             }
+ 
+-            public ItemStack getCraftingResult(InventoryCrafting p_77572_1_)
+-            {
+-                ItemStack itemstack = null;
++            if (!flag) {
++                return false;
++            } else {
++                return this.func_179533_c(p_77569_1_) != null;
++            }
++        }
+ 
+-                for (int i = 0; i < p_77572_1_.getSizeInventory(); ++i)
+-                {
+-                    ItemStack itemstack1 = p_77572_1_.getStackInSlot(i);
++        public ItemStack getCraftingResult(InventoryCrafting p_77572_1_) {
++            ItemStack itemstack = null;
+ 
+-                    if (itemstack1 != null && itemstack1.getItem() == Items.banner)
+-                    {
+-                        itemstack = itemstack1.copy();
+-                        itemstack.stackSize = 1;
+-                        break;
+-                    }
++            for (int i = 0; i < p_77572_1_.getSizeInventory(); ++i) {
++                ItemStack itemstack1 = p_77572_1_.getStackInSlot(i);
++
++                if (itemstack1 != null && itemstack1.getItem() == Items.banner) {
++                    itemstack = itemstack1.copy();
++                    itemstack.stackSize = 1;
++                    break;
+                 }
++            }
+ 
+-                TileEntityBanner.EnumBannerPattern enumbannerpattern = this.func_179533_c(p_77572_1_);
++            TileEntityBanner.EnumBannerPattern enumbannerpattern = this.func_179533_c(p_77572_1_);
+ 
+-                if (enumbannerpattern != null)
+-                {
+-                    int k = 0;
+-                    ItemStack itemstack2;
++            if (enumbannerpattern != null) {
++                int k = 0;
++                ItemStack itemstack2;
+ 
+-                    for (int j = 0; j < p_77572_1_.getSizeInventory(); ++j)
+-                    {
+-                        itemstack2 = p_77572_1_.getStackInSlot(j);
++                for (int j = 0; j < p_77572_1_.getSizeInventory(); ++j) {
++                    itemstack2 = p_77572_1_.getStackInSlot(j);
+ 
+-                        if (itemstack2 != null && itemstack2.getItem() == Items.dye)
+-                        {
+-                            k = itemstack2.getMetadata();
+-                            break;
+-                        }
++                    if (itemstack2 != null && itemstack2.getItem() == Items.dye) {
++                        k = itemstack2.getMetadata();
++                        break;
+                     }
++                }
+ 
+-                    NBTTagCompound nbttagcompound1 = itemstack.getSubCompound("BlockEntityTag", true);
+-                    itemstack2 = null;
+-                    NBTTagList nbttaglist;
++                NBTTagCompound nbttagcompound1 = itemstack.getSubCompound("BlockEntityTag", true);
++                itemstack2 = null;
++                NBTTagList nbttaglist;
+ 
+-                    if (nbttagcompound1.hasKey("Patterns", 9))
+-                    {
+-                        nbttaglist = nbttagcompound1.getTagList("Patterns", 10);
+-                    }
+-                    else
+-                    {
+-                        nbttaglist = new NBTTagList();
+-                        nbttagcompound1.setTag("Patterns", nbttaglist);
+-                    }
+-
+-                    NBTTagCompound nbttagcompound = new NBTTagCompound();
+-                    nbttagcompound.setString("Pattern", enumbannerpattern.getPatternID());
+-                    nbttagcompound.setInteger("Color", k);
+-                    nbttaglist.appendTag(nbttagcompound);
++                if (nbttagcompound1.hasKey("Patterns", 9)) {
++                    nbttaglist = nbttagcompound1.getTagList("Patterns", 10);
++                } else {
++                    nbttaglist = new NBTTagList();
++                    nbttagcompound1.setTag("Patterns", nbttaglist);
+                 }
+ 
+-                return itemstack;
++                NBTTagCompound nbttagcompound = new NBTTagCompound();
++                nbttagcompound.setString("Pattern", enumbannerpattern.getPatternID());
++                nbttagcompound.setInteger("Color", k);
++                nbttaglist.appendTag(nbttagcompound);
+             }
+ 
+-            public int getRecipeSize()
+-            {
+-                return 10;
+-            }
++            return itemstack;
++        }
+ 
+-            public ItemStack getRecipeOutput()
+-            {
+-                return null;
+-            }
++        public int getRecipeSize() {
++            return 10;
++        }
+ 
+-            public ItemStack[] getRemainingItems(InventoryCrafting p_179532_1_)
+-            {
+-                ItemStack[] aitemstack = new ItemStack[p_179532_1_.getSizeInventory()];
++        public ItemStack getRecipeOutput() {
++            return null;
++        }
+ 
+-                for (int i = 0; i < aitemstack.length; ++i)
+-                {
+-                    ItemStack itemstack = p_179532_1_.getStackInSlot(i);
++        public ItemStack[] getRemainingItems(InventoryCrafting p_179532_1_) {
++            ItemStack[] aitemstack = new ItemStack[p_179532_1_.getSizeInventory()];
+ 
+-                    if (itemstack != null && itemstack.getItem().hasContainerItem())
+-                    {
+-                        aitemstack[i] = new ItemStack(itemstack.getItem().getContainerItem());
+-                    }
+-                }
++            for (int i = 0; i < aitemstack.length; ++i) {
++                ItemStack itemstack = p_179532_1_.getStackInSlot(i);
+ 
+-                return aitemstack;
++                if (itemstack != null && itemstack.getItem().hasContainerItem()) {
++                    aitemstack[i] = new ItemStack(itemstack.getItem().getContainerItem());
++                }
+             }
+ 
+-            private TileEntityBanner.EnumBannerPattern func_179533_c(InventoryCrafting p_179533_1_)
+-            {
+-                TileEntityBanner.EnumBannerPattern[] aenumbannerpattern = TileEntityBanner.EnumBannerPattern.values();
+-                int i = aenumbannerpattern.length;
++            return aitemstack;
++        }
+ 
+-                for (int j = 0; j < i; ++j)
+-                {
+-                    TileEntityBanner.EnumBannerPattern enumbannerpattern = aenumbannerpattern[j];
++        private TileEntityBanner.EnumBannerPattern func_179533_c(InventoryCrafting p_179533_1_) {
++            TileEntityBanner.EnumBannerPattern[] aenumbannerpattern = TileEntityBanner.EnumBannerPattern.values();
++            int i = aenumbannerpattern.length;
+ 
+-                    if (enumbannerpattern.hasValidCrafting())
+-                    {
+-                        boolean flag = true;
+-                        int i1;
++            for (int j = 0; j < i; ++j) {
++                TileEntityBanner.EnumBannerPattern enumbannerpattern = aenumbannerpattern[j];
+ 
+-                        if (enumbannerpattern.hasCraftingStack())
+-                        {
+-                            boolean flag1 = false;
+-                            boolean flag2 = false;
++                if (enumbannerpattern.hasValidCrafting()) {
++                    boolean flag = true;
++                    int i1;
+ 
+-                            for (i1 = 0; i1 < p_179533_1_.getSizeInventory() && flag; ++i1)
+-                            {
+-                                ItemStack itemstack1 = p_179533_1_.getStackInSlot(i1);
++                    if (enumbannerpattern.hasCraftingStack()) {
++                        boolean flag1 = false;
++                        boolean flag2 = false;
+ 
+-                                if (itemstack1 != null && itemstack1.getItem() != Items.banner)
+-                                {
+-                                    if (itemstack1.getItem() == Items.dye)
+-                                    {
+-                                        if (flag2)
+-                                        {
+-                                            flag = false;
+-                                            break;
+-                                        }
++                        for (i1 = 0; i1 < p_179533_1_.getSizeInventory() && flag; ++i1) {
++                            ItemStack itemstack1 = p_179533_1_.getStackInSlot(i1);
+ 
+-                                        flag2 = true;
++                            if (itemstack1 != null && itemstack1.getItem() != Items.banner) {
++                                if (itemstack1.getItem() == Items.dye) {
++                                    if (flag2) {
++                                        flag = false;
++                                        break;
+                                     }
+-                                    else
+-                                    {
+-                                        if (flag1 || !itemstack1.isItemEqual(enumbannerpattern.getCraftingStack()))
+-                                        {
+-                                            flag = false;
+-                                            break;
+-                                        }
+ 
+-                                        flag1 = true;
++                                    flag2 = true;
++                                } else {
++                                    if (flag1 || !itemstack1.isItemEqual(enumbannerpattern.getCraftingStack())) {
++                                        flag = false;
++                                        break;
+                                     }
++
++                                    flag1 = true;
+                                 }
+                             }
+-
+-                            if (!flag1)
+-                            {
+-                                flag = false;
+-                            }
+                         }
+-                        else if (p_179533_1_.getSizeInventory() != enumbannerpattern.getCraftingLayers().length * enumbannerpattern.getCraftingLayers()[0].length())
+-                        {
++
++                        if (!flag1) {
+                             flag = false;
+                         }
+-                        else
+-                        {
+-                            int k = -1;
++                    } else if (p_179533_1_.getSizeInventory() != enumbannerpattern.getCraftingLayers().length * enumbannerpattern.getCraftingLayers()[0].length()) {
++                        flag = false;
++                    } else {
++                        int k = -1;
+ 
+-                            for (int l = 0; l < p_179533_1_.getSizeInventory() && flag; ++l)
+-                            {
+-                                i1 = l / 3;
+-                                int j1 = l % 3;
+-                                ItemStack itemstack = p_179533_1_.getStackInSlot(l);
++                        for (int l = 0; l < p_179533_1_.getSizeInventory() && flag; ++l) {
++                            i1 = l / 3;
++                            int j1 = l % 3;
++                            ItemStack itemstack = p_179533_1_.getStackInSlot(l);
+ 
+-                                if (itemstack != null && itemstack.getItem() != Items.banner)
+-                                {
+-                                    if (itemstack.getItem() != Items.dye)
+-                                    {
+-                                        flag = false;
+-                                        break;
+-                                    }
++                            if (itemstack != null && itemstack.getItem() != Items.banner) {
++                                if (itemstack.getItem() != Items.dye) {
++                                    flag = false;
++                                    break;
++                                }
+ 
+-                                    if (k != -1 && k != itemstack.getMetadata())
+-                                    {
+-                                        flag = false;
+-                                        break;
+-                                    }
+-
+-                                    if (enumbannerpattern.getCraftingLayers()[i1].charAt(j1) == 32)
+-                                    {
+-                                        flag = false;
+-                                        break;
+-                                    }
+-
+-                                    k = itemstack.getMetadata();
++                                if (k != -1 && k != itemstack.getMetadata()) {
++                                    flag = false;
++                                    break;
+                                 }
+-                                else if (enumbannerpattern.getCraftingLayers()[i1].charAt(j1) != 32)
+-                                {
++
++                                if (enumbannerpattern.getCraftingLayers()[i1].charAt(j1) == 32) {
+                                     flag = false;
+                                     break;
+                                 }
++
++                                k = itemstack.getMetadata();
++                            } else if (enumbannerpattern.getCraftingLayers()[i1].charAt(j1) != 32) {
++                                flag = false;
++                                break;
+                             }
+                         }
++                    }
+ 
+-                        if (flag)
+-                        {
+-                            return enumbannerpattern;
+-                        }
++                    if (flag) {
++                        return enumbannerpattern;
+                     }
+                 }
+-
+-                return null;
+             }
+ 
+-            RecipeAddPattern(Object p_i45780_1_)
+-            {
+-                this();
+-            }
++            return null;
+         }
+ 
+-    static class RecipeDuplicatePattern implements IRecipe
+-        {
+-            private static final String __OBFID = "CL_00002157";
++        RecipeAddPattern(Object p_i45780_1_) {
++            this();
++        }
++    }
+ 
+-            private RecipeDuplicatePattern() {}
++    public static class RecipeDuplicatePattern extends ShapelessRecipes implements IRecipe { // CraftBukkit - added extends
+ 
+-            public boolean matches(InventoryCrafting p_77569_1_, World worldIn)
+-            {
+-                ItemStack itemstack = null;
+-                ItemStack itemstack1 = null;
++        private static final String __OBFID = "CL_00002157";
+ 
+-                for (int i = 0; i < p_77569_1_.getSizeInventory(); ++i)
+-                {
+-                    ItemStack itemstack2 = p_77569_1_.getStackInSlot(i);
++        // CraftBukkit start - Delegate to new parent class with bogus info
++        private RecipeDuplicatePattern() {
++            super(new ItemStack(Items.banner, 0, 0), java.util.Arrays.asList(new ItemStack(Items.banner)));
++        }
++        // CraftBukkit end
+ 
+-                    if (itemstack2 != null)
+-                    {
+-                        if (itemstack2.getItem() != Items.banner)
+-                        {
+-                            return false;
+-                        }
++        public boolean matches(InventoryCrafting p_77569_1_, World worldIn) {
++            ItemStack itemstack = null;
++            ItemStack itemstack1 = null;
+ 
+-                        if (itemstack != null && itemstack1 != null)
+-                        {
+-                            return false;
+-                        }
++            for (int i = 0; i < p_77569_1_.getSizeInventory(); ++i) {
++                ItemStack itemstack2 = p_77569_1_.getStackInSlot(i);
+ 
+-                        int j = TileEntityBanner.getBaseColor(itemstack2);
+-                        boolean flag = TileEntityBanner.getPatterns(itemstack2) > 0;
++                if (itemstack2 != null) {
++                    if (itemstack2.getItem() != Items.banner) {
++                        return false;
++                    }
+ 
+-                        if (itemstack != null)
+-                        {
+-                            if (flag)
+-                            {
+-                                return false;
+-                            }
++                    if (itemstack != null && itemstack1 != null) {
++                        return false;
++                    }
+ 
+-                            if (j != TileEntityBanner.getBaseColor(itemstack))
+-                            {
+-                                return false;
+-                            }
++                    int j = TileEntityBanner.getBaseColor(itemstack2);
++                    boolean flag = TileEntityBanner.getPatterns(itemstack2) > 0;
+ 
+-                            itemstack1 = itemstack2;
++                    if (itemstack != null) {
++                        if (flag) {
++                            return false;
+                         }
+-                        else if (itemstack1 != null)
+-                        {
+-                            if (!flag)
+-                            {
+-                                return false;
+-                            }
+ 
+-                            if (j != TileEntityBanner.getBaseColor(itemstack1))
+-                            {
+-                                return false;
+-                            }
++                        if (j != TileEntityBanner.getBaseColor(itemstack)) {
++                            return false;
++                        }
+ 
+-                            itemstack = itemstack2;
++                        itemstack1 = itemstack2;
++                    } else if (itemstack1 != null) {
++                        if (!flag) {
++                            return false;
+                         }
+-                        else if (flag)
+-                        {
+-                            itemstack = itemstack2;
++
++                        if (j != TileEntityBanner.getBaseColor(itemstack1)) {
++                            return false;
+                         }
+-                        else
+-                        {
+-                            itemstack1 = itemstack2;
+-                        }
++
++                        itemstack = itemstack2;
++                    } else if (flag) {
++                        itemstack = itemstack2;
++                    } else {
++                        itemstack1 = itemstack2;
+                     }
+                 }
+-
+-                return itemstack != null && itemstack1 != null;
+             }
+ 
+-            public ItemStack getCraftingResult(InventoryCrafting p_77572_1_)
+-            {
+-                for (int i = 0; i < p_77572_1_.getSizeInventory(); ++i)
+-                {
+-                    ItemStack itemstack = p_77572_1_.getStackInSlot(i);
++            return itemstack != null && itemstack1 != null;
++        }
+ 
+-                    if (itemstack != null && TileEntityBanner.getPatterns(itemstack) > 0)
+-                    {
+-                        ItemStack itemstack1 = itemstack.copy();
+-                        itemstack1.stackSize = 1;
+-                        return itemstack1;
+-                    }
+-                }
++        public ItemStack getCraftingResult(InventoryCrafting p_77572_1_) {
++            for (int i = 0; i < p_77572_1_.getSizeInventory(); ++i) {
++                ItemStack itemstack = p_77572_1_.getStackInSlot(i);
+ 
+-                return null;
++                if (itemstack != null && TileEntityBanner.getPatterns(itemstack) > 0) {
++                    ItemStack itemstack1 = itemstack.copy();
++                    itemstack1.stackSize = 1;
++                    return itemstack1;
++                }
+             }
+ 
+-            public int getRecipeSize()
+-            {
+-                return 2;
+-            }
++            return null;
++        }
+ 
+-            public ItemStack getRecipeOutput()
+-            {
+-                return null;
+-            }
++        public int getRecipeSize() {
++            return 2;
++        }
+ 
+-            public ItemStack[] getRemainingItems(InventoryCrafting p_179532_1_)
+-            {
+-                ItemStack[] aitemstack = new ItemStack[p_179532_1_.getSizeInventory()];
++        public ItemStack getRecipeOutput() {
++            return null;
++        }
+ 
+-                for (int i = 0; i < aitemstack.length; ++i)
+-                {
+-                    ItemStack itemstack = p_179532_1_.getStackInSlot(i);
++        public ItemStack[] getRemainingItems(InventoryCrafting p_179532_1_) {
++            ItemStack[] aitemstack = new ItemStack[p_179532_1_.getSizeInventory()];
+ 
+-                    if (itemstack != null)
+-                    {
+-                        if (itemstack.getItem().hasContainerItem())
+-                        {
+-                            aitemstack[i] = new ItemStack(itemstack.getItem().getContainerItem());
+-                        }
+-                        else if (itemstack.hasTagCompound() && TileEntityBanner.getPatterns(itemstack) > 0)
+-                        {
+-                            aitemstack[i] = itemstack.copy();
+-                            aitemstack[i].stackSize = 1;
+-                        }
++            for (int i = 0; i < aitemstack.length; ++i) {
++                ItemStack itemstack = p_179532_1_.getStackInSlot(i);
++
++                if (itemstack != null) {
++                    if (itemstack.getItem().hasContainerItem()) {
++                        aitemstack[i] = new ItemStack(itemstack.getItem().getContainerItem());
++                    } else if (itemstack.hasTagCompound() && TileEntityBanner.getPatterns(itemstack) > 0) {
++                        aitemstack[i] = itemstack.copy();
++                        aitemstack[i].stackSize = 1;
+                     }
+                 }
+-
+-                return aitemstack;
+             }
+ 
+-            RecipeDuplicatePattern(Object p_i45779_1_)
+-            {
+-                this();
+-            }
++            return aitemstack;
+         }
+-}
++
++        RecipeDuplicatePattern(Object p_i45779_1_) {
++            this();
++        }
++    }
++}

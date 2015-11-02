@@ -1,0 +1,28 @@
+---a/net/minecraft/world/IWorldAccess.java
++++b/net/minecraft/world/IWorldAccess.java
+@@ -4,8 +4,8 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.util.BlockPos;
+ 
+-public interface IWorldAccess
+-{
++public interface IWorldAccess {
++
+     void markBlockForUpdate(BlockPos pos);
+ 
+     void notifyLightSet(BlockPos pos);
+@@ -16,7 +16,7 @@
+ 
+     void playSoundToNearExcept(EntityPlayer except, String soundName, double x, double y, double z, float volume, float pitch);
+ 
+-    void spawnParticle(int p_180442_1_, boolean p_180442_2_, double p_180442_3_, double p_180442_5_, double p_180442_7_, double p_180442_9_, double p_180442_11_, double p_180442_13_, int ... p_180442_15_);
++    void spawnParticle(int p_180442_1_, boolean p_180442_2_, double p_180442_3_, double p_180442_5_, double p_180442_7_, double p_180442_9_, double p_180442_11_, double p_180442_13_, int... p_180442_15_);
+ 
+     void onEntityAdded(Entity entityIn);
+ 
+@@ -29,4 +29,4 @@
+     void playAusSFX(EntityPlayer p_180439_1_, int p_180439_2_, BlockPos blockPosIn, int p_180439_4_);
+ 
+     void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress);
+-}
++}

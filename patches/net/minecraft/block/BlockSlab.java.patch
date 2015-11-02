@@ -1,0 +1,204 @@
+---a/net/minecraft/block/BlockSlab.java
++++b/net/minecraft/block/BlockSlab.java
+@@ -2,12 +2,14 @@
+ 
+ import java.util.List;
+ import java.util.Random;
++
+ import net.minecraft.block.material.Material;
+ import net.minecraft.block.properties.IProperty;
+ import net.minecraft.block.properties.PropertyEnum;
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.EntityLivingBase;
+-import net.minecraft.init.Blocks;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.util.AxisAlignedBB;
+ import net.minecraft.util.BlockPos;
+@@ -16,130 +16,77 @@
+ import net.minecraft.util.IStringSerializable;
+ import net.minecraft.world.IBlockAccess;
+ import net.minecraft.world.World;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public abstract class BlockSlab extends Block
+-{
++
++public abstract class BlockSlab extends Block {
++
+     public static final PropertyEnum HALF = PropertyEnum.create("half", BlockSlab.EnumBlockHalf.class);
+     private static final String __OBFID = "CL_00000253";
+ 
+-    public BlockSlab(Material materialIn)
+-    {
++    public BlockSlab(Material materialIn) {
+         super(materialIn);
+ 
+-        if (this.isDouble())
+-        {
++        if (this.isDouble()) {
+             this.fullBlock = true;
+-        }
+-        else
+-        {
++        } else {
+             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+         }
+ 
+         this.setLightOpacity(255);
+     }
+ 
+-    protected boolean canSilkHarvest()
+-    {
++    public boolean canSilkHarvest() { // SpigotMCP -- Make public as bukkit assumes in the same package
+         return false;
+     }
+ 
+-    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
+-    {
+-        if (this.isDouble())
+-        {
++    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) {
++        if (this.isDouble()) {
+             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+-        }
+-        else
+-        {
++        } else {
+             IBlockState iblockstate = worldIn.getBlockState(pos);
+ 
+-            if (iblockstate.getBlock() == this)
+-            {
+-                if (iblockstate.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP)
+-                {
++            if (iblockstate.getBlock() == this) {
++                if (iblockstate.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP) {
+                     this.setBlockBounds(0.0F, 0.5F, 0.0F, 1.0F, 1.0F, 1.0F);
+-                }
+-                else
+-                {
++                } else {
+                     this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+                 }
+             }
+         }
+     }
+ 
+-    public void setBlockBoundsForItemRender()
+-    {
+-        if (this.isDouble())
+-        {
++    public void setBlockBoundsForItemRender() {
++        if (this.isDouble()) {
+             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+-        }
+-        else
+-        {
++        } else {
+             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+         }
+     }
+ 
+-    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
+-    {
++    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity) {
+         this.setBlockBoundsBasedOnState(worldIn, pos);
+         super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
+     }
+ 
+-    public boolean isOpaqueCube()
+-    {
++    public boolean isOpaqueCube() {
+         return this.isDouble();
+     }
+ 
+-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+-    {
++    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+         IBlockState iblockstate = super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(HALF, BlockSlab.EnumBlockHalf.BOTTOM);
+-        return this.isDouble() ? iblockstate : (facing != EnumFacing.DOWN && (facing == EnumFacing.UP || (double)hitY <= 0.5D) ? iblockstate : iblockstate.withProperty(HALF, BlockSlab.EnumBlockHalf.TOP));
++        return this.isDouble() ? iblockstate : (facing != EnumFacing.DOWN && (facing == EnumFacing.UP || (double) hitY <= 0.5D) ? iblockstate : iblockstate.withProperty(HALF, BlockSlab.EnumBlockHalf.TOP));
+     }
+ 
+-    public int quantityDropped(Random random)
+-    {
++    public int quantityDropped(Random random) {
+         return this.isDouble() ? 2 : 1;
+     }
+ 
+-    public boolean isFullCube()
+-    {
++    public boolean isFullCube() {
+         return this.isDouble();
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+-    {
+-        if (this.isDouble())
+-        {
+-            return super.shouldSideBeRendered(worldIn, pos, side);
+-        }
+-        else if (side != EnumFacing.UP && side != EnumFacing.DOWN && !super.shouldSideBeRendered(worldIn, pos, side))
+-        {
+-            return false;
+-        }
+-        else
+-        {
+-            BlockPos blockpos1 = pos.offset(side.getOpposite());
+-            IBlockState iblockstate = worldIn.getBlockState(pos);
+-            IBlockState iblockstate1 = worldIn.getBlockState(blockpos1);
+-            boolean flag = isSlab(iblockstate.getBlock()) && iblockstate.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP;
+-            boolean flag1 = isSlab(iblockstate1.getBlock()) && iblockstate1.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP;
+-            return flag1 ? (side == EnumFacing.DOWN ? true : (side == EnumFacing.UP && super.shouldSideBeRendered(worldIn, pos, side) ? true : !isSlab(iblockstate.getBlock()) || !flag)) : (side == EnumFacing.UP ? true : (side == EnumFacing.DOWN && super.shouldSideBeRendered(worldIn, pos, side) ? true : !isSlab(iblockstate.getBlock()) || flag));
+-        }
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    protected static boolean isSlab(Block blockIn)
+-    {
+-        return blockIn == Blocks.stone_slab || blockIn == Blocks.wooden_slab || blockIn == Blocks.stone_slab2;
+-    }
+-
+     public abstract String getUnlocalizedName(int meta);
+ 
+-    public int getDamageValue(World worldIn, BlockPos pos)
+-    {
++    public int getDamageValue(World worldIn, BlockPos pos) {
+         return super.getDamageValue(worldIn, pos) & 7;
+     }
+ 
+@@ -149,28 +149,23 @@
+ 
+     public abstract Object getVariant(ItemStack stack);
+ 
+-    public static enum EnumBlockHalf implements IStringSerializable
+-    {
++    public static enum EnumBlockHalf implements IStringSerializable {
+         TOP("top"),
+         BOTTOM("bottom");
+         private final String name;
+ 
+         private static final String __OBFID = "CL_00002109";
+ 
+-        private EnumBlockHalf(String name)
+-        {
++        private EnumBlockHalf(String name) {
+             this.name = name;
+         }
+ 
+-        public String toString()
+-        {
++        public String toString() {
+             return this.name;
+         }
+ 
+-        public String getName()
+-        {
++        public String getName() {
+             return this.name;
+         }
+     }
+-}
++}

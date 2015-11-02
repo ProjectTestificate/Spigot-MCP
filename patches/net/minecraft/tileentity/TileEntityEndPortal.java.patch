@@ -1,0 +1,12 @@
+---a/net/minecraft/tileentity/TileEntityEndPortal.java
++++b/net/minecraft/tileentity/TileEntityEndPortal.java
+@@ -1,7 +1,7 @@
+ package net.minecraft.tileentity;
+ 
+-public class TileEntityEndPortal extends TileEntity
+-{
++public class TileEntityEndPortal extends TileEntity {
++
+     private static final String __OBFID = "CL_00000365";
+-}
++}

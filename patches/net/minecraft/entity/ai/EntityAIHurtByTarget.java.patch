@@ -1,0 +1,94 @@
+---a/net/minecraft/entity/ai/EntityAIHurtByTarget.java
++++b/net/minecraft/entity/ai/EntityAIHurtByTarget.java
+@@ -2,63 +2,57 @@
+ 
+ import java.util.Iterator;
+ import java.util.List;
++
+ import net.minecraft.entity.EntityCreature;
+ import net.minecraft.entity.EntityLivingBase;
+ import net.minecraft.util.AxisAlignedBB;
+ 
+-public class EntityAIHurtByTarget extends EntityAITarget
+-{
++public class EntityAIHurtByTarget extends EntityAITarget {
++
+     private boolean entityCallsForHelp;
+     private int revengeTimerOld;
+     private final Class[] field_179447_c;
+     private static final String __OBFID = "CL_00001619";
+ 
+-    public EntityAIHurtByTarget(EntityCreature p_i45885_1_, boolean p_i45885_2_, Class ... p_i45885_3_)
+-    {
++    public EntityAIHurtByTarget(EntityCreature p_i45885_1_, boolean p_i45885_2_, Class... p_i45885_3_) {
+         super(p_i45885_1_, false);
+         this.entityCallsForHelp = p_i45885_2_;
+         this.field_179447_c = p_i45885_3_;
+         this.setMutexBits(1);
+     }
+ 
+-    public boolean shouldExecute()
+-    {
++    public boolean shouldExecute() {
+         int i = this.taskOwner.getRevengeTimer();
+         return i != this.revengeTimerOld && this.isSuitableTarget(this.taskOwner.getAITarget(), false);
+     }
+ 
+-    public void startExecuting()
+-    {
+-        this.taskOwner.setAttackTarget(this.taskOwner.getAITarget());
++    public void startExecuting() {
++        this.taskOwner.setGoalTarget(this.taskOwner.getAITarget(), org.bukkit.event.entity.EntityTargetEvent.TargetReason.TARGET_ATTACKED_ENTITY, true); // CraftBukkit - reason
+         this.revengeTimerOld = this.taskOwner.getRevengeTimer();
+ 
+-        if (this.entityCallsForHelp)
+-        {
++        if (this.entityCallsForHelp) {
+             double d0 = this.getTargetDistance();
+             List list = this.taskOwner.worldObj.getEntitiesWithinAABB(this.taskOwner.getClass(), (new AxisAlignedBB(this.taskOwner.posX, this.taskOwner.posY, this.taskOwner.posZ, this.taskOwner.posX + 1.0D, this.taskOwner.posY + 1.0D, this.taskOwner.posZ + 1.0D)).expand(d0, 10.0D, d0));
+             Iterator iterator = list.iterator();
+ 
+-            while (iterator.hasNext())
+-            {
+-                EntityCreature entitycreature = (EntityCreature)iterator.next();
++            while (iterator.hasNext()) {
++                EntityCreature entitycreature = (EntityCreature) iterator.next();
+ 
+-                if (this.taskOwner != entitycreature && entitycreature.getAttackTarget() == null && !entitycreature.isOnSameTeam(this.taskOwner.getAITarget()))
+-                {
++                if (this.taskOwner != entitycreature && entitycreature.getAttackTarget() == null && !entitycreature.isOnSameTeam(this.taskOwner.getAITarget())) {
+                     boolean flag = false;
+                     Class[] aclass = this.field_179447_c;
+                     int i = aclass.length;
+ 
+-                    for (int j = 0; j < i; ++j)
+-                    {
++                    for (int j = 0; j < i; ++j) {
+                         Class oclass = aclass[j];
+ 
+-                        if (entitycreature.getClass() == oclass)
+-                        {
++                        if (entitycreature.getClass() == oclass) {
+                             flag = true;
+                             break;
+                         }
+                     }
+ 
+-                    if (!flag)
+-                    {
++                    if (!flag) {
+                         this.func_179446_a(entitycreature, this.taskOwner.getAITarget());
+                     }
+                 }
+@@ -70,10 +70,8 @@
+         super.startExecuting();
+     }
+ 
+-    protected void func_179446_a(EntityCreature p_179446_1_, EntityLivingBase p_179446_2_)
+-    {
+-        p_179446_1_.setAttackTarget(p_179446_2_);
++    protected void func_179446_a(EntityCreature p_179446_1_, EntityLivingBase p_179446_2_) {
++        p_179446_1_.setGoalTarget(p_179446_2_, org.bukkit.event.entity.EntityTargetEvent.TargetReason.TARGET_ATTACKED_NEARBY_ENTITY, true); // CraftBukkit - reason);
+     }
+-}
++}

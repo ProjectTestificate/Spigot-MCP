@@ -1,0 +1,108 @@
+---a/net/minecraft/item/ItemLead.java
++++b/net/minecraft/item/ItemLead.java
+@@ -2,6 +2,7 @@
+ 
+ import java.util.Iterator;
+ import java.util.List;
++
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockFence;
+ import net.minecraft.creativetab.CreativeTabs;
+@@ -13,61 +13,63 @@
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.world.World;
+ 
+-public class ItemLead extends Item
+-{
++import org.bukkit.event.hanging.HangingPlaceEvent;
++
++public class ItemLead extends Item {
++
+     private static final String __OBFID = "CL_00000045";
+ 
+-    public ItemLead()
+-    {
++    public ItemLead() {
+         this.setCreativeTab(CreativeTabs.tabTools);
+     }
+ 
+-    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+-    {
++    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+         Block block = worldIn.getBlockState(pos).getBlock();
+ 
+-        if (block instanceof BlockFence)
+-        {
+-            if (worldIn.isRemote)
+-            {
++        if (block instanceof BlockFence) {
++            if (worldIn.isRemote) {
+                 return true;
+-            }
+-            else
+-            {
++            } else {
+                 attachToFence(playerIn, worldIn, pos);
+                 return true;
+             }
+-        }
+-        else
+-        {
++        } else {
+             return false;
+         }
+     }
+ 
+-    public static boolean attachToFence(EntityPlayer player, World worldIn, BlockPos fence)
+-    {
++    public static boolean attachToFence(EntityPlayer player, World worldIn, BlockPos fence) {
+         EntityLeashKnot entityleashknot = EntityLeashKnot.getKnotForPosition(worldIn, fence);
+         boolean flag = false;
+         double d0 = 7.0D;
+         int i = fence.getX();
+         int j = fence.getY();
+         int k = fence.getZ();
+-        List list = worldIn.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double)i - d0, (double)j - d0, (double)k - d0, (double)i + d0, (double)j + d0, (double)k + d0));
++        List list = worldIn.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0));
+         Iterator iterator = list.iterator();
+ 
+-        while (iterator.hasNext())
+-        {
+-            EntityLiving entityliving = (EntityLiving)iterator.next();
++        while (iterator.hasNext()) {
++            EntityLiving entityliving = (EntityLiving) iterator.next();
+ 
+-            if (entityliving.getLeashed() && entityliving.getLeashedToEntity() == player)
+-            {
+-                if (entityleashknot == null)
+-                {
++            if (entityliving.getLeashed() && entityliving.getLeashedToEntity() == player) {
++                if (entityleashknot == null) {
+                     entityleashknot = EntityLeashKnot.createKnot(worldIn, fence);
++
++                    // CraftBukkit start - fire HangingPlaceEvent
++                    HangingPlaceEvent event = new HangingPlaceEvent((org.bukkit.entity.Hanging) entityleashknot.getBukkitEntity(), player != null ? (org.bukkit.entity.Player) player.getBukkitEntity() : null, worldIn.getWorld().getBlockAt(i, j, k), org.bukkit.block.BlockFace.SELF);
++                    worldIn.getServer().getPluginManager().callEvent(event);
++
++                    if (event.isCancelled()) {
++                        entityleashknot.setDead();
++                        return false;
++                    }
++                    // CraftBukkit end
+                 }
+ 
++                // CraftBukkit start
++                if (org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerLeashEntityEvent(entityliving, entityleashknot, player).isCancelled()) {
++                    continue;
++                }
++                // CraftBukkit end
++
+                 entityliving.setLeashedToEntity(entityleashknot, true);
+                 flag = true;
+             }
+@@ -73,4 +73,4 @@
+ 
+         return flag;
+     }
+-}
++}

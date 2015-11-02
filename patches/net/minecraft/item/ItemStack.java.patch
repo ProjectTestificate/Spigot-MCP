@@ -1,0 +1,1293 @@
+---a/net/minecraft/item/ItemStack.java
++++b/net/minecraft/item/ItemStack.java
+@@ -1,52 +1,60 @@
+ package net.minecraft.item;
+ 
+-import com.google.common.collect.HashMultimap;
+-import com.google.common.collect.Lists;
+-import com.google.common.collect.Multimap;
+ import java.text.DecimalFormat;
+-import java.util.ArrayList;
+-import java.util.Iterator;
+ import java.util.List;
+ import java.util.Random;
+-import java.util.Map.Entry;
++
+ import net.minecraft.block.Block;
++import net.minecraft.block.BlockContainer;
++import net.minecraft.block.BlockMushroom;
++import net.minecraft.block.BlockSapling;
++import net.minecraft.block.state.IBlockState;
+ import net.minecraft.enchantment.Enchantment;
+ import net.minecraft.enchantment.EnchantmentDurability;
+ import net.minecraft.enchantment.EnchantmentHelper;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.EntityLivingBase;
+-import net.minecraft.entity.EnumCreatureAttribute;
+ import net.minecraft.entity.SharedMonsterAttributes;
+ import net.minecraft.entity.ai.attributes.AttributeModifier;
+ import net.minecraft.entity.item.EntityItemFrame;
+ import net.minecraft.entity.player.EntityPlayer;
++import net.minecraft.entity.player.EntityPlayerMP;
+ import net.minecraft.event.HoverEvent;
++import net.minecraft.init.Blocks;
+ import net.minecraft.init.Items;
+ import net.minecraft.nbt.NBTBase;
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.nbt.NBTTagList;
+ import net.minecraft.stats.StatList;
++import net.minecraft.tileentity.TileEntity;
++import net.minecraft.tileentity.TileEntitySkull;
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.ChatComponentText;
+-import net.minecraft.util.EnumChatFormatting;
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.util.IChatComponent;
+ import net.minecraft.util.ResourceLocation;
+-import net.minecraft.util.StatCollector;
+ import net.minecraft.world.World;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public final class ItemStack
+-{
++import org.bukkit.Bukkit;
++import org.bukkit.Location;
++import org.bukkit.TreeType;
++import org.bukkit.block.BlockState;
++import org.bukkit.craftbukkit.block.CraftBlockState;
++import org.bukkit.craftbukkit.util.CraftMagicNumbers;
++import org.bukkit.entity.Player;
++import org.bukkit.event.player.PlayerItemDamageEvent;
++import org.bukkit.event.world.StructureGrowEvent;
++
++import com.google.common.collect.HashMultimap;
++import com.google.common.collect.Multimap;
++
++public final class ItemStack {
++
+     public static final DecimalFormat DECIMALFORMAT = new DecimalFormat("#.###");
+     public int stackSize;
+     public int animationsToGo;
+     private Item item;
+     private NBTTagCompound stackTagCompound;
+-    private int itemDamage;
++    int itemDamage;
+     private EntityItemFrame itemFrame;
+     private Block canDestroyCacheBlock;
+     private boolean canDestroyCacheResult;
+@@ -52,227 +52,322 @@
+     private boolean canPlaceOnCacheResult;
+     private static final String __OBFID = "CL_00000043";
+ 
+-    public ItemStack(Block blockIn)
+-    {
++    public ItemStack(Block blockIn) {
+         this(blockIn, 1);
+     }
+ 
+-    public ItemStack(Block blockIn, int amount)
+-    {
++    public ItemStack(Block blockIn, int amount) {
+         this(blockIn, amount, 0);
+     }
+ 
+-    public ItemStack(Block blockIn, int amount, int meta)
+-    {
++    public ItemStack(Block blockIn, int amount, int meta) {
+         this(Item.getItemFromBlock(blockIn), amount, meta);
+     }
+ 
+-    public ItemStack(Item itemIn)
+-    {
++    public ItemStack(Item itemIn) {
+         this(itemIn, 1);
+     }
+ 
+-    public ItemStack(Item itemIn, int amount)
+-    {
++    public ItemStack(Item itemIn, int amount) {
+         this(itemIn, amount, 0);
+     }
+ 
+-    public ItemStack(Item itemIn, int amount, int meta)
+-    {
++    public ItemStack(Item itemIn, int amount, int meta) {
+         this.canDestroyCacheBlock = null;
+         this.canDestroyCacheResult = false;
+         this.canPlaceOnCacheBlock = null;
+         this.canPlaceOnCacheResult = false;
+         this.item = itemIn;
+         this.stackSize = amount;
+-        this.itemDamage = meta;
+-
+-        if (this.itemDamage < 0)
+-        {
+-            this.itemDamage = 0;
+-        }
++        // CraftBukkit start - Pass to setData to do filtering
++        // this.itemDamage = meta;
++        // if (this.itemDamage < 0) {
++        //     this.itemDamage = 0;
++        // }
++        // CraftBukkit end
+     }
+ 
+-    public static ItemStack loadItemStackFromNBT(NBTTagCompound nbt)
+-    {
++    public static ItemStack loadItemStackFromNBT(NBTTagCompound nbt) {
+         ItemStack itemstack = new ItemStack();
+         itemstack.readFromNBT(nbt);
+         return itemstack.getItem() != null ? itemstack : null;
+     }
+ 
+-    private ItemStack()
+-    {
++    private ItemStack() {
+         this.canDestroyCacheBlock = null;
+         this.canDestroyCacheResult = false;
+         this.canPlaceOnCacheBlock = null;
+         this.canPlaceOnCacheResult = false;
+     }
+ 
+-    public ItemStack splitStack(int amount)
+-    {
++    public ItemStack splitStack(int amount) {
+         ItemStack itemstack = new ItemStack(this.item, amount, this.itemDamage);
+ 
+-        if (this.stackTagCompound != null)
+-        {
+-            itemstack.stackTagCompound = (NBTTagCompound)this.stackTagCompound.copy();
++        if (this.stackTagCompound != null) {
++            itemstack.stackTagCompound = (NBTTagCompound) this.stackTagCompound.copy();
+         }
+ 
+         this.stackSize -= amount;
+         return itemstack;
+     }
+ 
+-    public Item getItem()
+-    {
++    public Item getItem() {
+         return this.item;
+     }
+ 
+-    public boolean onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+-    {
++    public boolean onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
++        // CraftBukkit start - handle all block place event logic here
++        int data = this.getMetadata();
++        int count = this.stackSize;
++
++        if (!(this.getItem() instanceof ItemBucket)) { // if not bucket
++            worldIn.captureBlockStates = true;
++            // special case bonemeal
++            if (this.getItem() instanceof ItemDye && this.getMetadata() == 15) {
++                Block block = worldIn.getBlockState(pos).getBlock();
++                if (block == Blocks.sapling || block instanceof BlockMushroom) {
++                    worldIn.captureTreeGeneration = true;
++                }
++            }
++        }
+         boolean flag = this.getItem().onItemUse(this, playerIn, worldIn, pos, side, hitX, hitY, hitZ);
++        int newData = this.getMetadata();
++        int newCount = this.stackSize;
++        this.stackSize = count;
++        this.setItemDamage(data);
++        worldIn.captureBlockStates = false;
++        if (flag && worldIn.captureTreeGeneration && worldIn.capturedBlockStates.size() > 0) {
++            worldIn.captureTreeGeneration = false;
++            Location location = new Location(worldIn.getWorld(), pos.getX(), pos.getY(), pos.getZ());
++            TreeType treeType = BlockSapling.treeType;
++            BlockSapling.treeType = null;
++            List<BlockState> blocks = (List<BlockState>) worldIn.capturedBlockStates.clone();
++            worldIn.capturedBlockStates.clear();
++            StructureGrowEvent event = null;
++            if (treeType != null) {
++                event = new StructureGrowEvent(location, treeType, false, (Player) playerIn.getBukkitEntity(), blocks);
++                Bukkit.getPluginManager().callEvent(event);
++            }
++            if (event == null || !event.isCancelled()) {
++                // Change the stack to its new contents if it hasn't been tampered with.
++                if (this.stackSize == count && this.getMetadata() == data) {
++                    this.setItemDamage(newData);
++                    this.stackSize = newCount;
++                }
++                for (BlockState blockstate : blocks) {
++                    blockstate.update(true);
++                }
++            }
+ 
+-        if (flag)
+-        {
+-            playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this.item)]);
++            return flag;
+         }
++        worldIn.captureTreeGeneration = false;
+ 
++        if (flag) {
++            org.bukkit.event.block.BlockPlaceEvent placeEvent = null;
++            List<BlockState> blocks = (List<BlockState>) worldIn.capturedBlockStates.clone();
++            worldIn.capturedBlockStates.clear();
++            if (blocks.size() > 1) {
++                placeEvent = org.bukkit.craftbukkit.event.CraftEventFactory.callBlockMultiPlaceEvent(worldIn, playerIn, blocks, pos.getX(), pos.getY(), pos.getZ());
++            } else if (blocks.size() == 1) {
++                placeEvent = org.bukkit.craftbukkit.event.CraftEventFactory.callBlockPlaceEvent(worldIn, playerIn, blocks.get(0), pos.getX(), pos.getY(), pos.getZ());
++            }
++
++            if (placeEvent != null && (placeEvent.isCancelled() || !placeEvent.canBuild())) {
++                flag = false; // cancel placement
++                // revert back all captured blocks
++                for (BlockState blockstate : blocks) {
++                    blockstate.update(true, false);
++                }
++            } else {
++                // Change the stack to its new contents if it hasn't been tampered with.
++                if (this.stackSize == count && this.getMetadata() == data) {
++                    this.setItemDamage(newData);
++                    this.stackSize = newCount;
++                }
++                for (BlockState blockstate : blocks) {
++                    int x = blockstate.getX();
++                    int y = blockstate.getY();
++                    int z = blockstate.getZ();
++                    int updateFlag = ((CraftBlockState) blockstate).getFlag();
++                    org.bukkit.Material mat = blockstate.getType();
++                    Block oldBlock = CraftMagicNumbers.getBlock(mat);
++                    BlockPos newblockposition = new BlockPos(x, y, z);
++                    IBlockState block = worldIn.getBlockState(newblockposition);
++
++                    if (!(block instanceof BlockContainer)) { // Containers get placed automatically
++                        block.getBlock().onBlockAdded(worldIn, newblockposition, block);
++                    }
++
++                    worldIn.notifyAndUpdatePhysics(newblockposition, null, oldBlock, block.getBlock(), updateFlag); // send null chunk as chunk.k() returns false by this point
++                }
++
++                if (this.getItem() == Items.skull) { // Special case skulls to allow wither spawns to be cancelled
++                    BlockPos bp = pos;
++                    if (!worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos)) {
++                        if (!worldIn.getBlockState(pos).getBlock().getMaterial().isSolid()) {
++                            bp = null;
++                        } else {
++                            bp = bp.offset(side);
++                        }
++                    }
++                    if (bp != null) {
++                        TileEntity te = worldIn.getTileEntity(bp);
++                        if (te instanceof TileEntitySkull) {
++                            Blocks.skull.checkWitherSpawn(worldIn, bp, (TileEntitySkull) te);
++                        }
++                    }
++                }
++
++                playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this.item)]);
++            }
++        }
++        worldIn.capturedBlockStates.clear();
++        // CraftBukkit end
++
+         return flag;
+     }
+ 
+-    public float getStrVsBlock(Block p_150997_1_)
+-    {
++    public float getStrVsBlock(Block p_150997_1_) {
+         return this.getItem().getStrVsBlock(this, p_150997_1_);
+     }
+ 
+-    public ItemStack useItemRightClick(World worldIn, EntityPlayer playerIn)
+-    {
++    public ItemStack useItemRightClick(World worldIn, EntityPlayer playerIn) {
+         return this.getItem().onItemRightClick(this, worldIn, playerIn);
+     }
+ 
+-    public ItemStack onItemUseFinish(World worldIn, EntityPlayer playerIn)
+-    {
++    public ItemStack onItemUseFinish(World worldIn, EntityPlayer playerIn) {
+         return this.getItem().onItemUseFinish(this, worldIn, playerIn);
+     }
+ 
+-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+-    {
+-        ResourceLocation resourcelocation = (ResourceLocation)Item.itemRegistry.getNameForObject(this.item);
++    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
++        ResourceLocation resourcelocation = (ResourceLocation) Item.itemRegistry.getNameForObject(this.item);
+         nbt.setString("id", resourcelocation == null ? "minecraft:air" : resourcelocation.toString());
+-        nbt.setByte("Count", (byte)this.stackSize);
+-        nbt.setShort("Damage", (short)this.itemDamage);
++        nbt.setByte("Count", (byte) this.stackSize);
++        nbt.setShort("Damage", (short) this.itemDamage);
+ 
+-        if (this.stackTagCompound != null)
+-        {
+-            nbt.setTag("tag", this.stackTagCompound);
++        if (this.stackTagCompound != null) {
++            nbt.setTag("tag", this.stackTagCompound.copy()); // CraftBukkit - make defensive copy, data is going to another thread
+         }
+ 
+         return nbt;
+     }
+ 
+-    public void readFromNBT(NBTTagCompound nbt)
+-    {
+-        if (nbt.hasKey("id", 8))
+-        {
+-            this.item = Item.getByNameOrId(nbt.getString("id"));
+-        }
+-        else
+-        {
++    public void readFromNBT(NBTTagCompound nbt) {
++        if (nbt.hasKey("id", 8)) {
+             this.item = Item.getItemById(nbt.getShort("id"));
++        } else {
++            this.item = Item.getItemById(nbt.getShort("id"));
+         }
+ 
+         this.stackSize = nbt.getByte("Count");
++        /* CraftBukkit start - Route through setData for filtering
+         this.itemDamage = nbt.getShort("Damage");
+-
+-        if (this.itemDamage < 0)
+-        {
++        if (this.itemDamage < 0) {
+             this.itemDamage = 0;
+         }
++        */
++        this.setItemDamage(nbt.getShort("Damage"));
++        // CraftBukkit end
+ 
+-        if (nbt.hasKey("tag", 10))
+-        {
+-            this.stackTagCompound = nbt.getCompoundTag("tag");
++        if (nbt.hasKey("tag", 10)) {
++            // CraftBukkit - make defensive copy as this data may be coming from the save thread
++            this.stackTagCompound = (NBTTagCompound) nbt.getCompoundTag("tag").copy();
+ 
+-            if (this.item != null)
+-            {
++            if (this.item != null) {
+                 this.item.updateItemStackNBT(this.stackTagCompound);
+             }
+         }
+     }
+ 
+-    public int getMaxStackSize()
+-    {
++    public int getMaxStackSize() {
+         return this.getItem().getItemStackLimit();
+     }
+ 
+-    public boolean isStackable()
+-    {
++    public boolean isStackable() {
+         return this.getMaxStackSize() > 1 && (!this.isItemStackDamageable() || !this.isItemDamaged());
+     }
+ 
+-    public boolean isItemStackDamageable()
+-    {
+-        return this.item == null ? false : (this.item.getMaxDamage() <= 0 ? false : !this.hasTagCompound() || !this.getTagCompound().getBoolean("Unbreakable"));
++    public boolean isItemStackDamageable() {
++        // Spigot Start
++        if (this.item.getMaxDamage() <= 0) {
++            return false;
++        }
++        return (!hasTagCompound()) || (!getTagCompound().getBoolean("Unbreakable"));
++        // Spigot End
+     }
+ 
+-    public boolean getHasSubtypes()
+-    {
++    public boolean getHasSubtypes() {
+         return this.item.getHasSubtypes();
+     }
+ 
+-    public boolean isItemDamaged()
+-    {
++    public boolean isItemDamaged() {
+         return this.isItemStackDamageable() && this.itemDamage > 0;
+     }
+ 
+-    public int getItemDamage()
+-    {
++    public int getItemDamage() {
+         return this.itemDamage;
+     }
+ 
+-    public int getMetadata()
+-    {
++    public int getMetadata() {
+         return this.itemDamage;
+     }
+ 
+-    public void setItemDamage(int meta)
+-    {
++    public void setItemDamage(int meta) {
++        // CraftBukkit start - Filter out data for items that shouldn't have it
++        // The crafting system uses this value for a special purpose so we have to allow it
++        if (meta == 32767) {
++            this.itemDamage = meta;
++            return;
++        }
++
++        // Is this a block?
++        if (CraftMagicNumbers.getBlock(CraftMagicNumbers.getId(this.getItem())) != Blocks.air) {
++            // If vanilla doesn't use data on it don't allow any
++            if (!(this.getHasSubtypes() || this.getItem().isDamageable())) {
++                meta = 0;
++            }
++        }
++
++        // Filter invalid plant data
++        if (CraftMagicNumbers.getBlock(CraftMagicNumbers.getId(this.getItem())) == Blocks.double_plant && (meta > 5 || meta < 0)) {
++            meta = 0;
++        }
++        // CraftBukkit end
+         this.itemDamage = meta;
+ 
+-        if (this.itemDamage < 0)
+-        {
++        if (this.itemDamage < -1) { // CraftBukkit
+             this.itemDamage = 0;
+         }
+     }
+ 
+-    public int getMaxDamage()
+-    {
++    public int getMaxDamage() {
+         return this.item.getMaxDamage();
+     }
+ 
+-    public boolean attemptDamageItem(int amount, Random rand)
+-    {
+-        if (!this.isItemStackDamageable())
+-        {
++    // Spigot start
++    public boolean attemptDamageItem(int amount, Random rand) {
++        return isDamaged(amount, rand, null);
++    }
++
++    public boolean isDamaged(int amount, Random rand, EntityLivingBase entityliving) {
++        // Spigot end
++        if (!this.isItemStackDamageable()) {
+             return false;
+-        }
+-        else
+-        {
+-            if (amount > 0)
+-            {
++        } else {
++            if (amount > 0) {
+                 int j = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, this);
+                 int k = 0;
+ 
+-                for (int l = 0; j > 0 && l < amount; ++l)
+-                {
+-                    if (EnchantmentDurability.negateDamage(this, j, rand))
+-                    {
++                for (int l = 0; j > 0 && l < amount; ++l) {
++                    if (EnchantmentDurability.negateDamage(this, j, rand)) {
+                         ++k;
+                     }
+                 }
+ 
+                 amount -= k;
+ 
+-                if (amount <= 0)
+-                {
++                // Spigot start
++                if (entityliving instanceof EntityPlayerMP) {
++                    org.bukkit.craftbukkit.inventory.CraftItemStack item = org.bukkit.craftbukkit.inventory.CraftItemStack.asCraftMirror(this);
++                    org.bukkit.event.player.PlayerItemDamageEvent event = new PlayerItemDamageEvent((org.bukkit.entity.Player) entityliving.getBukkitEntity(), item, amount);
++                    org.bukkit.Bukkit.getServer().getPluginManager().callEvent(event);
++                    if (event.isCancelled()) return false;
++                    amount = event.getDamage();
++                }
++                // Spigot end
++
++                if (amount <= 0) {
+                     return false;
+                 }
+             }
+@@ -282,212 +282,179 @@
+         }
+     }
+ 
+-    public void damageItem(int amount, EntityLivingBase entityIn)
+-    {
+-        if (!(entityIn instanceof EntityPlayer) || !((EntityPlayer)entityIn).capabilities.isCreativeMode)
+-        {
+-            if (this.isItemStackDamageable())
+-            {
+-                if (this.attemptDamageItem(amount, entityIn.getRNG()))
+-                {
++    public void damageItem(int amount, EntityLivingBase entityIn) {
++        if (!(entityIn instanceof EntityPlayer) || !((EntityPlayer) entityIn).capabilities.isCreativeMode) {
++            if (this.isItemStackDamageable()) {
++                if (this.isDamaged(amount, entityIn.getRNG(), entityIn)) { // Spigot
+                     entityIn.renderBrokenItemStack(this);
+                     --this.stackSize;
+ 
+-                    if (entityIn instanceof EntityPlayer)
+-                    {
+-                        EntityPlayer entityplayer = (EntityPlayer)entityIn;
++                    if (entityIn instanceof EntityPlayer) {
++                        EntityPlayer entityplayer = (EntityPlayer) entityIn;
+                         entityplayer.triggerAchievement(StatList.objectBreakStats[Item.getIdFromItem(this.item)]);
+ 
+-                        if (this.stackSize == 0 && this.getItem() instanceof ItemBow)
+-                        {
++                        if (this.stackSize == 0 && this.getItem() instanceof ItemBow) {
+                             entityplayer.destroyCurrentEquippedItem();
+                         }
+                     }
+ 
+-                    if (this.stackSize < 0)
+-                    {
++                    if (this.stackSize < 0) {
+                         this.stackSize = 0;
+                     }
+ 
++                    // CraftBukkit start - Check for item breaking
++                    if (this.stackSize == 0 && entityIn instanceof EntityPlayer) {
++                        org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerItemBreakEvent((EntityPlayer) entityIn, this);
++                    }
++                    // CraftBukkit end
++
+                     this.itemDamage = 0;
+                 }
+             }
+         }
+     }
+ 
+-    public void hitEntity(EntityLivingBase entityIn, EntityPlayer playerIn)
+-    {
++    public void hitEntity(EntityLivingBase entityIn, EntityPlayer playerIn) {
+         boolean flag = this.item.hitEntity(this, entityIn, playerIn);
+ 
+-        if (flag)
+-        {
++        if (flag) {
+             playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this.item)]);
+         }
+     }
+ 
+-    public void onBlockDestroyed(World worldIn, Block blockIn, BlockPos pos, EntityPlayer playerIn)
+-    {
++    public void onBlockDestroyed(World worldIn, Block blockIn, BlockPos pos, EntityPlayer playerIn) {
+         boolean flag = this.item.onBlockDestroyed(this, worldIn, blockIn, pos, playerIn);
+ 
+-        if (flag)
+-        {
++        if (flag) {
+             playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this.item)]);
+         }
+     }
+ 
+-    public boolean canHarvestBlock(Block blockIn)
+-    {
++    public boolean canHarvestBlock(Block blockIn) {
+         return this.item.canHarvestBlock(blockIn);
+     }
+ 
+-    public boolean interactWithEntity(EntityPlayer playerIn, EntityLivingBase entityIn)
+-    {
++    public boolean interactWithEntity(EntityPlayer playerIn, EntityLivingBase entityIn) {
+         return this.item.itemInteractionForEntity(this, playerIn, entityIn);
+     }
+ 
+-    public ItemStack copy()
+-    {
++    public ItemStack copy() {
+         ItemStack itemstack = new ItemStack(this.item, this.stackSize, this.itemDamage);
+ 
+-        if (this.stackTagCompound != null)
+-        {
+-            itemstack.stackTagCompound = (NBTTagCompound)this.stackTagCompound.copy();
++        if (this.stackTagCompound != null) {
++            itemstack.stackTagCompound = (NBTTagCompound) this.stackTagCompound.copy();
+         }
+ 
+         return itemstack;
+     }
+ 
+-    public static boolean areItemStackTagsEqual(ItemStack stackA, ItemStack stackB)
+-    {
++    public static boolean areItemStackTagsEqual(ItemStack stackA, ItemStack stackB) {
+         return stackA == null && stackB == null ? true : (stackA != null && stackB != null ? (stackA.stackTagCompound == null && stackB.stackTagCompound != null ? false : stackA.stackTagCompound == null || stackA.stackTagCompound.equals(stackB.stackTagCompound)) : false);
+     }
+ 
+-    public static boolean areItemStacksEqual(ItemStack stackA, ItemStack stackB)
+-    {
++    // Spigot Start
++    public static boolean fastMatches(ItemStack itemstack, ItemStack itemstack1) {
++        if (itemstack == null && itemstack1 == null) {
++            return true;
++        }
++        if (itemstack != null && itemstack1 != null) {
++            return itemstack.stackSize == itemstack1.stackSize && itemstack.item == itemstack1.item && itemstack.itemDamage == itemstack1.itemDamage;
++        }
++        return false;
++    }
++    // Spigot End
++
++    public static boolean areItemStacksEqual(ItemStack stackA, ItemStack stackB) {
+         return stackA == null && stackB == null ? true : (stackA != null && stackB != null ? stackA.isItemStackEqual(stackB) : false);
+     }
+ 
+-    private boolean isItemStackEqual(ItemStack other)
+-    {
++    private boolean isItemStackEqual(ItemStack other) {
+         return this.stackSize != other.stackSize ? false : (this.item != other.item ? false : (this.itemDamage != other.itemDamage ? false : (this.stackTagCompound == null && other.stackTagCompound != null ? false : this.stackTagCompound == null || this.stackTagCompound.equals(other.stackTagCompound))));
+     }
+ 
+-    public static boolean areItemsEqual(ItemStack stackA, ItemStack stackB)
+-    {
++    public static boolean areItemsEqual(ItemStack stackA, ItemStack stackB) {
+         return stackA == null && stackB == null ? true : (stackA != null && stackB != null ? stackA.isItemEqual(stackB) : false);
+     }
+ 
+-    public boolean isItemEqual(ItemStack other)
+-    {
++    public boolean isItemEqual(ItemStack other) {
+         return other != null && this.item == other.item && this.itemDamage == other.itemDamage;
+     }
+ 
+-    public String getUnlocalizedName()
+-    {
++    public String getUnlocalizedName() {
+         return this.item.getUnlocalizedName(this);
+     }
+ 
+-    public static ItemStack copyItemStack(ItemStack stack)
+-    {
++    public static ItemStack copyItemStack(ItemStack stack) {
+         return stack == null ? null : stack.copy();
+     }
+ 
+-    public String toString()
+-    {
++    public String toString() {
+         return this.stackSize + "x" + this.item.getUnlocalizedName() + "@" + this.itemDamage;
+     }
+ 
+-    public void updateAnimation(World worldIn, Entity entityIn, int inventorySlot, boolean isCurrentItem)
+-    {
+-        if (this.animationsToGo > 0)
+-        {
++    public void updateAnimation(World worldIn, Entity entityIn, int inventorySlot, boolean isCurrentItem) {
++        if (this.animationsToGo > 0) {
+             --this.animationsToGo;
+         }
+ 
+         this.item.onUpdate(this, worldIn, entityIn, inventorySlot, isCurrentItem);
+     }
+ 
+-    public void onCrafting(World worldIn, EntityPlayer playerIn, int amount)
+-    {
++    public void onCrafting(World worldIn, EntityPlayer playerIn, int amount) {
+         playerIn.addStat(StatList.objectCraftStats[Item.getIdFromItem(this.item)], amount);
+         this.item.onCreated(this, worldIn, playerIn);
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public boolean getIsItemStackEqual(ItemStack p_179549_1_)
+-    {
+-        return this.isItemStackEqual(p_179549_1_);
+-    }
+-
+-    public int getMaxItemUseDuration()
+-    {
++    public int getMaxItemUseDuration() {
+         return this.getItem().getMaxItemUseDuration(this);
+     }
+ 
+-    public EnumAction getItemUseAction()
+-    {
++    public EnumAction getItemUseAction() {
+         return this.getItem().getItemUseAction(this);
+     }
+ 
+-    public void onPlayerStoppedUsing(World worldIn, EntityPlayer playerIn, int timeLeft)
+-    {
++    public void onPlayerStoppedUsing(World worldIn, EntityPlayer playerIn, int timeLeft) {
+         this.getItem().onPlayerStoppedUsing(this, worldIn, playerIn, timeLeft);
+     }
+ 
+-    public boolean hasTagCompound()
+-    {
++    public boolean hasTagCompound() {
+         return this.stackTagCompound != null;
+     }
+ 
+-    public NBTTagCompound getTagCompound()
+-    {
++    public NBTTagCompound getTagCompound() {
+         return this.stackTagCompound;
+     }
+ 
+-    public NBTTagCompound getSubCompound(String key, boolean create)
+-    {
+-        if (this.stackTagCompound != null && this.stackTagCompound.hasKey(key, 10))
+-        {
++    public NBTTagCompound getSubCompound(String key, boolean create) {
++        if (this.stackTagCompound != null && this.stackTagCompound.hasKey(key, 10)) {
+             return this.stackTagCompound.getCompoundTag(key);
+-        }
+-        else if (create)
+-        {
++        } else if (create) {
+             NBTTagCompound nbttagcompound = new NBTTagCompound();
+             this.setTagInfo(key, nbttagcompound);
+             return nbttagcompound;
+-        }
+-        else
+-        {
++        } else {
+             return null;
+         }
+     }
+ 
+-    public NBTTagList getEnchantmentTagList()
+-    {
++    public NBTTagList getEnchantmentTagList() {
+         return this.stackTagCompound == null ? null : this.stackTagCompound.getTagList("ench", 10);
+     }
+ 
+-    public void setTagCompound(NBTTagCompound nbt)
+-    {
++    public void setTagCompound(NBTTagCompound nbt) {
+         this.stackTagCompound = nbt;
+     }
+ 
+-    public String getDisplayName()
+-    {
++    public String getDisplayName() {
+         String s = this.getItem().getItemStackDisplayName(this);
+ 
+-        if (this.stackTagCompound != null && this.stackTagCompound.hasKey("display", 10))
+-        {
++        if (this.stackTagCompound != null && this.stackTagCompound.hasKey("display", 10)) {
+             NBTTagCompound nbttagcompound = this.stackTagCompound.getCompoundTag("display");
+ 
+-            if (nbttagcompound.hasKey("Name", 8))
+-            {
++            if (nbttagcompound.hasKey("Name", 8)) {
+                 s = nbttagcompound.getString("Name");
+             }
+         }
+@@ -489,17 +489,13 @@
+         return s;
+     }
+ 
+-    public ItemStack setStackDisplayName(String displayName)
+-    {
+-        if (this.stackTagCompound == null)
+-        {
++    public ItemStack setStackDisplayName(String displayName) {
++        if (this.stackTagCompound == null) {
+             this.stackTagCompound = new NBTTagCompound();
+         }
+ 
+-        if (!this.stackTagCompound.hasKey("display", 10))
+-        {
++        if (!this.stackTagCompound.hasKey("display", 10)) {
+             this.stackTagCompound.setTag("display", new NBTTagCompound());
+         }
+ 
+@@ -505,391 +505,130 @@
+         return this;
+     }
+ 
+-    public void clearCustomName()
+-    {
+-        if (this.stackTagCompound != null)
+-        {
+-            if (this.stackTagCompound.hasKey("display", 10))
+-            {
++    public void clearCustomName() {
++        if (this.stackTagCompound != null) {
++            if (this.stackTagCompound.hasKey("display", 10)) {
+                 NBTTagCompound nbttagcompound = this.stackTagCompound.getCompoundTag("display");
+                 nbttagcompound.removeTag("Name");
+ 
+-                if (nbttagcompound.hasNoTags())
+-                {
++                if (nbttagcompound.hasNoTags()) {
+                     this.stackTagCompound.removeTag("display");
+ 
+-                    if (this.stackTagCompound.hasNoTags())
+-                    {
+-                        this.setTagCompound((NBTTagCompound)null);
++                    if (this.stackTagCompound.hasNoTags()) {
++                        this.setTagCompound((NBTTagCompound) null);
+                     }
+                 }
+             }
+         }
+     }
+ 
+-    public boolean hasDisplayName()
+-    {
++    public boolean hasDisplayName() {
+         return this.stackTagCompound == null ? false : (!this.stackTagCompound.hasKey("display", 10) ? false : this.stackTagCompound.getCompoundTag("display").hasKey("Name", 8));
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public List getTooltip(EntityPlayer playerIn, boolean advanced)
+-    {
+-        ArrayList arraylist = Lists.newArrayList();
+-        String s = this.getDisplayName();
+-
+-        if (this.hasDisplayName())
+-        {
+-            s = EnumChatFormatting.ITALIC + s;
+-        }
+-
+-        s = s + EnumChatFormatting.RESET;
+-
+-        if (advanced)
+-        {
+-            String s1 = "";
+-
+-            if (s.length() > 0)
+-            {
+-                s = s + " (";
+-                s1 = ")";
+-            }
+-
+-            int i = Item.getIdFromItem(this.item);
+-
+-            if (this.getHasSubtypes())
+-            {
+-                s = s + String.format("#%04d/%d%s", new Object[] {Integer.valueOf(i), Integer.valueOf(this.itemDamage), s1});
+-            }
+-            else
+-            {
+-                s = s + String.format("#%04d%s", new Object[] {Integer.valueOf(i), s1});
+-            }
+-        }
+-        else if (!this.hasDisplayName() && this.item == Items.filled_map)
+-        {
+-            s = s + " #" + this.itemDamage;
+-        }
+-
+-        arraylist.add(s);
+-        int k = 0;
+-
+-        if (this.hasTagCompound() && this.stackTagCompound.hasKey("HideFlags", 99))
+-        {
+-            k = this.stackTagCompound.getInteger("HideFlags");
+-        }
+-
+-        if ((k & 32) == 0)
+-        {
+-            this.item.addInformation(this, playerIn, arraylist, advanced);
+-        }
+-
+-        NBTTagList nbttaglist1;
+-        int l;
+-
+-        if (this.hasTagCompound())
+-        {
+-            if ((k & 1) == 0)
+-            {
+-                NBTTagList nbttaglist = this.getEnchantmentTagList();
+-
+-                if (nbttaglist != null)
+-                {
+-                    for (int j = 0; j < nbttaglist.tagCount(); ++j)
+-                    {
+-                        short short1 = nbttaglist.getCompoundTagAt(j).getShort("id");
+-                        short short2 = nbttaglist.getCompoundTagAt(j).getShort("lvl");
+-
+-                        if (Enchantment.getEnchantmentById(short1) != null)
+-                        {
+-                            arraylist.add(Enchantment.getEnchantmentById(short1).getTranslatedName(short2));
+-                        }
+-                    }
+-                }
+-            }
+-
+-            if (this.stackTagCompound.hasKey("display", 10))
+-            {
+-                NBTTagCompound nbttagcompound = this.stackTagCompound.getCompoundTag("display");
+-
+-                if (nbttagcompound.hasKey("color", 3))
+-                {
+-                    if (advanced)
+-                    {
+-                        arraylist.add("Color: #" + Integer.toHexString(nbttagcompound.getInteger("color")).toUpperCase());
+-                    }
+-                    else
+-                    {
+-                        arraylist.add(EnumChatFormatting.ITALIC + StatCollector.translateToLocal("item.dyed"));
+-                    }
+-                }
+-
+-                if (nbttagcompound.getTagType("Lore") == 9)
+-                {
+-                    nbttaglist1 = nbttagcompound.getTagList("Lore", 8);
+-
+-                    if (nbttaglist1.tagCount() > 0)
+-                    {
+-                        for (l = 0; l < nbttaglist1.tagCount(); ++l)
+-                        {
+-                            arraylist.add(EnumChatFormatting.DARK_PURPLE + "" + EnumChatFormatting.ITALIC + nbttaglist1.getStringTagAt(l));
+-                        }
+-                    }
+-                }
+-            }
+-        }
+-
+-        Multimap multimap = this.getAttributeModifiers();
+-
+-        if (!multimap.isEmpty() && (k & 2) == 0)
+-        {
+-            arraylist.add("");
+-            Iterator iterator = multimap.entries().iterator();
+-
+-            while (iterator.hasNext())
+-            {
+-                Entry entry = (Entry)iterator.next();
+-                AttributeModifier attributemodifier = (AttributeModifier)entry.getValue();
+-                double d0 = attributemodifier.getAmount();
+-
+-                if (attributemodifier.getID() == Item.itemModifierUUID)
+-                {
+-                    d0 += (double)EnchantmentHelper.func_152377_a(this, EnumCreatureAttribute.UNDEFINED);
+-                }
+-
+-                double d1;
+-
+-                if (attributemodifier.getOperation() != 1 && attributemodifier.getOperation() != 2)
+-                {
+-                    d1 = d0;
+-                }
+-                else
+-                {
+-                    d1 = d0 * 100.0D;
+-                }
+-
+-                if (d0 > 0.0D)
+-                {
+-                    arraylist.add(EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted("attribute.modifier.plus." + attributemodifier.getOperation(), new Object[] {DECIMALFORMAT.format(d1), StatCollector.translateToLocal("attribute.name." + (String)entry.getKey())}));
+-                }
+-                else if (d0 < 0.0D)
+-                {
+-                    d1 *= -1.0D;
+-                    arraylist.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("attribute.modifier.take." + attributemodifier.getOperation(), new Object[] {DECIMALFORMAT.format(d1), StatCollector.translateToLocal("attribute.name." + (String)entry.getKey())}));
+-                }
+-            }
+-        }
+-
+-        if (this.hasTagCompound() && this.getTagCompound().getBoolean("Unbreakable") && (k & 4) == 0)
+-        {
+-            arraylist.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("item.unbreakable"));
+-        }
+-
+-        Block block;
+-
+-        if (this.hasTagCompound() && this.stackTagCompound.hasKey("CanDestroy", 9) && (k & 8) == 0)
+-        {
+-            nbttaglist1 = this.stackTagCompound.getTagList("CanDestroy", 8);
+-
+-            if (nbttaglist1.tagCount() > 0)
+-            {
+-                arraylist.add("");
+-                arraylist.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.canBreak"));
+-
+-                for (l = 0; l < nbttaglist1.tagCount(); ++l)
+-                {
+-                    block = Block.getBlockFromName(nbttaglist1.getStringTagAt(l));
+-
+-                    if (block != null)
+-                    {
+-                        arraylist.add(EnumChatFormatting.DARK_GRAY + block.getLocalizedName());
+-                    }
+-                    else
+-                    {
+-                        arraylist.add(EnumChatFormatting.DARK_GRAY + "missingno");
+-                    }
+-                }
+-            }
+-        }
+-
+-        if (this.hasTagCompound() && this.stackTagCompound.hasKey("CanPlaceOn", 9) && (k & 16) == 0)
+-        {
+-            nbttaglist1 = this.stackTagCompound.getTagList("CanPlaceOn", 8);
+-
+-            if (nbttaglist1.tagCount() > 0)
+-            {
+-                arraylist.add("");
+-                arraylist.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.canPlace"));
+-
+-                for (l = 0; l < nbttaglist1.tagCount(); ++l)
+-                {
+-                    block = Block.getBlockFromName(nbttaglist1.getStringTagAt(l));
+-
+-                    if (block != null)
+-                    {
+-                        arraylist.add(EnumChatFormatting.DARK_GRAY + block.getLocalizedName());
+-                    }
+-                    else
+-                    {
+-                        arraylist.add(EnumChatFormatting.DARK_GRAY + "missingno");
+-                    }
+-                }
+-            }
+-        }
+-
+-        if (advanced)
+-        {
+-            if (this.isItemDamaged())
+-            {
+-                arraylist.add("Durability: " + (this.getMaxDamage() - this.getItemDamage()) + " / " + this.getMaxDamage());
+-            }
+-
+-            arraylist.add(EnumChatFormatting.DARK_GRAY + ((ResourceLocation)Item.itemRegistry.getNameForObject(this.item)).toString());
+-
+-            if (this.hasTagCompound())
+-            {
+-                arraylist.add(EnumChatFormatting.DARK_GRAY + "NBT: " + this.getTagCompound().getKeySet().size() + " tag(s)");
+-            }
+-        }
+-
+-        return arraylist;
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public boolean hasEffect()
+-    {
+-        return this.getItem().hasEffect(this);
+-    }
+-
+-    public EnumRarity getRarity()
+-    {
++    public EnumRarity getRarity() {
+         return this.getItem().getRarity(this);
+     }
+ 
+-    public boolean isItemEnchantable()
+-    {
++    public boolean isItemEnchantable() {
+         return !this.getItem().isItemTool(this) ? false : !this.isItemEnchanted();
+     }
+ 
+-    public void addEnchantment(Enchantment ench, int level)
+-    {
+-        if (this.stackTagCompound == null)
+-        {
++    public void addEnchantment(Enchantment ench, int level) {
++        if (this.stackTagCompound == null) {
+             this.setTagCompound(new NBTTagCompound());
+         }
+ 
+-        if (!this.stackTagCompound.hasKey("ench", 9))
+-        {
++        if (!this.stackTagCompound.hasKey("ench", 9)) {
+             this.stackTagCompound.setTag("ench", new NBTTagList());
+         }
+ 
+         NBTTagList nbttaglist = this.stackTagCompound.getTagList("ench", 10);
+         NBTTagCompound nbttagcompound = new NBTTagCompound();
+-        nbttagcompound.setShort("id", (short)ench.effectId);
+-        nbttagcompound.setShort("lvl", (short)((byte)level));
++        nbttagcompound.setShort("id", (short) ench.effectId);
++        nbttagcompound.setShort("lvl", (short) ((byte) level));
+         nbttaglist.appendTag(nbttagcompound);
+     }
+ 
+-    public boolean isItemEnchanted()
+-    {
++    public boolean isItemEnchanted() {
+         return this.stackTagCompound != null && this.stackTagCompound.hasKey("ench", 9);
+     }
+ 
+-    public void setTagInfo(String key, NBTBase value)
+-    {
+-        if (this.stackTagCompound == null)
+-        {
++    public void setTagInfo(String key, NBTBase value) {
++        if (this.stackTagCompound == null) {
+             this.setTagCompound(new NBTTagCompound());
+         }
+ 
+         this.stackTagCompound.setTag(key, value);
+     }
+ 
+-    public boolean canEditBlocks()
+-    {
++    public boolean canEditBlocks() {
+         return this.getItem().canItemEditBlocks();
+     }
+ 
+-    public boolean isOnItemFrame()
+-    {
++    public boolean isOnItemFrame() {
+         return this.itemFrame != null;
+     }
+ 
+-    public void setItemFrame(EntityItemFrame frame)
+-    {
++    public void setItemFrame(EntityItemFrame frame) {
+         this.itemFrame = frame;
+     }
+ 
+-    public EntityItemFrame getItemFrame()
+-    {
++    public EntityItemFrame getItemFrame() {
+         return this.itemFrame;
+     }
+ 
+-    public int getRepairCost()
+-    {
++    public int getRepairCost() {
+         return this.hasTagCompound() && this.stackTagCompound.hasKey("RepairCost", 3) ? this.stackTagCompound.getInteger("RepairCost") : 0;
+     }
+ 
+-    public void setRepairCost(int cost)
+-    {
+-        if (!this.hasTagCompound())
+-        {
++    public void setRepairCost(int cost) {
++        if (!this.hasTagCompound()) {
+             this.stackTagCompound = new NBTTagCompound();
+         }
+ 
+         this.stackTagCompound.setInteger("RepairCost", cost);
+     }
+ 
+-    public Multimap getAttributeModifiers()
+-    {
++    public Multimap getAttributeModifiers() {
+         Object object;
+ 
+-        if (this.hasTagCompound() && this.stackTagCompound.hasKey("AttributeModifiers", 9))
+-        {
++        if (this.hasTagCompound() && this.stackTagCompound.hasKey("AttributeModifiers", 9)) {
+             object = HashMultimap.create();
+             NBTTagList nbttaglist = this.stackTagCompound.getTagList("AttributeModifiers", 10);
+ 
+-            for (int i = 0; i < nbttaglist.tagCount(); ++i)
+-            {
++            for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+                 NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
+                 AttributeModifier attributemodifier = SharedMonsterAttributes.readAttributeModifierFromNBT(nbttagcompound);
+ 
+-                if (attributemodifier != null && attributemodifier.getID().getLeastSignificantBits() != 0L && attributemodifier.getID().getMostSignificantBits() != 0L)
+-                {
+-                    ((Multimap)object).put(nbttagcompound.getString("AttributeName"), attributemodifier);
++                if (attributemodifier != null && attributemodifier.getID().getLeastSignificantBits() != 0L && attributemodifier.getID().getMostSignificantBits() != 0L) {
++                    ((Multimap) object).put(nbttagcompound.getString("AttributeName"), attributemodifier);
+                 }
+             }
+-        }
+-        else
+-        {
++        } else {
+             object = this.getItem().getItemAttributeModifiers();
+         }
+ 
+-        return (Multimap)object;
++        return (Multimap) object;
+     }
+ 
+-    public void setItem(Item newItem)
+-    {
++    public void setItem(Item newItem) {
+         this.item = newItem;
++        this.setItemDamage(this.getMetadata()); // CraftBukkit - Set data again to ensure it is filtered properly
+     }
+ 
+-    public IChatComponent getChatComponent()
+-    {
++    public IChatComponent getChatComponent() {
+         ChatComponentText chatcomponenttext = new ChatComponentText(this.getDisplayName());
+ 
+-        if (this.hasDisplayName())
+-        {
++        if (this.hasDisplayName()) {
+             chatcomponenttext.getChatStyle().setItalic(Boolean.valueOf(true));
+         }
+ 
+         IChatComponent ichatcomponent = (new ChatComponentText("[")).appendSibling(chatcomponenttext).appendText("]");
+ 
+-        if (this.item != null)
+-        {
++        if (this.item != null) {
+             NBTTagCompound nbttagcompound = new NBTTagCompound();
+             this.writeToNBT(nbttagcompound);
+             ichatcomponent.getChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ChatComponentText(nbttagcompound.toString())));
+@@ -895,28 +895,20 @@
+         return ichatcomponent;
+     }
+ 
+-    public boolean canDestroy(Block blockIn)
+-    {
+-        if (blockIn == this.canDestroyCacheBlock)
+-        {
++    public boolean canDestroy(Block blockIn) {
++        if (blockIn == this.canDestroyCacheBlock) {
+             return this.canDestroyCacheResult;
+-        }
+-        else
+-        {
++        } else {
+             this.canDestroyCacheBlock = blockIn;
+ 
+-            if (this.hasTagCompound() && this.stackTagCompound.hasKey("CanDestroy", 9))
+-            {
++            if (this.hasTagCompound() && this.stackTagCompound.hasKey("CanDestroy", 9)) {
+                 NBTTagList nbttaglist = this.stackTagCompound.getTagList("CanDestroy", 8);
+ 
+-                for (int i = 0; i < nbttaglist.tagCount(); ++i)
+-                {
++                for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+                     Block block1 = Block.getBlockFromName(nbttaglist.getStringTagAt(i));
+ 
+-                    if (block1 == blockIn)
+-                    {
++                    if (block1 == blockIn) {
+                         this.canDestroyCacheResult = true;
+                         return true;
+                     }
+@@ -926,28 +926,20 @@
+         }
+     }
+ 
+-    public boolean canPlaceOn(Block blockIn)
+-    {
+-        if (blockIn == this.canPlaceOnCacheBlock)
+-        {
++    public boolean canPlaceOn(Block blockIn) {
++        if (blockIn == this.canPlaceOnCacheBlock) {
+             return this.canPlaceOnCacheResult;
+-        }
+-        else
+-        {
++        } else {
+             this.canPlaceOnCacheBlock = blockIn;
+ 
+-            if (this.hasTagCompound() && this.stackTagCompound.hasKey("CanPlaceOn", 9))
+-            {
++            if (this.hasTagCompound() && this.stackTagCompound.hasKey("CanPlaceOn", 9)) {
+                 NBTTagList nbttaglist = this.stackTagCompound.getTagList("CanPlaceOn", 8);
+ 
+-                for (int i = 0; i < nbttaglist.tagCount(); ++i)
+-                {
++                for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+                     Block block1 = Block.getBlockFromName(nbttaglist.getStringTagAt(i));
+ 
+-                    if (block1 == blockIn)
+-                    {
++                    if (block1 == blockIn) {
+                         this.canPlaceOnCacheResult = true;
+                         return true;
+                     }
+@@ -956,4 +956,4 @@
+             return false;
+         }
+     }
+-}
++}

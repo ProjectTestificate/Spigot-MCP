@@ -1,0 +1,19 @@
+---a/net/minecraft/block/properties/IProperty.java
++++b/net/minecraft/block/properties/IProperty.java
+@@ -2,8 +2,8 @@
+ 
+ import java.util.Collection;
+ 
+-public interface IProperty
+-{
++public interface IProperty {
++
+     String getName();
+ 
+     Collection getAllowedValues();
+@@ -11,4 +11,4 @@
+     Class getValueClass();
+ 
+     String getName(Comparable value);
+-}
++}

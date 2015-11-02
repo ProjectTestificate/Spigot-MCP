@@ -1,0 +1,15 @@
+---a/net/minecraft/entity/IEntityMultiPart.java
++++b/net/minecraft/entity/IEntityMultiPart.java
+@@ -4,10 +4,10 @@
+ import net.minecraft.util.DamageSource;
+ import net.minecraft.world.World;
+ 
+-public interface IEntityMultiPart
+-{
++public interface IEntityMultiPart {
++
+     World getWorld();
+ 
+     boolean attackEntityFromPart(EntityDragonPart p_70965_1_, DamageSource p_70965_2_, float p_70965_3_);
+-}
++}

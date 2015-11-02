@@ -1,0 +1,44 @@
+---a/net/minecraft/block/BlockNetherrack.java
++++b/net/minecraft/block/BlockNetherrack.java
+@@ -4,18 +4,22 @@
+ import net.minecraft.block.material.Material;
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.creativetab.CreativeTabs;
++import net.minecraft.util.BlockPos;
++import net.minecraft.world.World;
+ 
+-public class BlockNetherrack extends Block
+-{
++import org.bukkit.event.block.BlockRedstoneEvent;
++
++public class BlockNetherrack extends Block {
++
+     private static final String __OBFID = "CL_00000275";
+ 
+-    public BlockNetherrack()
+-    {
++    public BlockNetherrack() {
+         super(Material.rock);
+         this.setCreativeTab(CreativeTabs.tabBlock);
+     }
+ 
+-    public MapColor getMapColor(IBlockState state)
+-    {
++    public MapColor getMapColor(IBlockState state) {
+         return MapColor.netherrackColor;
+     }
+-}
++
++    // CraftBukkit start
++    @Override
++    public void onNeighborBlockChange(World world, BlockPos position, IBlockState iblockdata, Block block) {
++        if (block != null && block.canProvidePower()) {
++            org.bukkit.block.Block bl = world.getWorld().getBlockAt(position.getX(), position.getY(), position.getZ());
++            int power = bl.getBlockPower();
++
++            BlockRedstoneEvent event = new BlockRedstoneEvent(bl, power, power);
++            world.getServer().getPluginManager().callEvent(event);
++        }
++    }
++    // CraftBukkit end
++}

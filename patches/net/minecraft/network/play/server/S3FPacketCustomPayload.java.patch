@@ -1,0 +1,94 @@
+---a/net/minecraft/network/play/server/S3FPacketCustomPayload.java
++++b/net/minecraft/network/play/server/S3FPacketCustomPayload.java
+@@ -1,63 +1,53 @@
+ package net.minecraft.network.play.server;
+ 
+-import io.netty.buffer.ByteBuf;
+ import java.io.IOException;
++
+ import net.minecraft.network.INetHandler;
+ import net.minecraft.network.Packet;
+ import net.minecraft.network.PacketBuffer;
+ import net.minecraft.network.play.INetHandlerPlayClient;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public class S3FPacketCustomPayload implements Packet
+-{
++import io.netty.buffer.ByteBuf;
++
++public class S3FPacketCustomPayload implements Packet {
++
+     private String channel;
+     private PacketBuffer data;
+     private static final String __OBFID = "CL_00001297";
+ 
+-    public S3FPacketCustomPayload() {}
++    public S3FPacketCustomPayload() {
++    }
+ 
+-    public S3FPacketCustomPayload(String channelName, PacketBuffer dataIn)
+-    {
++    public S3FPacketCustomPayload(String channelName, PacketBuffer dataIn) {
+         this.channel = channelName;
+         this.data = dataIn;
+ 
+-        if (dataIn.writerIndex() > 1048576)
+-        {
++        if (dataIn.writerIndex() > 1048576) {
+             throw new IllegalArgumentException("Payload may not be larger than 1048576 bytes");
+         }
+     }
+ 
+-    public void readPacketData(PacketBuffer buf) throws IOException
+-    {
++    public void readPacketData(PacketBuffer buf) throws IOException {
+         this.channel = buf.readStringFromBuffer(20);
+         int i = buf.readableBytes();
+ 
+-        if (i >= 0 && i <= 1048576)
+-        {
++        if (i >= 0 && i <= 1048576) {
+             this.data = new PacketBuffer(buf.readBytes(i));
+-        }
+-        else
+-        {
++        } else {
+             throw new IOException("Payload may not be larger than 1048576 bytes");
+         }
+     }
+ 
+-    public void writePacketData(PacketBuffer buf) throws IOException
+-    {
++    public void writePacketData(PacketBuffer buf) throws IOException {
+         buf.writeString(this.channel);
+-        buf.writeBytes((ByteBuf)this.data);
++        buf.writeBytes((ByteBuf) this.data);
+     }
+ 
+-    public void process(INetHandlerPlayClient p_180734_1_)
+-    {
++    public void process(INetHandlerPlayClient p_180734_1_) {
+         p_180734_1_.handleCustomPayload(this);
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public String getChannelName()
+-    {
+-        return this.channel;
++    public void processPacket(INetHandler handler) {
++        this.process((INetHandlerPlayClient) handler);
+     }
+ 
+-    public void processPacket(INetHandler handler)
+-    {
+-        this.process((INetHandlerPlayClient)handler);
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public PacketBuffer getBufferData()
+-    {
+-        return this.data;
+-    }
+-}
++}

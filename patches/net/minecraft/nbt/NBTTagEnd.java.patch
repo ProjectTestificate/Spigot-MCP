@@ -1,0 +1,40 @@
+---a/net/minecraft/nbt/NBTTagEnd.java
++++b/net/minecraft/nbt/NBTTagEnd.java
+@@ -4,27 +4,26 @@
+ import java.io.DataOutput;
+ import java.io.IOException;
+ 
+-public class NBTTagEnd extends NBTBase
+-{
++public class NBTTagEnd extends NBTBase {
++
+     private static final String __OBFID = "CL_00001219";
+ 
+-    void read(DataInput input, int depth, NBTSizeTracker sizeTracker) throws IOException {}
++    void read(DataInput input, int depth, NBTSizeTracker sizeTracker) throws IOException {
++    }
+ 
+-    void write(DataOutput output) throws IOException {}
++    void write(DataOutput output) throws IOException {
++    }
+ 
+-    public byte getId()
+-    {
+-        return (byte)0;
++    public byte getId() {
++        return (byte) 0;
+     }
+ 
+-    public String toString()
+-    {
++    public String toString() {
+         return "END";
+     }
+ 
+-    public NBTBase copy()
+-    {
++    public NBTBase copy() {
+         return new NBTTagEnd();
+     }
+-}
++}

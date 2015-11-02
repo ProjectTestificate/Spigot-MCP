@@ -1,0 +1,261 @@
+---a/net/minecraft/world/gen/feature/WorldGenCanopyTree.java
++++b/net/minecraft/world/gen/feature/WorldGenCanopyTree.java
+@@ -1,6 +1,7 @@
+ package net.minecraft.world.gen.feature;
+ 
+ import java.util.Random;
++
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockPlanks;
+ import net.minecraft.block.material.Material;
+@@ -9,68 +9,53 @@
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.world.World;
+ 
+-public class WorldGenCanopyTree extends WorldGenAbstractTree
+-{
++public class WorldGenCanopyTree extends WorldGenAbstractTree {
++
+     private static final String __OBFID = "CL_00000430";
+ 
+-    public WorldGenCanopyTree(boolean p_i45461_1_)
+-    {
++    public WorldGenCanopyTree(boolean p_i45461_1_) {
+         super(p_i45461_1_);
+     }
+ 
+-    public boolean generate(World worldIn, Random p_180709_2_, BlockPos p_180709_3_)
+-    {
++    public boolean generate(World worldIn, Random p_180709_2_, BlockPos p_180709_3_) {
+         int i = p_180709_2_.nextInt(3) + p_180709_2_.nextInt(2) + 6;
+         boolean flag = true;
+ 
+-        if (p_180709_3_.getY() >= 1 && p_180709_3_.getY() + i + 1 <= 256)
+-        {
++        if (p_180709_3_.getY() >= 1 && p_180709_3_.getY() + i + 1 <= 256) {
+             int k;
+             int l;
+ 
+-            for (int j = p_180709_3_.getY(); j <= p_180709_3_.getY() + 1 + i; ++j)
+-            {
++            for (int j = p_180709_3_.getY(); j <= p_180709_3_.getY() + 1 + i; ++j) {
+                 byte b0 = 1;
+ 
+-                if (j == p_180709_3_.getY())
+-                {
++                if (j == p_180709_3_.getY()) {
+                     b0 = 0;
+                 }
+ 
+-                if (j >= p_180709_3_.getY() + 1 + i - 2)
+-                {
++                if (j >= p_180709_3_.getY() + 1 + i - 2) {
+                     b0 = 2;
+                 }
+ 
+-                for (k = p_180709_3_.getX() - b0; k <= p_180709_3_.getX() + b0 && flag; ++k)
+-                {
+-                    for (l = p_180709_3_.getZ() - b0; l <= p_180709_3_.getZ() + b0 && flag; ++l)
+-                    {
+-                        if (j >= 0 && j < 256)
+-                        {
+-                            if (!this.func_150523_a(worldIn.getBlockState(new BlockPos(k, j, l)).getBlock()))
+-                            {
++                for (k = p_180709_3_.getX() - b0; k <= p_180709_3_.getX() + b0 && flag; ++k) {
++                    for (l = p_180709_3_.getZ() - b0; l <= p_180709_3_.getZ() + b0 && flag; ++l) {
++                        if (j >= 0 && j < 256) {
++                            if (!this.func_150523_a(worldIn.getBlockState(new BlockPos(k, j, l)).getBlock())) {
+                                 flag = false;
+                             }
+-                        }
+-                        else
+-                        {
++                        } else {
+                             flag = false;
+                         }
+                     }
+                 }
+             }
+ 
+-            if (!flag)
+-            {
++            if (!flag) {
+                 return false;
+-            }
+-            else
+-            {
++            } else {
+                 Block block = worldIn.getBlockState(p_180709_3_.down()).getBlock();
+ 
+-                if ((block == Blocks.grass || block == Blocks.dirt) && p_180709_3_.getY() < 256 - i - 1)
+-                {
++                if ((block == Blocks.grass || block == Blocks.dirt) && p_180709_3_.getY() < 256 - i - 1) {
+                     this.func_175921_a(worldIn, p_180709_3_.down());
+                     this.func_175921_a(worldIn, p_180709_3_.add(1, -1, 0));
+                     this.func_175921_a(worldIn, p_180709_3_.add(1, -1, 1));
+@@ -84,12 +84,10 @@
+                     int l1;
+                     int i2;
+ 
+-                    for (l1 = 0; l1 < i; ++l1)
+-                    {
++                    for (l1 = 0; l1 < i; ++l1) {
+                         i2 = p_180709_3_.getY() + l1;
+ 
+-                        if (l1 >= k && l > 0)
+-                        {
++                        if (l1 >= k && l > 0) {
+                             i1 += enumfacing.getFrontOffsetX();
+                             j1 += enumfacing.getFrontOffsetZ();
+                             --l;
+@@ -98,8 +98,7 @@
+                         BlockPos blockpos1 = new BlockPos(i1, i2, j1);
+                         Material material = worldIn.getBlockState(blockpos1).getBlock().getMaterial();
+ 
+-                        if (material == Material.air || material == Material.leaves)
+-                        {
++                        if (material == Material.air || material == Material.leaves) {
+                             this.func_175905_a(worldIn, blockpos1, Blocks.log2, BlockPlanks.EnumType.DARK_OAK.getMetadata() - 4);
+                             this.func_175905_a(worldIn, blockpos1.east(), Blocks.log2, BlockPlanks.EnumType.DARK_OAK.getMetadata() - 4);
+                             this.func_175905_a(worldIn, blockpos1.south(), Blocks.log2, BlockPlanks.EnumType.DARK_OAK.getMetadata() - 4);
+@@ -108,20 +108,16 @@
+                         }
+                     }
+ 
+-                    for (l1 = -2; l1 <= 0; ++l1)
+-                    {
+-                        for (i2 = -2; i2 <= 0; ++i2)
+-                        {
++                    for (l1 = -2; l1 <= 0; ++l1) {
++                        for (i2 = -2; i2 <= 0; ++i2) {
+                             byte b1 = -1;
+                             this.func_150526_a(worldIn, i1 + l1, k1 + b1, j1 + i2);
+                             this.func_150526_a(worldIn, 1 + i1 - l1, k1 + b1, j1 + i2);
+                             this.func_150526_a(worldIn, i1 + l1, k1 + b1, 1 + j1 - i2);
+                             this.func_150526_a(worldIn, 1 + i1 - l1, k1 + b1, 1 + j1 - i2);
+ 
+-                            if ((l1 > -2 || i2 > -1) && (l1 != -1 || i2 != -2))
+-                            {
++                            if ((l1 > -2 || i2 > -1) && (l1 != -1 || i2 != -2)) {
+                                 byte b2 = 1;
+                                 this.func_150526_a(worldIn, i1 + l1, k1 + b2, j1 + i2);
+                                 this.func_150526_a(worldIn, 1 + i1 - l1, k1 + b2, j1 + i2);
+@@ -129,51 +129,57 @@
+                         }
+                     }
+ 
+-                    if (p_180709_2_.nextBoolean())
+-                    {
++                    if (p_180709_2_.nextBoolean()) {
+                         this.func_150526_a(worldIn, i1, k1 + 2, j1);
+                         this.func_150526_a(worldIn, i1 + 1, k1 + 2, j1);
+                         this.func_150526_a(worldIn, i1 + 1, k1 + 2, j1 + 1);
+                         this.func_150526_a(worldIn, i1, k1 + 2, j1 + 1);
+                     }
+ 
+-                    for (l1 = -3; l1 <= 4; ++l1)
+-                    {
+-                        for (i2 = -3; i2 <= 4; ++i2)
+-                        {
+-                            if ((l1 != -3 || i2 != -3) && (l1 != -3 || i2 != 4) && (l1 != 4 || i2 != -3) && (l1 != 4 || i2 != 4) && (Math.abs(l1) < 3 || Math.abs(i2) < 3))
+-                            {
++                    for (l1 = -3; l1 <= 4; ++l1) {
++                        for (i2 = -3; i2 <= 4; ++i2) {
++                            if ((l1 != -3 || i2 != -3) && (l1 != -3 || i2 != 4) && (l1 != 4 || i2 != -3) && (l1 != 4 || i2 != 4) && (Math.abs(l1) < 3 || Math.abs(i2) < 3)) {
+                                 this.func_150526_a(worldIn, i1 + l1, k1, j1 + i2);
+                             }
+                         }
+                     }
+ 
+-                    for (l1 = -1; l1 <= 2; ++l1)
+-                    {
+-                        for (i2 = -1; i2 <= 2; ++i2)
+-                        {
+-                            if ((l1 < 0 || l1 > 1 || i2 < 0 || i2 > 1) && p_180709_2_.nextInt(3) <= 0)
+-                            {
++                    for (l1 = -1; l1 <= 2; ++l1) {
++                        for (i2 = -1; i2 <= 2; ++i2) {
++                            if ((l1 < 0 || l1 > 1 || i2 < 0 || i2 > 1) && p_180709_2_.nextInt(3) <= 0) {
+                                 int k2 = p_180709_2_.nextInt(3) + 2;
+                                 int l2;
+ 
+-                                for (l2 = 0; l2 < k2; ++l2)
+-                                {
+-                                    this.func_175905_a(worldIn, new BlockPos(p_180709_3_.getX() + l1, k1 - l2 - 1, p_180709_3_.getZ() + i2), Blocks.log2, BlockPlanks.EnumType.DARK_OAK.getMetadata() - 4);
++                                for (l2 = 0; l2 < k2; ++l2) {
++                                    /* -- SpigotMCP NOTE --
++                                     * Paramater mappings:
++                                     * blockposition -> p_180709_3_
++                                     * world -> worldIn
++                                     * k2 -> l2
++                                     * -- Exact Same --
++                                     * l1 == l1
++                                     * k1 == k1
++                                     * i2 == i2
++                                     */
++                                    // Spigot start
++                                    BlockPos position = new BlockPos(p_180709_3_.getX() + l1, k1 - l2 - 1, p_180709_3_.getZ() + i2);
++                                    Block bl = worldIn.getBlockState(position).getBlock();
++
++                                    if (bl.getMaterial() == Material.air || bl.getMaterial() == Material.leaves) {
++                                        this.func_175905_a(worldIn, position, Blocks.log2, BlockPlanks.EnumType.DARK_OAK.getMetadata() - 4);
++                                    }
++                                    // Spigot end
+                                 }
+ 
+                                 int j2;
+ 
+-                                for (l2 = -1; l2 <= 1; ++l2)
+-                                {
+-                                    for (j2 = -1; j2 <= 1; ++j2)
+-                                    {
++                                for (l2 = -1; l2 <= 1; ++l2) {
++                                    for (j2 = -1; j2 <= 1; ++j2) {
+                                         this.func_150526_a(worldIn, i1 + l1 + l2, k1 - 0, j1 + i2 + j2);
+                                     }
+                                 }
+ 
+-                                for (l2 = -2; l2 <= 2; ++l2)
+-                                {
+-                                    for (j2 = -2; j2 <= 2; ++j2)
+-                                    {
+-                                        if (Math.abs(l2) != 2 || Math.abs(j2) != 2)
+-                                        {
++                                for (l2 = -2; l2 <= 2; ++l2) {
++                                    for (j2 = -2; j2 <= 2; ++j2) {
++                                        if (Math.abs(l2) != 2 || Math.abs(j2) != 2) {
+                                             this.func_150526_a(worldIn, i1 + l1 + l2, k1 - 1, j1 + i2 + j2);
+                                         }
+                                     }
+@@ -187,28 +187,20 @@
+                     }
+ 
+                     return true;
+-                }
+-                else
+-                {
++                } else {
+                     return false;
+                 }
+             }
+-        }
+-        else
+-        {
++        } else {
+             return false;
+         }
+     }
+ 
+-    private void func_150526_a(World worldIn, int p_150526_2_, int p_150526_3_, int p_150526_4_)
+-    {
++    private void func_150526_a(World worldIn, int p_150526_2_, int p_150526_3_, int p_150526_4_) {
+         Block block = worldIn.getBlockState(new BlockPos(p_150526_2_, p_150526_3_, p_150526_4_)).getBlock();
+ 
+-        if (block.getMaterial() == Material.air)
+-        {
++        if (block.getMaterial() == Material.air) {
+             this.func_175905_a(worldIn, new BlockPos(p_150526_2_, p_150526_3_, p_150526_4_), Blocks.leaves2, 1);
+         }
+     }
+-}
++}

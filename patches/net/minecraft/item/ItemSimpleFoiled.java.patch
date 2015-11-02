@@ -1,0 +1,21 @@
+---a/net/minecraft/item/ItemSimpleFoiled.java
++++b/net/minecraft/item/ItemSimpleFoiled.java
+@@ -1,11 +1,7 @@
+ package net.minecraft.item;
+ 
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public class ItemSimpleFoiled extends Item
+-{
++public class ItemSimpleFoiled extends Item {
++
+     private static final String __OBFID = "CL_00000065";
+ 
+-    @SideOnly(Side.CLIENT)
+-    public boolean hasEffect(ItemStack stack)
+-    {
+-        return true;
+-    }
+-}
++}

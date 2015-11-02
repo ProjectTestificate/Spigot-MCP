@@ -1,0 +1,43 @@
+---a/net/minecraft/command/server/CommandPublishLocalServer.java
++++b/net/minecraft/command/server/CommandPublishLocalServer.java
+@@ -6,32 +6,26 @@
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.world.WorldSettings;
+ 
+-public class CommandPublishLocalServer extends CommandBase
+-{
++public class CommandPublishLocalServer extends CommandBase {
++
+     private static final String __OBFID = "CL_00000799";
+ 
+-    public String getName()
+-    {
++    public String getName() {
+         return "publish";
+     }
+ 
+-    public String getCommandUsage(ICommandSender sender)
+-    {
++    public String getCommandUsage(ICommandSender sender) {
+         return "commands.publish.usage";
+     }
+ 
+-    public void execute(ICommandSender sender, String[] args) throws CommandException
+-    {
++    public void execute(ICommandSender sender, String[] args) throws CommandException {
+         String s = MinecraftServer.getServer().shareToLAN(WorldSettings.GameType.SURVIVAL, false);
+ 
+-        if (s != null)
+-        {
+-            notifyOperators(sender, this, "commands.publish.started", new Object[] {s});
+-        }
+-        else
+-        {
++        if (s != null) {
++            notifyOperators(sender, this, "commands.publish.started", new Object[]{s});
++        } else {
+             notifyOperators(sender, this, "commands.publish.failed", new Object[0]);
+         }
+     }
+-}
++}

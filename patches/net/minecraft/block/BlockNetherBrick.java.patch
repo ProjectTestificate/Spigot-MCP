@@ -1,0 +1,26 @@
+---a/net/minecraft/block/BlockNetherBrick.java
++++b/net/minecraft/block/BlockNetherBrick.java
+@@ -5,19 +5,17 @@
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.creativetab.CreativeTabs;
+ 
+-public class BlockNetherBrick extends Block
+-{
++public class BlockNetherBrick extends Block {
++
+     private static final String __OBFID = "CL_00002091";
+ 
+-    public BlockNetherBrick()
+-    {
++    public BlockNetherBrick() {
+         super(Material.rock);
+         this.setCreativeTab(CreativeTabs.tabBlock);
+     }
+ 
+-    public MapColor getMapColor(IBlockState state)
+-    {
++    public MapColor getMapColor(IBlockState state) {
+         return MapColor.netherrackColor;
+     }
+-}
++}

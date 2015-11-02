@@ -1,0 +1,124 @@
+---a/net/minecraft/world/WorldManager.java
++++b/net/minecraft/world/WorldManager.java
+@@ -1,6 +1,7 @@
+ package net.minecraft.world;
+ 
+ import java.util.Iterator;
++
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.entity.player.EntityPlayerMP;
+@@ -10,81 +10,76 @@
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.util.BlockPos;
+ 
+-public class WorldManager implements IWorldAccess
+-{
++public class WorldManager implements IWorldAccess {
++
+     private MinecraftServer mcServer;
+     private WorldServer theWorldServer;
+     private static final String __OBFID = "CL_00001433";
+ 
+-    public WorldManager(MinecraftServer p_i1517_1_, WorldServer p_i1517_2_)
+-    {
++    public WorldManager(MinecraftServer p_i1517_1_, WorldServer p_i1517_2_) {
+         this.mcServer = p_i1517_1_;
+         this.theWorldServer = p_i1517_2_;
+     }
+ 
+-    public void spawnParticle(int p_180442_1_, boolean p_180442_2_, double p_180442_3_, double p_180442_5_, double p_180442_7_, double p_180442_9_, double p_180442_11_, double p_180442_13_, int ... p_180442_15_) {}
++    public void spawnParticle(int p_180442_1_, boolean p_180442_2_, double p_180442_3_, double p_180442_5_, double p_180442_7_, double p_180442_9_, double p_180442_11_, double p_180442_13_, int... p_180442_15_) {
++    }
+ 
+-    public void onEntityAdded(Entity entityIn)
+-    {
++    public void onEntityAdded(Entity entityIn) {
+         this.theWorldServer.getEntityTracker().trackEntity(entityIn);
+     }
+ 
+-    public void onEntityRemoved(Entity entityIn)
+-    {
++    public void onEntityRemoved(Entity entityIn) {
+         this.theWorldServer.getEntityTracker().untrackEntity(entityIn);
+     }
+ 
+-    public void playSound(String soundName, double x, double y, double z, float volume, float pitch)
+-    {
+-        this.mcServer.getConfigurationManager().sendToAllNear(x, y, z, volume > 1.0F ? (double)(16.0F * volume) : 16.0D, this.theWorldServer.provider.getDimensionId(), new S29PacketSoundEffect(soundName, x, y, z, volume, pitch));
++    public void playSound(String soundName, double x, double y, double z, float volume, float pitch) {
++        // CraftBukkit - this.world.dimension
++        this.mcServer.getConfigurationManager().sendToAllNear(x, y, z, volume > 1.0F ? (double) (16.0F * volume) : 16.0D, this.theWorldServer.dimension, new S29PacketSoundEffect(soundName, x, y, z, volume, pitch));
+     }
+ 
+-    public void playSoundToNearExcept(EntityPlayer except, String soundName, double x, double y, double z, float volume, float pitch)
+-    {
+-        this.mcServer.getConfigurationManager().sendToAllNearExcept(except, x, y, z, volume > 1.0F ? (double)(16.0F * volume) : 16.0D, this.theWorldServer.provider.getDimensionId(), new S29PacketSoundEffect(soundName, x, y, z, volume, pitch));
++    public void playSoundToNearExcept(EntityPlayer except, String soundName, double x, double y, double z, float volume, float pitch) {
++        // CraftBukkit - this.world.dimension
++        this.mcServer.getConfigurationManager().sendToAllNearExcept(except, x, y, z, volume > 1.0F ? (double) (16.0F * volume) : 16.0D, this.theWorldServer.dimension, new S29PacketSoundEffect(soundName, x, y, z, volume, pitch));
+     }
+ 
+-    public void markBlockRangeForRenderUpdate(int x1, int y1, int z1, int x2, int y2, int z2) {}
++    public void markBlockRangeForRenderUpdate(int x1, int y1, int z1, int x2, int y2, int z2) {
++    }
+ 
+-    public void markBlockForUpdate(BlockPos pos)
+-    {
++    public void markBlockForUpdate(BlockPos pos) {
+         this.theWorldServer.getPlayerManager().markBlockForUpdate(pos);
+     }
+ 
+-    public void notifyLightSet(BlockPos pos) {}
++    public void notifyLightSet(BlockPos pos) {
++    }
+ 
+-    public void playRecord(String recordName, BlockPos blockPosIn) {}
++    public void playRecord(String recordName, BlockPos blockPosIn) {
++    }
+ 
+-    public void playAusSFX(EntityPlayer p_180439_1_, int p_180439_2_, BlockPos blockPosIn, int p_180439_4_)
+-    {
+-        this.mcServer.getConfigurationManager().sendToAllNearExcept(p_180439_1_, (double)blockPosIn.getX(), (double)blockPosIn.getY(), (double)blockPosIn.getZ(), 64.0D, this.theWorldServer.provider.getDimensionId(), new S28PacketEffect(p_180439_2_, blockPosIn, p_180439_4_, false));
++    public void playAusSFX(EntityPlayer p_180439_1_, int p_180439_2_, BlockPos blockPosIn, int p_180439_4_) {
++        // CraftBukkit - this.world.dimension
++        this.mcServer.getConfigurationManager().sendToAllNearExcept(p_180439_1_, (double) blockPosIn.getX(), (double) blockPosIn.getY(), (double) blockPosIn.getZ(), 64.0D, this.theWorldServer.dimension, new S28PacketEffect(p_180439_2_, blockPosIn, p_180439_4_, false));
+     }
+ 
+-    public void broadcastSound(int p_180440_1_, BlockPos p_180440_2_, int p_180440_3_)
+-    {
++    public void broadcastSound(int p_180440_1_, BlockPos p_180440_2_, int p_180440_3_) {
+         this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new S28PacketEffect(p_180440_1_, p_180440_2_, p_180440_3_, true));
+     }
+ 
+-    public void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress)
+-    {
++    public void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress) {
+         Iterator iterator = this.mcServer.getConfigurationManager().playerEntityList.iterator();
+ 
+-        while (iterator.hasNext())
+-        {
+-            EntityPlayerMP entityplayermp = (EntityPlayerMP)iterator.next();
++        while (iterator.hasNext()) {
++            EntityPlayerMP entityplayermp = (EntityPlayerMP) iterator.next();
+ 
+-            if (entityplayermp != null && entityplayermp.worldObj == this.theWorldServer && entityplayermp.getEntityId() != breakerId)
+-            {
+-                double d0 = (double)pos.getX() - entityplayermp.posX;
+-                double d1 = (double)pos.getY() - entityplayermp.posY;
+-                double d2 = (double)pos.getZ() - entityplayermp.posZ;
++            if (entityplayermp != null && entityplayermp.worldObj == this.theWorldServer && entityplayermp.getEntityId() != breakerId) {
++                double d0 = (double) pos.getX() - entityplayermp.posX;
++                double d1 = (double) pos.getY() - entityplayermp.posY;
++                double d2 = (double) pos.getZ() - entityplayermp.posZ;
+ 
+-                if (d0 * d0 + d1 * d1 + d2 * d2 < 1024.0D)
+-                {
++                if (d0 * d0 + d1 * d1 + d2 * d2 < 1024.0D) {
+                     entityplayermp.playerNetServerHandler.sendPacket(new S25PacketBlockBreakAnim(breakerId, pos, progress));
+                 }
+             }
+         }
+     }
+-}
++}

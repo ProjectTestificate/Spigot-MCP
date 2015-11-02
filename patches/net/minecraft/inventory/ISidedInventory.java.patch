@@ -1,0 +1,17 @@
+---a/net/minecraft/inventory/ISidedInventory.java
++++b/net/minecraft/inventory/ISidedInventory.java
+@@ -3,12 +3,12 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.util.EnumFacing;
+ 
+-public interface ISidedInventory extends IInventory
+-{
++public interface ISidedInventory extends IInventory {
++
+     int[] getSlotsForFace(EnumFacing side);
+ 
+     boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction);
+ 
+     boolean canExtractItem(int index, ItemStack stack, EnumFacing direction);
+-}
++}

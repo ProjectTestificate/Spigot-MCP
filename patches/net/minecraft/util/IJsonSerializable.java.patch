@@ -1,0 +1,15 @@
+---a/net/minecraft/util/IJsonSerializable.java
++++b/net/minecraft/util/IJsonSerializable.java
+@@ -2,10 +2,10 @@
+ 
+ import com.google.gson.JsonElement;
+ 
+-public interface IJsonSerializable
+-{
++public interface IJsonSerializable {
++
+     void func_152753_a(JsonElement p_152753_1_);
+ 
+     JsonElement getSerializableElement();
+-}
++}

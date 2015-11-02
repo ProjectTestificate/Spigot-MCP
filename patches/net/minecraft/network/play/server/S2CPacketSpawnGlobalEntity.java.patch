@@ -1,0 +1,112 @@
+---a/net/minecraft/network/play/server/S2CPacketSpawnGlobalEntity.java
++++b/net/minecraft/network/play/server/S2CPacketSpawnGlobalEntity.java
+@@ -1,6 +1,7 @@
+ package net.minecraft.network.play.server;
+ 
+ import java.io.IOException;
++
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.effect.EntityLightningBolt;
+ import net.minecraft.network.INetHandler;
+@@ -8,11 +8,7 @@
+ import net.minecraft.network.PacketBuffer;
+ import net.minecraft.network.play.INetHandlerPlayClient;
+ import net.minecraft.util.MathHelper;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public class S2CPacketSpawnGlobalEntity implements Packet
+-{
++
++public class S2CPacketSpawnGlobalEntity implements Packet {
++
+     private int field_149059_a;
+     private int field_149057_b;
+     private int field_149058_c;
+@@ -20,22 +20,22 @@
+     private int field_149056_e;
+     private static final String __OBFID = "CL_00001278";
+ 
+-    public S2CPacketSpawnGlobalEntity() {}
++    public S2CPacketSpawnGlobalEntity() {
++    }
+ 
+-    public S2CPacketSpawnGlobalEntity(Entity p_i45191_1_)
+-    {
++    public S2CPacketSpawnGlobalEntity(Entity p_i45191_1_) {
+         this.field_149059_a = p_i45191_1_.getEntityId();
+         this.field_149057_b = MathHelper.floor_double(p_i45191_1_.posX * 32.0D);
+         this.field_149058_c = MathHelper.floor_double(p_i45191_1_.posY * 32.0D);
+         this.field_149055_d = MathHelper.floor_double(p_i45191_1_.posZ * 32.0D);
+ 
+-        if (p_i45191_1_ instanceof EntityLightningBolt)
+-        {
++        if (p_i45191_1_ instanceof EntityLightningBolt) {
+             this.field_149056_e = 1;
+         }
+     }
+ 
+-    public void readPacketData(PacketBuffer buf) throws IOException
+-    {
++    public void readPacketData(PacketBuffer buf) throws IOException {
+         this.field_149059_a = buf.readVarIntFromBuffer();
+         this.field_149056_e = buf.readByte();
+         this.field_149057_b = buf.readInt();
+@@ -44,8 +44,7 @@
+         this.field_149055_d = buf.readInt();
+     }
+ 
+-    public void writePacketData(PacketBuffer buf) throws IOException
+-    {
++    public void writePacketData(PacketBuffer buf) throws IOException {
+         buf.writeVarIntToBuffer(this.field_149059_a);
+         buf.writeByte(this.field_149056_e);
+         buf.writeInt(this.field_149057_b);
+@@ -53,16 +53,12 @@
+         buf.writeInt(this.field_149055_d);
+     }
+ 
+-    public void func_180720_a(INetHandlerPlayClient p_180720_1_)
+-    {
++    public void func_180720_a(INetHandlerPlayClient p_180720_1_) {
+         p_180720_1_.handleSpawnGlobalEntity(this);
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public int func_149052_c()
+-    {
+-        return this.field_149059_a;
++    public void processPacket(INetHandler handler) {
++        this.func_180720_a((INetHandlerPlayClient) handler);
+     }
+ 
+-    public void processPacket(INetHandler handler)
+-    {
+-        this.func_180720_a((INetHandlerPlayClient)handler);
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public int func_149051_d()
+-    {
+-        return this.field_149057_b;
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public int func_149050_e()
+-    {
+-        return this.field_149058_c;
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public int func_149049_f()
+-    {
+-        return this.field_149055_d;
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public int func_149053_g()
+-    {
+-        return this.field_149056_e;
+-    }
+-}
++}

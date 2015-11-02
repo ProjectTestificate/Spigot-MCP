@@ -1,0 +1,33 @@
+---a/net/minecraft/item/ItemCloth.java
++++b/net/minecraft/item/ItemCloth.java
+@@ -2,25 +2,22 @@
+ 
+ import net.minecraft.block.Block;
+ 
+-public class ItemCloth extends ItemBlock
+-{
++public class ItemCloth extends ItemBlock {
++
+     private static final String __OBFID = "CL_00000075";
+ 
+-    public ItemCloth(Block block)
+-    {
++    public ItemCloth(Block block) {
+         super(block);
+         this.setMaxDamage(0);
+         this.setHasSubtypes(true);
+     }
+ 
+-    public int getMetadata(int damage)
+-    {
++    public int getMetadata(int damage) {
+         return damage;
+     }
+ 
+-    public String getUnlocalizedName(ItemStack stack)
+-    {
++    public String getUnlocalizedName(ItemStack stack) {
+         return super.getUnlocalizedName() + "." + EnumDyeColor.byMetadata(stack.getMetadata()).getUnlocalizedName();
+     }
+-}
++}

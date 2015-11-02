@@ -1,0 +1,132 @@
+---a/net/minecraft/network/play/server/S18PacketEntityTeleport.java
++++b/net/minecraft/network/play/server/S18PacketEntityTeleport.java
+@@ -1,15 +1,15 @@
+ package net.minecraft.network.play.server;
+ 
+ import java.io.IOException;
++
+ import net.minecraft.entity.Entity;
+ import net.minecraft.network.INetHandler;
+ import net.minecraft.network.Packet;
+ import net.minecraft.network.PacketBuffer;
+ import net.minecraft.network.play.INetHandlerPlayClient;
+ import net.minecraft.util.MathHelper;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public class S18PacketEntityTeleport implements Packet
+-{
++
++public class S18PacketEntityTeleport implements Packet {
++
+     private int field_149458_a;
+     private int field_149456_b;
+     private int field_149457_c;
+@@ -21,20 +21,21 @@
+     private boolean field_179698_g;
+     private static final String __OBFID = "CL_00001340";
+ 
+-    public S18PacketEntityTeleport() {}
++    public S18PacketEntityTeleport() {
++    }
+ 
+-    public S18PacketEntityTeleport(Entity p_i45233_1_)
+-    {
++    public S18PacketEntityTeleport(Entity p_i45233_1_) {
+         this.field_149458_a = p_i45233_1_.getEntityId();
+         this.field_149456_b = MathHelper.floor_double(p_i45233_1_.posX * 32.0D);
+         this.field_149457_c = MathHelper.floor_double(p_i45233_1_.posY * 32.0D);
+         this.field_149454_d = MathHelper.floor_double(p_i45233_1_.posZ * 32.0D);
+-        this.field_149455_e = (byte)((int)(p_i45233_1_.rotationYaw * 256.0F / 360.0F));
+-        this.field_149453_f = (byte)((int)(p_i45233_1_.rotationPitch * 256.0F / 360.0F));
++        this.field_149455_e = (byte) ((int) (p_i45233_1_.rotationYaw * 256.0F / 360.0F));
++        this.field_149453_f = (byte) ((int) (p_i45233_1_.rotationPitch * 256.0F / 360.0F));
+         this.field_179698_g = p_i45233_1_.onGround;
+     }
+ 
+-    public S18PacketEntityTeleport(int p_i45949_1_, int p_i45949_2_, int p_i45949_3_, int p_i45949_4_, byte p_i45949_5_, byte p_i45949_6_, boolean p_i45949_7_)
+-    {
++    public S18PacketEntityTeleport(int p_i45949_1_, int p_i45949_2_, int p_i45949_3_, int p_i45949_4_, byte p_i45949_5_, byte p_i45949_6_, boolean p_i45949_7_) {
+         this.field_149458_a = p_i45949_1_;
+         this.field_149456_b = p_i45949_2_;
+         this.field_149457_c = p_i45949_3_;
+@@ -45,8 +45,7 @@
+         this.field_179698_g = p_i45949_7_;
+     }
+ 
+-    public void readPacketData(PacketBuffer buf) throws IOException
+-    {
++    public void readPacketData(PacketBuffer buf) throws IOException {
+         this.field_149458_a = buf.readVarIntFromBuffer();
+         this.field_149456_b = buf.readInt();
+         this.field_149457_c = buf.readInt();
+@@ -56,8 +56,7 @@
+         this.field_179698_g = buf.readBoolean();
+     }
+ 
+-    public void writePacketData(PacketBuffer buf) throws IOException
+-    {
++    public void writePacketData(PacketBuffer buf) throws IOException {
+         buf.writeVarIntToBuffer(this.field_149458_a);
+         buf.writeInt(this.field_149456_b);
+         buf.writeInt(this.field_149457_c);
+@@ -67,15 +67,11 @@
+         buf.writeBoolean(this.field_179698_g);
+     }
+ 
+-    public void processPacket(INetHandlerPlayClient handler)
+-    {
++    public void processPacket(INetHandlerPlayClient handler) {
+         handler.handleEntityTeleport(this);
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public int func_149451_c()
+-    {
+-        return this.field_149458_a;
++    public void processPacket(INetHandler handler) {
++        this.processPacket((INetHandlerPlayClient) handler);
+     }
+-
+-    public void processPacket(INetHandler handler)
+-    {
+-        this.processPacket((INetHandlerPlayClient)handler);
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public int func_149449_d()
+-    {
+-        return this.field_149456_b;
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public int func_149448_e()
+-    {
+-        return this.field_149457_c;
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public int func_149446_f()
+-    {
+-        return this.field_149454_d;
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public byte func_149450_g()
+-    {
+-        return this.field_149455_e;
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public byte func_149447_h()
+-    {
+-        return this.field_149453_f;
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public boolean func_179697_g()
+-    {
+-        return this.field_179698_g;
+-    }
+-}
++}

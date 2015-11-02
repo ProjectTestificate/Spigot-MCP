@@ -1,0 +1,18 @@
+---a/net/minecraft/block/BlockHalfWoodSlab.java
++++b/net/minecraft/block/BlockHalfWoodSlab.java
+@@ -1,12 +1,11 @@
+ package net.minecraft.block;
+ 
+-public class BlockHalfWoodSlab extends BlockWoodSlab
+-{
++public class BlockHalfWoodSlab extends BlockWoodSlab {
++
+     private static final String __OBFID = "CL_00002107";
+ 
+-    public boolean isDouble()
+-    {
++    public boolean isDouble() {
+         return false;
+     }
+-}
++}

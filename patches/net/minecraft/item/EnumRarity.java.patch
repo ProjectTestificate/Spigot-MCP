@@ -1,0 +1,24 @@
+---a/net/minecraft/item/EnumRarity.java
++++b/net/minecraft/item/EnumRarity.java
+@@ -2,8 +2,7 @@
+ 
+ import net.minecraft.util.EnumChatFormatting;
+ 
+-public enum EnumRarity
+-{
++public enum EnumRarity {
+     COMMON(EnumChatFormatting.WHITE, "Common"),
+     UNCOMMON(EnumChatFormatting.YELLOW, "Uncommon"),
+     RARE(EnumChatFormatting.AQUA, "Rare"),
+@@ -13,10 +13,8 @@
+ 
+     private static final String __OBFID = "CL_00000056";
+ 
+-    private EnumRarity(EnumChatFormatting color, String name)
+-    {
++    private EnumRarity(EnumChatFormatting color, String name) {
+         this.rarityColor = color;
+         this.rarityName = name;
+     }
+-}
++}

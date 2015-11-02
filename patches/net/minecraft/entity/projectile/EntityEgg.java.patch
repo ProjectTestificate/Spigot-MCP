@@ -1,0 +1,123 @@
+---a/net/minecraft/entity/projectile/EntityEgg.java
++++b/net/minecraft/entity/projectile/EntityEgg.java
+@@ -1,7 +1,9 @@
+ package net.minecraft.entity.projectile;
+ 
++import net.minecraft.entity.Entity;
+ import net.minecraft.entity.EntityLivingBase;
+ import net.minecraft.entity.passive.EntityChicken;
++import net.minecraft.entity.player.EntityPlayerMP;
+ import net.minecraft.init.Items;
+ import net.minecraft.item.Item;
+ import net.minecraft.util.DamageSource;
+@@ -9,43 +9,81 @@
+ import net.minecraft.util.MovingObjectPosition;
+ import net.minecraft.world.World;
+ 
+-public class EntityEgg extends EntityThrowable
+-{
++import org.bukkit.Location;
++import org.bukkit.entity.Ageable;
++import org.bukkit.entity.EntityType;
++import org.bukkit.entity.Player;
++import org.bukkit.event.player.PlayerEggThrowEvent;
++
++
++public class EntityEgg extends EntityThrowable {
++
+     private static final String __OBFID = "CL_00001724";
+ 
+-    public EntityEgg(World worldIn)
+-    {
++    public EntityEgg(World worldIn) {
+         super(worldIn);
+     }
+ 
+-    public EntityEgg(World worldIn, EntityLivingBase p_i1780_2_)
+-    {
++    public EntityEgg(World worldIn, EntityLivingBase p_i1780_2_) {
+         super(worldIn, p_i1780_2_);
+     }
+ 
+-    public EntityEgg(World worldIn, double p_i1781_2_, double p_i1781_4_, double p_i1781_6_)
+-    {
++    public EntityEgg(World worldIn, double p_i1781_2_, double p_i1781_4_, double p_i1781_6_) {
+         super(worldIn, p_i1781_2_, p_i1781_4_, p_i1781_6_);
+     }
+ 
+-    protected void onImpact(MovingObjectPosition p_70184_1_)
+-    {
+-        if (p_70184_1_.entityHit != null)
+-        {
++    protected void onImpact(MovingObjectPosition p_70184_1_) {
++        if (p_70184_1_.entityHit != null) {
+             p_70184_1_.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0.0F);
+         }
+ 
+-        if (!this.worldObj.isRemote && this.rand.nextInt(8) == 0)
+-        {
++        // CraftBukkit start - Fire PlayerEggThrowEvent
++        boolean hatching = !this.worldObj.isRemote && this.rand.nextInt(8) == 0;
++        int numHatching = (this.rand.nextInt(32) == 0) ? 4 : 1;
++        if (!hatching) {
++            numHatching = 0;
++        }
++
++        EntityType hatchingType = EntityType.CHICKEN;
++
++        Entity shooter = this.getThrower();
++        if (shooter instanceof EntityPlayerMP) {
++            Player player = (shooter == null) ? null : (Player) shooter.getBukkitEntity();
++
++            PlayerEggThrowEvent event = new PlayerEggThrowEvent(player, (org.bukkit.entity.Egg) this.getBukkitEntity(), hatching, (byte) numHatching, hatchingType);
++            this.worldObj.getServer().getPluginManager().callEvent(event);
++
++            hatching = event.isHatching();
++            numHatching = event.getNumHatches();
++            hatchingType = event.getHatchingType();
++        }
++
++        if (hatching) {
++            for (int k = 0; k < numHatching; k++) {
++                org.bukkit.entity.Entity entity = worldObj.getWorld().spawn(new Location(worldObj.getWorld(), this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F), hatchingType.getEntityClass(), org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.EGG);
++                if (entity instanceof Ageable) {
++                    ((Ageable) entity).setBaby();
++                }
++            }
++        }
++        // CraftBukkit end
++
++        if (!this.worldObj.isRemote && this.rand.nextInt(8) == 0) {
+             byte b0 = 1;
+ 
+-            if (this.rand.nextInt(32) == 0)
+-            {
++            if (this.rand.nextInt(32) == 0) {
+                 b0 = 4;
+             }
+ 
+-            for (int i = 0; i < b0; ++i)
+-            {
++            for (int i = 0; i < b0; ++i) {
+                 EntityChicken entitychicken = new EntityChicken(this.worldObj);
+                 entitychicken.setGrowingAge(-24000);
+                 entitychicken.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+@@ -55,16 +55,13 @@
+ 
+         double d0 = 0.08D;
+ 
+-        for (int j = 0; j < 8; ++j)
+-        {
+-            this.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, ((double)this.rand.nextFloat() - 0.5D) * 0.08D, ((double)this.rand.nextFloat() - 0.5D) * 0.08D, ((double)this.rand.nextFloat() - 0.5D) * 0.08D, new int[] {Item.getIdFromItem(Items.egg)});
++        for (int j = 0; j < 8; ++j) {
++            this.worldObj.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, new int[]{Item.getIdFromItem(Items.egg)});
+         }
+ 
+-        if (!this.worldObj.isRemote)
+-        {
++        if (!this.worldObj.isRemote) {
+             this.setDead();
+         }
+     }
+-}
++}

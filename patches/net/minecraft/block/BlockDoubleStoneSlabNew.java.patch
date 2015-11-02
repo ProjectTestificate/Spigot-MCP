@@ -1,0 +1,18 @@
+---a/net/minecraft/block/BlockDoubleStoneSlabNew.java
++++b/net/minecraft/block/BlockDoubleStoneSlabNew.java
+@@ -1,12 +1,11 @@
+ package net.minecraft.block;
+ 
+-public class BlockDoubleStoneSlabNew extends BlockStoneSlabNew
+-{
++public class BlockDoubleStoneSlabNew extends BlockStoneSlabNew {
++
+     private static final String __OBFID = "CL_00002114";
+ 
+-    public boolean isDouble()
+-    {
++    public boolean isDouble() {
+         return true;
+     }
+-}
++}

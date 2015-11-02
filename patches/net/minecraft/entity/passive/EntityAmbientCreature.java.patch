@@ -1,0 +1,31 @@
+---a/net/minecraft/entity/passive/EntityAmbientCreature.java
++++b/net/minecraft/entity/passive/EntityAmbientCreature.java
+@@ -4,23 +4,20 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.world.World;
+ 
+-public abstract class EntityAmbientCreature extends EntityLiving implements IAnimals
+-{
++public abstract class EntityAmbientCreature extends EntityLiving implements IAnimals {
++
+     private static final String __OBFID = "CL_00001636";
+ 
+-    public EntityAmbientCreature(World worldIn)
+-    {
++    public EntityAmbientCreature(World worldIn) {
+         super(worldIn);
+     }
+ 
+-    public boolean allowLeashing()
+-    {
++    public boolean allowLeashing() {
+         return false;
+     }
+ 
+-    protected boolean interact(EntityPlayer player)
+-    {
++    protected boolean interact(EntityPlayer player) {
+         return false;
+     }
+-}
++}

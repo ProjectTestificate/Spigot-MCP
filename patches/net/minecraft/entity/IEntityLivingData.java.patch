@@ -1,0 +1,11 @@
+---a/net/minecraft/entity/IEntityLivingData.java
++++b/net/minecraft/entity/IEntityLivingData.java
+@@ -1,5 +1,5 @@
+ package net.minecraft.entity;
+ 
+-public interface IEntityLivingData
+-{
+-}
++public interface IEntityLivingData {
++
++}

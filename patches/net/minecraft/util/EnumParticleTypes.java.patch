@@ -1,0 +1,106 @@
+---a/net/minecraft/util/EnumParticleTypes.java
++++b/net/minecraft/util/EnumParticleTypes.java
+@@ -1,12 +1,8 @@
+ package net.minecraft.util;
+ 
+-import com.google.common.collect.Lists;
+-import com.google.common.collect.Maps;
+ import java.util.ArrayList;
+ import java.util.Map;
+ 
+-public enum EnumParticleTypes
+-{
++import com.google.common.collect.Lists;
++import com.google.common.collect.Maps;
++
++public enum EnumParticleTypes {
+     EXPLOSION_NORMAL("explode", 0, true),
+     EXPLOSION_LARGE("largeexplode", 1, true),
+     EXPLOSION_HUGE("hugeexplosion", 2, true),
+@@ -58,72 +58,59 @@
+ 
+     private static final String __OBFID = "CL_00002317";
+ 
+-    private EnumParticleTypes(String particleNameIn, int particleIDIn, boolean p_i46011_5_, int p_i46011_6_)
+-    {
++    private EnumParticleTypes(String particleNameIn, int particleIDIn, boolean p_i46011_5_, int p_i46011_6_) {
+         this.particleName = particleNameIn;
+         this.particleID = particleIDIn;
+         this.field_179371_S = p_i46011_5_;
+         this.field_179366_T = p_i46011_6_;
+     }
+ 
+-    private EnumParticleTypes(String particleNameIn, int particleIDIn, boolean p_i46012_5_)
+-    {
++    private EnumParticleTypes(String particleNameIn, int particleIDIn, boolean p_i46012_5_) {
+         this(particleNameIn, particleIDIn, p_i46012_5_, 0);
+     }
+ 
+-    public static String[] func_179349_a()
+-    {
++    public static String[] func_179349_a() {
+         return field_179368_V;
+     }
+ 
+-    public String getParticleName()
+-    {
++    public String getParticleName() {
+         return this.particleName;
+     }
+ 
+-    public int getParticleID()
+-    {
++    public int getParticleID() {
+         return this.particleID;
+     }
+ 
+-    public int getArgumentCount()
+-    {
++    public int getArgumentCount() {
+         return this.field_179366_T;
+     }
+ 
+-    public boolean func_179344_e()
+-    {
++    public boolean func_179344_e() {
+         return this.field_179371_S;
+     }
+ 
+-    public boolean func_179343_f()
+-    {
++    public boolean func_179343_f() {
+         return this.field_179366_T > 0;
+     }
+ 
+-    public static EnumParticleTypes getParticleFromId(int particleId)
+-    {
+-        return (EnumParticleTypes)field_179365_U.get(Integer.valueOf(particleId));
++    public static EnumParticleTypes getParticleFromId(int particleId) {
++        return (EnumParticleTypes) field_179365_U.get(Integer.valueOf(particleId));
+     }
+ 
+-    static
+-    {
++    static {
+         ArrayList var0 = Lists.newArrayList();
+         EnumParticleTypes[] var1 = values();
+         int var2 = var1.length;
+ 
+-        for (int var3 = 0; var3 < var2; ++var3)
+-        {
++        for (int var3 = 0; var3 < var2; ++var3) {
+             EnumParticleTypes var4 = var1[var3];
+             field_179365_U.put(Integer.valueOf(var4.getParticleID()), var4);
+ 
+-            if (!var4.getParticleName().endsWith("_"))
+-            {
++            if (!var4.getParticleName().endsWith("_")) {
+                 var0.add(var4.getParticleName());
+             }
+         }
+ 
+-        field_179368_V = (String[])var0.toArray(new String[var0.size()]);
++        field_179368_V = (String[]) var0.toArray(new String[var0.size()]);
+     }
+-}
++}

@@ -1,0 +1,19 @@
+---a/net/minecraft/network/Packet.java
++++b/net/minecraft/network/Packet.java
+@@ -2,13 +2,11 @@
+ 
+ import java.io.IOException;
+ 
+-public interface Packet
+-{
+-    void readPacketData(PacketBuffer buf) throws IOException;
++public interface Packet {
+ 
+-    void writePacketData(PacketBuffer buf) throws IOException;
++    void readPacketData(PacketBuffer buf) throws IOException; // CraftBukkit - added throws // SpigotMCP NOTE -- MCP added this for us
+ 
++    void writePacketData(PacketBuffer buf) throws IOException; // CraftBukkit - added throws // SpigotMCP NOTE -- MCP added this for us
++
+     void processPacket(INetHandler handler);
+-}
++}

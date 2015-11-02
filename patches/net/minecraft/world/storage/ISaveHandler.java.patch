@@ -1,0 +1,28 @@
+---a/net/minecraft/world/storage/ISaveHandler.java
++++b/net/minecraft/world/storage/ISaveHandler.java
+@@ -1,11 +1,15 @@
+ package net.minecraft.world.storage;
+ 
+ import java.io.File;
++import java.util.UUID;
++
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.world.MinecraftException;
+ import net.minecraft.world.WorldProvider;
+ import net.minecraft.world.chunk.storage.IChunkLoader;
+ 
+-public interface ISaveHandler
+-{
++public interface ISaveHandler {
++
+     WorldInfo loadWorldInfo();
+ 
+     void checkSessionLock() throws MinecraftException;
+@@ -27,4 +27,6 @@
+     File getMapFileFromName(String mapName);
+ 
+     String getWorldDirectoryName();
+-}
++
++    UUID getUUID(); // CraftBukkit
++}

@@ -1,0 +1,432 @@
+---a/net/minecraft/entity/EntityHanging.java
++++b/net/minecraft/entity/EntityHanging.java
+@@ -2,129 +2,171 @@
+ 
+ import java.util.Iterator;
+ import java.util.List;
++
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockRedstoneDiode;
++import net.minecraft.block.material.Material;
++import net.minecraft.entity.item.EntityPainting;
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.util.AxisAlignedBB;
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.DamageSource;
+ import net.minecraft.util.EnumFacing;
++import net.minecraft.util.EnumFacing.Axis;
+ import net.minecraft.world.World;
++
+ import org.apache.commons.lang3.Validate;
++import org.bukkit.entity.Hanging;
++import org.bukkit.entity.Painting;
++import org.bukkit.event.hanging.HangingBreakByEntityEvent;
++import org.bukkit.event.hanging.HangingBreakEvent;
++import org.bukkit.event.painting.PaintingBreakByEntityEvent;
++import org.bukkit.event.painting.PaintingBreakEvent;
+ 
+-public abstract class EntityHanging extends Entity
+-{
++public abstract class EntityHanging extends Entity {
++
+     private int tickCounter1;
+-    protected BlockPos hangingPosition;
++    public BlockPos hangingPosition; // SpigotMCP -- Apply access transformation
+     public EnumFacing field_174860_b;
+     private static final String __OBFID = "CL_00001546";
+ 
+-    public EntityHanging(World worldIn)
+-    {
++    public EntityHanging(World worldIn) {
+         super(worldIn);
+         this.setSize(0.5F, 0.5F);
+     }
+ 
+-    public EntityHanging(World worldIn, BlockPos p_i45853_2_)
+-    {
++    public EntityHanging(World worldIn, BlockPos p_i45853_2_) {
+         this(worldIn);
+         this.hangingPosition = p_i45853_2_;
+     }
+ 
+-    protected void entityInit() {}
++    protected void entityInit() {
++    }
+ 
+-    protected void func_174859_a(EnumFacing p_174859_1_)
+-    {
++    public void func_174859_a(EnumFacing p_174859_1_) { // SpigotMCP -- Apply access transformation
+         Validate.notNull(p_174859_1_);
+         Validate.isTrue(p_174859_1_.getAxis().isHorizontal());
+         this.field_174860_b = p_174859_1_;
+-        this.prevRotationYaw = this.rotationYaw = (float)(this.field_174860_b.getHorizontalIndex() * 90);
++        this.prevRotationYaw = this.rotationYaw = (float) (this.field_174860_b.getHorizontalIndex() * 90);
+         this.func_174856_o();
+     }
+ 
+-    private void func_174856_o()
+-    {
+-        if (this.field_174860_b != null)
+-        {
+-            double d0 = (double)this.hangingPosition.getX() + 0.5D;
+-            double d1 = (double)this.hangingPosition.getY() + 0.5D;
+-            double d2 = (double)this.hangingPosition.getZ() + 0.5D;
+-            double d3 = 0.46875D;
+-            double d4 = this.func_174858_a(this.getWidthPixels());
+-            double d5 = this.func_174858_a(this.getHeightPixels());
+-            d0 -= (double)this.field_174860_b.getFrontOffsetX() * 0.46875D;
+-            d2 -= (double)this.field_174860_b.getFrontOffsetZ() * 0.46875D;
+-            d1 += d5;
+-            EnumFacing enumfacing = this.field_174860_b.rotateYCCW();
+-            d0 += d4 * (double)enumfacing.getFrontOffsetX();
+-            d2 += d4 * (double)enumfacing.getFrontOffsetZ();
+-            this.posX = d0;
+-            this.posY = d1;
+-            this.posZ = d2;
+-            double d6 = (double)this.getWidthPixels();
+-            double d7 = (double)this.getHeightPixels();
+-            double d8 = (double)this.getWidthPixels();
++    /* CraftBukkit start - bounding box calculation made static (for spawn usage)
+ 
+-            if (this.field_174860_b.getAxis() == EnumFacing.Axis.Z)
+-            {
+-                d8 = 1.0D;
+-            }
+-            else
+-            {
+-                d6 = 1.0D;
+-            }
++        l is from function l()
++        m is from function m()
+ 
+-            d6 /= 32.0D;
+-            d7 /= 32.0D;
+-            d8 /= 32.0D;
+-            this.setEntityBoundingBox(new AxisAlignedBB(d0 - d6, d1 - d7, d2 - d8, d0 + d6, d1 + d7, d2 + d8));
++        Placing here as it's more likely to be noticed as something which needs to be updated
++        then something in a CraftBukkit file.
++     */
++    public static net.minecraft.util.AxisAlignedBB calculateBoundingBox(BlockPos blockPosition, EnumFacing direction, int width, int height) {
++        double d0 = (double) blockPosition.getX() + 0.5D;
++        double d1 = (double) blockPosition.getY() + 0.5D;
++        double d2 = (double) blockPosition.getZ() + 0.5D;
++        double d3 = 0.46875D;
++        double d4 = width % 32 == 0 ? 0.5D : 0.0D;
++        double d5 = height % 32 == 0 ? 0.5D : 0.0D;
++
++        d0 -= (double) direction.getFrontOffsetX() * 0.46875D;
++        d2 -= (double) direction.getFrontOffsetZ() * 0.46875D;
++        d1 += d5;
++        EnumFacing enumdirection = direction.rotateYCCW();
++
++        d0 += d4 * (double) enumdirection.getFrontOffsetX();
++        d2 += d4 * (double) enumdirection.getFrontOffsetZ();
++
++        double d6 = (double) width;
++        double d7 = (double) height;
++        double d8 = (double) width;
++
++        if (direction.getAxis() == Axis.Z) {
++            d8 = 1.0D;
++        } else {
++            d6 = 1.0D;
+         }
++
++        d6 /= 32.0D;
++        d7 /= 32.0D;
++        d8 /= 32.0D;
++        return new AxisAlignedBB(d0 - d6, d1 - d7, d2 - d8, d0 + d6, d1 + d7, d2 + d8);
+     }
++    // CraftBukkit end
+ 
+-    private double func_174858_a(int p_174858_1_)
+-    {
++    // PAIL: rename
++    private void func_174856_o() {
++        if (this.field_174860_b != null) {
++            // CraftBukkit start code moved in to calculateBoundingBox
++            AxisAlignedBB bb = calculateBoundingBox(this.hangingPosition, this.field_174860_b, this.getWidthPixels(), this.getHeightPixels());
++            this.posX = (bb.minX + bb.maxX) / 2.0D;
++            this.posY = (bb.minY + bb.maxY) / 2.0D;
++            this.posZ = (bb.minZ + bb.maxZ) / 2.0D;
++            this.setEntityBoundingBox(bb);
++            // CraftBukkit end
++        }
++    }
++
++    private double func_174858_a(int p_174858_1_) {
+         return p_174858_1_ % 32 == 0 ? 0.5D : 0.0D;
+     }
+ 
+-    public void onUpdate()
+-    {
++    public void onUpdate() {
+         this.prevPosX = this.posX;
+         this.prevPosY = this.posY;
+         this.prevPosZ = this.posZ;
+ 
+-        if (this.tickCounter1++ == 100 && !this.worldObj.isRemote)
++        if (this.tickCounter1++ == this.worldObj.spigotConfig.hangingTickFrequency && !this.worldObj.isRemote)  // Spigot - 100 -> this.world.spigotConfig.hangingTickFrequency
+         {
+             this.tickCounter1 = 0;
+ 
+-            if (!this.isDead && !this.onValidSurface())
+-            {
++            if (!this.isDead && !this.onValidSurface()) {
++                // CraftBukkit start - fire break events
++                Material material = this.worldObj.getBlockState(new BlockPos(this)).getBlock().getMaterial();
++                HangingBreakEvent.RemoveCause cause;
++
++                if (!material.equals(Material.air)) {
++                    // TODO: This feels insufficient to catch 100% of suffocation cases
++                    cause = HangingBreakEvent.RemoveCause.OBSTRUCTION;
++                } else {
++                    cause = HangingBreakEvent.RemoveCause.PHYSICS;
++                }
++
++                HangingBreakEvent event = new HangingBreakEvent((Hanging) this.getBukkitEntity(), cause);
++                this.worldObj.getServer().getPluginManager().callEvent(event);
++
++                PaintingBreakEvent paintingEvent = null;
++                if (this instanceof EntityPainting) {
++                    // Fire old painting event until it can be removed
++                    paintingEvent = new PaintingBreakEvent((Painting) this.getBukkitEntity(), PaintingBreakEvent.RemoveCause.valueOf(cause.name()));
++                    paintingEvent.setCancelled(event.isCancelled());
++                    this.worldObj.getServer().getPluginManager().callEvent(paintingEvent);
++                }
++
++                if (isDead || event.isCancelled() || (paintingEvent != null && paintingEvent.isCancelled())) {
++                    return;
++                }
++                // CraftBukkit end
+                 this.setDead();
+-                this.onBroken((Entity)null);
++                this.onBroken((Entity) null);
+             }
+         }
+     }
+ 
+-    public boolean onValidSurface()
+-    {
+-        if (!this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty())
+-        {
++    public boolean onValidSurface() {
++        if (!this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty()) {
+             return false;
+-        }
+-        else
+-        {
++        } else {
+             int i = Math.max(1, this.getWidthPixels() / 16);
+             int j = Math.max(1, this.getHeightPixels() / 16);
+             BlockPos blockpos = this.hangingPosition.offset(this.field_174860_b.getOpposite());
+             EnumFacing enumfacing = this.field_174860_b.rotateYCCW();
+ 
+-            for (int k = 0; k < i; ++k)
+-            {
+-                for (int l = 0; l < j; ++l)
+-                {
++            for (int k = 0; k < i; ++k) {
++                for (int l = 0; l < j; ++l) {
+                     BlockPos blockpos1 = blockpos.offset(enumfacing, k).up(l);
+                     Block block = this.worldObj.getBlockState(blockpos1).getBlock();
+ 
+-                    if (!block.getMaterial().isSolid() && !BlockRedstoneDiode.isRedstoneRepeaterBlockID(block))
+-                    {
++                    if (!block.getMaterial().isSolid() && !BlockRedstoneDiode.isRedstoneRepeaterBlockID(block)) {
+                         return false;
+                     }
+                 }
+@@ -136,45 +136,35 @@
+             Iterator iterator = list.iterator();
+             Entity entity;
+ 
+-            do
+-            {
+-                if (!iterator.hasNext())
+-                {
++            do {
++                if (!iterator.hasNext()) {
+                     return true;
+                 }
+ 
+-                entity = (Entity)iterator.next();
+-            }
+-            while (!(entity instanceof EntityHanging));
++                entity = (Entity) iterator.next();
++            } while (!(entity instanceof EntityHanging));
+ 
+             return false;
+         }
+     }
+ 
+-    public boolean canBeCollidedWith()
+-    {
++    public boolean canBeCollidedWith() {
+         return true;
+     }
+ 
+-    public boolean hitByEntity(Entity entityIn)
+-    {
+-        return entityIn instanceof EntityPlayer ? this.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer)entityIn), 0.0F) : false;
++    public boolean hitByEntity(Entity entityIn) {
++        return entityIn instanceof EntityPlayer ? this.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) entityIn), 0.0F) : false;
+     }
+ 
+-    public EnumFacing getHorizontalFacing()
+-    {
++    public EnumFacing getHorizontalFacing() {
+         return this.field_174860_b;
+     }
+ 
+-    public boolean attackEntityFrom(DamageSource source, float amount)
+-    {
+-        if (this.isEntityInvulnerable(source))
+-        {
++    public boolean attackEntityFrom(DamageSource source, float amount) {
++        if (this.isEntityInvulnerable(source)) {
+             return false;
+-        }
+-        else
+-        {
+-            if (!this.isDead && !this.worldObj.isRemote)
+-            {
++        } else {
++            if (!this.isDead && !this.worldObj.isRemote) {
++                // CraftBukkit start - fire break events
++                HangingBreakEvent event = new HangingBreakEvent((Hanging) this.getBukkitEntity(), HangingBreakEvent.RemoveCause.DEFAULT);
++                PaintingBreakEvent paintingEvent = null;
++                if (source.getEntity() != null) {
++                    event = new HangingBreakByEntityEvent((Hanging) this.getBukkitEntity(), source.getEntity() == null ? null : source.getEntity().getBukkitEntity());
++
++                    if (this instanceof EntityPainting) {
++                        // Fire old painting event until it can be removed
++                        paintingEvent = new PaintingBreakByEntityEvent((Painting) this.getBukkitEntity(), source.getEntity() == null ? null : source.getEntity().getBukkitEntity());
++                    }
++                } else if (source.isExplosion()) {
++                    event = new HangingBreakEvent((Hanging) this.getBukkitEntity(), HangingBreakEvent.RemoveCause.EXPLOSION);
++                }
++
++                this.worldObj.getServer().getPluginManager().callEvent(event);
++
++                if (paintingEvent != null) {
++                    paintingEvent.setCancelled(event.isCancelled());
++                    this.worldObj.getServer().getPluginManager().callEvent(paintingEvent);
++                }
++
++                if (this.isDead || event.isCancelled() || (paintingEvent != null && paintingEvent.isCancelled())) {
++                    return true;
++                }
++                // CraftBukkit end
++
+                 this.setDead();
+                 this.setBeenAttacked();
+                 this.onBroken(source.getEntity());
+@@ -185,49 +185,63 @@
+         }
+     }
+ 
+-    public void moveEntity(double x, double y, double z)
+-    {
+-        if (!this.worldObj.isRemote && !this.isDead && x * x + y * y + z * z > 0.0D)
+-        {
++    public void moveEntity(double x, double y, double z) {
++        if (!this.worldObj.isRemote && !this.isDead && x * x + y * y + z * z > 0.0D) {
++            if (this.isDead) return; // CraftBukkit
++
++            // CraftBukkit start - fire break events
++            // TODO - Does this need its own cause? Seems to only be triggered by pistons
++            HangingBreakEvent event = new HangingBreakEvent((Hanging) this.getBukkitEntity(), HangingBreakEvent.RemoveCause.PHYSICS);
++            this.worldObj.getServer().getPluginManager().callEvent(event);
++
++            if (this.isDead || event.isCancelled()) {
++                return;
++            }
++            // CraftBukkit end
++
+             this.setDead();
+-            this.onBroken((Entity)null);
++            this.onBroken((Entity) null);
+         }
+     }
+ 
+-    public void addVelocity(double x, double y, double z)
+-    {
+-        if (!this.worldObj.isRemote && !this.isDead && x * x + y * y + z * z > 0.0D)
++    public void addVelocity(double x, double y, double z) {
++        if (false && !this.worldObj.isRemote && !this.isDead && x * x + y * y + z * z > 0.0D) // CraftBukkit - not needed
+         {
+             this.setDead();
+-            this.onBroken((Entity)null);
++            this.onBroken((Entity) null);
+         }
+     }
+ 
+-    public void writeEntityToNBT(NBTTagCompound tagCompound)
+-    {
+-        tagCompound.setByte("Facing", (byte)this.field_174860_b.getHorizontalIndex());
++    public void writeEntityToNBT(NBTTagCompound tagCompound) {
++        tagCompound.setByte("Facing", (byte) this.field_174860_b.getHorizontalIndex());
+         tagCompound.setInteger("TileX", this.func_174857_n().getX());
+         tagCompound.setInteger("TileY", this.func_174857_n().getY());
+         tagCompound.setInteger("TileZ", this.func_174857_n().getZ());
+     }
+ 
+-    public void readEntityFromNBT(NBTTagCompound tagCompund)
+-    {
++    public void readEntityFromNBT(NBTTagCompound tagCompund) {
+         this.hangingPosition = new BlockPos(tagCompund.getInteger("TileX"), tagCompund.getInteger("TileY"), tagCompund.getInteger("TileZ"));
+         EnumFacing enumfacing;
+ 
+-        if (tagCompund.hasKey("Direction", 99))
+-        {
++        if (tagCompund.hasKey("Direction", 99)) {
+             enumfacing = EnumFacing.getHorizontal(tagCompund.getByte("Direction"));
+             this.hangingPosition = this.hangingPosition.offset(enumfacing);
+-        }
+-        else if (tagCompund.hasKey("Facing", 99))
+-        {
++        } else if (tagCompund.hasKey("Facing", 99)) {
+             enumfacing = EnumFacing.getHorizontal(tagCompund.getByte("Facing"));
+-        }
+-        else
+-        {
++        } else {
+             enumfacing = EnumFacing.getHorizontal(tagCompund.getByte("Dir"));
+         }
+ 
+@@ -239,29 +239,24 @@
+ 
+     public abstract void onBroken(Entity p_110128_1_);
+ 
+-    protected boolean shouldSetPosAfterLoading()
+-    {
++    protected boolean shouldSetPosAfterLoading() {
+         return false;
+     }
+ 
+-    public void setPosition(double x, double y, double z)
+-    {
++    public void setPosition(double x, double y, double z) {
+         this.posX = x;
+         this.posY = y;
+         this.posZ = z;
+         BlockPos blockpos = this.hangingPosition;
+         this.hangingPosition = new BlockPos(x, y, z);
+ 
+-        if (!this.hangingPosition.equals(blockpos))
+-        {
++        if (!this.hangingPosition.equals(blockpos)) {
+             this.func_174856_o();
+             this.isAirBorne = true;
+         }
+     }
+ 
+-    public BlockPos func_174857_n()
+-    {
++    public BlockPos func_174857_n() {
+         return this.hangingPosition;
+     }
+-}
++}

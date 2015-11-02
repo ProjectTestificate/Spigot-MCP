@@ -1,0 +1,126 @@
+---a/net/minecraft/entity/ai/EntityAIMoveToBlock.java
++++b/net/minecraft/entity/ai/EntityAIMoveToBlock.java
+@@ -4,8 +4,8 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.world.World;
+ 
+-public abstract class EntityAIMoveToBlock extends EntityAIBase
+-{
++public abstract class EntityAIMoveToBlock extends EntityAIBase {
++
+     private final EntityCreature field_179495_c;
+     private final double field_179492_d;
+     protected int field_179496_a;
+@@ -16,8 +16,7 @@
+     private int field_179497_h;
+     private static final String __OBFID = "CL_00002252";
+ 
+-    public EntityAIMoveToBlock(EntityCreature p_i45888_1_, double p_i45888_2_, int p_i45888_4_)
+-    {
++    public EntityAIMoveToBlock(EntityCreature p_i45888_1_, double p_i45888_2_, int p_i45888_4_) {
+         this.destinationBlock = BlockPos.ORIGIN;
+         this.field_179495_c = p_i45888_1_;
+         this.field_179492_d = p_i45888_2_;
+@@ -25,78 +25,60 @@
+         this.setMutexBits(5);
+     }
+ 
+-    public boolean shouldExecute()
+-    {
+-        if (this.field_179496_a > 0)
+-        {
++    public boolean shouldExecute() {
++        if (this.field_179496_a > 0) {
+             --this.field_179496_a;
+             return false;
+-        }
+-        else
+-        {
++        } else {
+             this.field_179496_a = 200 + this.field_179495_c.getRNG().nextInt(200);
+             return this.func_179489_g();
+         }
+     }
+ 
+-    public boolean continueExecuting()
+-    {
++    public boolean continueExecuting() {
+         return this.field_179493_e >= -this.field_179490_f && this.field_179493_e <= 1200 && this.func_179488_a(this.field_179495_c.worldObj, this.destinationBlock);
+     }
+ 
+-    public void startExecuting()
+-    {
+-        this.field_179495_c.getNavigator().tryMoveToXYZ((double)((float)this.destinationBlock.getX()) + 0.5D, (double)(this.destinationBlock.getY() + 1), (double)((float)this.destinationBlock.getZ()) + 0.5D, this.field_179492_d);
++    public void startExecuting() {
++        this.field_179495_c.getNavigator().tryMoveToXYZ((double) ((float) this.destinationBlock.getX()) + 0.5D, (double) (this.destinationBlock.getY() + 1), (double) ((float) this.destinationBlock.getZ()) + 0.5D, this.field_179492_d);
+         this.field_179493_e = 0;
+         this.field_179490_f = this.field_179495_c.getRNG().nextInt(this.field_179495_c.getRNG().nextInt(1200) + 1200) + 1200;
+     }
+ 
+-    public void resetTask() {}
++    public void resetTask() {
++    }
+ 
+-    public void updateTask()
+-    {
+-        if (this.field_179495_c.getDistanceSqToCenter(this.destinationBlock.up()) > 1.0D)
+-        {
++    public void updateTask() {
++        if (this.field_179495_c.getDistanceSqToCenter(this.destinationBlock.up()) > 1.0D) {
+             this.field_179491_g = false;
+             ++this.field_179493_e;
+ 
+-            if (this.field_179493_e % 40 == 0)
+-            {
+-                this.field_179495_c.getNavigator().tryMoveToXYZ((double)((float)this.destinationBlock.getX()) + 0.5D, (double)(this.destinationBlock.getY() + 1), (double)((float)this.destinationBlock.getZ()) + 0.5D, this.field_179492_d);
++            if (this.field_179493_e % 40 == 0) {
++                this.field_179495_c.getNavigator().tryMoveToXYZ((double) ((float) this.destinationBlock.getX()) + 0.5D, (double) (this.destinationBlock.getY() + 1), (double) ((float) this.destinationBlock.getZ()) + 0.5D, this.field_179492_d);
+             }
+-        }
+-        else
+-        {
++        } else {
+             this.field_179491_g = true;
+             --this.field_179493_e;
+         }
+     }
+ 
+-    protected boolean func_179487_f()
+-    {
++    protected boolean func_179487_f() {
+         return this.field_179491_g;
+     }
+ 
+-    private boolean func_179489_g()
+-    {
++    private boolean func_179489_g() {
+         int i = this.field_179497_h;
+         boolean flag = true;
+         BlockPos blockpos = new BlockPos(this.field_179495_c);
+ 
+-        for (int j = 0; j <= 1; j = j > 0 ? -j : 1 - j)
+-        {
+-            for (int k = 0; k < i; ++k)
+-            {
+-                for (int l = 0; l <= k; l = l > 0 ? -l : 1 - l)
+-                {
+-                    for (int i1 = l < k && l > -k ? k : 0; i1 <= k; i1 = i1 > 0 ? -i1 : 1 - i1)
+-                    {
++        for (int j = 0; j <= 1; j = j > 0 ? -j : 1 - j) {
++            for (int k = 0; k < i; ++k) {
++                for (int l = 0; l <= k; l = l > 0 ? -l : 1 - l) {
++                    for (int i1 = l < k && l > -k ? k : 0; i1 <= k; i1 = i1 > 0 ? -i1 : 1 - i1) {
+                         BlockPos blockpos1 = blockpos.add(l, j - 1, i1);
+ 
+-                        if (this.field_179495_c.func_180485_d(blockpos1) && this.func_179488_a(this.field_179495_c.worldObj, blockpos1))
+-                        {
++                        if (this.field_179495_c.func_180485_d(blockpos1) && this.func_179488_a(this.field_179495_c.worldObj, blockpos1)) {
+                             this.destinationBlock = blockpos1;
+                             return true;
+                         }
+@@ -107,4 +107,4 @@
+     }
+ 
+     protected abstract boolean func_179488_a(World worldIn, BlockPos p_179488_2_);
+-}
++}

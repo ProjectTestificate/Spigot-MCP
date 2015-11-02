@@ -1,0 +1,93 @@
+---a/net/minecraft/item/ItemHangingEntity.java
++++b/net/minecraft/item/ItemHangingEntity.java
+@@ -9,41 +9,39 @@
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.world.World;
+ 
+-public class ItemHangingEntity extends Item
+-{
++import org.bukkit.entity.Player;
++import org.bukkit.event.hanging.HangingPlaceEvent;
++import org.bukkit.event.painting.PaintingPlaceEvent;
++
++public class ItemHangingEntity extends Item {
++
+     private final Class hangingEntityClass;
+     private static final String __OBFID = "CL_00000038";
+ 
+-    public ItemHangingEntity(Class entityClass)
+-    {
++    public ItemHangingEntity(Class entityClass) {
+         this.hangingEntityClass = entityClass;
+         this.setCreativeTab(CreativeTabs.tabDecorations);
+     }
+ 
+-    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+-    {
+-        if (side == EnumFacing.DOWN)
+-        {
++    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
++        if (side == EnumFacing.DOWN) {
+             return false;
+-        }
+-        else if (side == EnumFacing.UP)
+-        {
++        } else if (side == EnumFacing.UP) {
+             return false;
+-        }
+-        else
+-        {
++        } else {
+             BlockPos blockpos1 = pos.offset(side);
+ 
+-            if (!playerIn.canPlayerEdit(blockpos1, side, stack))
+-            {
++            if (!playerIn.canPlayerEdit(blockpos1, side, stack)) {
+                 return false;
+-            }
+-            else
+-            {
++            } else {
+                 EntityHanging entityhanging = this.createEntity(worldIn, blockpos1, side);
+ 
+-                if (entityhanging != null && entityhanging.onValidSurface())
+-                {
+-                    if (!worldIn.isRemote)
+-                    {
++                if (entityhanging != null && entityhanging.onValidSurface()) {
++                    if (!worldIn.isRemote) {
++                        // CraftBukkit start - fire HangingPlaceEvent
++                        Player who = (playerIn == null) ? null : (Player) playerIn.getBukkitEntity();
++                        org.bukkit.block.Block blockClicked = worldIn.getWorld().getBlockAt(pos.getX(), pos.getY(), pos.getZ());
++                        org.bukkit.block.BlockFace blockFace = org.bukkit.craftbukkit.block.CraftBlock.notchToBlockFace(side);
++
++                        HangingPlaceEvent event = new HangingPlaceEvent((org.bukkit.entity.Hanging) entityhanging.getBukkitEntity(), who, blockClicked, blockFace);
++                        worldIn.getServer().getPluginManager().callEvent(event);
++
++                        PaintingPlaceEvent paintingEvent = null;
++                        if (entityhanging instanceof EntityPainting) {
++                            // Fire old painting event until it can be removed
++                            paintingEvent = new PaintingPlaceEvent((org.bukkit.entity.Painting) entityhanging.getBukkitEntity(), who, blockClicked, blockFace);
++                            paintingEvent.setCancelled(event.isCancelled());
++                            worldIn.getServer().getPluginManager().callEvent(paintingEvent);
++                        }
++
++                        if (event.isCancelled() || (paintingEvent != null && paintingEvent.isCancelled())) {
++                            return false;
++                        }
++                        // CraftBukkit end
+                         worldIn.spawnEntityInWorld(entityhanging);
+                     }
+ 
+@@ -57,10 +57,8 @@
+         }
+     }
+ 
+-    private EntityHanging createEntity(World worldIn, BlockPos pos, EnumFacing clickedSide)
+-    {
+-        return (EntityHanging)(this.hangingEntityClass == EntityPainting.class ? new EntityPainting(worldIn, pos, clickedSide) : (this.hangingEntityClass == EntityItemFrame.class ? new EntityItemFrame(worldIn, pos, clickedSide) : null));
++    private EntityHanging createEntity(World worldIn, BlockPos pos, EnumFacing clickedSide) {
++        return (EntityHanging) (this.hangingEntityClass == EntityPainting.class ? new EntityPainting(worldIn, pos, clickedSide) : (this.hangingEntityClass == EntityItemFrame.class ? new EntityItemFrame(worldIn, pos, clickedSide) : null));
+     }
+-}
++}

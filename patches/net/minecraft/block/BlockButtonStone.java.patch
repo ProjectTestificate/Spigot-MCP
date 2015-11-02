@@ -1,0 +1,18 @@
+---a/net/minecraft/block/BlockButtonStone.java
++++b/net/minecraft/block/BlockButtonStone.java
+@@ -1,12 +1,11 @@
+ package net.minecraft.block;
+ 
+-public class BlockButtonStone extends BlockButton
+-{
++public class BlockButtonStone extends BlockButton {
++
+     private static final String __OBFID = "CL_00000319";
+ 
+-    protected BlockButtonStone()
+-    {
++    protected BlockButtonStone() {
+         super(false);
+     }
+-}
++}

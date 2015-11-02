@@ -1,0 +1,252 @@
+---a/net/minecraft/item/ItemMonsterPlacer.java
++++b/net/minecraft/item/ItemMonsterPlacer.java
+@@ -1,7 +1,5 @@
+ package net.minecraft.item;
+ 
+-import java.util.Iterator;
+-import java.util.List;
+ import net.minecraft.block.BlockFence;
+ import net.minecraft.block.BlockLiquid;
+ import net.minecraft.block.state.IBlockState;
+@@ -23,66 +23,47 @@
+ import net.minecraft.util.MovingObjectPosition;
+ import net.minecraft.util.StatCollector;
+ import net.minecraft.world.World;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public class ItemMonsterPlacer extends Item
+-{
++import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
++
++public class ItemMonsterPlacer extends Item {
++
+     private static final String __OBFID = "CL_00000070";
+ 
+-    public ItemMonsterPlacer()
+-    {
++    public ItemMonsterPlacer() {
+         this.setHasSubtypes(true);
+         this.setCreativeTab(CreativeTabs.tabMisc);
+     }
+ 
+-    public String getItemStackDisplayName(ItemStack stack)
+-    {
++    public String getItemStackDisplayName(ItemStack stack) {
+         String s = ("" + StatCollector.translateToLocal(this.getUnlocalizedName() + ".name")).trim();
+         String s1 = EntityList.getStringFromID(stack.getMetadata());
+ 
+-        if (s1 != null)
+-        {
++        if (s1 != null) {
+             s = s + " " + StatCollector.translateToLocal("entity." + s1 + ".name");
+         }
+ 
+         return s;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public int getColorFromItemStack(ItemStack stack, int renderPass)
+-    {
+-        EntityList.EntityEggInfo entityegginfo = (EntityList.EntityEggInfo)EntityList.entityEggs.get(Integer.valueOf(stack.getMetadata()));
+-        return entityegginfo != null ? (renderPass == 0 ? entityegginfo.primaryColor : entityegginfo.secondaryColor) : 16777215;
+-    }
+-
+-    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+-    {
+-        if (worldIn.isRemote)
+-        {
++    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
++        // CraftBukkit - check ItemStack data
++        if (worldIn.isRemote || stack.getMetadata() == 48 || stack.getMetadata() == 49 || stack.getMetadata() == 63 || stack.getMetadata() == 64) {
+             return true;
+-        }
+-        else if (!playerIn.canPlayerEdit(pos.offset(side), side, stack))
+-        {
++        } else if (!playerIn.canPlayerEdit(pos.offset(side), side, stack)) {
+             return false;
+-        }
+-        else
+-        {
++        } else {
+             IBlockState iblockstate = worldIn.getBlockState(pos);
+ 
+-            if (iblockstate.getBlock() == Blocks.mob_spawner)
+-            {
++            if (iblockstate.getBlock() == Blocks.mob_spawner) {
+                 TileEntity tileentity = worldIn.getTileEntity(pos);
+ 
+-                if (tileentity instanceof TileEntityMobSpawner)
+-                {
+-                    MobSpawnerBaseLogic mobspawnerbaselogic = ((TileEntityMobSpawner)tileentity).getSpawnerBaseLogic();
++                if (tileentity instanceof TileEntityMobSpawner) {
++                    MobSpawnerBaseLogic mobspawnerbaselogic = ((TileEntityMobSpawner) tileentity).getSpawnerBaseLogic();
+                     mobspawnerbaselogic.setEntityName(EntityList.getStringFromID(stack.getMetadata()));
+                     tileentity.markDirty();
+                     worldIn.markBlockForUpdate(pos);
+ 
+-                    if (!playerIn.capabilities.isCreativeMode)
+-                    {
++                    if (!playerIn.capabilities.isCreativeMode) {
+                         --stack.stackSize;
+                     }
+ 
+@@ -93,22 +93,18 @@
+             pos = pos.offset(side);
+             double d0 = 0.0D;
+ 
+-            if (side == EnumFacing.UP && iblockstate instanceof BlockFence)
+-            {
++            if (side == EnumFacing.UP && iblockstate instanceof BlockFence) {
+                 d0 = 0.5D;
+             }
+ 
+-            Entity entity = spawnCreature(worldIn, stack.getMetadata(), (double)pos.getX() + 0.5D, (double)pos.getY() + d0, (double)pos.getZ() + 0.5D);
++            Entity entity = spawnCreature(worldIn, stack.getMetadata(), (double) pos.getX() + 0.5D, (double) pos.getY() + d0, (double) pos.getZ() + 0.5D);
+ 
+-            if (entity != null)
+-            {
+-                if (entity instanceof EntityLivingBase && stack.hasDisplayName())
+-                {
++            if (entity != null) {
++                if (entity instanceof EntityLivingBase && stack.hasDisplayName()) {
+                     entity.setCustomNameTag(stack.getDisplayName());
+                 }
+ 
+-                if (!playerIn.capabilities.isCreativeMode)
+-                {
++                if (!playerIn.capabilities.isCreativeMode) {
+                     --stack.stackSize;
+                 }
+             }
+@@ -117,51 +117,36 @@
+         }
+     }
+ 
+-    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
+-    {
+-        if (worldIn.isRemote)
+-        {
++    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
++        if (worldIn.isRemote) {
+             return itemStackIn;
+-        }
+-        else
+-        {
++        } else {
+             MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(worldIn, playerIn, true);
+ 
+-            if (movingobjectposition == null)
+-            {
++            if (movingobjectposition == null) {
+                 return itemStackIn;
+-            }
+-            else
+-            {
+-                if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+-                {
++            } else {
++                if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                     BlockPos blockpos = movingobjectposition.getBlockPos();
+ 
+-                    if (!worldIn.isBlockModifiable(playerIn, blockpos))
+-                    {
++                    if (!worldIn.isBlockModifiable(playerIn, blockpos)) {
+                         return itemStackIn;
+                     }
+ 
+-                    if (!playerIn.canPlayerEdit(blockpos, movingobjectposition.sideHit, itemStackIn))
+-                    {
++                    if (!playerIn.canPlayerEdit(blockpos, movingobjectposition.sideHit, itemStackIn)) {
+                         return itemStackIn;
+                     }
+ 
+-                    if (worldIn.getBlockState(blockpos).getBlock() instanceof BlockLiquid)
+-                    {
+-                        Entity entity = spawnCreature(worldIn, itemStackIn.getMetadata(), (double)blockpos.getX() + 0.5D, (double)blockpos.getY() + 0.5D, (double)blockpos.getZ() + 0.5D);
++                    if (worldIn.getBlockState(blockpos).getBlock() instanceof BlockLiquid) {
++                        Entity entity = spawnCreature(worldIn, itemStackIn.getMetadata(), (double) blockpos.getX() + 0.5D, (double) blockpos.getY() + 0.5D, (double) blockpos.getZ() + 0.5D);
+ 
+-                        if (entity != null)
+-                        {
+-                            if (entity instanceof EntityLivingBase && itemStackIn.hasDisplayName())
+-                            {
+-                                ((EntityLiving)entity).setCustomNameTag(itemStackIn.getDisplayName());
++                        if (entity != null) {
++                            if (entity instanceof EntityLivingBase && itemStackIn.hasDisplayName()) {
++                                ((EntityLiving) entity).setCustomNameTag(itemStackIn.getDisplayName());
+                             }
+ 
+-                            if (!playerIn.capabilities.isCreativeMode)
+-                            {
++                            if (!playerIn.capabilities.isCreativeMode) {
+                                 --itemStackIn.stackSize;
+                             }
+ 
+@@ -173,36 +173,45 @@
+         }
+     }
+ 
+-    public static Entity spawnCreature(World worldIn, int entityID, double x, double y, double z)
+-    {
+-        if (!EntityList.entityEggs.containsKey(Integer.valueOf(entityID)))
+-        {
++    public static net.minecraft.entity.Entity spawnCreature(World world, int i, double d0, double d1, double d2) {
++        // CraftBukkit start - delegate to spawnCreature
++        return spawnCreature(world, i, d0, d1, d2, SpawnReason.SPAWNER_EGG);
++    }
++
++    public static net.minecraft.entity.Entity spawnCreature(World worldIn, int entityID, double x, double y, double z, SpawnReason spawnReason) {
++        // CraftBukkit end
++        if (!EntityList.entityEggs.containsKey(Integer.valueOf(entityID))) {
+             return null;
+-        }
+-        else
+-        {
++        } else {
+             Entity entity = null;
+ 
+-            for (int j = 0; j < 1; ++j)
+-            {
++            for (int j = 0; j < 1; ++j) {
+                 entity = EntityList.createEntityByID(entityID, worldIn);
+ 
+-                if (entity instanceof EntityLivingBase)
+-                {
+-                    EntityLiving entityliving = (EntityLiving)entity;
++                if (entity instanceof EntityLivingBase) {
++                    EntityLiving entityliving = (EntityLiving) entity;
+                     entity.setLocationAndAngles(x, y, z, MathHelper.wrapAngleTo180_float(worldIn.rand.nextFloat() * 360.0F), 0.0F);
+                     entityliving.rotationYawHead = entityliving.rotationYaw;
+                     entityliving.renderYawOffset = entityliving.rotationYaw;
+-                    entityliving.func_180482_a(worldIn.getDifficultyForLocation(new BlockPos(entityliving)), (IEntityLivingData)null);
+-                    worldIn.spawnEntityInWorld(entity);
+-                    entityliving.playLivingSound();
++                    entityliving.func_180482_a(worldIn.getDifficultyForLocation(new BlockPos(entityliving)), (IEntityLivingData) null);
++                    // CraftBukkit start - don't return an entity when CreatureSpawnEvent is canceled
++                    if (!worldIn.addEntity(entity, spawnReason)) {
++                        entity = null;
++                    } else {
++                        entityliving.playLivingSound();
++                    }
++                    // CraftBukkit end
+                 }
+             }
+ 
+             return entity;
+         }
+     }
+-
+-    @SideOnly(Side.CLIENT)
+-    public void getSubItems(Item itemIn, CreativeTabs tab, List subItems)
+-    {
+-        Iterator iterator = EntityList.entityEggs.values().iterator();
+-
+-        while (iterator.hasNext())
+-        {
+-            EntityList.EntityEggInfo entityegginfo = (EntityList.EntityEggInfo)iterator.next();
+-            subItems.add(new ItemStack(itemIn, 1, entityegginfo.spawnedID));
+-        }
+-    }
+-}
++}

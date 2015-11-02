@@ -1,0 +1,70 @@
+---a/net/minecraft/network/play/client/C0DPacketCloseWindow.java
++++b/net/minecraft/network/play/client/C0DPacketCloseWindow.java
+@@ -1,42 +1,48 @@
+ package net.minecraft.network.play.client;
+ 
+ import java.io.IOException;
++
+ import net.minecraft.network.INetHandler;
+ import net.minecraft.network.Packet;
+ import net.minecraft.network.PacketBuffer;
+ import net.minecraft.network.play.INetHandlerPlayServer;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public class C0DPacketCloseWindow implements Packet
+-{
++public class C0DPacketCloseWindow implements Packet {
++
+     private int windowId;
+     private static final String __OBFID = "CL_00001354";
+ 
+-    public C0DPacketCloseWindow() {}
++    public C0DPacketCloseWindow() {
++    }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public C0DPacketCloseWindow(int windowId)
+-    {
+-        this.windowId = windowId;
++    // CraftBukkit start
++    // SpigotMCP Start -- Remove as mcp has added it
++    /*
++    @Override
++    public void processPacket(INetHandler pl) {
++        processPacket((PacketListenerPlayIn) pl);
+     }
++    */
++    // SpigotMCP End
+ 
+-    public void processPacket(INetHandlerPlayServer handler)
+-    {
++    public C0DPacketCloseWindow(int id) {
++        this.windowId = id;
++    }
++    // CraftBukkit end
++
++    public void processPacket(INetHandlerPlayServer handler) {
+         handler.processCloseWindow(this);
+     }
+ 
+-    public void readPacketData(PacketBuffer buf) throws IOException
+-    {
++    public void readPacketData(PacketBuffer buf) throws IOException {
+         this.windowId = buf.readByte();
+     }
+ 
+-    public void writePacketData(PacketBuffer buf) throws IOException
+-    {
++    public void writePacketData(PacketBuffer buf) throws IOException {
+         buf.writeByte(this.windowId);
+     }
+ 
+-    public void processPacket(INetHandler handler)
+-    {
+-        this.processPacket((INetHandlerPlayServer)handler);
++    public void processPacket(INetHandler handler) {
++        this.processPacket((INetHandlerPlayServer) handler);
+     }
+-}
++}

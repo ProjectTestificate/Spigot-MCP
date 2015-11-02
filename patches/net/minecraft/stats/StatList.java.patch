@@ -1,0 +1,259 @@
+---a/net/minecraft/stats/StatList.java
++++b/net/minecraft/stats/StatList.java
+@@ -1,15 +1,9 @@
+ package net.minecraft.stats;
+ 
+-import com.google.common.collect.Lists;
+-import com.google.common.collect.Maps;
+-import com.google.common.collect.Sets;
+ import java.util.HashSet;
+ import java.util.Iterator;
+ import java.util.List;
+ import java.util.Map;
++
+ import net.minecraft.block.Block;
+ import net.minecraft.entity.EntityList;
+ import net.minecraft.init.Blocks;
+@@ -19,8 +19,12 @@
+ import net.minecraft.util.ChatComponentTranslation;
+ import net.minecraft.util.ResourceLocation;
+ 
+-public class StatList
+-{
++import com.google.common.collect.Lists;
++import com.google.common.collect.Maps;
++import com.google.common.collect.Sets;
++
++public class StatList {
++
+     protected static Map oneShotStats = Maps.newHashMap();
+     public static List allStats = Lists.newArrayList();
+     public static List generalStats = Lists.newArrayList();
+@@ -60,8 +60,7 @@
+     public static final StatBase[] objectBreakStats = new StatBase[32000];
+     private static final String __OBFID = "CL_00001480";
+ 
+-    public static void func_151178_a()
+-    {
++    public static void func_151178_a() {
+         initMiningStats();
+         initStats();
+         initItemDepleteStats();
+@@ -70,42 +70,35 @@
+         EntityList.func_151514_a();
+     }
+ 
+-    private static void initCraftableStats()
+-    {
++    private static void initCraftableStats() {
+         HashSet hashset = Sets.newHashSet();
+         Iterator iterator = CraftingManager.getInstance().getRecipeList().iterator();
+ 
+-        while (iterator.hasNext())
+-        {
+-            IRecipe irecipe = (IRecipe)iterator.next();
++        while (iterator.hasNext()) {
++            IRecipe irecipe = (IRecipe) iterator.next();
+ 
+-            if (irecipe.getRecipeOutput() != null)
+-            {
++            if (irecipe.getRecipeOutput() != null) {
+                 hashset.add(irecipe.getRecipeOutput().getItem());
+             }
+         }
+ 
+         iterator = FurnaceRecipes.instance().getSmeltingList().values().iterator();
+ 
+-        while (iterator.hasNext())
+-        {
+-            ItemStack itemstack = (ItemStack)iterator.next();
++        while (iterator.hasNext()) {
++            ItemStack itemstack = (ItemStack) iterator.next();
+             hashset.add(itemstack.getItem());
+         }
+ 
+         iterator = hashset.iterator();
+ 
+-        while (iterator.hasNext())
+-        {
+-            Item item = (Item)iterator.next();
++        while (iterator.hasNext()) {
++            Item item = (Item) iterator.next();
+ 
+-            if (item != null)
+-            {
++            if (item != null) {
+                 int i = Item.getIdFromItem(item);
+                 String s = func_180204_a(item);
+ 
+-                if (s != null)
+-                {
+-                    objectCraftStats[i] = (new StatCrafting("stat.craftItem.", s, new ChatComponentTranslation("stat.craftItem", new Object[] {(new ItemStack(item)).getChatComponent()}), item)).registerStat();
++                if (s != null) {
++                    objectCraftStats[i] = (new StatCrafting("stat.craftItem.", s, new ChatComponentTranslation("stat.craftItem", new Object[]{(new ItemStack(item)).getChatComponent()}), item)).registerStat();
+                 }
+             }
+         }
+@@ -114,22 +114,18 @@
+         replaceAllSimilarBlocks(objectCraftStats);
+     }
+ 
+-    private static void initMiningStats()
+-    {
++    private static void initMiningStats() {
+         Iterator iterator = Block.blockRegistry.iterator();
+ 
+-        while (iterator.hasNext())
+-        {
+-            Block block = (Block)iterator.next();
++        while (iterator.hasNext()) {
++            Block block = (Block) iterator.next();
+             Item item = Item.getItemFromBlock(block);
+ 
+-            if (item != null)
+-            {
++            if (item != null) {
+                 int i = Block.getIdFromBlock(block);
+                 String s = func_180204_a(item);
+ 
+-                if (s != null && block.getEnableStats())
+-                {
+-                    mineBlockStatArray[i] = (new StatCrafting("stat.mineBlock.", s, new ChatComponentTranslation("stat.mineBlock", new Object[] {(new ItemStack(block)).getChatComponent()}), item)).registerStat();
+-                    objectMineStats.add((StatCrafting)mineBlockStatArray[i]);
++                if (s != null && block.getEnableStats()) {
++                    mineBlockStatArray[i] = (new StatCrafting("stat.mineBlock.", s, new ChatComponentTranslation("stat.mineBlock", new Object[]{(new ItemStack(block)).getChatComponent()}), item)).registerStat();
++                    objectMineStats.add((StatCrafting) mineBlockStatArray[i]);
+                 }
+             }
+         }
+@@ -139,25 +139,20 @@
+         replaceAllSimilarBlocks(mineBlockStatArray);
+     }
+ 
+-    private static void initStats()
+-    {
++    private static void initStats() {
+         Iterator iterator = Item.itemRegistry.iterator();
+ 
+-        while (iterator.hasNext())
+-        {
+-            Item item = (Item)iterator.next();
++        while (iterator.hasNext()) {
++            Item item = (Item) iterator.next();
+ 
+-            if (item != null)
+-            {
++            if (item != null) {
+                 int i = Item.getIdFromItem(item);
+                 String s = func_180204_a(item);
+ 
+-                if (s != null)
+-                {
+-                    objectUseStats[i] = (new StatCrafting("stat.useItem.", s, new ChatComponentTranslation("stat.useItem", new Object[] {(new ItemStack(item)).getChatComponent()}), item)).registerStat();
++                if (s != null) {
++                    objectUseStats[i] = (new StatCrafting("stat.useItem.", s, new ChatComponentTranslation("stat.useItem", new Object[]{(new ItemStack(item)).getChatComponent()}), item)).registerStat();
+ 
+-                    if (!(item instanceof ItemBlock))
+-                    {
+-                        itemStats.add((StatCrafting)objectUseStats[i]);
++                    if (!(item instanceof ItemBlock)) {
++                        itemStats.add((StatCrafting) objectUseStats[i]);
+                     }
+                 }
+             }
+@@ -167,21 +167,17 @@
+         replaceAllSimilarBlocks(objectUseStats);
+     }
+ 
+-    private static void initItemDepleteStats()
+-    {
++    private static void initItemDepleteStats() {
+         Iterator iterator = Item.itemRegistry.iterator();
+ 
+-        while (iterator.hasNext())
+-        {
+-            Item item = (Item)iterator.next();
++        while (iterator.hasNext()) {
++            Item item = (Item) iterator.next();
+ 
+-            if (item != null)
+-            {
++            if (item != null) {
+                 int i = Item.getIdFromItem(item);
+                 String s = func_180204_a(item);
+ 
+-                if (s != null && item.isDamageable())
+-                {
+-                    objectBreakStats[i] = (new StatCrafting("stat.breakItem.", s, new ChatComponentTranslation("stat.breakItem", new Object[] {(new ItemStack(item)).getChatComponent()}), item)).registerStat();
++                if (s != null && item.isDamageable()) {
++                    objectBreakStats[i] = (new StatCrafting("stat.breakItem.", s, new ChatComponentTranslation("stat.breakItem", new Object[]{(new ItemStack(item)).getChatComponent()}), item)).registerStat();
+                 }
+             }
+         }
+@@ -190,15 +190,13 @@
+         replaceAllSimilarBlocks(objectBreakStats);
+     }
+ 
+-    private static String func_180204_a(Item p_180204_0_)
+-    {
+-        ResourceLocation resourcelocation = (ResourceLocation)Item.itemRegistry.getNameForObject(p_180204_0_);
++    private static String func_180204_a(Item p_180204_0_) {
++        ResourceLocation resourcelocation = (ResourceLocation) Item.itemRegistry.getNameForObject(p_180204_0_);
+         return resourcelocation != null ? resourcelocation.toString().replace(':', '.') : null;
+     }
+ 
+-    private static void replaceAllSimilarBlocks(StatBase[] p_75924_0_)
+-    {
++    private static void replaceAllSimilarBlocks(StatBase[] p_75924_0_) {
+         func_151180_a(p_75924_0_, Blocks.water, Blocks.flowing_water);
+         func_151180_a(p_75924_0_, Blocks.lava, Blocks.flowing_lava);
+         func_151180_a(p_75924_0_, Blocks.lit_pumpkin, Blocks.pumpkin);
+@@ -214,16 +214,13 @@
+         func_151180_a(p_75924_0_, Blocks.farmland, Blocks.dirt);
+     }
+ 
+-    private static void func_151180_a(StatBase[] p_151180_0_, Block p_151180_1_, Block p_151180_2_)
+-    {
++    private static void func_151180_a(StatBase[] p_151180_0_, Block p_151180_1_, Block p_151180_2_) {
+         int i = Block.getIdFromBlock(p_151180_1_);
+         int j = Block.getIdFromBlock(p_151180_2_);
+ 
+-        if (p_151180_0_[i] != null && p_151180_0_[j] == null)
+-        {
++        if (p_151180_0_[i] != null && p_151180_0_[j] == null) {
+             p_151180_0_[j] = p_151180_0_[i];
+-        }
+-        else
+-        {
++        } else {
+             allStats.remove(p_151180_0_[i]);
+             objectMineStats.remove(p_151180_0_[i]);
+             generalStats.remove(p_151180_0_[i]);
+@@ -232,21 +232,17 @@
+         }
+     }
+ 
+-    public static StatBase getStatKillEntity(EntityList.EntityEggInfo p_151182_0_)
+-    {
++    public static StatBase getStatKillEntity(EntityList.EntityEggInfo p_151182_0_) {
+         String s = EntityList.getStringFromID(p_151182_0_.spawnedID);
+-        return s == null ? null : (new StatBase("stat.killEntity." + s, new ChatComponentTranslation("stat.entityKill", new Object[] {new ChatComponentTranslation("entity." + s + ".name", new Object[0])}))).registerStat();
++        return s == null ? null : (new StatBase("stat.killEntity." + s, new ChatComponentTranslation("stat.entityKill", new Object[]{new ChatComponentTranslation("entity." + s + ".name", new Object[0])}))).registerStat();
+     }
+ 
+-    public static StatBase getStatEntityKilledBy(EntityList.EntityEggInfo p_151176_0_)
+-    {
++    public static StatBase getStatEntityKilledBy(EntityList.EntityEggInfo p_151176_0_) {
+         String s = EntityList.getStringFromID(p_151176_0_.spawnedID);
+-        return s == null ? null : (new StatBase("stat.entityKilledBy." + s, new ChatComponentTranslation("stat.entityKilledBy", new Object[] {new ChatComponentTranslation("entity." + s + ".name", new Object[0])}))).registerStat();
++        return s == null ? null : (new StatBase("stat.entityKilledBy." + s, new ChatComponentTranslation("stat.entityKilledBy", new Object[]{new ChatComponentTranslation("entity." + s + ".name", new Object[0])}))).registerStat();
+     }
+ 
+-    public static StatBase getOneShotStat(String p_151177_0_)
+-    {
+-        return (StatBase)oneShotStats.get(p_151177_0_);
++    public static StatBase getOneShotStat(String p_151177_0_) {
++        return (StatBase) oneShotStats.get(p_151177_0_);
+     }
+-}
++}

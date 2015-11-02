@@ -1,0 +1,97 @@
+---a/net/minecraft/network/play/server/S02PacketChat.java
++++b/net/minecraft/network/play/server/S02PacketChat.java
+@@ -1,63 +1,60 @@
+ package net.minecraft.network.play.server;
+ 
+ import java.io.IOException;
++
++import net.md_5.bungee.api.chat.BaseComponent;
+ import net.minecraft.network.INetHandler;
+ import net.minecraft.network.Packet;
+ import net.minecraft.network.PacketBuffer;
+ import net.minecraft.network.play.INetHandlerPlayClient;
+ import net.minecraft.util.IChatComponent;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public class S02PacketChat implements Packet
+-{
++
++public class S02PacketChat implements Packet {
++
+     private IChatComponent chatComponent;
++    public BaseComponent[] components; // Spigot
+     private byte field_179842_b;
+     private static final String __OBFID = "CL_00001289";
+ 
+-    public S02PacketChat() {}
++    public S02PacketChat() {
++    }
+ 
+-    public S02PacketChat(IChatComponent component)
+-    {
+-        this(component, (byte)1);
++    public S02PacketChat(IChatComponent component) {
++        this(component, (byte) 1);
+     }
+ 
+-    public S02PacketChat(IChatComponent p_i45986_1_, byte p_i45986_2_)
+-    {
++    public S02PacketChat(IChatComponent p_i45986_1_, byte p_i45986_2_) {
+         this.chatComponent = p_i45986_1_;
+         this.field_179842_b = p_i45986_2_;
+     }
+ 
+-    public void readPacketData(PacketBuffer buf) throws IOException
+-    {
++    public void readPacketData(PacketBuffer buf) throws IOException {
+         this.chatComponent = buf.readChatComponent();
+         this.field_179842_b = buf.readByte();
+     }
+ 
+-    public void writePacketData(PacketBuffer buf) throws IOException
+-    {
+-        buf.writeChatComponent(this.chatComponent);
++    public void writePacketData(PacketBuffer buf) throws IOException {
++        // Spigot start
++        if (components != null) {
++            buf.writeString(net.md_5.bungee.chat.ComponentSerializer.toString(components));
++        } else {
++            buf.writeChatComponent(this.chatComponent);
++        }
++        // Spigot end
+         buf.writeByte(this.field_179842_b);
+     }
+ 
+-    public void processPacket(INetHandlerPlayClient handler)
+-    {
++    public void processPacket(INetHandlerPlayClient handler) {
+         handler.handleChat(this);
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public IChatComponent func_148915_c()
+-    {
+-        return this.chatComponent;
+-    }
+-
+-    public boolean isChat()
+-    {
++    public boolean isChat() {
+         return this.field_179842_b == 1 || this.field_179842_b == 2;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public byte func_179841_c()
+-    {
+-        return this.field_179842_b;
++    public void processPacket(INetHandler handler) {
++        this.processPacket((INetHandlerPlayClient) handler);
+     }
+-
+-    public void processPacket(INetHandler handler)
+-    {
+-        this.processPacket((INetHandlerPlayClient)handler);
+-    }
+-}
++}

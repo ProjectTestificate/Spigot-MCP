@@ -1,0 +1,114 @@
+---a/net/minecraft/world/WorldServerMulti.java
++++b/net/minecraft/world/WorldServerMulti.java
+@@ -3,76 +3,75 @@
+ import net.minecraft.profiler.Profiler;
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.village.VillageCollection;
+-import net.minecraft.world.border.IBorderListener;
+-import net.minecraft.world.border.WorldBorder;
+-import net.minecraft.world.storage.DerivedWorldInfo;
+ import net.minecraft.world.storage.ISaveHandler;
++import net.minecraft.world.storage.WorldInfo;
+ 
+-public class WorldServerMulti extends WorldServer
+-{
++import org.bukkit.World.Environment;
++import org.bukkit.generator.ChunkGenerator;
++
++public class WorldServerMulti extends WorldServer {
++
+     private WorldServer delegate;
+     private static final String __OBFID = "CL_00001430";
+ 
+-    public WorldServerMulti(MinecraftServer server, ISaveHandler saveHandlerIn, int dimensionId, WorldServer delegate, Profiler profilerIn)
+-    {
+-        super(server, saveHandlerIn, new DerivedWorldInfo(delegate.getWorldInfo()), dimensionId, profilerIn);
++    // CraftBukkit start - Add WorldData, Environment and ChunkGenerator arguments
++    public WorldServerMulti(MinecraftServer server, ISaveHandler saveHandlerIn, int dimensionId, WorldServer delegate, Profiler profilerIn, WorldInfo worldData, Environment env, ChunkGenerator gen) {
++        super(server, saveHandlerIn, worldData, dimensionId, profilerIn, env, gen);
++        // CraftBukkit end
+         this.delegate = delegate;
+-        delegate.getWorldBorder().addListener(new IBorderListener()
+-        {
++        // CraftBukkit Start
++        /*
++        delegate.getWorldBorder().addListener(new IBorderListener() {
++
+             private static final String __OBFID = "CL_00002273";
+-            public void onSizeChanged(WorldBorder border, double newSize)
+-            {
++
++            public void onSizeChanged(WorldBorder border, double newSize) {
+                 WorldServerMulti.this.getWorldBorder().setTransition(newSize);
+             }
+-            public void onTransitionStarted(WorldBorder border, double oldSize, double newSize, long time)
+-            {
++
++            public void onTransitionStarted(WorldBorder border, double oldSize, double newSize, long time) {
+                 WorldServerMulti.this.getWorldBorder().setTransition(oldSize, newSize, time);
+             }
+-            public void onCenterChanged(WorldBorder border, double x, double z)
+-            {
++
++            public void onCenterChanged(WorldBorder border, double x, double z) {
+                 WorldServerMulti.this.getWorldBorder().setCenter(x, z);
+             }
+-            public void onWarningTimeChanged(WorldBorder border, int newTime)
+-            {
++
++            public void onWarningTimeChanged(WorldBorder border, int newTime) {
+                 WorldServerMulti.this.getWorldBorder().setWarningTime(newTime);
+             }
+-            public void onWarningDistanceChanged(WorldBorder border, int newDistance)
+-            {
++
++            public void onWarningDistanceChanged(WorldBorder border, int newDistance) {
+                 WorldServerMulti.this.getWorldBorder().setWarningDistance(newDistance);
+             }
+-            public void onDamageAmountChanged(WorldBorder border, double newAmount)
+-            {
++
++            public void onDamageAmountChanged(WorldBorder border, double newAmount) {
+                 WorldServerMulti.this.getWorldBorder().setDamageAmount(newAmount);
+             }
+-            public void onDamageBufferChanged(WorldBorder border, double newSize)
+-            {
++
++            public void onDamageBufferChanged(WorldBorder border, double newSize) {
+                 WorldServerMulti.this.getWorldBorder().setDamageBuffer(newSize);
+             }
+         });
++        */
++        // CraftBukkit End
+     }
+ 
+-    protected void saveLevel() throws MinecraftException {}
++    // protected void saveLevel() throws MinecraftException {} // CraftBukkit
+ 
+-    public World init()
+-    {
++    public World init() {
+         this.mapStorage = this.delegate.getMapStorage();
+-        this.worldScoreboard = this.delegate.getScoreboard();
++        // this.worldScoreboard = this.delegate.getScoreboard(); // CraftBukkit
+         String s = VillageCollection.fileNameForProvider(this.provider);
+-        VillageCollection villagecollection = (VillageCollection)this.mapStorage.loadData(VillageCollection.class, s);
++        VillageCollection villagecollection = (VillageCollection) this.mapStorage.loadData(VillageCollection.class, s);
+ 
+-        if (villagecollection == null)
+-        {
++        if (villagecollection == null) {
+             this.villageCollectionObj = new VillageCollection(this);
+             this.mapStorage.setData(s, this.villageCollectionObj);
+-        }
+-        else
+-        {
++        } else {
+             this.villageCollectionObj = villagecollection;
+             this.villageCollectionObj.setWorldsForAll(this);
+         }
+ 
+         return this;
+     }
+-}
++}

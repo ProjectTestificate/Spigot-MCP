@@ -1,0 +1,16 @@
+---a/net/minecraft/profiler/IPlayerUsage.java
++++b/net/minecraft/profiler/IPlayerUsage.java
+@@ -1,11 +1,11 @@
+ package net.minecraft.profiler;
+ 
+-public interface IPlayerUsage
+-{
++public interface IPlayerUsage {
++
+     void addServerStatsToSnooper(PlayerUsageSnooper playerSnooper);
+ 
+     void addServerTypeToSnooper(PlayerUsageSnooper playerSnooper);
+ 
+     boolean isSnooperEnabled();
+-}
++}

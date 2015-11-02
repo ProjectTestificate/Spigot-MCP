@@ -1,0 +1,82 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.0-SNAPSHOT'
+    }
+}
+
+apply plugin: "maven"
+apply plugin: "net.minecraftforge.gradle.patcher"
+apply plugin: "net.minecraftforge.gradle.launch4j"
+
+minecraft {
+    version = "${build.minecraftVersion}"
+    mappings = "${build.mappingsVersion}"
+    workspaceDir = "projects"
+    versionJson = "jsons/${build.minecraftVersion}-dev.json"
+
+    projects {
+        fake {
+            rootDir "."
+            patchDir "patches"
+            patchAfter "clean"
+            genPatchesFrom "clean"
+        }
+    }
+}
+
+group = 'fake'
+version = 'stupids'
+
+
+processJson {
+    releaseJson = "jsons/${build.minecraftVersion}-rel.json"
+    addReplacements([
+        "@minecraft_version@": project.minecraft.version,
+        "@version@": project.version,
+        "@project@": "fake",
+        "@artifact@": "fake:taco:${project.version}",
+        "@universal_jar@": { outputJar.archiveName },
+        "@timestamp@": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+    ])
+}
+
+outputJar {
+    classifier = 'universal'
+
+    manifest.attributes([
+        "Class-Path": getServerClasspath(file("jsons/1.8-rel.json"))
+    ])
+}
+
+import groovy.json.JsonSlurper;
+
+String getServerClasspath(File file)
+{
+    def node = new JsonSlurper().parse(file);
+    def out = new StringBuilder()
+    node.versionInfo.libraries.each { lib ->
+        if (lib.serverreq)
+        {
+            // group : artifact : version
+            def split = lib.name.split(':')
+            def group = split[0].replace('.', '/')
+            def artifact = split[1]
+            def version = split[2]
+            out += "libraries/$group/$artifact/$version/$artifact-${version}.jar "
+        }
+    }
+    out += "minecraft_server.${minecraft.version}.jar"
+
+    return out.toString();
+}

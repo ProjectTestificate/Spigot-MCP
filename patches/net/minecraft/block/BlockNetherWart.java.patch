@@ -1,0 +1,133 @@
+---a/net/minecraft/block/BlockNetherWart.java
++++b/net/minecraft/block/BlockNetherWart.java
+@@ -1,6 +1,7 @@
+ package net.minecraft.block;
+ 
+ import java.util.Random;
++
+ import net.minecraft.block.properties.IProperty;
+ import net.minecraft.block.properties.PropertyInteger;
+ import net.minecraft.block.state.BlockState;
+@@ -12,93 +12,75 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.world.World;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public class BlockNetherWart extends BlockBush
+-{
++
++public class BlockNetherWart extends BlockBush {
++
+     public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 3);
+     private static final String __OBFID = "CL_00000274";
+ 
+-    protected BlockNetherWart()
+-    {
++    protected BlockNetherWart() {
+         this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)));
+         this.setTickRandomly(true);
+         float f = 0.5F;
+         this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.25F, 0.5F + f);
+-        this.setCreativeTab((CreativeTabs)null);
++        this.setCreativeTab((CreativeTabs) null);
+     }
+ 
+-    protected boolean canPlaceBlockOn(Block ground)
+-    {
++    protected boolean canPlaceBlockOn(Block ground) {
+         return ground == Blocks.soul_sand;
+     }
+ 
+-    public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state)
+-    {
++    public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state) {
+         return this.canPlaceBlockOn(worldIn.getBlockState(pos.down()).getBlock());
+     }
+ 
+-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+-    {
+-        int i = ((Integer)state.getValue(AGE)).intValue();
++    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
++        int i = ((Integer) state.getValue(AGE)).intValue();
+ 
+-        if (i < 3 && rand.nextInt(10) == 0)
+-        {
++        if (i < 3 && rand.nextInt(10) == 0) {
+             state = state.withProperty(AGE, Integer.valueOf(i + 1));
+-            worldIn.setBlockState(pos, state, 2);
++            // worldIn.setBlockState(pos, state, 2);
++            org.bukkit.craftbukkit.event.CraftEventFactory.handleBlockGrowEvent(worldIn, pos.getX(), pos.getY(), pos.getZ(), this, getMetaFromState(state)); // CraftBukkit
+         }
+ 
+         super.updateTick(worldIn, pos, state, rand);
+     }
+ 
+-    public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune)
+-    {
+-        if (!worldIn.isRemote)
+-        {
++    public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune) {
++        if (!worldIn.isRemote) {
+             int j = 1;
+ 
+-            if (((Integer)state.getValue(AGE)).intValue() >= 3)
+-            {
++            if (((Integer) state.getValue(AGE)).intValue() >= 3) {
+                 j = 2 + worldIn.rand.nextInt(3);
+ 
+-                if (fortune > 0)
+-                {
++                if (fortune > 0) {
+                     j += worldIn.rand.nextInt(fortune + 1);
+                 }
+             }
+ 
+-            for (int k = 0; k < j; ++k)
+-            {
++            for (int k = 0; k < j; ++k) {
+                 spawnAsEntity(worldIn, pos, new ItemStack(Items.nether_wart));
+             }
+         }
+     }
+ 
+-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+-    {
++    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+         return null;
+     }
+ 
+-    public int quantityDropped(Random random)
+-    {
++    public int quantityDropped(Random random) {
+         return 0;
+     }
+ 
+-    public IBlockState getStateFromMeta(int meta)
+-    {
++    public IBlockState getStateFromMeta(int meta) {
+         return this.getDefaultState().withProperty(AGE, Integer.valueOf(meta));
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public Item getItem(World worldIn, BlockPos pos)
+-    {
+-        return Items.nether_wart;
++    public int getMetaFromState(IBlockState state) {
++        return ((Integer) state.getValue(AGE)).intValue();
+     }
+ 
+-    public int getMetaFromState(IBlockState state)
+-    {
+-        return ((Integer)state.getValue(AGE)).intValue();
++    protected BlockState createBlockState() {
++        return new BlockState(this, new IProperty[]{AGE});
+     }
+-
+-    protected BlockState createBlockState()
+-    {
+-        return new BlockState(this, new IProperty[] {AGE});
+-    }
+-}
++}

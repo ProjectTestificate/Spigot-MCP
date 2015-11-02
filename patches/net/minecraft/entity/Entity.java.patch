@@ -1,0 +1,3117 @@
+---a/net/minecraft/entity/Entity.java
++++b/net/minecraft/entity/Entity.java
+@@ -5,6 +5,7 @@
+ import java.util.Random;
+ import java.util.UUID;
+ import java.util.concurrent.Callable;
++
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockFence;
+ import net.minecraft.block.BlockFenceGate;
+@@ -20,6 +20,7 @@
+ import net.minecraft.enchantment.EnchantmentProtection;
+ import net.minecraft.entity.effect.EntityLightningBolt;
+ import net.minecraft.entity.item.EntityItem;
++import net.minecraft.entity.passive.EntityTameable;
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.entity.player.EntityPlayerMP;
+ import net.minecraft.event.HoverEvent;
+@@ -39,17 +39,13 @@
+ import net.minecraft.util.EnumParticleTypes;
+ import net.minecraft.util.IChatComponent;
+ import net.minecraft.util.MathHelper;
+-import net.minecraft.util.MovingObjectPosition;
+ import net.minecraft.util.ReportedException;
+ import net.minecraft.util.StatCollector;
+ import net.minecraft.util.Vec3;
+ import net.minecraft.world.Explosion;
+ import net.minecraft.world.World;
+ import net.minecraft.world.WorldServer;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public abstract class Entity implements ICommandSender
+-{
++import org.bukkit.Bukkit;
++import org.bukkit.Location;
++import org.bukkit.Server;
++import org.bukkit.TravelAgent;
++import org.bukkit.block.BlockFace;
++import org.bukkit.craftbukkit.CraftWorld;
++import org.bukkit.craftbukkit.entity.CraftEntity;
++import org.bukkit.craftbukkit.entity.CraftPlayer;
++import org.bukkit.craftbukkit.event.CraftEventFactory;
++import org.bukkit.entity.Hanging;
++import org.bukkit.entity.LivingEntity;
++import org.bukkit.entity.Painting;
++import org.bukkit.entity.Vehicle;
++import org.bukkit.event.entity.EntityCombustByBlockEvent;
++import org.bukkit.event.entity.EntityCombustByEntityEvent;
++import org.bukkit.event.entity.EntityCombustEvent;
++import org.bukkit.event.entity.EntityPortalEvent;
++import org.bukkit.event.hanging.HangingBreakByEntityEvent;
++import org.bukkit.event.painting.PaintingBreakByEntityEvent;
++import org.bukkit.event.vehicle.VehicleBlockCollisionEvent;
++import org.bukkit.event.vehicle.VehicleEnterEvent;
++import org.bukkit.event.vehicle.VehicleExitEvent;
++import org.bukkit.plugin.PluginManager;
++import org.bukkit.projectiles.ProjectileSource;
++import org.spigotmc.CustomTimingsHandler;
++import org.spigotmc.event.entity.EntityDismountEvent;
++import org.spigotmc.event.entity.EntityMountEvent;
++
++public abstract class Entity implements ICommandSender {
++
++    // CraftBukkit start
++    private static final int CURRENT_LEVEL = 2;
++
++    static boolean isLevelAtLeast(NBTTagCompound tag, int level) {
++        return tag.hasKey("Bukkit.updateLevel") && tag.getInteger("Bukkit.updateLevel") >= level;
++    }
++    // CraftBukikt end
++
+     private static final AxisAlignedBB ZERO_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
+     private static int nextEntityID;
+     private int entityId;
+@@ -98,20 +98,25 @@
+     protected Random rand;
+     public int ticksExisted;
+     public int fireResistance;
+-    private int fire;
+-    protected boolean inWater;
++    public int fire; // SpigotMCP -- Apply access transformation
++    public boolean inWater; // Spigot - protected -> public
+     public int hurtResistantTime;
+     protected boolean firstUpdate;
+     protected boolean isImmuneToFire;
+-    protected DataWatcher dataWatcher;
++    public DataWatcher dataWatcher; // SpigotMCP -- make public as bukkit assumes in same package
+     private double entityRiderPitchDelta;
+     private double entityRiderYawDelta;
+     public boolean addedToChunk;
++
++    public boolean isAddedToChunk() {
++        return addedToChunk;
++    } // Spigot
++
+     public int chunkCoordX;
+     public int chunkCoordY;
+     public int chunkCoordZ;
+-    @SideOnly(Side.CLIENT)
+-    public int serverPosX;
+-    @SideOnly(Side.CLIENT)
+-    public int serverPosY;
+-    @SideOnly(Side.CLIENT)
+-    public int serverPosZ;
+     public boolean ignoreFrustumCheck;
+     public boolean isAirBorne;
+     public int timeUntilPortal;
+@@ -126,23 +126,35 @@
+     private boolean invulnerable;
+     protected UUID entityUniqueID;
+     private final CommandResultStats cmdResultStats;
++    public boolean valid; // CraftBukkit
++    public ProjectileSource projectileSource; // CraftBukkit - For projectiles only
+     private static final String __OBFID = "CL_00001533";
+ 
+-    public int getEntityId()
+-    {
++    // Spigot start
++    public CustomTimingsHandler tickTimer = org.bukkit.craftbukkit.SpigotTimings.getEntityTimings(this); // Spigot
++    public final byte activationType = org.spigotmc.ActivationRange.initializeEntityActivationType(this);
++    public final boolean defaultActivationState;
++    public long activatedTick = Integer.MIN_VALUE;
++    public boolean fromMobSpawner;
++
++    public void inactiveTick() {
++    }
++    // Spigot end
++
++    public int getEntityId() {
+         return this.entityId;
+     }
+ 
+-    public void setEntityId(int id)
+-    {
++    public void setEntityId(int id) {
+         this.entityId = id;
+     }
+ 
+-    public void onKillCommand()
+-    {
++    public void onKillCommand() {
+         this.setDead();
+     }
+ 
+-    public Entity(World worldIn)
+-    {
++    public Entity(World worldIn) {
+         this.entityId = nextEntityID++;
+         this.renderDistanceWeight = 1.0D;
+         this.boundingBox = ZERO_AABB;
+@@ -159,119 +159,106 @@
+         this.worldObj = worldIn;
+         this.setPosition(0.0D, 0.0D, 0.0D);
+ 
+-        if (worldIn != null)
+-        {
++        if (worldIn != null) {
+             this.dimension = worldIn.provider.getDimensionId();
++            // Spigot start
++            this.defaultActivationState = org.spigotmc.ActivationRange.initializeEntityActivationState(this, worldIn.spigotConfig);
++        } else {
++            this.defaultActivationState = false;
+         }
++        // Spigot end
+ 
+         this.dataWatcher = new DataWatcher(this);
+-        this.dataWatcher.addObject(0, Byte.valueOf((byte)0));
+-        this.dataWatcher.addObject(1, Short.valueOf((short)300));
+-        this.dataWatcher.addObject(3, Byte.valueOf((byte)0));
++        this.dataWatcher.addObject(0, Byte.valueOf((byte) 0));
++        this.dataWatcher.addObject(1, Short.valueOf((short) 300));
++        this.dataWatcher.addObject(3, Byte.valueOf((byte) 0));
+         this.dataWatcher.addObject(2, "");
+-        this.dataWatcher.addObject(4, Byte.valueOf((byte)0));
++        this.dataWatcher.addObject(4, Byte.valueOf((byte) 0));
+         this.entityInit();
+     }
+ 
+     protected abstract void entityInit();
+ 
+-    public DataWatcher getDataWatcher()
+-    {
++    public DataWatcher getDataWatcher() {
+         return this.dataWatcher;
+     }
+ 
+-    public boolean equals(Object p_equals_1_)
+-    {
+-        return p_equals_1_ instanceof Entity ? ((Entity)p_equals_1_).entityId == this.entityId : false;
++    public boolean equals(Object p_equals_1_) {
++        return p_equals_1_ instanceof Entity ? ((Entity) p_equals_1_).entityId == this.entityId : false;
+     }
+ 
+-    public int hashCode()
+-    {
++    public int hashCode() {
+         return this.entityId;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    protected void preparePlayerToSpawn()
+-    {
+-        if (this.worldObj != null)
+-        {
+-            while (this.posY > 0.0D && this.posY < 256.0D)
+-            {
+-                this.setPosition(this.posX, this.posY, this.posZ);
+-
+-                if (this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty())
+-                {
+-                    break;
+-                }
+-
+-                ++this.posY;
+-            }
+-
+-            this.motionX = this.motionY = this.motionZ = 0.0D;
+-            this.rotationPitch = 0.0F;
+-        }
+-    }
+-
+-    public void setDead()
+-    {
++    public void setDead() {
+         this.isDead = true;
+     }
+ 
+-    protected void setSize(float width, float height)
++    // PAIL: Access + rename please
++    public void setSize(float width, float height) // CraftBukkit - protected to public
+     {
+-        if (width != this.width || height != this.height)
+-        {
++        if (width != this.width || height != this.height) {
+             float f2 = this.width;
+             this.width = width;
+             this.height = height;
+-            this.setEntityBoundingBox(new AxisAlignedBB(this.getEntityBoundingBox().minX, this.getEntityBoundingBox().minY, this.getEntityBoundingBox().minZ, this.getEntityBoundingBox().minX + (double)this.width, this.getEntityBoundingBox().minY + (double)this.height, this.getEntityBoundingBox().minZ + (double)this.width));
++            this.setEntityBoundingBox(new AxisAlignedBB(this.getEntityBoundingBox().minX, this.getEntityBoundingBox().minY, this.getEntityBoundingBox().minZ, this.getEntityBoundingBox().minX + (double) this.width, this.getEntityBoundingBox().minY + (double) this.height, this.getEntityBoundingBox().minZ + (double) this.width));
+ 
+-            if (this.width > f2 && !this.firstUpdate && !this.worldObj.isRemote)
+-            {
+-                this.moveEntity((double)(f2 - this.width), 0.0D, (double)(f2 - this.width));
++            if (this.width > f2 && !this.firstUpdate && !this.worldObj.isRemote) {
++                this.moveEntity((double) (f2 - this.width), 0.0D, (double) (f2 - this.width));
+             }
+         }
+     }
+ 
+-    protected void setRotation(float yaw, float pitch)
+-    {
++    public void setRotation(float yaw, float pitch) { // SpigotMCP -- Make public as bukkit assumes in the same package
++        // CraftBukkit start - yaw was sometimes set to NaN, so we need to set it back to 0
++        if (Float.isNaN(yaw)) {
++            yaw = 0;
++        }
++
++        if (yaw == Float.POSITIVE_INFINITY || yaw == Float.NEGATIVE_INFINITY) {
++            if (this instanceof EntityPlayer) {
++                this.worldObj.getServer().getLogger().warning(this.getName() + " was caught trying to crash the server with an invalid yaw");
++                ((CraftPlayer) this.getBukkitEntity()).kickPlayer("Infinite yaw (Hacking?)"); //Spigot "Nope" -> Descriptive reason
++            }
++            yaw = 0;
++        }
++
++        // pitch was sometimes set to NaN, so we need to set it back to 0
++        if (Float.isNaN(pitch)) {
++            pitch = 0;
++        }
++
++        if (pitch == Float.POSITIVE_INFINITY || pitch == Float.NEGATIVE_INFINITY) {
++            if (this instanceof EntityPlayer) {
++                this.worldObj.getServer().getLogger().warning(this.getName() + " was caught trying to crash the server with an invalid pitch");
++                ((CraftPlayer) this.getBukkitEntity()).kickPlayer("Infinite pitch (Hacking?)"); //Spigot "Nope" -> Descriptive reason
++            }
++            pitch = 0;
++        }
++        // CraftBukkit end
++
+         this.rotationYaw = yaw % 360.0F;
+         this.rotationPitch = pitch % 360.0F;
+     }
+ 
+-    public void setPosition(double x, double y, double z)
+-    {
++    public void setPosition(double x, double y, double z) {
+         this.posX = x;
+         this.posY = y;
+         this.posZ = z;
+         float f = this.width / 2.0F;
+         float f1 = this.height;
+-        this.setEntityBoundingBox(new AxisAlignedBB(x - (double)f, y, z - (double)f, x + (double)f, y + (double)f1, z + (double)f));
++        this.setEntityBoundingBox(new AxisAlignedBB(x - (double) f, y, z - (double) f, x + (double) f, y + (double) f1, z + (double) f));
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public void setAngles(float yaw, float pitch)
+-    {
+-        float f2 = this.rotationPitch;
+-        float f3 = this.rotationYaw;
+-        this.rotationYaw = (float)((double)this.rotationYaw + (double)yaw * 0.15D);
+-        this.rotationPitch = (float)((double)this.rotationPitch - (double)pitch * 0.15D);
+-        this.rotationPitch = MathHelper.clamp_float(this.rotationPitch, -90.0F, 90.0F);
+-        this.prevRotationPitch += this.rotationPitch - f2;
+-        this.prevRotationYaw += this.rotationYaw - f3;
+-    }
+-
+-    public void onUpdate()
+-    {
++    public void onUpdate() {
+         this.onEntityUpdate();
+     }
+ 
+-    public void onEntityUpdate()
+-    {
++    public void onEntityUpdate() {
+         this.worldObj.theProfiler.startSection("entityBaseTick");
+ 
+-        if (this.ridingEntity != null && this.ridingEntity.isDead)
+-        {
++        if (this.ridingEntity != null && this.ridingEntity.isDead) {
+             this.ridingEntity = null;
+         }
+ 
+@@ -282,27 +282,22 @@
+         this.prevRotationPitch = this.rotationPitch;
+         this.prevRotationYaw = this.rotationYaw;
+ 
+-        if (!this.worldObj.isRemote && this.worldObj instanceof WorldServer)
+-        {
++        if (!this.worldObj.isRemote && this.worldObj instanceof WorldServer) {
+             this.worldObj.theProfiler.startSection("portal");
+-            MinecraftServer minecraftserver = ((WorldServer)this.worldObj).getMinecraftServer();
++            MinecraftServer minecraftserver = ((WorldServer) this.worldObj).getMinecraftServer();
+             int i = this.getMaxInPortalTime();
+ 
+-            if (this.inPortal)
+-            {
+-                if (minecraftserver.getAllowNether())
++            if (this.inPortal) {
++                if (true || minecraftserver.getAllowNether()) // CraftBukkit
+                 {
+-                    if (this.ridingEntity == null && this.portalCounter++ >= i)
+-                    {
++                    if (this.ridingEntity == null && this.portalCounter++ >= i) {
+                         this.portalCounter = i;
+                         this.timeUntilPortal = this.getPortalCooldown();
+                         byte b0;
+ 
+-                        if (this.worldObj.provider.getDimensionId() == -1)
+-                        {
++                        if (this.worldObj.provider.getDimensionId() == -1) {
+                             b0 = 0;
+-                        }
+-                        else
+-                        {
++                        } else {
+                             b0 = -1;
+                         }
+ 
+@@ -312,25 +312,18 @@
+ 
+                     this.inPortal = false;
+                 }
+-            }
+-            else
+-            {
+-                if (this.portalCounter > 0)
+-                {
++            } else {
++                if (this.portalCounter > 0) {
+                     this.portalCounter -= 4;
+                 }
+ 
+-                if (this.portalCounter < 0)
+-                {
++                if (this.portalCounter < 0) {
+                     this.portalCounter = 0;
+                 }
+             }
+ 
+-            if (this.timeUntilPortal > 0)
+-            {
++            if (this.timeUntilPortal > 0) {
+                 --this.timeUntilPortal;
+             }
+ 
+@@ -337,22 +337,16 @@
+         this.spawnRunningParticles();
+         this.handleWaterMovement();
+ 
+-        if (this.worldObj.isRemote)
+-        {
++        if (this.worldObj.isRemote) {
+             this.fire = 0;
+-        }
+-        else if (this.fire > 0)
+-        {
+-            if (this.isImmuneToFire)
+-            {
++        } else if (this.fire > 0) {
++            if (this.isImmuneToFire) {
+                 this.fire -= 4;
+ 
+-                if (this.fire < 0)
+-                {
++                if (this.fire < 0) {
+                     this.fire = 0;
+                 }
+-            }
+-            else
+-            {
+-                if (this.fire % 20 == 0)
+-                {
++            } else {
++                if (this.fire % 20 == 0) {
+                     this.attackEntityFrom(DamageSource.onFire, 1.0F);
+                 }
+ 
+@@ -363,19 +363,16 @@
+             }
+         }
+ 
+-        if (this.isInLava())
+-        {
++        if (this.isInLava()) {
+             this.setOnFireFromLava();
+             this.fallDistance *= 0.5F;
+         }
+ 
+-        if (this.posY < -64.0D)
+-        {
++        if (this.posY < -64.0D) {
+             this.kill();
+         }
+ 
+-        if (!this.worldObj.isRemote)
+-        {
++        if (!this.worldObj.isRemote) {
+             this.setFlag(0, this.fire > 0);
+         }
+ 
+@@ -383,68 +383,93 @@
+         this.worldObj.theProfiler.endSection();
+     }
+ 
+-    public int getMaxInPortalTime()
+-    {
++    public int getMaxInPortalTime() {
+         return 0;
+     }
+ 
+-    protected void setOnFireFromLava()
+-    {
+-        if (!this.isImmuneToFire)
+-        {
++    protected void setOnFireFromLava() {
++        if (!this.isImmuneToFire) {
+             this.attackEntityFrom(DamageSource.lava, 4.0F);
++
++            // CraftBukkit start - Fallen in lava TODO: this event spams!
++            if (this instanceof EntityLivingBase) {
++                if (fire <= 0) {
++                    // not on fire yet
++                    // TODO: shouldn't be sending null for the block
++                    org.bukkit.block.Block damager = null; // ((WorldServer) this.l).getWorld().getBlockAt(i, j, k);
++                    org.bukkit.entity.Entity damagee = this.getBukkitEntity();
++                    EntityCombustEvent combustEvent = new EntityCombustByBlockEvent(damager, damagee, 15);
++                    this.worldObj.getServer().getPluginManager().callEvent(combustEvent);
++
++                    if (!combustEvent.isCancelled()) {
++                        this.setFire(combustEvent.getDuration());
++                    }
++                } else {
++                    // This will be called every single tick the entity is in lava, so don't throw an event
++                    this.setFire(15);
++                }
++                return;
++            }
++            // CraftBukkit end - we also don't throw an event unless the object in lava is living, to save on some event calls
+             this.setFire(15);
+         }
+     }
+ 
+-    public void setFire(int seconds)
+-    {
++    public void setFire(int seconds) {
+         int j = seconds * 20;
+         j = EnchantmentProtection.getFireTimeForEntity(this, j);
+ 
+-        if (this.fire < j)
+-        {
++        if (this.fire < j) {
+             this.fire = j;
+         }
+     }
+ 
+-    public void extinguish()
+-    {
++    public void extinguish() {
+         this.fire = 0;
+     }
+ 
+-    protected void kill()
+-    {
++    protected void kill() {
+         this.setDead();
+     }
+ 
+-    public boolean isOffsetPositionInLiquid(double x, double y, double z)
+-    {
++    public boolean isOffsetPositionInLiquid(double x, double y, double z) {
+         AxisAlignedBB axisalignedbb = this.getEntityBoundingBox().offset(x, y, z);
+         return this.isLiquidPresentInAABB(axisalignedbb);
+     }
+ 
+-    private boolean isLiquidPresentInAABB(AxisAlignedBB p_174809_1_)
+-    {
++    private boolean isLiquidPresentInAABB(AxisAlignedBB p_174809_1_) {
+         return this.worldObj.getCollidingBoundingBoxes(this, p_174809_1_).isEmpty() && !this.worldObj.isAnyLiquid(p_174809_1_);
+     }
+ 
+-    public void moveEntity(double x, double y, double z)
+-    {
+-        if (this.noClip)
+-        {
++    public void moveEntity(double x, double y, double z) {
++        org.bukkit.craftbukkit.SpigotTimings.entityMoveTimer.startTiming(); // Spigot
++
++        if (this.noClip) {
+             this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, y, z));
+             this.resetPositionToBB();
+-        }
+-        else
+-        {
++        } else {
++            // CraftBukkit start - Don't do anything if we aren't moving
++            // We need to do this regardless of whether or not we are moving thanks to portals
++            try {
++                this.doBlockCollisions();
++            } catch (Throwable throwable) {
++                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Checking entity block collision");
++                CrashReportCategory crashreportsystemdetails = crashreport.makeCategory("Entity being checked for collision");
++
++                this.addEntityCrashInfo(crashreportsystemdetails);
++                throw new ReportedException(crashreport);
++            }
++            // Check if we're moving
++            if (x == 0 && y == 0 && z == 0 && this.ridingEntity == null && this.riddenByEntity == null) {
++                return;
++            }
++            // CraftBukkit end
+             this.worldObj.theProfiler.startSection("move");
+             double d3 = this.posX;
+             double d4 = this.posY;
+             double d5 = this.posZ;
+ 
+-            if (this.isInWeb)
+-            {
++            if (this.isInWeb) {
+                 this.isInWeb = false;
+                 x *= 0.25D;
+                 y *= 0.05000000074505806D;
+@@ -459,68 +459,45 @@
+             double d8 = z;
+             boolean flag = this.onGround && this.isSneaking() && this instanceof EntityPlayer;
+ 
+-            if (flag)
+-            {
++            if (flag) {
+                 double d9;
+ 
+-                for (d9 = 0.05D; x != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox().offset(x, -1.0D, 0.0D)).isEmpty(); d6 = x)
+-                {
+-                    if (x < d9 && x >= -d9)
+-                    {
++                for (d9 = 0.05D; x != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox().offset(x, -1.0D, 0.0D)).isEmpty(); d6 = x) {
++                    if (x < d9 && x >= -d9) {
+                         x = 0.0D;
+-                    }
+-                    else if (x > 0.0D)
+-                    {
++                    } else if (x > 0.0D) {
+                         x -= d9;
+-                    }
+-                    else
+-                    {
++                    } else {
+                         x += d9;
+                     }
+                 }
+ 
+-                for (; z != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox().offset(0.0D, -1.0D, z)).isEmpty(); d8 = z)
+-                {
+-                    if (z < d9 && z >= -d9)
+-                    {
++                for (; z != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox().offset(0.0D, -1.0D, z)).isEmpty(); d8 = z) {
++                    if (z < d9 && z >= -d9) {
+                         z = 0.0D;
+-                    }
+-                    else if (z > 0.0D)
+-                    {
++                    } else if (z > 0.0D) {
+                         z -= d9;
+-                    }
+-                    else
+-                    {
++                    } else {
+                         z += d9;
+                     }
+                 }
+ 
+-                for (; x != 0.0D && z != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox().offset(x, -1.0D, z)).isEmpty(); d8 = z)
+-                {
+-                    if (x < d9 && x >= -d9)
+-                    {
++                for (; x != 0.0D && z != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox().offset(x, -1.0D, z)).isEmpty(); d8 = z) {
++                    if (x < d9 && x >= -d9) {
+                         x = 0.0D;
+-                    }
+-                    else if (x > 0.0D)
+-                    {
++                    } else if (x > 0.0D) {
+                         x -= d9;
+-                    }
+-                    else
+-                    {
++                    } else {
+                         x += d9;
+                     }
+ 
+                     d6 = x;
+ 
+-                    if (z < d9 && z >= -d9)
+-                    {
++                    if (z < d9 && z >= -d9) {
+                         z = 0.0D;
+-                    }
+-                    else if (z > 0.0D)
+-                    {
++                    } else if (z > 0.0D) {
+                         z -= d9;
+-                    }
+-                    else
+-                    {
++                    } else {
+                         z += d9;
+                     }
+                 }
+@@ -531,9 +531,8 @@
+             AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
+             AxisAlignedBB axisalignedbb1;
+ 
+-            for (Iterator iterator = list1.iterator(); iterator.hasNext(); y = axisalignedbb1.calculateYOffset(this.getEntityBoundingBox(), y))
+-            {
+-                axisalignedbb1 = (AxisAlignedBB)iterator.next();
++            for (Iterator iterator = list1.iterator(); iterator.hasNext(); y = axisalignedbb1.calculateYOffset(this.getEntityBoundingBox(), y)) {
++                axisalignedbb1 = (AxisAlignedBB) iterator.next();
+             }
+ 
+             this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, y, 0.0D));
+@@ -541,55 +541,49 @@
+             AxisAlignedBB axisalignedbb2;
+             Iterator iterator8;
+ 
+-            for (iterator8 = list1.iterator(); iterator8.hasNext(); x = axisalignedbb2.calculateXOffset(this.getEntityBoundingBox(), x))
+-            {
+-                axisalignedbb2 = (AxisAlignedBB)iterator8.next();
++            for (iterator8 = list1.iterator(); iterator8.hasNext(); x = axisalignedbb2.calculateXOffset(this.getEntityBoundingBox(), x)) {
++                axisalignedbb2 = (AxisAlignedBB) iterator8.next();
+             }
+ 
+             this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, 0.0D, 0.0D));
+ 
+-            for (iterator8 = list1.iterator(); iterator8.hasNext(); z = axisalignedbb2.calculateZOffset(this.getEntityBoundingBox(), z))
+-            {
+-                axisalignedbb2 = (AxisAlignedBB)iterator8.next();
++            for (iterator8 = list1.iterator(); iterator8.hasNext(); z = axisalignedbb2.calculateZOffset(this.getEntityBoundingBox(), z)) {
++                axisalignedbb2 = (AxisAlignedBB) iterator8.next();
+             }
+ 
+             this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, 0.0D, z));
+ 
+-            if (this.stepHeight > 0.0F && flag1 && (d6 != x || d8 != z))
+-            {
++            if (this.stepHeight > 0.0F && flag1 && (d6 != x || d8 != z)) {
+                 double d14 = x;
+                 double d10 = y;
+                 double d11 = z;
+                 AxisAlignedBB axisalignedbb3 = this.getEntityBoundingBox();
+                 this.setEntityBoundingBox(axisalignedbb);
+-                y = (double)this.stepHeight;
++                y = (double) this.stepHeight;
+                 List list = this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox().addCoord(d6, y, d8));
+                 AxisAlignedBB axisalignedbb4 = this.getEntityBoundingBox();
+                 AxisAlignedBB axisalignedbb5 = axisalignedbb4.addCoord(d6, 0.0D, d8);
+                 double d12 = y;
+                 AxisAlignedBB axisalignedbb6;
+ 
+-                for (Iterator iterator1 = list.iterator(); iterator1.hasNext(); d12 = axisalignedbb6.calculateYOffset(axisalignedbb5, d12))
+-                {
+-                    axisalignedbb6 = (AxisAlignedBB)iterator1.next();
++                for (Iterator iterator1 = list.iterator(); iterator1.hasNext(); d12 = axisalignedbb6.calculateYOffset(axisalignedbb5, d12)) {
++                    axisalignedbb6 = (AxisAlignedBB) iterator1.next();
+                 }
+ 
+                 axisalignedbb4 = axisalignedbb4.offset(0.0D, d12, 0.0D);
+                 double d18 = d6;
+                 AxisAlignedBB axisalignedbb7;
+ 
+-                for (Iterator iterator2 = list.iterator(); iterator2.hasNext(); d18 = axisalignedbb7.calculateXOffset(axisalignedbb4, d18))
+-                {
+-                    axisalignedbb7 = (AxisAlignedBB)iterator2.next();
++                for (Iterator iterator2 = list.iterator(); iterator2.hasNext(); d18 = axisalignedbb7.calculateXOffset(axisalignedbb4, d18)) {
++                    axisalignedbb7 = (AxisAlignedBB) iterator2.next();
+                 }
+ 
+                 axisalignedbb4 = axisalignedbb4.offset(d18, 0.0D, 0.0D);
+                 double d19 = d8;
+                 AxisAlignedBB axisalignedbb8;
+ 
+-                for (Iterator iterator3 = list.iterator(); iterator3.hasNext(); d19 = axisalignedbb8.calculateZOffset(axisalignedbb4, d19))
+-                {
+-                    axisalignedbb8 = (AxisAlignedBB)iterator3.next();
++                for (Iterator iterator3 = list.iterator(); iterator3.hasNext(); d19 = axisalignedbb8.calculateZOffset(axisalignedbb4, d19)) {
++                    axisalignedbb8 = (AxisAlignedBB) iterator3.next();
+                 }
+ 
+                 axisalignedbb4 = axisalignedbb4.offset(0.0D, 0.0D, d19);
+@@ -597,59 +597,51 @@
+                 double d20 = y;
+                 AxisAlignedBB axisalignedbb9;
+ 
+-                for (Iterator iterator4 = list.iterator(); iterator4.hasNext(); d20 = axisalignedbb9.calculateYOffset(axisalignedbb13, d20))
+-                {
+-                    axisalignedbb9 = (AxisAlignedBB)iterator4.next();
++                for (Iterator iterator4 = list.iterator(); iterator4.hasNext(); d20 = axisalignedbb9.calculateYOffset(axisalignedbb13, d20)) {
++                    axisalignedbb9 = (AxisAlignedBB) iterator4.next();
+                 }
+ 
+                 axisalignedbb13 = axisalignedbb13.offset(0.0D, d20, 0.0D);
+                 double d21 = d6;
+                 AxisAlignedBB axisalignedbb10;
+ 
+-                for (Iterator iterator5 = list.iterator(); iterator5.hasNext(); d21 = axisalignedbb10.calculateXOffset(axisalignedbb13, d21))
+-                {
+-                    axisalignedbb10 = (AxisAlignedBB)iterator5.next();
++                for (Iterator iterator5 = list.iterator(); iterator5.hasNext(); d21 = axisalignedbb10.calculateXOffset(axisalignedbb13, d21)) {
++                    axisalignedbb10 = (AxisAlignedBB) iterator5.next();
+                 }
+ 
+                 axisalignedbb13 = axisalignedbb13.offset(d21, 0.0D, 0.0D);
+                 double d22 = d8;
+                 AxisAlignedBB axisalignedbb11;
+ 
+-                for (Iterator iterator6 = list.iterator(); iterator6.hasNext(); d22 = axisalignedbb11.calculateZOffset(axisalignedbb13, d22))
+-                {
+-                    axisalignedbb11 = (AxisAlignedBB)iterator6.next();
++                for (Iterator iterator6 = list.iterator(); iterator6.hasNext(); d22 = axisalignedbb11.calculateZOffset(axisalignedbb13, d22)) {
++                    axisalignedbb11 = (AxisAlignedBB) iterator6.next();
+                 }
+ 
+                 axisalignedbb13 = axisalignedbb13.offset(0.0D, 0.0D, d22);
+                 double d23 = d18 * d18 + d19 * d19;
+                 double d13 = d21 * d21 + d22 * d22;
+ 
+-                if (d23 > d13)
+-                {
++                if (d23 > d13) {
+                     x = d18;
+                     z = d19;
+                     this.setEntityBoundingBox(axisalignedbb4);
+-                }
+-                else
+-                {
++                } else {
+                     x = d21;
+                     z = d22;
+                     this.setEntityBoundingBox(axisalignedbb13);
+                 }
+ 
+-                y = (double)(-this.stepHeight);
++                y = (double) (-this.stepHeight);
+                 AxisAlignedBB axisalignedbb12;
+ 
+-                for (Iterator iterator7 = list.iterator(); iterator7.hasNext(); y = axisalignedbb12.calculateYOffset(this.getEntityBoundingBox(), y))
+-                {
+-                    axisalignedbb12 = (AxisAlignedBB)iterator7.next();
++                for (Iterator iterator7 = list.iterator(); iterator7.hasNext(); y = axisalignedbb12.calculateYOffset(this.getEntityBoundingBox(), y)) {
++                    axisalignedbb12 = (AxisAlignedBB) iterator7.next();
+                 }
+ 
+                 this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, y, 0.0D));
+ 
+-                if (d14 * d14 + d11 * d11 >= x * x + z * z)
+-                {
++                if (d14 * d14 + d11 * d11 >= x * x + z * z) {
+                     x = d14;
+                     y = d10;
+                     z = d11;
+@@ -669,12 +669,10 @@
+             BlockPos blockpos = new BlockPos(i, j, k);
+             Block block1 = this.worldObj.getBlockState(blockpos).getBlock();
+ 
+-            if (block1.getMaterial() == Material.air)
+-            {
++            if (block1.getMaterial() == Material.air) {
+                 Block block = this.worldObj.getBlockState(blockpos.down()).getBlock();
+ 
+-                if (block instanceof BlockFence || block instanceof BlockWall || block instanceof BlockFenceGate)
+-                {
++                if (block instanceof BlockFence || block instanceof BlockWall || block instanceof BlockFenceGate) {
+                     block1 = block;
+                     blockpos = blockpos.down();
+                 }
+@@ -682,50 +682,62 @@
+ 
+             this.func_180433_a(y, this.onGround, block1, blockpos);
+ 
+-            if (d6 != x)
+-            {
++            if (d6 != x) {
+                 this.motionX = 0.0D;
+             }
+ 
+-            if (d8 != z)
+-            {
++            if (d8 != z) {
+                 this.motionZ = 0.0D;
+             }
+ 
+-            if (d7 != y)
+-            {
++            if (d7 != y) {
+                 block1.onLanded(this.worldObj, this);
+             }
+ 
+-            if (this.canTriggerWalking() && !flag && this.ridingEntity == null)
+-            {
++            // CraftBukkit start
++            if (isCollidedHorizontally && getBukkitEntity() instanceof Vehicle) {
++                Vehicle vehicle = (Vehicle) this.getBukkitEntity();
++                org.bukkit.block.Block bl = this.worldObj.getWorld().getBlockAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
++
++                if (d6 > x) {
++                    bl = bl.getRelative(BlockFace.EAST);
++                } else if (d6 < x) {
++                    bl = bl.getRelative(BlockFace.WEST);
++                } else if (d8 > z) {
++                    bl = bl.getRelative(BlockFace.SOUTH);
++                } else if (d8 < z) {
++                    bl = bl.getRelative(BlockFace.NORTH);
++                }
++
++                VehicleBlockCollisionEvent event = new VehicleBlockCollisionEvent(vehicle, bl);
++                worldObj.getServer().getPluginManager().callEvent(event);
++            }
++            // CraftBukkit end
++
++
++            if (this.canTriggerWalking() && !flag && this.ridingEntity == null) {
+                 double d15 = this.posX - d3;
+                 double d16 = this.posY - d4;
+                 double d17 = this.posZ - d5;
+ 
+-                if (block1 != Blocks.ladder)
+-                {
++                if (block1 != Blocks.ladder) {
+                     d16 = 0.0D;
+                 }
+ 
+-                if (block1 != null && this.onGround)
+-                {
+-                    block1.onEntityCollidedWithBlock(this.worldObj, blockpos, this);
++                if (block1 != null && this.onGround) {
++                    // block1.onEntityCollidedWithBlock(this.worldObj, blockpos, this); // CraftBukkit removed down
+                 }
+ 
+-                this.distanceWalkedModified = (float)((double)this.distanceWalkedModified + (double)MathHelper.sqrt_double(d15 * d15 + d17 * d17) * 0.6D);
+-                this.distanceWalkedOnStepModified = (float)((double)this.distanceWalkedOnStepModified + (double)MathHelper.sqrt_double(d15 * d15 + d16 * d16 + d17 * d17) * 0.6D);
++                this.distanceWalkedModified = (float) ((double) this.distanceWalkedModified + (double) MathHelper.sqrt_double(d15 * d15 + d17 * d17) * 0.6D);
++                this.distanceWalkedOnStepModified = (float) ((double) this.distanceWalkedOnStepModified + (double) MathHelper.sqrt_double(d15 * d15 + d16 * d16 + d17 * d17) * 0.6D);
+ 
+-                if (this.distanceWalkedOnStepModified > (float)this.nextStepDistance && block1.getMaterial() != Material.air)
+-                {
+-                    this.nextStepDistance = (int)this.distanceWalkedOnStepModified + 1;
++                if (this.distanceWalkedOnStepModified > (float) this.nextStepDistance && block1.getMaterial() != Material.air) {
++                    this.nextStepDistance = (int) this.distanceWalkedOnStepModified + 1;
+ 
+-                    if (this.isInWater())
+-                    {
++                    if (this.isInWater()) {
+                         float f = MathHelper.sqrt_double(this.motionX * this.motionX * 0.20000000298023224D + this.motionY * this.motionY + this.motionZ * this.motionZ * 0.20000000298023224D) * 0.35F;
+ 
+-                        if (f > 1.0F)
+-                        {
++                        if (f > 1.0F) {
+                             f = 1.0F;
+                         }
+ 
+@@ -733,9 +733,11 @@
+                     }
+ 
+                     this.playStepSound(blockpos, block1);
++                    block1.onEntityCollidedWithBlock(this.worldObj, blockpos, this); // CraftBukkit - moved from above
+                 }
+             }
+ 
++            // CraftBukkit start - Move to the top of the method
++            /*
+             try
+             {
+                 this.doBlockCollisions();
+@@ -747,69 +747,69 @@
+                 this.addEntityCrashInfo(crashreportcategory);
+                 throw new ReportedException(crashreport);
+             }
++            */
++            // CraftBukkit end
+ 
+             boolean flag2 = this.isWet();
+ 
+-            if (this.worldObj.func_147470_e(this.getEntityBoundingBox().contract(0.001D, 0.001D, 0.001D)))
+-            {
++            if (this.worldObj.func_147470_e(this.getEntityBoundingBox().contract(0.001D, 0.001D, 0.001D))) {
+                 this.dealFireDamage(1);
+ 
+-                if (!flag2)
+-                {
++                if (!flag2) {
+                     ++this.fire;
+-
+-                    if (this.fire == 0)
++                    // CraftBukkit start - Not on fire yet
++                    if (this.fire <= 0)  // Only throw events on the first combust, otherwise it spams
+                     {
++                        EntityCombustEvent event = new EntityCombustEvent(getBukkitEntity(), 8);
++                        worldObj.getServer().getPluginManager().callEvent(event);
++
++                        if (!event.isCancelled()) {
++                            setFire(event.getDuration());
++                        }
++                    } else {
++                        // CraftBukkit end
+                         this.setFire(8);
+                     }
+                 }
+-            }
+-            else if (this.fire <= 0)
+-            {
++            } else if (this.fire <= 0) {
+                 this.fire = -this.fireResistance;
+             }
+ 
+-            if (flag2 && this.fire > 0)
+-            {
++            if (flag2 && this.fire > 0) {
+                 this.playSound("random.fizz", 0.7F, 1.6F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+                 this.fire = -this.fireResistance;
+             }
+ 
+             this.worldObj.theProfiler.endSection();
+         }
++        org.bukkit.craftbukkit.SpigotTimings.entityMoveTimer.stopTiming(); // Spigot
+     }
+ 
+-    private void resetPositionToBB()
+-    {
++    private void resetPositionToBB() {
+         this.posX = (this.getEntityBoundingBox().minX + this.getEntityBoundingBox().maxX) / 2.0D;
+         this.posY = this.getEntityBoundingBox().minY;
+         this.posZ = (this.getEntityBoundingBox().minZ + this.getEntityBoundingBox().maxZ) / 2.0D;
+     }
+ 
+-    protected String getSwimSound()
+-    {
++    protected String getSwimSound() {
+         return "game.neutral.swim";
+     }
+ 
+-    protected void doBlockCollisions()
+-    {
++    protected void doBlockCollisions() {
+         BlockPos blockpos = new BlockPos(this.getEntityBoundingBox().minX + 0.001D, this.getEntityBoundingBox().minY + 0.001D, this.getEntityBoundingBox().minZ + 0.001D);
+         BlockPos blockpos1 = new BlockPos(this.getEntityBoundingBox().maxX - 0.001D, this.getEntityBoundingBox().maxY - 0.001D, this.getEntityBoundingBox().maxZ - 0.001D);
+ 
+-        if (this.worldObj.isAreaLoaded(blockpos, blockpos1))
+-        {
+-            for (int i = blockpos.getX(); i <= blockpos1.getX(); ++i)
+-            {
+-                for (int j = blockpos.getY(); j <= blockpos1.getY(); ++j)
+-                {
+-                    for (int k = blockpos.getZ(); k <= blockpos1.getZ(); ++k)
+-                    {
++        if (this.worldObj.isAreaLoaded(blockpos, blockpos1)) {
++            for (int i = blockpos.getX(); i <= blockpos1.getX(); ++i) {
++                for (int j = blockpos.getY(); j <= blockpos1.getY(); ++j) {
++                    for (int k = blockpos.getZ(); k <= blockpos1.getZ(); ++k) {
+                         BlockPos blockpos2 = new BlockPos(i, j, k);
+                         IBlockState iblockstate = this.worldObj.getBlockState(blockpos2);
+ 
+-                        try
+-                        {
++                        try {
+                             iblockstate.getBlock().onEntityCollidedWithBlock(this.worldObj, blockpos2, iblockstate, this);
+-                        }
+-                        catch (Throwable throwable)
+-                        {
++                        } catch (Throwable throwable) {
+                             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Colliding entity with block");
+                             CrashReportCategory crashreportcategory = crashreport.makeCategory("Block being collided with");
+                             CrashReportCategory.addBlockInfo(crashreportcategory, blockpos2, iblockstate);
+@@ -824,165 +824,129 @@
+         }
+     }
+ 
+-    protected void playStepSound(BlockPos p_180429_1_, Block p_180429_2_)
+-    {
++    protected void playStepSound(BlockPos p_180429_1_, Block p_180429_2_) {
+         Block.SoundType soundtype = p_180429_2_.stepSound;
+ 
+-        if (this.worldObj.getBlockState(p_180429_1_.up()).getBlock() == Blocks.snow_layer)
+-        {
++        if (this.worldObj.getBlockState(p_180429_1_.up()).getBlock() == Blocks.snow_layer) {
+             soundtype = Blocks.snow_layer.stepSound;
+             this.playSound(soundtype.getStepSound(), soundtype.getVolume() * 0.15F, soundtype.getFrequency());
+-        }
+-        else if (!p_180429_2_.getMaterial().isLiquid())
+-        {
++        } else if (!p_180429_2_.getMaterial().isLiquid()) {
+             this.playSound(soundtype.getStepSound(), soundtype.getVolume() * 0.15F, soundtype.getFrequency());
+         }
+     }
+ 
+-    public void playSound(String name, float volume, float pitch)
+-    {
+-        if (!this.isSilent())
+-        {
++    public void playSound(String name, float volume, float pitch) {
++        if (!this.isSilent()) {
+             this.worldObj.playSoundAtEntity(this, name, volume, pitch);
+         }
+     }
+ 
+-    public boolean isSilent()
+-    {
++    public boolean isSilent() {
+         return this.dataWatcher.getWatchableObjectByte(4) == 1;
+     }
+ 
+-    public void setSilent(boolean isSilent)
+-    {
+-        this.dataWatcher.updateObject(4, Byte.valueOf((byte)(isSilent ? 1 : 0)));
++    public void setSilent(boolean isSilent) {
++        this.dataWatcher.updateObject(4, Byte.valueOf((byte) (isSilent ? 1 : 0)));
+     }
+ 
+-    protected boolean canTriggerWalking()
+-    {
++    protected boolean canTriggerWalking() {
+         return true;
+     }
+ 
+-    protected void func_180433_a(double p_180433_1_, boolean p_180433_3_, Block p_180433_4_, BlockPos p_180433_5_)
+-    {
+-        if (p_180433_3_)
+-        {
+-            if (this.fallDistance > 0.0F)
+-            {
+-                if (p_180433_4_ != null)
+-                {
++    protected void func_180433_a(double p_180433_1_, boolean p_180433_3_, Block p_180433_4_, BlockPos p_180433_5_) {
++        if (p_180433_3_) {
++            if (this.fallDistance > 0.0F) {
++                if (p_180433_4_ != null) {
+                     p_180433_4_.onFallenUpon(this.worldObj, p_180433_5_, this, this.fallDistance);
+-                }
+-                else
+-                {
++                } else {
+                     this.fall(this.fallDistance, 1.0F);
+                 }
+ 
+                 this.fallDistance = 0.0F;
+             }
++        } else if (p_180433_1_ < 0.0D) {
++            this.fallDistance = (float) ((double) this.fallDistance - p_180433_1_);
+         }
+-        else if (p_180433_1_ < 0.0D)
+-        {
+-            this.fallDistance = (float)((double)this.fallDistance - p_180433_1_);
+-        }
+     }
+ 
+-    public AxisAlignedBB getBoundingBox()
+-    {
++    public AxisAlignedBB getBoundingBox() {
+         return null;
+     }
+ 
+-    protected void dealFireDamage(int amount)
++    protected void dealFireDamage(float amount) // CraftBukkit - int -> float
+     {
+-        if (!this.isImmuneToFire)
+-        {
+-            this.attackEntityFrom(DamageSource.inFire, (float)amount);
++        if (!this.isImmuneToFire) {
++            this.attackEntityFrom(DamageSource.inFire, (float) amount);
+         }
+     }
+ 
+-    public final boolean isImmuneToFire()
+-    {
++    public final boolean isImmuneToFire() {
+         return this.isImmuneToFire;
+     }
+ 
+-    public void fall(float distance, float damageMultiplier)
+-    {
+-        if (this.riddenByEntity != null)
+-        {
++    public void fall(float distance, float damageMultiplier) {
++        if (this.riddenByEntity != null) {
+             this.riddenByEntity.fall(distance, damageMultiplier);
+         }
+     }
+ 
+-    public boolean isWet()
+-    {
+-        return this.inWater || this.worldObj.canLightningStrike(new BlockPos(this.posX, this.posY, this.posZ)) || this.worldObj.canLightningStrike(new BlockPos(this.posX, this.posY + (double)this.height, this.posZ));
++    public boolean isWet() {
++        return this.inWater || this.worldObj.canLightningStrike(new BlockPos(this.posX, this.posY, this.posZ)) || this.worldObj.canLightningStrike(new BlockPos(this.posX, this.posY + (double) this.height, this.posZ));
+     }
+ 
+-    public boolean isInWater()
+-    {
++    public boolean isInWater() {
+         return this.inWater;
+     }
+ 
+-    public boolean handleWaterMovement()
+-    {
+-        if (this.worldObj.handleMaterialAcceleration(this.getEntityBoundingBox().expand(0.0D, -0.4000000059604645D, 0.0D).contract(0.001D, 0.001D, 0.001D), Material.water, this))
+-        {
+-            if (!this.inWater && !this.firstUpdate)
+-            {
++    public boolean handleWaterMovement() {
++        if (this.worldObj.handleMaterialAcceleration(this.getEntityBoundingBox().expand(0.0D, -0.4000000059604645D, 0.0D).contract(0.001D, 0.001D, 0.001D), Material.water, this)) {
++            if (!this.inWater && !this.firstUpdate) {
+                 this.resetHeight();
+             }
+ 
+             this.fallDistance = 0.0F;
+             this.inWater = true;
+             this.fire = 0;
+-        }
+-        else
+-        {
++        } else {
+             this.inWater = false;
+         }
+ 
+         return this.inWater;
+     }
+ 
+-    protected void resetHeight()
+-    {
++    protected void resetHeight() {
+         float f = MathHelper.sqrt_double(this.motionX * this.motionX * 0.20000000298023224D + this.motionY * this.motionY + this.motionZ * this.motionZ * 0.20000000298023224D) * 0.2F;
+ 
+-        if (f > 1.0F)
+-        {
++        if (f > 1.0F) {
+             f = 1.0F;
+         }
+ 
+         this.playSound(this.getSplashSound(), f, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+-        float f1 = (float)MathHelper.floor_double(this.getEntityBoundingBox().minY);
++        float f1 = (float) MathHelper.floor_double(this.getEntityBoundingBox().minY);
+         int i;
+         float f2;
+         float f3;
+ 
+-        for (i = 0; (float)i < 1.0F + this.width * 20.0F; ++i)
+-        {
++        for (i = 0; (float) i < 1.0F + this.width * 20.0F; ++i) {
+             f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
+             f3 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
+-            this.worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX + (double)f2, (double)(f1 + 1.0F), this.posZ + (double)f3, this.motionX, this.motionY - (double)(this.rand.nextFloat() * 0.2F), this.motionZ, new int[0]);
++            this.worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX + (double) f2, (double) (f1 + 1.0F), this.posZ + (double) f3, this.motionX, this.motionY - (double) (this.rand.nextFloat() * 0.2F), this.motionZ, new int[0]);
+         }
+ 
+-        for (i = 0; (float)i < 1.0F + this.width * 20.0F; ++i)
+-        {
++        for (i = 0; (float) i < 1.0F + this.width * 20.0F; ++i) {
+             f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
+             f3 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
+-            this.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX + (double)f2, (double)(f1 + 1.0F), this.posZ + (double)f3, this.motionX, this.motionY, this.motionZ, new int[0]);
++            this.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX + (double) f2, (double) (f1 + 1.0F), this.posZ + (double) f3, this.motionX, this.motionY, this.motionZ, new int[0]);
+         }
+     }
+ 
+-    public void spawnRunningParticles()
+-    {
+-        if (this.isSprinting() && !this.isInWater())
+-        {
++    public void spawnRunningParticles() {
++        if (this.isSprinting() && !this.isInWater()) {
+             this.createRunningParticles();
+         }
+     }
+ 
+-    protected void createRunningParticles()
+-    {
++    protected void createRunningParticles() {
+         int i = MathHelper.floor_double(this.posX);
+         int j = MathHelper.floor_double(this.posY - 0.20000000298023224D);
+         int k = MathHelper.floor_double(this.posZ);
+@@ -990,120 +990,92 @@
+         IBlockState iblockstate = this.worldObj.getBlockState(blockpos);
+         Block block = iblockstate.getBlock();
+ 
+-        if (block.getRenderType() != -1)
+-        {
+-            this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, this.getEntityBoundingBox().minY + 0.1D, this.posZ + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, -this.motionX * 4.0D, 1.5D, -this.motionZ * 4.0D, new int[] {Block.getStateId(iblockstate)});
++        if (block.getRenderType() != -1) {
++            this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + ((double) this.rand.nextFloat() - 0.5D) * (double) this.width, this.getEntityBoundingBox().minY + 0.1D, this.posZ + ((double) this.rand.nextFloat() - 0.5D) * (double) this.width, -this.motionX * 4.0D, 1.5D, -this.motionZ * 4.0D, new int[]{Block.getStateId(iblockstate)});
+         }
+     }
+ 
+-    protected String getSplashSound()
+-    {
++    protected String getSplashSound() {
+         return "game.neutral.swim.splash";
+     }
+ 
+-    public boolean isInsideOfMaterial(Material materialIn)
+-    {
+-        double d0 = this.posY + (double)this.getEyeHeight();
++    public boolean isInsideOfMaterial(Material materialIn) {
++        double d0 = this.posY + (double) this.getEyeHeight();
+         BlockPos blockpos = new BlockPos(this.posX, d0, this.posZ);
+         IBlockState iblockstate = this.worldObj.getBlockState(blockpos);
+         Block block = iblockstate.getBlock();
+ 
+-        if (block.getMaterial() == materialIn)
+-        {
++        if (block.getMaterial() == materialIn) {
+             float f = BlockLiquid.getLiquidHeightPercent(iblockstate.getBlock().getMetaFromState(iblockstate)) - 0.11111111F;
+-            float f1 = (float)(blockpos.getY() + 1) - f;
+-            boolean flag = d0 < (double)f1;
++            float f1 = (float) (blockpos.getY() + 1) - f;
++            boolean flag = d0 < (double) f1;
+             return !flag && this instanceof EntityPlayer ? false : flag;
+-        }
+-        else
+-        {
++        } else {
+             return false;
+         }
+     }
+ 
+-    public boolean isInLava()
+-    {
++    public boolean isInLava() {
+         return this.worldObj.isMaterialInBB(this.getEntityBoundingBox().expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.lava);
+     }
+ 
+-    public void moveFlying(float strafe, float forward, float friction)
+-    {
++    public void moveFlying(float strafe, float forward, float friction) {
+         float f3 = strafe * strafe + forward * forward;
+ 
+-        if (f3 >= 1.0E-4F)
+-        {
++        if (f3 >= 1.0E-4F) {
+             f3 = MathHelper.sqrt_float(f3);
+ 
+-            if (f3 < 1.0F)
+-            {
++            if (f3 < 1.0F) {
+                 f3 = 1.0F;
+             }
+ 
+             f3 = friction / f3;
+             strafe *= f3;
+             forward *= f3;
+-            float f4 = MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F);
+-            float f5 = MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F);
+-            this.motionX += (double)(strafe * f5 - forward * f4);
+-            this.motionZ += (double)(forward * f5 + strafe * f4);
++            float f4 = MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F);
++            float f5 = MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F);
++            this.motionX += (double) (strafe * f5 - forward * f4);
++            this.motionZ += (double) (forward * f5 + strafe * f4);
+         }
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public int getBrightnessForRender(float p_70070_1_)
+-    {
++    public float getBrightness(float p_70013_1_) {
+         BlockPos blockpos = new BlockPos(this.posX, 0.0D, this.posZ);
+ 
+-        if (this.worldObj.isBlockLoaded(blockpos))
+-        {
++        if (this.worldObj.isBlockLoaded(blockpos)) {
+             double d0 = (this.getEntityBoundingBox().maxY - this.getEntityBoundingBox().minY) * 0.66D;
+             int i = MathHelper.floor_double(this.posY + d0);
+-            return this.worldObj.getCombinedLight(blockpos.up(i), 0);
+-        }
+-        else
+-        {
+-            return 0;
+-        }
+-    }
+-
+-    public float getBrightness(float p_70013_1_)
+-    {
+-        BlockPos blockpos = new BlockPos(this.posX, 0.0D, this.posZ);
+-
+-        if (this.worldObj.isBlockLoaded(blockpos))
+-        {
+-            double d0 = (this.getEntityBoundingBox().maxY - this.getEntityBoundingBox().minY) * 0.66D;
+-            int i = MathHelper.floor_double(this.posY + d0);
+             return this.worldObj.getLightBrightness(blockpos.up(i));
+-        }
+-        else
+-        {
++        } else {
+             return 0.0F;
+         }
+     }
+ 
+-    public void setWorld(World worldIn)
+-    {
++    public void setWorld(World worldIn) {
++        // CraftBukkit start
++        if (worldIn == null) {
++            setDead();
++            this.worldObj = ((CraftWorld) Bukkit.getServer().getWorlds().get(0)).getHandle();
++            return;
++        }
++        // CraftBukkit end
+         this.worldObj = worldIn;
+     }
+ 
+-    public void setPositionAndRotation(double x, double y, double z, float yaw, float pitch)
+-    {
++    public void setPositionAndRotation(double x, double y, double z, float yaw, float pitch) {
+         this.prevPosX = this.posX = x;
+         this.prevPosY = this.posY = y;
+         this.prevPosZ = this.posZ = z;
+         this.prevRotationYaw = this.rotationYaw = yaw;
+         this.prevRotationPitch = this.rotationPitch = pitch;
+-        double d3 = (double)(this.prevRotationYaw - yaw);
++        double d3 = (double) (this.prevRotationYaw - yaw);
+ 
+-        if (d3 < -180.0D)
+-        {
++        if (d3 < -180.0D) {
+             this.prevRotationYaw += 360.0F;
+         }
+ 
+-        if (d3 >= 180.0D)
+-        {
++        if (d3 >= 180.0D) {
+             this.prevRotationYaw -= 360.0F;
+         }
+ 
+@@ -1110,14 +1110,12 @@
+         this.setRotation(yaw, pitch);
+     }
+ 
+-    public void moveToBlockPosAndAngles(BlockPos p_174828_1_, float p_174828_2_, float p_174828_3_)
+-    {
+-        this.setLocationAndAngles((double)p_174828_1_.getX() + 0.5D, (double)p_174828_1_.getY(), (double)p_174828_1_.getZ() + 0.5D, p_174828_2_, p_174828_3_);
++    public void moveToBlockPosAndAngles(BlockPos p_174828_1_, float p_174828_2_, float p_174828_3_) {
++        this.setLocationAndAngles((double) p_174828_1_.getX() + 0.5D, (double) p_174828_1_.getY(), (double) p_174828_1_.getZ() + 0.5D, p_174828_2_, p_174828_3_);
+     }
+ 
+-    public void setLocationAndAngles(double x, double y, double z, float yaw, float pitch)
+-    {
++    public void setLocationAndAngles(double x, double y, double z, float yaw, float pitch) {
+         this.lastTickPosX = this.prevPosX = this.posX = x;
+         this.lastTickPosY = this.prevPosY = this.posY = y;
+         this.lastTickPosZ = this.prevPosZ = this.posZ = z;
+@@ -1125,72 +1125,64 @@
+         this.setPosition(this.posX, this.posY, this.posZ);
+     }
+ 
+-    public float getDistanceToEntity(Entity entityIn)
+-    {
+-        float f = (float)(this.posX - entityIn.posX);
+-        float f1 = (float)(this.posY - entityIn.posY);
+-        float f2 = (float)(this.posZ - entityIn.posZ);
++    public float getDistanceToEntity(Entity entityIn) {
++        float f = (float) (this.posX - entityIn.posX);
++        float f1 = (float) (this.posY - entityIn.posY);
++        float f2 = (float) (this.posZ - entityIn.posZ);
+         return MathHelper.sqrt_float(f * f + f1 * f1 + f2 * f2);
+     }
+ 
+-    public double getDistanceSq(double x, double y, double z)
+-    {
++    public double getDistanceSq(double x, double y, double z) {
+         double d3 = this.posX - x;
+         double d4 = this.posY - y;
+         double d5 = this.posZ - z;
+         return d3 * d3 + d4 * d4 + d5 * d5;
+     }
+ 
+-    public double getDistanceSq(BlockPos p_174818_1_)
+-    {
++    public double getDistanceSq(BlockPos p_174818_1_) {
+         return p_174818_1_.distanceSq(this.posX, this.posY, this.posZ);
+     }
+ 
+-    public double getDistanceSqToCenter(BlockPos p_174831_1_)
+-    {
++    public double getDistanceSqToCenter(BlockPos p_174831_1_) {
+         return p_174831_1_.distanceSqToCenter(this.posX, this.posY, this.posZ);
+     }
+ 
+-    public double getDistance(double x, double y, double z)
+-    {
++    public double getDistance(double x, double y, double z) {
+         double d3 = this.posX - x;
+         double d4 = this.posY - y;
+         double d5 = this.posZ - z;
+-        return (double)MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
++        return (double) MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
+     }
+ 
+-    public double getDistanceSqToEntity(Entity entityIn)
+-    {
++    public double getDistanceSqToEntity(Entity entityIn) {
+         double d0 = this.posX - entityIn.posX;
+         double d1 = this.posY - entityIn.posY;
+         double d2 = this.posZ - entityIn.posZ;
+         return d0 * d0 + d1 * d1 + d2 * d2;
+     }
+ 
+-    public void onCollideWithPlayer(EntityPlayer entityIn) {}
++    public void onCollideWithPlayer(EntityPlayer entityIn) {
++    }
+ 
+-    public void applyEntityCollision(Entity entityIn)
+-    {
+-        if (entityIn.riddenByEntity != this && entityIn.ridingEntity != this)
+-        {
+-            if (!entityIn.noClip && !this.noClip)
+-            {
++    int numCollisions = 0; // Spigot
++
++    public void applyEntityCollision(Entity entityIn) {
++        if (entityIn.riddenByEntity != this && entityIn.ridingEntity != this) {
++            if (!entityIn.noClip && !this.noClip) {
+                 double d0 = entityIn.posX - this.posX;
+                 double d1 = entityIn.posZ - this.posZ;
+                 double d2 = MathHelper.abs_max(d0, d1);
+ 
+-                if (d2 >= 0.009999999776482582D)
+-                {
+-                    d2 = (double)MathHelper.sqrt_double(d2);
++                if (d2 >= 0.009999999776482582D) {
++                    d2 = (double) MathHelper.sqrt_double(d2);
+                     d0 /= d2;
+                     d1 /= d2;
+                     double d3 = 1.0D / d2;
+ 
+-                    if (d3 > 1.0D)
+-                    {
++                    if (d3 > 1.0D) {
+                         d3 = 1.0D;
+                     }
+ 
+@@ -1195,16 +1195,15 @@
+                     d1 *= d3;
+                     d0 *= 0.05000000074505806D;
+                     d1 *= 0.05000000074505806D;
+-                    d0 *= (double)(1.0F - this.entityCollisionReduction);
+-                    d1 *= (double)(1.0F - this.entityCollisionReduction);
++                    d0 *= (double) (1.0F - this.entityCollisionReduction);
++                    d1 *= (double) (1.0F - this.entityCollisionReduction);
+ 
+-                    if (this.riddenByEntity == null)
+-                    {
++                    if (this.riddenByEntity == null) {
+                         this.addVelocity(-d0, 0.0D, -d1);
+                     }
+ 
+-                    if (entityIn.riddenByEntity == null)
+-                    {
++                    if (entityIn.riddenByEntity == null) {
+                         entityIn.addVelocity(d0, 0.0D, d1);
+                     }
+                 }
+@@ -1212,185 +1212,132 @@
+         }
+     }
+ 
+-    public void addVelocity(double x, double y, double z)
+-    {
++    public void addVelocity(double x, double y, double z) {
+         this.motionX += x;
+         this.motionY += y;
+         this.motionZ += z;
+         this.isAirBorne = true;
+     }
+ 
+-    protected void setBeenAttacked()
+-    {
++    protected void setBeenAttacked() {
+         this.velocityChanged = true;
+     }
+ 
+-    public boolean attackEntityFrom(DamageSource source, float amount)
+-    {
+-        if (this.isEntityInvulnerable(source))
+-        {
++    public boolean attackEntityFrom(DamageSource source, float amount) {
++        if (this.isEntityInvulnerable(source)) {
+             return false;
+-        }
+-        else
+-        {
++        } else {
+             this.setBeenAttacked();
+             return false;
+         }
+     }
+ 
+-    public Vec3 getLook(float p_70676_1_)
+-    {
+-        if (p_70676_1_ == 1.0F)
+-        {
++    public Vec3 getLook(float p_70676_1_) {
++        if (p_70676_1_ == 1.0F) {
+             return this.getVectorForRotation(this.rotationPitch, this.rotationYaw);
+-        }
+-        else
+-        {
++        } else {
+             float f1 = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * p_70676_1_;
+             float f2 = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * p_70676_1_;
+             return this.getVectorForRotation(f1, f2);
+         }
+     }
+ 
+-    protected final Vec3 getVectorForRotation(float pitch, float yaw)
+-    {
+-        float f2 = MathHelper.cos(-yaw * 0.017453292F - (float)Math.PI);
+-        float f3 = MathHelper.sin(-yaw * 0.017453292F - (float)Math.PI);
++    protected final Vec3 getVectorForRotation(float pitch, float yaw) {
++        float f2 = MathHelper.cos(-yaw * 0.017453292F - (float) Math.PI);
++        float f3 = MathHelper.sin(-yaw * 0.017453292F - (float) Math.PI);
+         float f4 = -MathHelper.cos(-pitch * 0.017453292F);
+         float f5 = MathHelper.sin(-pitch * 0.017453292F);
+-        return new Vec3((double)(f3 * f4), (double)f5, (double)(f2 * f4));
++        return new Vec3((double) (f3 * f4), (double) f5, (double) (f2 * f4));
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public Vec3 getPositionEyes(float p_174824_1_)
+-    {
+-        if (p_174824_1_ == 1.0F)
+-        {
+-            return new Vec3(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
+-        }
+-        else
+-        {
+-            double d0 = this.prevPosX + (this.posX - this.prevPosX) * (double)p_174824_1_;
+-            double d1 = this.prevPosY + (this.posY - this.prevPosY) * (double)p_174824_1_ + (double)this.getEyeHeight();
+-            double d2 = this.prevPosZ + (this.posZ - this.prevPosZ) * (double)p_174824_1_;
+-            return new Vec3(d0, d1, d2);
+-        }
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public MovingObjectPosition rayTrace(double p_174822_1_, float p_174822_3_)
+-    {
+-        Vec3 vec3 = this.getPositionEyes(p_174822_3_);
+-        Vec3 vec31 = this.getLook(p_174822_3_);
+-        Vec3 vec32 = vec3.addVector(vec31.xCoord * p_174822_1_, vec31.yCoord * p_174822_1_, vec31.zCoord * p_174822_1_);
+-        return this.worldObj.rayTraceBlocks(vec3, vec32, false, false, true);
+-    }
+-
+-    public boolean canBeCollidedWith()
+-    {
++    public boolean canBeCollidedWith() {
+         return false;
+     }
+ 
+-    public boolean canBePushed()
+-    {
++    public boolean canBePushed() {
+         return false;
+     }
+ 
+-    public void addToPlayerScore(Entity entityIn, int amount) {}
+-
+-    @SideOnly(Side.CLIENT)
+-    public boolean isInRangeToRender3d(double x, double y, double z)
+-    {
+-        double d3 = this.posX - x;
+-        double d4 = this.posY - y;
+-        double d5 = this.posZ - z;
+-        double d6 = d3 * d3 + d4 * d4 + d5 * d5;
+-        return this.isInRangeToRenderDist(d6);
++    public void addToPlayerScore(Entity entityIn, int amount) {
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public boolean isInRangeToRenderDist(double distance)
+-    {
+-        double d1 = this.getEntityBoundingBox().getAverageEdgeLength();
+-        d1 *= 64.0D * this.renderDistanceWeight;
+-        return distance < d1 * d1;
+-    }
+-
+-    public boolean writeMountToNBT(NBTTagCompound tagCompund)
+-    {
++    public boolean writeMountToNBT(NBTTagCompound tagCompund) {
+         String s = this.getEntityString();
+ 
+-        if (!this.isDead && s != null)
+-        {
++        if (!this.isDead && s != null) {
+             tagCompund.setString("id", s);
+             this.writeToNBT(tagCompund);
+             return true;
+-        }
+-        else
+-        {
++        } else {
+             return false;
+         }
+     }
+ 
+-    public boolean writeToNBTOptional(NBTTagCompound tagCompund)
+-    {
++    public boolean writeToNBTOptional(NBTTagCompound tagCompund) {
+         String s = this.getEntityString();
+ 
+-        if (!this.isDead && s != null && this.riddenByEntity == null)
+-        {
++        if (!this.isDead && s != null && this.riddenByEntity == null) {
+             tagCompund.setString("id", s);
+             this.writeToNBT(tagCompund);
+             return true;
+-        }
+-        else
+-        {
++        } else {
+             return false;
+         }
+     }
+ 
+-    public void writeToNBT(NBTTagCompound tagCompund)
+-    {
+-        try
+-        {
+-            tagCompund.setTag("Pos", this.newDoubleNBTList(new double[] {this.posX, this.posY, this.posZ}));
+-            tagCompund.setTag("Motion", this.newDoubleNBTList(new double[] {this.motionX, this.motionY, this.motionZ}));
+-            tagCompund.setTag("Rotation", this.newFloatNBTList(new float[] {this.rotationYaw, this.rotationPitch}));
++    public void writeToNBT(NBTTagCompound tagCompund) {
++        try {
++            tagCompund.setTag("Pos", this.newDoubleNBTList(new double[]{this.posX, this.posY, this.posZ}));
++            tagCompund.setTag("Motion", this.newDoubleNBTList(new double[]{this.motionX, this.motionY, this.motionZ}));
++
++            // CraftBukkit start - Checking for NaN pitch/yaw and resetting to zero
++            // TODO: make sure this is the best way to address this.
++            if (Float.isNaN(this.rotationYaw)) {
++                this.rotationYaw = 0;
++            }
++
++            if (Float.isNaN(this.rotationPitch)) {
++                this.rotationPitch = 0;
++            }
++            // CraftBukkit end
++
++            tagCompund.setTag("Rotation", this.newFloatNBTList(new float[]{this.rotationYaw, this.rotationPitch}));
+             tagCompund.setFloat("FallDistance", this.fallDistance);
+-            tagCompund.setShort("Fire", (short)this.fire);
+-            tagCompund.setShort("Air", (short)this.getAir());
++            tagCompund.setShort("Fire", (short) this.fire);
++            tagCompund.setShort("Air", (short) this.getAir());
+             tagCompund.setBoolean("OnGround", this.onGround);
+             tagCompund.setInteger("Dimension", this.dimension);
+             tagCompund.setBoolean("Invulnerable", this.invulnerable);
+             tagCompund.setInteger("PortalCooldown", this.timeUntilPortal);
+             tagCompund.setLong("UUIDMost", this.getUniqueID().getMostSignificantBits());
+             tagCompund.setLong("UUIDLeast", this.getUniqueID().getLeastSignificantBits());
+-
+-            if (this.getCustomNameTag() != null && this.getCustomNameTag().length() > 0)
+-            {
++            // CraftBukkit start
++            tagCompund.setLong("WorldUUIDLeast", this.worldObj.getSaveHandler().getUUID().getLeastSignificantBits());
++            tagCompund.setLong("WorldUUIDMost", this.worldObj.getSaveHandler().getUUID().getMostSignificantBits());
++            tagCompund.setInteger("Bukkit.updateLevel", CURRENT_LEVEL);
++            tagCompund.setInteger("Spigot.ticksLived", this.ticksExisted);
++            // CraftBukkit end
++            if (this.getCustomNameTag() != null && this.getCustomNameTag().length() > 0) {
+                 tagCompund.setString("CustomName", this.getCustomNameTag());
+                 tagCompund.setBoolean("CustomNameVisible", this.getAlwaysRenderNameTag());
+             }
+ 
+             this.cmdResultStats.func_179670_b(tagCompund);
+ 
+-            if (this.isSilent())
+-            {
++            if (this.isSilent()) {
+                 tagCompund.setBoolean("Silent", this.isSilent());
+             }
+ 
+             this.writeEntityToNBT(tagCompund);
+ 
+-            if (this.ridingEntity != null)
+-            {
++            if (this.ridingEntity != null) {
+                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+ 
+-                if (this.ridingEntity.writeMountToNBT(nbttagcompound1))
+-                {
++                if (this.ridingEntity.writeMountToNBT(nbttagcompound1)) {
+                     tagCompund.setTag("Riding", nbttagcompound1);
+                 }
+             }
+-        }
+-        catch (Throwable throwable)
+-        {
++        } catch (Throwable throwable) {
+             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Saving entity NBT");
+             CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being saved");
+             this.addEntityCrashInfo(crashreportcategory);
+@@ -1399,20 +1399,16 @@
+         }
+     }
+ 
+-    public void readFromNBT(NBTTagCompound tagCompund)
+-    {
+-        try
+-        {
++    public void readFromNBT(NBTTagCompound tagCompund) {
++        try {
+             NBTTagList nbttaglist = tagCompund.getTagList("Pos", 6);
+             NBTTagList nbttaglist1 = tagCompund.getTagList("Motion", 6);
+             NBTTagList nbttaglist2 = tagCompund.getTagList("Rotation", 5);
+             this.motionX = nbttaglist1.getDouble(0);
+             this.motionY = nbttaglist1.getDouble(1);
+             this.motionZ = nbttaglist1.getDouble(2);
+-
++            /* CraftBukkit start - Moved section down
+             if (Math.abs(this.motionX) > 10.0D)
+             {
+                 this.motionX = 0.0D;
+@@ -1424,6 +1424,7 @@
+             {
+                 this.motionZ = 0.0D;
+             }
++            // CraftBukkit end */
+ 
+             this.prevPosX = this.lastTickPosX = this.posX = nbttaglist.getDouble(0);
+             this.prevPosY = this.lastTickPosY = this.posY = nbttaglist.getDouble(1);
+@@ -1438,20 +1438,16 @@
+             this.invulnerable = tagCompund.getBoolean("Invulnerable");
+             this.timeUntilPortal = tagCompund.getInteger("PortalCooldown");
+ 
+-            if (tagCompund.hasKey("UUIDMost", 4) && tagCompund.hasKey("UUIDLeast", 4))
+-            {
++            if (tagCompund.hasKey("UUIDMost", 4) && tagCompund.hasKey("UUIDLeast", 4)) {
+                 this.entityUniqueID = new UUID(tagCompund.getLong("UUIDMost"), tagCompund.getLong("UUIDLeast"));
+-            }
+-            else if (tagCompund.hasKey("UUID", 8))
+-            {
++            } else if (tagCompund.hasKey("UUID", 8)) {
+                 this.entityUniqueID = UUID.fromString(tagCompund.getString("UUID"));
+             }
+ 
+             this.setPosition(this.posX, this.posY, this.posZ);
+             this.setRotation(this.rotationYaw, this.rotationPitch);
+ 
+-            if (tagCompund.hasKey("CustomName", 8) && tagCompund.getString("CustomName").length() > 0)
+-            {
++            if (tagCompund.hasKey("CustomName", 8) && tagCompund.getString("CustomName").length() > 0) {
+                 this.setCustomNameTag(tagCompund.getString("CustomName"));
+             }
+ 
+@@ -1460,12 +1460,10 @@
+             this.setSilent(tagCompund.getBoolean("Silent"));
+             this.readEntityFromNBT(tagCompund);
+ 
+-            if (this.shouldSetPosAfterLoading())
+-            {
++            if (this.shouldSetPosAfterLoading()) {
+                 this.setPosition(this.posX, this.posY, this.posZ);
+             }
+-        }
+-        catch (Throwable throwable)
+-        {
++            // CraftBukkit start
++            if (this instanceof EntityLiving) {
++                EntityLiving entity = (EntityLiving) this;
++
++                this.ticksExisted = tagCompund.getInteger("Spigot.ticksLived");
++
++                // Reset the persistence for tamed animals
++                if (entity instanceof EntityTameable && !isLevelAtLeast(tagCompund, 2) && !tagCompund.getBoolean("PersistenceRequired")) {
++                    EntityLiving entityinsentient = (EntityLiving) entity;
++                    entityinsentient.persistenceRequired = !entityinsentient.canDespawn();
++                }
++            }
++            // CraftBukkit end
++
++            // CraftBukkit start - Exempt Vehicles from notch's sanity check
++            if (!(getBukkitEntity() instanceof Vehicle)) {
++                if (Math.abs(this.motionX) > 10.0D) {
++                    this.motionX = 0.0D;
++                }
++
++                if (Math.abs(this.motionY) > 10.0D) {
++                    this.motionY = 0.0D;
++                }
++
++                if (Math.abs(this.motionZ) > 10.0D) {
++                    this.motionZ = 0.0D;
++                }
++            }
++            // CraftBukkit end
++
++            // CraftBukkit start - Reset world
++            if (this instanceof EntityPlayer) {
++                Server server = Bukkit.getServer();
++                org.bukkit.World bworld = null;
++
++                // TODO: Remove World related checks, replaced with WorldUID
++                String worldName = tagCompund.getString("world");
++
++                if (tagCompund.hasKey("WorldUUIDMost") && tagCompund.hasKey("WorldUUIDLeast")) {
++                    UUID uid = new UUID(tagCompund.getLong("WorldUUIDMost"), tagCompund.getLong("WorldUUIDLeast"));
++                    bworld = server.getWorld(uid);
++                } else {
++                    bworld = server.getWorld(worldName);
++                }
++
++                if (bworld == null) {
++                    EntityPlayer entityPlayer = (EntityPlayer) this;
++                    bworld = ((org.bukkit.craftbukkit.CraftServer) server).getServer().worldServerForDimension(entityPlayer.dimension).getWorld();
++                }
++
++                setWorld(bworld == null ? null : ((CraftWorld) bworld).getHandle());
++            }
++            // CraftBukkit end
++        } catch (Throwable throwable) {
+             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Loading entity NBT");
+             CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being loaded");
+             this.addEntityCrashInfo(crashreportcategory);
+@@ -1474,13 +1474,11 @@
+         }
+     }
+ 
+-    protected boolean shouldSetPosAfterLoading()
+-    {
++    protected boolean shouldSetPosAfterLoading() {
+         return true;
+     }
+ 
+-    protected final String getEntityString()
+-    {
++    protected final String getEntityString() {
+         return EntityList.getEntityString(this);
+     }
+ 
+@@ -1488,15 +1488,16 @@
+ 
+     protected abstract void writeEntityToNBT(NBTTagCompound tagCompound);
+ 
+-    public void onChunkLoad() {}
++    public void onChunkLoad() {
++    }
+ 
+-    protected NBTTagList newDoubleNBTList(double ... numbers)
+-    {
++    protected NBTTagList newDoubleNBTList(double... numbers) {
+         NBTTagList nbttaglist = new NBTTagList();
+         double[] adouble = numbers;
+         int i = numbers.length;
+ 
+-        for (int j = 0; j < i; ++j)
+-        {
++        for (int j = 0; j < i; ++j) {
+             double d1 = adouble[j];
+             nbttaglist.appendTag(new NBTTagDouble(d1));
+         }
+@@ -1505,14 +1505,12 @@
+         return nbttaglist;
+     }
+ 
+-    protected NBTTagList newFloatNBTList(float ... numbers)
+-    {
++    protected NBTTagList newFloatNBTList(float... numbers) {
+         NBTTagList nbttaglist = new NBTTagList();
+         float[] afloat = numbers;
+         int i = numbers.length;
+ 
+-        for (int j = 0; j < i; ++j)
+-        {
++        for (int j = 0; j < i; ++j) {
+             float f1 = afloat[j];
+             nbttaglist.appendTag(new NBTTagFloat(f1));
+         }
+@@ -1520,52 +1520,45 @@
+         return nbttaglist;
+     }
+ 
+-    public EntityItem dropItem(Item itemIn, int size)
+-    {
++    public EntityItem dropItem(Item itemIn, int size) {
+         return this.dropItemWithOffset(itemIn, size, 0.0F);
+     }
+ 
+-    public EntityItem dropItemWithOffset(Item itemIn, int size, float p_145778_3_)
+-    {
++    public EntityItem dropItemWithOffset(Item itemIn, int size, float p_145778_3_) {
+         return this.entityDropItem(new ItemStack(itemIn, size, 0), p_145778_3_);
+     }
+ 
+-    public EntityItem entityDropItem(ItemStack itemStackIn, float offsetY)
+-    {
+-        if (itemStackIn.stackSize != 0 && itemStackIn.getItem() != null)
+-        {
+-            EntityItem entityitem = new EntityItem(this.worldObj, this.posX, this.posY + (double)offsetY, this.posZ, itemStackIn);
++    public EntityItem entityDropItem(ItemStack itemStackIn, float offsetY) {
++        if (itemStackIn.stackSize != 0 && itemStackIn.getItem() != null) {
++            // CraftBukkit start - Capture drops for death event
++            if (this instanceof EntityLiving && ((EntityLiving) this).drops != null) {
++                ((EntityLiving) this).drops.add(org.bukkit.craftbukkit.inventory.CraftItemStack.asBukkitCopy(itemStackIn));
++                return null;
++            }
++            // CraftBukkit end
++            EntityItem entityitem = new EntityItem(this.worldObj, this.posX, this.posY + (double) offsetY, this.posZ, itemStackIn);
+             entityitem.setDefaultPickupDelay();
+             this.worldObj.spawnEntityInWorld(entityitem);
+             return entityitem;
+-        }
+-        else
+-        {
++        } else {
+             return null;
+         }
+     }
+ 
+-    public boolean isEntityAlive()
+-    {
++    public boolean isEntityAlive() {
+         return !this.isDead;
+     }
+ 
+-    public boolean isEntityInsideOpaqueBlock()
+-    {
+-        if (this.noClip)
+-        {
++    public boolean isEntityInsideOpaqueBlock() {
++        if (this.noClip) {
+             return false;
+-        }
+-        else
+-        {
+-            for (int i = 0; i < 8; ++i)
+-            {
+-                double d0 = this.posX + (double)(((float)((i >> 0) % 2) - 0.5F) * this.width * 0.8F);
+-                double d1 = this.posY + (double)(((float)((i >> 1) % 2) - 0.5F) * 0.1F);
+-                double d2 = this.posZ + (double)(((float)((i >> 2) % 2) - 0.5F) * this.width * 0.8F);
++        } else {
++            for (int i = 0; i < 8; ++i) {
++                double d0 = this.posX + (double) (((float) ((i >> 0) % 2) - 0.5F) * this.width * 0.8F);
++                double d1 = this.posY + (double) (((float) ((i >> 1) % 2) - 0.5F) * 0.1F);
++                double d2 = this.posZ + (double) (((float) ((i >> 2) % 2) - 0.5F) * this.width * 0.8F);
+ 
+-                if (this.worldObj.getBlockState(new BlockPos(d0, d1 + (double)this.getEyeHeight(), d2)).getBlock().isVisuallyOpaque())
+-                {
++                if (this.worldObj.getBlockState(new BlockPos(d0, d1 + (double) this.getEyeHeight(), d2)).getBlock().isVisuallyOpaque()) {
+                     return true;
+                 }
+             }
+@@ -1574,51 +1574,40 @@
+         }
+     }
+ 
+-    public boolean interactFirst(EntityPlayer playerIn)
+-    {
++    public boolean interactFirst(EntityPlayer playerIn) {
+         return false;
+     }
+ 
+-    public AxisAlignedBB getCollisionBox(Entity entityIn)
+-    {
++    public AxisAlignedBB getCollisionBox(Entity entityIn) {
+         return null;
+     }
+ 
+-    public void updateRidden()
+-    {
+-        if (this.ridingEntity.isDead)
+-        {
++    public void updateRidden() {
++        if (this.ridingEntity.isDead) {
+             this.ridingEntity = null;
+-        }
+-        else
+-        {
++        } else {
+             this.motionX = 0.0D;
+             this.motionY = 0.0D;
+             this.motionZ = 0.0D;
+             this.onUpdate();
+ 
+-            if (this.ridingEntity != null)
+-            {
++            if (this.ridingEntity != null) {
+                 this.ridingEntity.updateRiderPosition();
+-                this.entityRiderYawDelta += (double)(this.ridingEntity.rotationYaw - this.ridingEntity.prevRotationYaw);
++                this.entityRiderYawDelta += (double) (this.ridingEntity.rotationYaw - this.ridingEntity.prevRotationYaw);
+ 
+-                for (this.entityRiderPitchDelta += (double)(this.ridingEntity.rotationPitch - this.ridingEntity.prevRotationPitch); this.entityRiderYawDelta >= 180.0D; this.entityRiderYawDelta -= 360.0D)
+-                {
++                for (this.entityRiderPitchDelta += (double) (this.ridingEntity.rotationPitch - this.ridingEntity.prevRotationPitch); this.entityRiderYawDelta >= 180.0D; this.entityRiderYawDelta -= 360.0D) {
+                     ;
+                 }
+ 
+-                while (this.entityRiderYawDelta < -180.0D)
+-                {
++                while (this.entityRiderYawDelta < -180.0D) {
+                     this.entityRiderYawDelta += 360.0D;
+                 }
+ 
+-                while (this.entityRiderPitchDelta >= 180.0D)
+-                {
++                while (this.entityRiderPitchDelta >= 180.0D) {
+                     this.entityRiderPitchDelta -= 360.0D;
+                 }
+ 
+-                while (this.entityRiderPitchDelta < -180.0D)
+-                {
++                while (this.entityRiderPitchDelta < -180.0D) {
+                     this.entityRiderPitchDelta += 360.0D;
+                 }
+ 
+@@ -1626,24 +1626,20 @@
+                 double d1 = this.entityRiderPitchDelta * 0.5D;
+                 float f = 10.0F;
+ 
+-                if (d0 > (double)f)
+-                {
+-                    d0 = (double)f;
++                if (d0 > (double) f) {
++                    d0 = (double) f;
+                 }
+ 
+-                if (d0 < (double)(-f))
+-                {
+-                    d0 = (double)(-f);
++                if (d0 < (double) (-f)) {
++                    d0 = (double) (-f);
+                 }
+ 
+-                if (d1 > (double)f)
+-                {
+-                    d1 = (double)f;
++                if (d1 > (double) f) {
++                    d1 = (double) f;
+                 }
+ 
+-                if (d1 < (double)(-f))
+-                {
+-                    d1 = (double)(-f);
++                if (d1 < (double) (-f)) {
++                    d1 = (double) (-f);
+                 }
+ 
+                 this.entityRiderYawDelta -= d0;
+@@ -1652,50 +1652,101 @@
+         }
+     }
+ 
+-    public void updateRiderPosition()
+-    {
+-        if (this.riddenByEntity != null)
+-        {
++    public void updateRiderPosition() {
++        if (this.riddenByEntity != null) {
+             this.riddenByEntity.setPosition(this.posX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ);
+         }
+     }
+ 
+-    public double getYOffset()
+-    {
++    public double getYOffset() {
+         return 0.0D;
+     }
+ 
+-    public double getMountedYOffset()
+-    {
+-        return (double)this.height * 0.75D;
++    public double getMountedYOffset() {
++        return (double) this.height * 0.75D;
+     }
+ 
+-    public void mountEntity(Entity entityIn)
+-    {
++    // CraftBukkit start
++    protected CraftEntity bukkitEntity;
++
++    public org.bukkit.craftbukkit.entity.CraftEntity getBukkitEntity() {
++        if (bukkitEntity == null) {
++            bukkitEntity = CraftEntity.getEntity(worldObj.getServer(), this);
++        }
++        return bukkitEntity;
++    }
++
++    public void mountEntity(Entity entityIn) {
++        Entity originalVehicle = this.ridingEntity;
++        Entity originalPassenger = this.ridingEntity == null ? null : this.ridingEntity.riddenByEntity;
++        PluginManager pluginManager = Bukkit.getPluginManager();
++        getBukkitEntity(); // make sure bukkitEntity is initialised
++        // CraftBukkit end
+         this.entityRiderPitchDelta = 0.0D;
+         this.entityRiderYawDelta = 0.0D;
+ 
+-        if (entityIn == null)
+-        {
+-            if (this.ridingEntity != null)
+-            {
+-                this.setLocationAndAngles(this.ridingEntity.posX, this.ridingEntity.getEntityBoundingBox().minY + (double)this.ridingEntity.height, this.ridingEntity.posZ, this.rotationYaw, this.rotationPitch);
++        if (entityIn == null) {
++            if (this.ridingEntity != null) {
++                // CraftBukkit start
++                if ((this.bukkitEntity instanceof LivingEntity) && (this.ridingEntity.getBukkitEntity() instanceof Vehicle)) {
++                    VehicleExitEvent event = new VehicleExitEvent((Vehicle) this.ridingEntity.getBukkitEntity(), (LivingEntity) this.bukkitEntity);
++                    pluginManager.callEvent(event);
++
++                    if (event.isCancelled() || ridingEntity != originalVehicle) {
++                        return;
++                    }
++                }
++                // CraftBukkit end
++                pluginManager.callEvent(new EntityDismountEvent(this.getBukkitEntity(), this.ridingEntity.getBukkitEntity())); // Spigot
++                this.setLocationAndAngles(this.ridingEntity.posX, this.ridingEntity.getEntityBoundingBox().minY + (double) this.ridingEntity.height, this.ridingEntity.posZ, this.rotationYaw, this.rotationPitch);
+                 this.ridingEntity.riddenByEntity = null;
+             }
+ 
+             this.ridingEntity = null;
+-        }
+-        else
+-        {
+-            if (this.ridingEntity != null)
+-            {
++        } else {
++            // CraftBukkit start
++            if ((this.bukkitEntity instanceof LivingEntity) && (entityIn.getBukkitEntity() instanceof Vehicle) && entityIn.worldObj.isChunkLoaded((int) entityIn.posX >> 4, (int) entityIn.posZ >> 4, true)) {
++                // It's possible to move from one vehicle to another.  We need to check if they're already in a vehicle, and fire an exit event if they are.
++                VehicleExitEvent exitEvent = null;
++                if (this.ridingEntity != null && this.ridingEntity.getBukkitEntity() instanceof Vehicle) {
++                    exitEvent = new VehicleExitEvent((Vehicle) this.ridingEntity.getBukkitEntity(), (LivingEntity) this.bukkitEntity);
++                    pluginManager.callEvent(exitEvent);
++
++                    if (exitEvent.isCancelled() || this.ridingEntity != originalVehicle || (this.ridingEntity != null && this.ridingEntity.riddenByEntity != originalPassenger)) {
++                        return;
++                    }
++                }
++
++                VehicleEnterEvent event = new VehicleEnterEvent((Vehicle) entityIn.getBukkitEntity(), this.bukkitEntity);
++                pluginManager.callEvent(event);
++
++                // If a plugin messes with the vehicle or the vehicle's passenger
++                if (event.isCancelled() || this.ridingEntity != originalVehicle || (this.ridingEntity != null && this.ridingEntity.riddenByEntity != originalPassenger)) {
++                    // If we only cancelled the enterevent then we need to put the player in a decent position.
++                    if (exitEvent != null && this.ridingEntity == originalVehicle && this.ridingEntity != null && this.ridingEntity.riddenByEntity == originalPassenger) {
++                        this.setLocationAndAngles(this.ridingEntity.posX, this.ridingEntity.getEntityBoundingBox().minY + (double) this.ridingEntity.height, this.ridingEntity.posZ, this.rotationYaw, this.rotationPitch);
++                        this.ridingEntity.riddenByEntity = null;
++                        this.ridingEntity = null;
++                    }
++                    return;
++                }
++            }
++            // CraftBukkit end
++            // Spigot Start
++            if (entityIn.worldObj.isChunkLoaded((int) entityIn.posX >> 4, (int) entityIn.posZ >> 4, true)) {
++                org.spigotmc.event.entity.EntityMountEvent event = new EntityMountEvent(this.getBukkitEntity(), entityIn.getBukkitEntity());
++                pluginManager.callEvent(event);
++                if (event.isCancelled()) {
++                    return;
++                }
++            }
++            // Spigot End
++            if (this.ridingEntity != null) {
+                 this.ridingEntity.riddenByEntity = null;
+             }
+ 
+-            if (entityIn != null)
+-            {
+-                for (Entity entity1 = entityIn.ridingEntity; entity1 != null; entity1 = entity1.ridingEntity)
+-                {
+-                    if (entity1 == this)
+-                    {
++            if (entityIn != null) {
++                for (Entity entity1 = entityIn.ridingEntity; entity1 != null; entity1 = entity1.ridingEntity) {
++                    if (entity1 == this) {
+                         return;
+                     }
+                 }
+@@ -1708,90 +1708,27 @@
+         }
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public void func_180426_a(double p_180426_1_, double p_180426_3_, double p_180426_5_, float p_180426_7_, float p_180426_8_, int p_180426_9_, boolean p_180426_10_)
+-    {
+-        this.setPosition(p_180426_1_, p_180426_3_, p_180426_5_);
+-        this.setRotation(p_180426_7_, p_180426_8_);
+-        List list = this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox().contract(0.03125D, 0.0D, 0.03125D));
+-
+-        if (!list.isEmpty())
+-        {
+-            double d3 = 0.0D;
+-            Iterator iterator = list.iterator();
+-
+-            while (iterator.hasNext())
+-            {
+-                AxisAlignedBB axisalignedbb = (AxisAlignedBB)iterator.next();
+-
+-                if (axisalignedbb.maxY > d3)
+-                {
+-                    d3 = axisalignedbb.maxY;
+-                }
+-            }
+-
+-            p_180426_3_ += d3 - this.getEntityBoundingBox().minY;
+-            this.setPosition(p_180426_1_, p_180426_3_, p_180426_5_);
+-        }
+-    }
+-
+-    public float getCollisionBorderSize()
+-    {
++    public float getCollisionBorderSize() {
+         return 0.1F;
+     }
+ 
+-    public Vec3 getLookVec()
+-    {
++    public Vec3 getLookVec() {
+         return null;
+     }
+ 
+-    public void setInPortal()
+-    {
+-        if (this.timeUntilPortal > 0)
+-        {
++    public void setInPortal() {
++        if (this.timeUntilPortal > 0) {
+             this.timeUntilPortal = this.getPortalCooldown();
+-        }
+-        else
+-        {
++        } else {
+             double d0 = this.prevPosX - this.posX;
+             double d1 = this.prevPosZ - this.posZ;
+ 
+-            if (!this.worldObj.isRemote && !this.inPortal)
+-            {
++            if (!this.worldObj.isRemote && !this.inPortal) {
+                 int i;
+ 
+-                if (MathHelper.abs((float)d0) > MathHelper.abs((float)d1))
+-                {
++                if (MathHelper.abs((float) d0) > MathHelper.abs((float) d1)) {
+                     i = d0 > 0.0D ? EnumFacing.WEST.getHorizontalIndex() : EnumFacing.EAST.getHorizontalIndex();
+-                }
+-                else
+-                {
++                } else {
+                     i = d1 > 0.0D ? EnumFacing.NORTH.getHorizontalIndex() : EnumFacing.SOUTH.getHorizontalIndex();
+                 }
+ 
+@@ -1776,228 +1776,204 @@
+         }
+     }
+ 
+-    public int getPortalCooldown()
+-    {
++    public int getPortalCooldown() {
+         return 300;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public void setVelocity(double x, double y, double z)
+-    {
+-        this.motionX = x;
+-        this.motionY = y;
+-        this.motionZ = z;
++    public ItemStack[] getInventory() {
++        return null;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public void handleHealthUpdate(byte p_70103_1_) {}
+-
+-    @SideOnly(Side.CLIENT)
+-    public void performHurtAnimation() {}
+-
+-    public ItemStack[] getInventory()
+-    {
+-        return null;
++    public void setCurrentItemOrArmor(int slotIn, ItemStack stack) {
+     }
+ 
+-    public void setCurrentItemOrArmor(int slotIn, ItemStack stack) {}
+-
+-    public boolean isBurning()
+-    {
++    public boolean isBurning() {
+         boolean flag = this.worldObj != null && this.worldObj.isRemote;
+         return !this.isImmuneToFire && (this.fire > 0 || flag && this.getFlag(0));
+     }
+ 
+-    public boolean isRiding()
+-    {
++    public boolean isRiding() {
+         return this.ridingEntity != null;
+     }
+ 
+-    public boolean isSneaking()
+-    {
++    public boolean isSneaking() {
+         return this.getFlag(1);
+     }
+ 
+-    public void setSneaking(boolean sneaking)
+-    {
++    public void setSneaking(boolean sneaking) {
+         this.setFlag(1, sneaking);
+     }
+ 
+-    public boolean isSprinting()
+-    {
++    public boolean isSprinting() {
+         return this.getFlag(3);
+     }
+ 
+-    public void setSprinting(boolean sprinting)
+-    {
++    public void setSprinting(boolean sprinting) {
+         this.setFlag(3, sprinting);
+     }
+ 
+-    public boolean isInvisible()
+-    {
++    public boolean isInvisible() {
+         return this.getFlag(5);
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public boolean isInvisibleToPlayer(EntityPlayer player)
+-    {
+-        return player.isSpectator() ? false : this.isInvisible();
+-    }
+-
+-    public void setInvisible(boolean invisible)
+-    {
++    public void setInvisible(boolean invisible) {
+         this.setFlag(5, invisible);
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public boolean isEating()
+-    {
+-        return this.getFlag(4);
+-    }
+-
+-    public void setEating(boolean eating)
+-    {
++    public void setEating(boolean eating) {
+         this.setFlag(4, eating);
+     }
+ 
+-    protected boolean getFlag(int flag)
+-    {
++    protected boolean getFlag(int flag) {
+         return (this.dataWatcher.getWatchableObjectByte(0) & 1 << flag) != 0;
+     }
+ 
+-    protected void setFlag(int flag, boolean set)
+-    {
++    protected void setFlag(int flag, boolean set) {
+         byte b0 = this.dataWatcher.getWatchableObjectByte(0);
+ 
+-        if (set)
+-        {
+-            this.dataWatcher.updateObject(0, Byte.valueOf((byte)(b0 | 1 << flag)));
++        if (set) {
++            this.dataWatcher.updateObject(0, Byte.valueOf((byte) (b0 | 1 << flag)));
++        } else {
++            this.dataWatcher.updateObject(0, Byte.valueOf((byte) (b0 & ~(1 << flag))));
+         }
+-        else
+-        {
+-            this.dataWatcher.updateObject(0, Byte.valueOf((byte)(b0 & ~(1 << flag))));
+-        }
+     }
+ 
+-    public int getAir()
+-    {
++    public int getAir() {
+         return this.dataWatcher.getWatchableObjectShort(1);
+     }
+ 
+-    public void setAir(int air)
+-    {
+-        this.dataWatcher.updateObject(1, Short.valueOf((short)air));
++    public void setAir(int air) {
++        this.dataWatcher.updateObject(1, Short.valueOf((short) air));
+     }
+ 
+-    public void onStruckByLightning(EntityLightningBolt lightningBolt)
+-    {
+-        this.attackEntityFrom(DamageSource.lightningBolt, 5.0F);
++    public void onStruckByLightning(EntityLightningBolt lightningBolt) {
++        // CraftBukkit start
++        final org.bukkit.entity.Entity thisBukkitEntity = this.getBukkitEntity();
++        final org.bukkit.entity.Entity stormBukkitEntity = lightningBolt.getBukkitEntity();
++        final PluginManager pluginManager = Bukkit.getPluginManager();
++
++        if (thisBukkitEntity instanceof Hanging) {
++            HangingBreakByEntityEvent hangingEvent = new HangingBreakByEntityEvent((Hanging) thisBukkitEntity, stormBukkitEntity);
++            PaintingBreakByEntityEvent paintingEvent = null;
++
++            if (thisBukkitEntity instanceof Painting) {
++                paintingEvent = new PaintingBreakByEntityEvent((Painting) thisBukkitEntity, stormBukkitEntity);
++            }
++
++            pluginManager.callEvent(hangingEvent);
++
++            if (paintingEvent != null) {
++                paintingEvent.setCancelled(hangingEvent.isCancelled());
++                pluginManager.callEvent(paintingEvent);
++            }
++
++            if (hangingEvent.isCancelled() || (paintingEvent != null && paintingEvent.isCancelled())) {
++                return;
++            }
++        }
++
++        if (this.isImmuneToFire) {
++            return;
++        }
++        CraftEventFactory.entityDamage = lightningBolt;
++        if (!this.attackEntityFrom(DamageSource.lightningBolt, 5.0F)) {
++            CraftEventFactory.entityDamage = null;
++            return;
++        }
++        // CraftBukkit end
+         ++this.fire;
+ 
+-        if (this.fire == 0)
+-        {
++        if (this.fire == 0) {
+             this.setFire(8);
++            // CraftBukkit start - Call a combust event when lightning strikes
++            EntityCombustByEntityEvent entityCombustEvent = new EntityCombustByEntityEvent(stormBukkitEntity, thisBukkitEntity, 8);
++            pluginManager.callEvent(entityCombustEvent);
++            if (!entityCombustEvent.isCancelled()) {
++                this.setFire(entityCombustEvent.getDuration());
++            }
++            // CraftBukkit end
+         }
+     }
+ 
+-    public void onKillEntity(EntityLivingBase entityLivingIn) {}
++    public void onKillEntity(EntityLivingBase entityLivingIn) {
++    }
+ 
+-    protected boolean pushOutOfBlocks(double x, double y, double z)
+-    {
++    protected boolean pushOutOfBlocks(double x, double y, double z) {
+         BlockPos blockpos = new BlockPos(x, y, z);
+-        double d3 = x - (double)blockpos.getX();
+-        double d4 = y - (double)blockpos.getY();
+-        double d5 = z - (double)blockpos.getZ();
++        double d3 = x - (double) blockpos.getX();
++        double d4 = y - (double) blockpos.getY();
++        double d5 = z - (double) blockpos.getZ();
+         List list = this.worldObj.func_147461_a(this.getEntityBoundingBox());
+ 
+-        if (list.isEmpty() && !this.worldObj.func_175665_u(blockpos))
+-        {
++        if (list.isEmpty() && !this.worldObj.func_175665_u(blockpos)) {
+             return false;
+-        }
+-        else
+-        {
++        } else {
+             byte b0 = 3;
+             double d6 = 9999.0D;
+ 
+-            if (!this.worldObj.func_175665_u(blockpos.west()) && d3 < d6)
+-            {
++            if (!this.worldObj.func_175665_u(blockpos.west()) && d3 < d6) {
+                 d6 = d3;
+                 b0 = 0;
+             }
+ 
+-            if (!this.worldObj.func_175665_u(blockpos.east()) && 1.0D - d3 < d6)
+-            {
++            if (!this.worldObj.func_175665_u(blockpos.east()) && 1.0D - d3 < d6) {
+                 d6 = 1.0D - d3;
+                 b0 = 1;
+             }
+ 
+-            if (!this.worldObj.func_175665_u(blockpos.up()) && 1.0D - d4 < d6)
+-            {
++            if (!this.worldObj.func_175665_u(blockpos.up()) && 1.0D - d4 < d6) {
+                 d6 = 1.0D - d4;
+                 b0 = 3;
+             }
+ 
+-            if (!this.worldObj.func_175665_u(blockpos.north()) && d5 < d6)
+-            {
++            if (!this.worldObj.func_175665_u(blockpos.north()) && d5 < d6) {
+                 d6 = d5;
+                 b0 = 4;
+             }
+ 
+-            if (!this.worldObj.func_175665_u(blockpos.south()) && 1.0D - d5 < d6)
+-            {
++            if (!this.worldObj.func_175665_u(blockpos.south()) && 1.0D - d5 < d6) {
+                 d6 = 1.0D - d5;
+                 b0 = 5;
+             }
+ 
+             float f = this.rand.nextFloat() * 0.2F + 0.1F;
+ 
+-            if (b0 == 0)
+-            {
+-                this.motionX = (double)(-f);
++            if (b0 == 0) {
++                this.motionX = (double) (-f);
+             }
+ 
+-            if (b0 == 1)
+-            {
+-                this.motionX = (double)f;
++            if (b0 == 1) {
++                this.motionX = (double) f;
+             }
+ 
+-            if (b0 == 3)
+-            {
+-                this.motionY = (double)f;
++            if (b0 == 3) {
++                this.motionY = (double) f;
+             }
+ 
+-            if (b0 == 4)
+-            {
+-                this.motionZ = (double)(-f);
++            if (b0 == 4) {
++                this.motionZ = (double) (-f);
+             }
+ 
+-            if (b0 == 5)
+-            {
+-                this.motionZ = (double)f;
++            if (b0 == 5) {
++                this.motionZ = (double) f;
+             }
+ 
+             return true;
+         }
+     }
+ 
+-    public void setInWeb()
+-    {
++    public void setInWeb() {
+         this.isInWeb = true;
+         this.fallDistance = 0.0F;
+     }
+ 
+-    public String getName()
+-    {
+-        if (this.hasCustomName())
+-        {
++    public String getName() {
++        if (this.hasCustomName()) {
+             return this.getCustomNameTag();
+-        }
+-        else
+-        {
++        } else {
+             String s = EntityList.getEntityString(this);
+ 
+-            if (s == null)
+-            {
++            if (s == null) {
+                 s = "generic";
+             }
+ 
+@@ -2005,50 +2005,42 @@
+         }
+     }
+ 
+-    public Entity[] getParts()
+-    {
++    public Entity[] getParts() {
+         return null;
+     }
+ 
+-    public boolean isEntityEqual(Entity entityIn)
+-    {
++    public boolean isEntityEqual(Entity entityIn) {
+         return this == entityIn;
+     }
+ 
+-    public float getRotationYawHead()
+-    {
++    public float getRotationYawHead() {
+         return 0.0F;
+     }
+ 
+-    public void setRotationYawHead(float rotation) {}
++    public void setRotationYawHead(float rotation) {
++    }
+ 
+-    public boolean canAttackWithItem()
+-    {
++    public boolean canAttackWithItem() {
+         return true;
+     }
+ 
+-    public boolean hitByEntity(Entity entityIn)
+-    {
++    public boolean hitByEntity(Entity entityIn) {
+         return false;
+     }
+ 
+-    public String toString()
+-    {
+-        return String.format("%s[\'%s\'/%d, l=\'%s\', x=%.2f, y=%.2f, z=%.2f]", new Object[] {this.getClass().getSimpleName(), this.getName(), Integer.valueOf(this.entityId), this.worldObj == null ? "~NULL~" : this.worldObj.getWorldInfo().getWorldName(), Double.valueOf(this.posX), Double.valueOf(this.posY), Double.valueOf(this.posZ)});
++    public String toString() {
++        return String.format("%s[\'%s\'/%d, l=\'%s\', x=%.2f, y=%.2f, z=%.2f]", new Object[]{this.getClass().getSimpleName(), this.getName(), Integer.valueOf(this.entityId), this.worldObj == null ? "~NULL~" : this.worldObj.getWorldInfo().getWorldName(), Double.valueOf(this.posX), Double.valueOf(this.posY), Double.valueOf(this.posZ)});
+     }
+ 
+-    public boolean isEntityInvulnerable(DamageSource p_180431_1_)
+-    {
++    public boolean isEntityInvulnerable(DamageSource p_180431_1_) {
+         return this.invulnerable && p_180431_1_ != DamageSource.outOfWorld && !p_180431_1_.isCreativePlayer();
+     }
+ 
+-    public void copyLocationAndAnglesFrom(Entity entityIn)
+-    {
++    public void copyLocationAndAnglesFrom(Entity entityIn) {
+         this.setLocationAndAngles(entityIn.posX, entityIn.posY, entityIn.posZ, entityIn.rotationYaw, entityIn.rotationPitch);
+     }
+ 
+-    public void copyDataFromOld(Entity p_180432_1_)
+-    {
++    public void copyDataFromOld(Entity p_180432_1_) {
+         NBTTagCompound nbttagcompound = new NBTTagCompound();
+         p_180432_1_.writeToNBT(nbttagcompound);
+         this.readFromNBT(nbttagcompound);
+@@ -2056,45 +2056,80 @@
+         this.teleportDirection = p_180432_1_.teleportDirection;
+     }
+ 
+-    public void travelToDimension(int dimensionId)
+-    {
+-        if (!this.worldObj.isRemote && !this.isDead)
+-        {
++    public void travelToDimension(int dimensionId) {
++        if (!this.worldObj.isRemote && !this.isDead) {
+             this.worldObj.theProfiler.startSection("changeDimension");
+             MinecraftServer minecraftserver = MinecraftServer.getServer();
+-            int j = this.dimension;
+-            WorldServer worldserver = minecraftserver.worldServerForDimension(j);
+-            WorldServer worldserver1 = minecraftserver.worldServerForDimension(dimensionId);
+-            this.dimension = dimensionId;
++            // CraftBukkit start - Move logic into new function "teleportToLocation"
++            // int j = this.dimension;
++            // WorldServer worldserver = minecraftserver.worldServerForDimension(j);
++            // WorldServer worldserver1 = minecraftserver.worldServerForDimension(dimensionId);
++            WorldServer exitWorld = null;
++            if (this.dimension < CraftWorld.CUSTOM_DIMENSION_OFFSET) { // Plugins must specify exit from custom Bukkit worlds
++                // Only target existing worlds (compensate for allow-nether/allow-end as false)
++                for (WorldServer world : minecraftserver.worlds) {
++                    if (world.dimension == dimensionId) {
++                        exitWorld = world;
++                    }
++                }
++            }
+ 
++            Location enter = this.getBukkitEntity().getLocation();
++            Location exit = exitWorld != null ? minecraftserver.getConfigurationManager().calculateTarget(enter, minecraftserver.worldServerForDimension(dimensionId)) : null;
++            boolean useTravelAgent = exitWorld != null && !(this.dimension == 1 && exitWorld.dimension == 1); // don't use agent for custom worlds or return from THE_END
++
++            TravelAgent agent = exit != null ? (TravelAgent) ((CraftWorld) exit.getWorld()).getHandle().getDefaultTeleporter() : org.bukkit.craftbukkit.CraftTravelAgent.DEFAULT; // return arbitrary TA to compensate for implementation dependent plugins
++            EntityPortalEvent event = new EntityPortalEvent(this.getBukkitEntity(), enter, exit, agent);
++            event.useTravelAgent(useTravelAgent);
++            event.getEntity().getServer().getPluginManager().callEvent(event);
++            if (event.isCancelled() || event.getTo() == null || event.getTo().getWorld() == null || !this.isEntityAlive()) {
++                return;
++            }
++            exit = event.useTravelAgent() ? event.getPortalTravelAgent().findOrCreate(event.getTo()) : event.getTo();
++            this.teleportTo(exit, true);
++        }
++    }
++
++    public void teleportTo(Location exit, boolean portal) {
++        if (true) {
++            WorldServer worldserver = ((CraftWorld) getBukkitEntity().getLocation().getWorld()).getHandle();
++            WorldServer worldserver1 = ((CraftWorld) exit.getWorld()).getHandle();
++            int dimensionId = worldserver1.dimension; // SpigotMCP -- use mcp name
++            // CraftBukkit end
++            this.dimension = dimensionId;
++            /* CraftBukkit start - TODO: Check if we need this
+             if (j == 1 && dimensionId == 1)
+             {
+                 worldserver1 = minecraftserver.worldServerForDimension(0);
+                 this.dimension = 0;
+             }
++            // CraftBukkit end */
+ 
+             this.worldObj.removeEntity(this);
+             this.isDead = false;
+             this.worldObj.theProfiler.startSection("reposition");
+-            minecraftserver.getConfigurationManager().transferEntityToWorld(this, j, worldserver, worldserver1);
++            // CraftBukkit start - Ensure chunks are loaded in case TravelAgent is not used which would initially cause chunks to load during find/create
++            // minecraftserver.getConfigurationManager().transferEntityToWorld(this, j, worldserver, worldserver1);
++            boolean before = worldserver1.theChunkProviderServer.chunkLoadOverride;
++            worldserver1.theChunkProviderServer.chunkLoadOverride = true;
++            worldserver1.getMinecraftServer().getConfigurationManager().repositionEntity(this, exit, portal);
++            worldserver1.theChunkProviderServer.chunkLoadOverride = before;
++            // CraftBukkit end
+             this.worldObj.theProfiler.endStartSection("reloading");
+             Entity entity = EntityList.createEntityByName(EntityList.getEntityString(this), worldserver1);
+ 
+-            if (entity != null)
+-            {
++            if (entity != null) {
+                 entity.copyDataFromOld(this);
+-
++                /* CraftBukkit start - We need to do this...
+                 if (j == 1 && dimensionId == 1)
+                 {
+                     BlockPos blockpos = this.worldObj.getTopSolidOrLiquidBlock(worldserver1.getSpawnPoint());
+                     entity.moveToBlockPosAndAngles(blockpos, entity.rotationYaw, entity.rotationPitch);
+                 }
+-
++                // CraftBukkit end */
+                 worldserver1.spawnEntityInWorld(entity);
++                // CraftBukkit start - Forward the CraftEntity to the new entity
++                this.getBukkitEntity().setHandle(entity);
++                entity.bukkitEntity = this.getBukkitEntity();
++
++                if (this instanceof EntityLiving) {
++                    ((EntityLiving) this).clearLeashed(true, false); // Unleash to prevent duping of leads.
++                }
++                // CraftBukkit end
+             }
+ 
+             this.isDead = true;
+@@ -2101,146 +2101,117 @@
+         }
+     }
+ 
+-    public float getExplosionResistance(Explosion p_180428_1_, World worldIn, BlockPos p_180428_3_, IBlockState p_180428_4_)
+-    {
++    public float getExplosionResistance(Explosion p_180428_1_, World worldIn, BlockPos p_180428_3_, IBlockState p_180428_4_) {
+         return p_180428_4_.getBlock().getExplosionResistance(this);
+     }
+ 
+-    public boolean func_174816_a(Explosion p_174816_1_, World worldIn, BlockPos p_174816_3_, IBlockState p_174816_4_, float p_174816_5_)
+-    {
++    public boolean func_174816_a(Explosion p_174816_1_, World worldIn, BlockPos p_174816_3_, IBlockState p_174816_4_, float p_174816_5_) {
+         return true;
+     }
+ 
+-    public int getMaxFallHeight()
+-    {
++    public int getMaxFallHeight() {
+         return 3;
+     }
+ 
+-    public int getTeleportDirection()
+-    {
++    public int getTeleportDirection() {
+         return this.teleportDirection;
+     }
+ 
+-    public boolean doesEntityNotTriggerPressurePlate()
+-    {
++    public boolean doesEntityNotTriggerPressurePlate() {
+         return false;
+     }
+ 
+-    public void addEntityCrashInfo(CrashReportCategory category)
+-    {
+-        category.addCrashSectionCallable("Entity Type", new Callable()
+-        {
++    public void addEntityCrashInfo(CrashReportCategory category) {
++        category.addCrashSectionCallable("Entity Type", new Callable() {
++
+             private static final String __OBFID = "CL_00001534";
+-            public String call()
+-            {
++
++            public String call() {
+                 return EntityList.getEntityString(Entity.this) + " (" + Entity.this.getClass().getCanonicalName() + ")";
+             }
+         });
+         category.addCrashSection("Entity ID", Integer.valueOf(this.entityId));
+-        category.addCrashSectionCallable("Entity Name", new Callable()
+-        {
++        category.addCrashSectionCallable("Entity Name", new Callable() {
++
+             private static final String __OBFID = "CL_00001535";
+-            public String call()
+-            {
++
++            public String call() {
+                 return Entity.this.getName();
+             }
+         });
+-        category.addCrashSection("Entity\'s Exact location", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.posX), Double.valueOf(this.posY), Double.valueOf(this.posZ)}));
+-        category.addCrashSection("Entity\'s Block location", CrashReportCategory.getCoordinateInfo((double)MathHelper.floor_double(this.posX), (double)MathHelper.floor_double(this.posY), (double)MathHelper.floor_double(this.posZ)));
+-        category.addCrashSection("Entity\'s Momentum", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.motionX), Double.valueOf(this.motionY), Double.valueOf(this.motionZ)}));
+-        category.addCrashSectionCallable("Entity\'s Rider", new Callable()
+-        {
++        category.addCrashSection("Entity\'s Exact location", String.format("%.2f, %.2f, %.2f", new Object[]{Double.valueOf(this.posX), Double.valueOf(this.posY), Double.valueOf(this.posZ)}));
++        category.addCrashSection("Entity\'s Block location", CrashReportCategory.getCoordinateInfo((double) MathHelper.floor_double(this.posX), (double) MathHelper.floor_double(this.posY), (double) MathHelper.floor_double(this.posZ)));
++        category.addCrashSection("Entity\'s Momentum", String.format("%.2f, %.2f, %.2f", new Object[]{Double.valueOf(this.motionX), Double.valueOf(this.motionY), Double.valueOf(this.motionZ)}));
++        category.addCrashSectionCallable("Entity\'s Rider", new Callable() {
++
+             private static final String __OBFID = "CL_00002259";
+-            public String call()
+-            {
++
++            public String call() {
+                 return Entity.this.riddenByEntity.toString();
+             }
+         });
+-        category.addCrashSectionCallable("Entity\'s Vehicle", new Callable()
+-        {
++        category.addCrashSectionCallable("Entity\'s Vehicle", new Callable() {
++
+             private static final String __OBFID = "CL_00002258";
+-            public String call()
+-            {
++
++            public String call() {
+                 return Entity.this.ridingEntity.toString();
+             }
+         });
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public boolean canRenderOnFire()
+-    {
+-        return this.isBurning();
+-    }
+-
+-    public UUID getUniqueID()
+-    {
++    public UUID getUniqueID() {
+         return this.entityUniqueID;
+     }
+ 
+-    public boolean isPushedByWater()
+-    {
++    public boolean isPushedByWater() {
+         return true;
+     }
+ 
+-    public IChatComponent getDisplayName()
+-    {
++    public IChatComponent getDisplayName() {
+         ChatComponentText chatcomponenttext = new ChatComponentText(this.getName());
+         chatcomponenttext.getChatStyle().setChatHoverEvent(this.func_174823_aP());
+         chatcomponenttext.getChatStyle().setInsertion(this.getUniqueID().toString());
+         return chatcomponenttext;
+     }
+ 
+-    public void setCustomNameTag(String p_96094_1_)
+-    {
++    public void setCustomNameTag(String p_96094_1_) {
+         this.dataWatcher.updateObject(2, p_96094_1_);
+     }
+ 
+-    public String getCustomNameTag()
+-    {
++    public String getCustomNameTag() {
+         return this.dataWatcher.getWatchableObjectString(2);
+     }
+ 
+-    public boolean hasCustomName()
+-    {
++    public boolean hasCustomName() {
+         return this.dataWatcher.getWatchableObjectString(2).length() > 0;
+     }
+ 
+-    public void setAlwaysRenderNameTag(boolean p_174805_1_)
+-    {
+-        this.dataWatcher.updateObject(3, Byte.valueOf((byte)(p_174805_1_ ? 1 : 0)));
++    public void setAlwaysRenderNameTag(boolean p_174805_1_) {
++        this.dataWatcher.updateObject(3, Byte.valueOf((byte) (p_174805_1_ ? 1 : 0)));
+     }
+ 
+-    public boolean getAlwaysRenderNameTag()
+-    {
++    public boolean getAlwaysRenderNameTag() {
+         return this.dataWatcher.getWatchableObjectByte(3) == 1;
+     }
+ 
+-    public void setPositionAndUpdate(double x, double y, double z)
+-    {
++    public void setPositionAndUpdate(double x, double y, double z) {
+         this.setLocationAndAngles(x, y, z, this.rotationYaw, this.rotationPitch);
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public boolean getAlwaysRenderNameTagForRender()
+-    {
+-        return this.getAlwaysRenderNameTag();
++    public void func_145781_i(int p_145781_1_) {
+     }
+ 
+-    public void func_145781_i(int p_145781_1_) {}
+-
+-    public EnumFacing getHorizontalFacing()
+-    {
+-        return EnumFacing.getHorizontal(MathHelper.floor_double((double)(this.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3);
++    public EnumFacing getHorizontalFacing() {
++        return EnumFacing.getHorizontal(MathHelper.floor_double((double) (this.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3);
+     }
+ 
+-    protected HoverEvent func_174823_aP()
+-    {
++    protected HoverEvent func_174823_aP() {
+         NBTTagCompound nbttagcompound = new NBTTagCompound();
+         String s = EntityList.getEntityString(this);
+         nbttagcompound.setString("id", this.getUniqueID().toString());
+ 
+-        if (s != null)
+-        {
++        if (s != null) {
+             nbttagcompound.setString("type", s);
+         }
+ 
+@@ -2248,114 +2248,109 @@
+         return new HoverEvent(HoverEvent.Action.SHOW_ENTITY, new ChatComponentText(nbttagcompound.toString()));
+     }
+ 
+-    public boolean func_174827_a(EntityPlayerMP p_174827_1_)
+-    {
++    public boolean func_174827_a(EntityPlayerMP p_174827_1_) {
+         return true;
+     }
+ 
+-    public AxisAlignedBB getEntityBoundingBox()
+-    {
++    public AxisAlignedBB getEntityBoundingBox() {
+         return this.boundingBox;
+     }
+ 
+-    public void setEntityBoundingBox(AxisAlignedBB p_174826_1_)
+-    {
+-        this.boundingBox = p_174826_1_;
++    public void setEntityBoundingBox(AxisAlignedBB axisalignedbb) { // SpigotMCP -- use craftbukkit name
++        // CraftBukkit start - block invalid bounding boxes
++        double a = axisalignedbb.minX,
++                b = axisalignedbb.minY,
++                c = axisalignedbb.minZ,
++                d = axisalignedbb.maxX,
++                e = axisalignedbb.maxY,
++                f = axisalignedbb.maxZ;
++        double len = axisalignedbb.maxX - axisalignedbb.minX;
++        if (len < 0) d = a;
++        if (len > 64) d = a + 64.0;
++
++        len = axisalignedbb.maxY - axisalignedbb.minY;
++        if (len < 0) e = b;
++        if (len > 64) e = b + 64.0;
++
++        len = axisalignedbb.maxZ - axisalignedbb.minZ;
++        if (len < 0) f = c;
++        if (len > 64) f = c + 64.0;
++        this.boundingBox = new AxisAlignedBB(a, b, c, d, e, f);
++        // CraftBukkit end
+     }
+ 
+-    public float getEyeHeight()
+-    {
++    public float getEyeHeight() {
+         return this.height * 0.85F;
+     }
+ 
+-    public boolean isOutsideBorder()
+-    {
++    public boolean isOutsideBorder() {
+         return this.isOutsideBorder;
+     }
+ 
+-    public void setOutsideBorder(boolean p_174821_1_)
+-    {
++    public void setOutsideBorder(boolean p_174821_1_) {
+         this.isOutsideBorder = p_174821_1_;
+     }
+ 
+-    public boolean replaceItemInInventory(int p_174820_1_, ItemStack p_174820_2_)
+-    {
++    public boolean replaceItemInInventory(int p_174820_1_, ItemStack p_174820_2_) {
+         return false;
+     }
+ 
+-    public void addChatMessage(IChatComponent message) {}
++    public void addChatMessage(IChatComponent message) {
++    }
+ 
+-    public boolean canUseCommand(int permLevel, String commandName)
+-    {
++    public boolean canUseCommand(int permLevel, String commandName) {
+         return true;
+     }
+ 
+-    public BlockPos getPosition()
+-    {
++    public BlockPos getPosition() {
+         return new BlockPos(this.posX, this.posY + 0.5D, this.posZ);
+     }
+ 
+-    public Vec3 getPositionVector()
+-    {
++    public Vec3 getPositionVector() {
+         return new Vec3(this.posX, this.posY, this.posZ);
+     }
+ 
+-    public World getEntityWorld()
+-    {
++    public World getEntityWorld() {
+         return this.worldObj;
+     }
+ 
+-    public Entity getCommandSenderEntity()
+-    {
++    public Entity getCommandSenderEntity() {
+         return this;
+     }
+ 
+-    public boolean sendCommandFeedback()
+-    {
++    public boolean sendCommandFeedback() {
+         return false;
+     }
+ 
+-    public void setCommandStat(CommandResultStats.Type type, int amount)
+-    {
++    public void setCommandStat(CommandResultStats.Type type, int amount) {
+         this.cmdResultStats.func_179672_a(this, type, amount);
+     }
+ 
+-    public CommandResultStats func_174807_aT()
+-    {
++    public CommandResultStats func_174807_aT() {
+         return this.cmdResultStats;
+     }
+ 
+-    public void func_174817_o(Entity p_174817_1_)
+-    {
++    public void func_174817_o(Entity p_174817_1_) {
+         this.cmdResultStats.func_179671_a(p_174817_1_.func_174807_aT());
+     }
+ 
+-    public NBTTagCompound func_174819_aU()
+-    {
++    public NBTTagCompound func_174819_aU() {
+         return null;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public void func_174834_g(NBTTagCompound p_174834_1_) {}
+-
+-    public boolean func_174825_a(EntityPlayer p_174825_1_, Vec3 p_174825_2_)
+-    {
++    public boolean func_174825_a(EntityPlayer p_174825_1_, Vec3 p_174825_2_) {
+         return false;
+     }
+ 
+-    public boolean func_180427_aV()
+-    {
++    public boolean func_180427_aV() {
+         return false;
+     }
+ 
+-    protected void func_174815_a(EntityLivingBase p_174815_1_, Entity p_174815_2_)
+-    {
+-        if (p_174815_2_ instanceof EntityLivingBase)
+-        {
+-            EnchantmentHelper.func_151384_a((EntityLivingBase)p_174815_2_, p_174815_1_);
++    protected void func_174815_a(EntityLivingBase p_174815_1_, Entity p_174815_2_) {
++        if (p_174815_2_ instanceof EntityLivingBase) {
++            EnchantmentHelper.func_151384_a((EntityLivingBase) p_174815_2_, p_174815_1_);
+         }
+ 
+         EnchantmentHelper.func_151385_b(p_174815_1_, p_174815_2_);
+     }
+-}
++}

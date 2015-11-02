@@ -1,0 +1,69 @@
+---a/net/minecraft/entity/ai/EntityAIDefendVillage.java
++++b/net/minecraft/entity/ai/EntityAIDefendVillage.java
+@@ -4,54 +4,42 @@
+ import net.minecraft.entity.monster.EntityIronGolem;
+ import net.minecraft.village.Village;
+ 
+-public class EntityAIDefendVillage extends EntityAITarget
+-{
++public class EntityAIDefendVillage extends EntityAITarget {
++
+     EntityIronGolem irongolem;
+     EntityLivingBase villageAgressorTarget;
+     private static final String __OBFID = "CL_00001618";
+ 
+-    public EntityAIDefendVillage(EntityIronGolem p_i1659_1_)
+-    {
++    public EntityAIDefendVillage(EntityIronGolem p_i1659_1_) {
+         super(p_i1659_1_, false, true);
+         this.irongolem = p_i1659_1_;
+         this.setMutexBits(1);
+     }
+ 
+-    public boolean shouldExecute()
+-    {
++    public boolean shouldExecute() {
+         Village village = this.irongolem.getVillage();
+ 
+-        if (village == null)
+-        {
++        if (village == null) {
+             return false;
+-        }
+-        else
+-        {
++        } else {
+             this.villageAgressorTarget = village.findNearestVillageAggressor(this.irongolem);
+ 
+-            if (!this.isSuitableTarget(this.villageAgressorTarget, false))
+-            {
+-                if (this.taskOwner.getRNG().nextInt(20) == 0)
+-                {
++            if (!this.isSuitableTarget(this.villageAgressorTarget, false)) {
++                if (this.taskOwner.getRNG().nextInt(20) == 0) {
+                     this.villageAgressorTarget = village.getNearestTargetPlayer(this.irongolem);
+                     return this.isSuitableTarget(this.villageAgressorTarget, false);
+-                }
+-                else
+-                {
++                } else {
+                     return false;
+                 }
+-            }
+-            else
+-            {
++            } else {
+                 return true;
+             }
+         }
+     }
+ 
+-    public void startExecuting()
+-    {
+-        this.irongolem.setAttackTarget(this.villageAgressorTarget);
++    public void startExecuting() {
++        this.irongolem.setGoalTarget(this.villageAgressorTarget, org.bukkit.event.entity.EntityTargetEvent.TargetReason.DEFEND_VILLAGE, true); // CraftBukkit - reason
+         super.startExecuting();
+     }
+-}
++}

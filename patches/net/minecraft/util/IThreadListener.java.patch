@@ -1,0 +1,15 @@
+---a/net/minecraft/util/IThreadListener.java
++++b/net/minecraft/util/IThreadListener.java
+@@ -2,10 +2,10 @@
+ 
+ import com.google.common.util.concurrent.ListenableFuture;
+ 
+-public interface IThreadListener
+-{
++public interface IThreadListener {
++
+     ListenableFuture addScheduledTask(Runnable runnableToSchedule);
+ 
+     boolean isCallingFromMinecraftThread();
+-}
++}

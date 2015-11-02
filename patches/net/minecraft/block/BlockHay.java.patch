@@ -1,0 +1,81 @@
+---a/net/minecraft/block/BlockHay.java
++++b/net/minecraft/block/BlockHay.java
+@@ -12,64 +12,52 @@
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.world.World;
+ 
+-public class BlockHay extends BlockRotatedPillar
+-{
++public class BlockHay extends BlockRotatedPillar {
++
+     private static final String __OBFID = "CL_00000256";
+ 
+-    public BlockHay()
+-    {
++    public BlockHay() {
+         super(Material.grass);
+         this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, EnumFacing.Axis.Y));
+         this.setCreativeTab(CreativeTabs.tabBlock);
+     }
+ 
+-    public IBlockState getStateFromMeta(int meta)
+-    {
++    public IBlockState getStateFromMeta(int meta) {
+         EnumFacing.Axis axis = EnumFacing.Axis.Y;
+         int j = meta & 12;
+ 
+-        if (j == 4)
+-        {
++        if (j == 4) {
+             axis = EnumFacing.Axis.X;
+-        }
+-        else if (j == 8)
+-        {
++        } else if (j == 8) {
+             axis = EnumFacing.Axis.Z;
+         }
+ 
+         return this.getDefaultState().withProperty(AXIS, axis);
+     }
+ 
+-    public int getMetaFromState(IBlockState state)
+-    {
++    public int getMetaFromState(IBlockState state) {
+         int i = 0;
+-        EnumFacing.Axis axis = (EnumFacing.Axis)state.getValue(AXIS);
++        EnumFacing.Axis axis = (EnumFacing.Axis) state.getValue(AXIS);
+ 
+-        if (axis == EnumFacing.Axis.X)
+-        {
++        if (axis == EnumFacing.Axis.X) {
+             i |= 4;
+-        }
+-        else if (axis == EnumFacing.Axis.Z)
+-        {
++        } else if (axis == EnumFacing.Axis.Z) {
+             i |= 8;
+         }
+ 
+         return i;
+     }
+ 
+-    protected BlockState createBlockState()
+-    {
+-        return new BlockState(this, new IProperty[] {AXIS});
++    protected BlockState createBlockState() {
++        return new BlockState(this, new IProperty[]{AXIS});
+     }
+ 
+-    protected ItemStack createStackedBlock(IBlockState state)
+-    {
++    protected ItemStack createStackedBlock(IBlockState state) {
+         return new ItemStack(Item.getItemFromBlock(this), 1, 0);
+     }
+ 
+-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+-    {
++    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+         return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(AXIS, facing.getAxis());
+     }
+-}
++}

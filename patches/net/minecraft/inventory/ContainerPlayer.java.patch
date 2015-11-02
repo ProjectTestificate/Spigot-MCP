@@ -1,0 +1,275 @@
+---a/net/minecraft/inventory/ContainerPlayer.java
++++b/net/minecraft/inventory/ContainerPlayer.java
+@@ -1,6 +1,7 @@
+ package net.minecraft.inventory;
+ 
+ import net.minecraft.entity.player.EntityPlayer;
++import net.minecraft.entity.player.EntityPlayerMP;
+ import net.minecraft.entity.player.InventoryPlayer;
+ import net.minecraft.init.Blocks;
+ import net.minecraft.init.Items;
+@@ -8,170 +8,151 @@
+ import net.minecraft.item.ItemArmor;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.item.crafting.CraftingManager;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
++import net.minecraft.network.play.server.S2FPacketSetSlot;
+ 
+-public class ContainerPlayer extends Container
+-{
++import org.bukkit.craftbukkit.inventory.CraftInventoryCrafting;
++import org.bukkit.craftbukkit.inventory.CraftInventoryView;
++
++public class ContainerPlayer extends Container {
++
+     public InventoryCrafting craftMatrix = new InventoryCrafting(this, 2, 2);
+     public IInventory craftResult = new InventoryCraftResult();
+     public boolean isLocalWorld;
+     private final EntityPlayer thePlayer;
+     private static final String __OBFID = "CL_00001754";
+ 
+-    public ContainerPlayer(final InventoryPlayer playerInventory, boolean localWorld, EntityPlayer player)
+-    {
++    // CraftBukkit start
++    private CraftInventoryView bukkitEntity = null;
++    private InventoryPlayer player;
++    // CraftBukkit end
++
++    public ContainerPlayer(final InventoryPlayer playerInventory, boolean localWorld, EntityPlayer player) {
+         this.isLocalWorld = localWorld;
+         this.thePlayer = player;
++        this.craftResult = new InventoryCraftResult(); // CraftBukkit - moved to before InventoryCrafting construction
++        this.craftMatrix = new InventoryCrafting(this, 2, 2, playerInventory.player); // CraftBukkit - pass player
++        this.craftMatrix.resultInventory = this.craftResult; // CraftBukkit - let InventoryCrafting know about its result slot
++        this.player = playerInventory; // CraftBukkit - save player
+         this.addSlotToContainer(new SlotCrafting(playerInventory.player, this.craftMatrix, this.craftResult, 0, 144, 36));
+         int i;
+         int j;
+ 
+-        for (i = 0; i < 2; ++i)
+-        {
+-            for (j = 0; j < 2; ++j)
+-            {
++        for (i = 0; i < 2; ++i) {
++            for (j = 0; j < 2; ++j) {
+                 this.addSlotToContainer(new Slot(this.craftMatrix, j + i * 2, 88 + j * 18, 26 + i * 18));
+             }
+         }
+ 
+-        for (i = 0; i < 4; ++i)
+-        {
++        for (i = 0; i < 4; ++i) {
+             final int k = i;
+-            this.addSlotToContainer(new Slot(playerInventory, playerInventory.getSizeInventory() - 1 - i, 8, 8 + i * 18)
+-            {
++            this.addSlotToContainer(new Slot(playerInventory, playerInventory.getSizeInventory() - 1 - i, 8, 8 + i * 18) {
++
+                 private static final String __OBFID = "CL_00001755";
+-                public int getSlotStackLimit()
+-                {
++
++                public int getSlotStackLimit() {
+                     return 1;
+                 }
+-                public boolean isItemValid(ItemStack stack)
+-                {
+-                    return stack == null ? false : (stack.getItem() instanceof ItemArmor ? ((ItemArmor)stack.getItem()).armorType == k : (stack.getItem() != Item.getItemFromBlock(Blocks.pumpkin) && stack.getItem() != Items.skull ? false : k == 0));
++
++                public boolean isItemValid(ItemStack stack) {
++                    return stack == null ? false : (stack.getItem() instanceof ItemArmor ? ((ItemArmor) stack.getItem()).armorType == k : (stack.getItem() != Item.getItemFromBlock(Blocks.pumpkin) && stack.getItem() != Items.skull ? false : k == 0));
+                 }
+-                @SideOnly(Side.CLIENT)
+-                public String getSlotTexture()
+-                {
+-                    return ItemArmor.EMPTY_SLOT_NAMES[k];
+-                }
++
+             });
+         }
+ 
+-        for (i = 0; i < 3; ++i)
+-        {
+-            for (j = 0; j < 9; ++j)
+-            {
++        for (i = 0; i < 3; ++i) {
++            for (j = 0; j < 9; ++j) {
+                 this.addSlotToContainer(new Slot(playerInventory, j + (i + 1) * 9, 8 + j * 18, 84 + i * 18));
+             }
+         }
+ 
+-        for (i = 0; i < 9; ++i)
+-        {
++        for (i = 0; i < 9; ++i) {
+             this.addSlotToContainer(new Slot(playerInventory, i, 8 + i * 18, 142));
+         }
+ 
+-        this.onCraftMatrixChanged(this.craftMatrix);
++        // this.onCraftMatrixChanged(this.craftMatrix); // CraftBukkit - unneeded since it just sets result slot to empty
+     }
+ 
+-    public void onCraftMatrixChanged(IInventory inventoryIn)
+-    {
+-        this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.thePlayer.worldObj));
++    public void onCraftMatrixChanged(IInventory inventoryIn) {
++        // this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.thePlayer.worldObj));
++        // CraftBukkit start (Note: the following line would cause an error if called during construction)
++        CraftingManager.getInstance().lastCraftView = getBukkitView();
++        ItemStack craftResult = CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.thePlayer.worldObj);
++        this.craftResult.setInventorySlotContents(0, craftResult);
++        if (super.crafters.size() < 1) {
++            return;
++        }
++
++        EntityPlayerMP player = (EntityPlayerMP) super.crafters.get(0); // TODO: Is this _always_ correct? Seems like it.
++        player.playerNetServerHandler.sendPacket(new S2FPacketSetSlot(player.openContainer.windowId, 0, craftResult));
++        // CraftBukkit end
+     }
+ 
+-    public void onContainerClosed(EntityPlayer playerIn)
+-    {
++    public void onContainerClosed(EntityPlayer playerIn) {
+         super.onContainerClosed(playerIn);
+ 
+-        for (int i = 0; i < 4; ++i)
+-        {
++        for (int i = 0; i < 4; ++i) {
+             ItemStack itemstack = this.craftMatrix.getStackInSlotOnClosing(i);
+ 
+-            if (itemstack != null)
+-            {
++            if (itemstack != null) {
+                 playerIn.dropPlayerItemWithRandomChoice(itemstack, false);
+             }
+         }
+ 
+-        this.craftResult.setInventorySlotContents(0, (ItemStack)null);
++        this.craftResult.setInventorySlotContents(0, (ItemStack) null);
+     }
+ 
+-    public boolean canInteractWith(EntityPlayer playerIn)
+-    {
++    public boolean canInteractWith(EntityPlayer playerIn) {
+         return true;
+     }
+ 
+-    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
+-    {
++    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+         ItemStack itemstack = null;
+-        Slot slot = (Slot)this.inventorySlots.get(index);
++        Slot slot = (Slot) this.inventorySlots.get(index);
+ 
+-        if (slot != null && slot.getHasStack())
+-        {
++        if (slot != null && slot.getHasStack()) {
+             ItemStack itemstack1 = slot.getStack();
+             itemstack = itemstack1.copy();
+ 
+-            if (index == 0)
+-            {
+-                if (!this.mergeItemStack(itemstack1, 9, 45, true))
+-                {
++            if (index == 0) {
++                if (!this.mergeItemStack(itemstack1, 9, 45, true)) {
+                     return null;
+                 }
+ 
+                 slot.onSlotChange(itemstack1, itemstack);
+-            }
+-            else if (index >= 1 && index < 5)
+-            {
+-                if (!this.mergeItemStack(itemstack1, 9, 45, false))
+-                {
++            } else if (index >= 1 && index < 5) {
++                if (!this.mergeItemStack(itemstack1, 9, 45, false)) {
+                     return null;
+                 }
+-            }
+-            else if (index >= 5 && index < 9)
+-            {
+-                if (!this.mergeItemStack(itemstack1, 9, 45, false))
+-                {
++            } else if (index >= 5 && index < 9) {
++                if (!this.mergeItemStack(itemstack1, 9, 45, false)) {
+                     return null;
+                 }
+-            }
+-            else if (itemstack.getItem() instanceof ItemArmor && !((Slot)this.inventorySlots.get(5 + ((ItemArmor)itemstack.getItem()).armorType)).getHasStack())
+-            {
+-                int j = 5 + ((ItemArmor)itemstack.getItem()).armorType;
++            } else if (itemstack.getItem() instanceof ItemArmor && !((Slot) this.inventorySlots.get(5 + ((ItemArmor) itemstack.getItem()).armorType)).getHasStack()) {
++                int j = 5 + ((ItemArmor) itemstack.getItem()).armorType;
+ 
+-                if (!this.mergeItemStack(itemstack1, j, j + 1, false))
+-                {
++                if (!this.mergeItemStack(itemstack1, j, j + 1, false)) {
+                     return null;
+                 }
+-            }
+-            else if (index >= 9 && index < 36)
+-            {
+-                if (!this.mergeItemStack(itemstack1, 36, 45, false))
+-                {
++            } else if (index >= 9 && index < 36) {
++                if (!this.mergeItemStack(itemstack1, 36, 45, false)) {
+                     return null;
+                 }
+-            }
+-            else if (index >= 36 && index < 45)
+-            {
+-                if (!this.mergeItemStack(itemstack1, 9, 36, false))
+-                {
++            } else if (index >= 36 && index < 45) {
++                if (!this.mergeItemStack(itemstack1, 9, 36, false)) {
+                     return null;
+                 }
+-            }
+-            else if (!this.mergeItemStack(itemstack1, 9, 45, false))
+-            {
++            } else if (!this.mergeItemStack(itemstack1, 9, 45, false)) {
+                 return null;
+             }
+ 
+-            if (itemstack1.stackSize == 0)
+-            {
+-                slot.putStack((ItemStack)null);
+-            }
+-            else
+-            {
++            if (itemstack1.stackSize == 0) {
++                slot.putStack((ItemStack) null);
++            } else {
+                 slot.onSlotChanged();
+             }
+ 
+-            if (itemstack1.stackSize == itemstack.stackSize)
+-            {
++            if (itemstack1.stackSize == itemstack.stackSize) {
+                 return null;
+             }
+ 
+@@ -181,9 +181,7 @@
+         return itemstack;
+     }
+ 
+-    public boolean canMergeSlot(ItemStack p_94530_1_, Slot p_94530_2_)
+-    {
++    public boolean canMergeSlot(ItemStack p_94530_1_, Slot p_94530_2_) {
+         return p_94530_2_.inventory != this.craftResult && super.canMergeSlot(p_94530_1_, p_94530_2_);
+     }
+-}
++
++    // CraftBukkit start
++    @Override
++    public CraftInventoryView getBukkitView() {
++        if (bukkitEntity != null) {
++            return bukkitEntity;
++        }
++
++        CraftInventoryCrafting inventory = new CraftInventoryCrafting(this.craftMatrix, this.craftResult);
++        bukkitEntity = new CraftInventoryView(this.player.player.getBukkitEntity(), inventory, this);
++        return bukkitEntity;
++    }
++    // CraftBukkit end
++}

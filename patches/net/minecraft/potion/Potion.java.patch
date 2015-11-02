@@ -1,0 +1,390 @@
+---a/net/minecraft/potion/Potion.java
++++b/net/minecraft/potion/Potion.java
+@@ -1,11 +1,8 @@
+ package net.minecraft.potion;
+ 
+-import com.google.common.collect.Maps;
+ import java.util.Iterator;
+ import java.util.Map;
+-import java.util.UUID;
+ import java.util.Map.Entry;
++import java.util.UUID;
++
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.EntityLivingBase;
+ import net.minecraft.entity.SharedMonsterAttributes;
+@@ -13,12 +13,13 @@
+ import net.minecraft.entity.ai.attributes.IAttribute;
+ import net.minecraft.entity.ai.attributes.IAttributeInstance;
+ import net.minecraft.entity.player.EntityPlayer;
++import net.minecraft.entity.player.EntityPlayerMP;
++import net.minecraft.network.play.server.S06PacketUpdateHealth;
+ import net.minecraft.util.DamageSource;
+ import net.minecraft.util.ResourceLocation;
+-import net.minecraft.util.StringUtils;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public class Potion
+-{
++import org.bukkit.craftbukkit.event.CraftEventFactory;
++import org.bukkit.craftbukkit.potion.CraftPotionEffectType;
++import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
++import org.bukkit.potion.PotionEffectType;
++
++import com.google.common.collect.Maps;
++
++public class Potion {
++
+     public static final Potion[] potionTypes = new Potion[32];
+     private static final Map field_180150_I = Maps.newHashMap();
+     public static final Potion field_180151_b = null;
+@@ -65,270 +65,185 @@
+     private boolean usable;
+     private static final String __OBFID = "CL_00001528";
+ 
+-    protected Potion(int potionID, ResourceLocation location, boolean badEffect, int potionColor)
+-    {
++    protected Potion(int potionID, ResourceLocation location, boolean badEffect, int potionColor) {
+         this.id = potionID;
+         potionTypes[potionID] = this;
+         field_180150_I.put(location, this);
+         this.isBadEffect = badEffect;
+ 
+-        if (badEffect)
+-        {
++        if (badEffect) {
+             this.effectiveness = 0.5D;
+-        }
+-        else
+-        {
++        } else {
+             this.effectiveness = 1.0D;
+         }
+ 
+         this.liquidColor = potionColor;
++        PotionEffectType.registerPotionEffectType(new CraftPotionEffectType(this)); // CraftBukkit
+     }
+ 
+-    public static Potion getPotionFromResourceLocation(String p_180142_0_)
+-    {
+-        return (Potion)field_180150_I.get(new ResourceLocation(p_180142_0_));
++    public static Potion getPotionFromResourceLocation(String p_180142_0_) {
++        return (Potion) field_180150_I.get(new ResourceLocation(p_180142_0_));
+     }
+ 
+-    public static String[] getPotionMapAsArray()
+-    {
++    public static String[] getPotionMapAsArray() {
+         String[] astring = new String[field_180150_I.size()];
+         int i = 0;
+         ResourceLocation resourcelocation;
+ 
+-        for (Iterator iterator = field_180150_I.keySet().iterator(); iterator.hasNext(); astring[i++] = resourcelocation.toString())
+-        {
+-            resourcelocation = (ResourceLocation)iterator.next();
++        for (Iterator iterator = field_180150_I.keySet().iterator(); iterator.hasNext(); astring[i++] = resourcelocation.toString()) {
++            resourcelocation = (ResourceLocation) iterator.next();
+         }
+ 
+         return astring;
+     }
+ 
+-    protected Potion setIconIndex(int p_76399_1_, int p_76399_2_)
+-    {
++    protected Potion setIconIndex(int p_76399_1_, int p_76399_2_) {
+         this.statusIconIndex = p_76399_1_ + p_76399_2_ * 8;
+         return this;
+     }
+ 
+-    public int getId()
+-    {
++    public int getId() {
+         return this.id;
+     }
+ 
+-    public void performEffect(EntityLivingBase p_76394_1_, int p_76394_2_)
+-    {
+-        if (this.id == regeneration.id)
+-        {
+-            if (p_76394_1_.getHealth() < p_76394_1_.getMaxHealth())
+-            {
+-                p_76394_1_.heal(1.0F);
++    public void performEffect(EntityLivingBase p_76394_1_, int p_76394_2_) {
++        if (this.id == regeneration.id) {
++            if (p_76394_1_.getHealth() < p_76394_1_.getMaxHealth()) {
++                p_76394_1_.heal(1.0F, RegainReason.MAGIC_REGEN); // CraftBukkit
+             }
+-        }
+-        else if (this.id == poison.id)
+-        {
+-            if (p_76394_1_.getHealth() > 1.0F)
+-            {
+-                p_76394_1_.attackEntityFrom(DamageSource.magic, 1.0F);
++        } else if (this.id == poison.id) {
++            if (p_76394_1_.getHealth() > 1.0F) {
++                p_76394_1_.attackEntityFrom(CraftEventFactory.POISON, 1.0F);  // CraftBukkit - DamageSource.MAGIC -> CraftEventFactory.POISON
+             }
+-        }
+-        else if (this.id == wither.id)
+-        {
++        } else if (this.id == wither.id) {
+             p_76394_1_.attackEntityFrom(DamageSource.wither, 1.0F);
+-        }
+-        else if (this.id == hunger.id && p_76394_1_ instanceof EntityPlayer)
+-        {
+-            ((EntityPlayer)p_76394_1_).addExhaustion(0.025F * (float)(p_76394_2_ + 1));
+-        }
+-        else if (this.id == saturation.id && p_76394_1_ instanceof EntityPlayer)
+-        {
+-            if (!p_76394_1_.worldObj.isRemote)
+-            {
+-                ((EntityPlayer)p_76394_1_).getFoodStats().addStats(p_76394_2_ + 1, 1.0F);
++        } else if (this.id == hunger.id && p_76394_1_ instanceof EntityPlayer) {
++            ((EntityPlayer) p_76394_1_).addExhaustion(0.025F * (float) (p_76394_2_ + 1));
++        } else if (this.id == saturation.id && p_76394_1_ instanceof EntityPlayer) {
++            if (!p_76394_1_.worldObj.isRemote) {
++                // CraftBukkit start
++                EntityPlayer entityhuman = (EntityPlayer) p_76394_1_;
++                int oldFoodLevel = entityhuman.getFoodStats().foodLevel;
++
++                org.bukkit.event.entity.FoodLevelChangeEvent event = CraftEventFactory.callFoodLevelChangeEvent(entityhuman, p_76394_2_ + 1 + oldFoodLevel);
++
++                if (!event.isCancelled()) {
++                    entityhuman.getFoodStats().addStats(event.getFoodLevel() - oldFoodLevel, 1.0F);
++                }
++
++                ((EntityPlayerMP) entityhuman).playerNetServerHandler.sendPacket(new S06PacketUpdateHealth(((EntityPlayerMP) entityhuman).getBukkitEntity().getScaledHealth(), entityhuman.getFoodStats().foodLevel, entityhuman.getFoodStats().foodSaturationLevel));
++                // CraftBukkit end
+             }
+-        }
+-        else if ((this.id != heal.id || p_76394_1_.isEntityUndead()) && (this.id != harm.id || !p_76394_1_.isEntityUndead()))
+-        {
+-            if (this.id == harm.id && !p_76394_1_.isEntityUndead() || this.id == heal.id && p_76394_1_.isEntityUndead())
+-            {
+-                p_76394_1_.attackEntityFrom(DamageSource.magic, (float)(6 << p_76394_2_));
++        } else if ((this.id != heal.id || p_76394_1_.isEntityUndead()) && (this.id != harm.id || !p_76394_1_.isEntityUndead())) {
++            if (this.id == harm.id && !p_76394_1_.isEntityUndead() || this.id == heal.id && p_76394_1_.isEntityUndead()) {
++                p_76394_1_.attackEntityFrom(DamageSource.magic, (float) (6 << p_76394_2_));
+             }
++        } else {
++            p_76394_1_.heal((float) Math.max(4 << p_76394_2_, 0), RegainReason.MAGIC); // CraftBukkit
+         }
+-        else
+-        {
+-            p_76394_1_.heal((float)Math.max(4 << p_76394_2_, 0));
+-        }
+     }
+ 
+-    public void affectEntity(Entity p_180793_1_, Entity p_180793_2_, EntityLivingBase p_180793_3_, int p_180793_4_, double p_180793_5_)
+-    {
++    public void affectEntity(Entity p_180793_1_, Entity p_180793_2_, EntityLivingBase p_180793_3_, int p_180793_4_, double p_180793_5_) {
+         int j;
+ 
+-        if ((this.id != heal.id || p_180793_3_.isEntityUndead()) && (this.id != harm.id || !p_180793_3_.isEntityUndead()))
+-        {
+-            if (this.id == harm.id && !p_180793_3_.isEntityUndead() || this.id == heal.id && p_180793_3_.isEntityUndead())
+-            {
+-                j = (int)(p_180793_5_ * (double)(6 << p_180793_4_) + 0.5D);
++        if ((this.id != heal.id || p_180793_3_.isEntityUndead()) && (this.id != harm.id || !p_180793_3_.isEntityUndead())) {
++            if (this.id == harm.id && !p_180793_3_.isEntityUndead() || this.id == heal.id && p_180793_3_.isEntityUndead()) {
++                j = (int) (p_180793_5_ * (double) (6 << p_180793_4_) + 0.5D);
+ 
+-                if (p_180793_1_ == null)
+-                {
+-                    p_180793_3_.attackEntityFrom(DamageSource.magic, (float)j);
++                if (p_180793_1_ == null) {
++                    p_180793_3_.attackEntityFrom(DamageSource.magic, (float) j);
++                } else {
++                    p_180793_3_.attackEntityFrom(DamageSource.causeIndirectMagicDamage(p_180793_1_, p_180793_2_), (float) j);
+                 }
+-                else
+-                {
+-                    p_180793_3_.attackEntityFrom(DamageSource.causeIndirectMagicDamage(p_180793_1_, p_180793_2_), (float)j);
+-                }
+             }
++        } else {
++            j = (int) (p_180793_5_ * (double) (4 << p_180793_4_) + 0.5D);
++            p_180793_3_.heal((float) j, RegainReason.MAGIC); // CraftBukkit
+         }
+-        else
+-        {
+-            j = (int)(p_180793_5_ * (double)(4 << p_180793_4_) + 0.5D);
+-            p_180793_3_.heal((float)j);
+-        }
+     }
+ 
+-    public boolean isInstant()
+-    {
++    public boolean isInstant() {
+         return false;
+     }
+ 
+-    public boolean isReady(int p_76397_1_, int p_76397_2_)
+-    {
++    public boolean isReady(int p_76397_1_, int p_76397_2_) {
+         int k;
+ 
+-        if (this.id == regeneration.id)
+-        {
++        if (this.id == regeneration.id) {
+             k = 50 >> p_76397_2_;
+             return k > 0 ? p_76397_1_ % k == 0 : true;
+-        }
+-        else if (this.id == poison.id)
+-        {
++        } else if (this.id == poison.id) {
+             k = 25 >> p_76397_2_;
+             return k > 0 ? p_76397_1_ % k == 0 : true;
+-        }
+-        else if (this.id == wither.id)
+-        {
++        } else if (this.id == wither.id) {
+             k = 40 >> p_76397_2_;
+             return k > 0 ? p_76397_1_ % k == 0 : true;
+-        }
+-        else
+-        {
++        } else {
+             return this.id == hunger.id;
+         }
+     }
+ 
+-    public Potion setPotionName(String p_76390_1_)
+-    {
++    public Potion setPotionName(String p_76390_1_) {
+         this.name = p_76390_1_;
+         return this;
+     }
+ 
+-    public String getName()
+-    {
++    public String getName() {
+         return this.name;
+     }
+ 
+-    protected Potion setEffectiveness(double p_76404_1_)
+-    {
++    protected Potion setEffectiveness(double p_76404_1_) {
+         this.effectiveness = p_76404_1_;
+         return this;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public boolean hasStatusIcon()
+-    {
+-        return this.statusIconIndex >= 0;
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public int getStatusIconIndex()
+-    {
+-        return this.statusIconIndex;
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public boolean isBadEffect()
+-    {
+-        return this.isBadEffect;
+-    }
+-
+-    @SideOnly(Side.CLIENT)
+-    public static String getDurationString(PotionEffect p_76389_0_)
+-    {
+-        if (p_76389_0_.getIsPotionDurationMax())
+-        {
+-            return "**:**";
+-        }
+-        else
+-        {
+-            int i = p_76389_0_.getDuration();
+-            return StringUtils.ticksToElapsedTime(i);
+-        }
+-    }
+-
+-    public double getEffectiveness()
+-    {
++    public double getEffectiveness() {
+         return this.effectiveness;
+     }
+ 
+-    public boolean isUsable()
+-    {
++    public boolean isUsable() {
+         return this.usable;
+     }
+ 
+-    public int getLiquidColor()
+-    {
++    public int getLiquidColor() {
+         return this.liquidColor;
+     }
+ 
+-    public Potion registerPotionAttributeModifier(IAttribute p_111184_1_, String p_111184_2_, double p_111184_3_, int p_111184_5_)
+-    {
++    public Potion registerPotionAttributeModifier(IAttribute p_111184_1_, String p_111184_2_, double p_111184_3_, int p_111184_5_) {
+         AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(p_111184_2_), this.getName(), p_111184_3_, p_111184_5_);
+         this.attributeModifierMap.put(p_111184_1_, attributemodifier);
+         return this;
+     }
+ 
+-    public void removeAttributesModifiersFromEntity(EntityLivingBase p_111187_1_, BaseAttributeMap p_111187_2_, int p_111187_3_)
+-    {
++    public void removeAttributesModifiersFromEntity(EntityLivingBase p_111187_1_, BaseAttributeMap p_111187_2_, int p_111187_3_) {
+         Iterator iterator = this.attributeModifierMap.entrySet().iterator();
+ 
+-        while (iterator.hasNext())
+-        {
+-            Entry entry = (Entry)iterator.next();
+-            IAttributeInstance iattributeinstance = p_111187_2_.getAttributeInstance((IAttribute)entry.getKey());
++        while (iterator.hasNext()) {
++            Entry entry = (Entry) iterator.next();
++            IAttributeInstance iattributeinstance = p_111187_2_.getAttributeInstance((IAttribute) entry.getKey());
+ 
+-            if (iattributeinstance != null)
+-            {
+-                iattributeinstance.removeModifier((AttributeModifier)entry.getValue());
++            if (iattributeinstance != null) {
++                iattributeinstance.removeModifier((AttributeModifier) entry.getValue());
+             }
+         }
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public Map getAttributeModifierMap()
+-    {
+-        return this.attributeModifierMap;
+-    }
+-
+-    public void applyAttributesModifiersToEntity(EntityLivingBase p_111185_1_, BaseAttributeMap p_111185_2_, int p_111185_3_)
+-    {
++    public void applyAttributesModifiersToEntity(EntityLivingBase p_111185_1_, BaseAttributeMap p_111185_2_, int p_111185_3_) {
+         Iterator iterator = this.attributeModifierMap.entrySet().iterator();
+ 
+-        while (iterator.hasNext())
+-        {
+-            Entry entry = (Entry)iterator.next();
+-            IAttributeInstance iattributeinstance = p_111185_2_.getAttributeInstance((IAttribute)entry.getKey());
++        while (iterator.hasNext()) {
++            Entry entry = (Entry) iterator.next();
++            IAttributeInstance iattributeinstance = p_111185_2_.getAttributeInstance((IAttribute) entry.getKey());
+ 
+-            if (iattributeinstance != null)
+-            {
+-                AttributeModifier attributemodifier = (AttributeModifier)entry.getValue();
++            if (iattributeinstance != null) {
++                AttributeModifier attributemodifier = (AttributeModifier) entry.getValue();
+                 iattributeinstance.removeModifier(attributemodifier);
+                 iattributeinstance.applyModifier(new AttributeModifier(attributemodifier.getID(), this.getName() + " " + p_111185_3_, this.getAttributeModifierAmount(p_111185_3_, attributemodifier), attributemodifier.getOperation()));
+             }
+         }
+     }
+ 
+-    public double getAttributeModifierAmount(int p_111183_1_, AttributeModifier p_111183_2_)
+-    {
+-        return p_111183_2_.getAmount() * (double)(p_111183_1_ + 1);
++    public double getAttributeModifierAmount(int p_111183_1_, AttributeModifier p_111183_2_) {
++        return p_111183_2_.getAmount() * (double) (p_111183_1_ + 1);
+     }
+-}
++}

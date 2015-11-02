@@ -1,0 +1,13 @@
+---a/net/minecraft/command/IAdminCommand.java
++++b/net/minecraft/command/IAdminCommand.java
+@@ -1,6 +1,6 @@
+ package net.minecraft.command;
+ 
+-public interface IAdminCommand
+-{
+-    void notifyOperators(ICommandSender sender, ICommand command, int p_152372_3_, String msgFormat, Object ... msgParams);
+-}
++public interface IAdminCommand {
++
++    void notifyOperators(ICommandSender sender, ICommand command, int p_152372_3_, String msgFormat, Object... msgParams);
++}

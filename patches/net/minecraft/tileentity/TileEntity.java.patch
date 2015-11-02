@@ -1,0 +1,408 @@
+---a/net/minecraft/tileentity/TileEntity.java
++++b/net/minecraft/tileentity/TileEntity.java
+@@ -1,10 +1,9 @@
+ package net.minecraft.tileentity;
+ 
+-import com.google.common.collect.Maps;
+ import java.util.Map;
+ import java.util.concurrent.Callable;
++
+ import net.minecraft.block.Block;
++import net.minecraft.block.BlockHopper;
+ import net.minecraft.block.BlockJukebox;
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.crash.CrashReportCategory;
+@@ -11,70 +11,103 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.network.Packet;
+ import net.minecraft.util.BlockPos;
++import net.minecraft.util.EnumFacing;
+ import net.minecraft.world.World;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
++
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
++import org.bukkit.block.BlockState;
++import org.bukkit.craftbukkit.SpigotTimings;
++import org.bukkit.inventory.InventoryHolder;
++import org.spigotmc.CustomTimingsHandler;
+ 
+-public abstract class TileEntity
+-{
++import com.google.common.collect.Maps;
++
++public abstract class TileEntity {
++
++    public CustomTimingsHandler tickTimer = SpigotTimings.getTileEntityTimings(this); // Spigot
+     private static final Logger logger = LogManager.getLogger();
+     private static Map nameToClassMap = Maps.newHashMap();
+     private static Map classToNameMap = Maps.newHashMap();
+-    protected World worldObj;
+-    protected BlockPos pos;
++    public World worldObj; // SpigotMCP -- Make public as Bukkit asumes that it is in the same package
++    public BlockPos pos; // SpigotMCP -- Make public as Bukkit asumes that it is in the same package
+     protected boolean tileEntityInvalid;
+     private int blockMetadata;
+     protected Block blockType;
+     private static final String __OBFID = "CL_00000340";
+ 
+-    public TileEntity()
+-    {
++
++    // Spigot start
++    // Helper method for scheduleTicks. If the hopper at x0, y0, z0 is pointed
++    // at this tile entity, then make it active.
++    private void scheduleTick(BlockPos blockposition) {
++        TileEntity tileEntity = this.worldObj.getTileEntity(blockposition);
++        if (tileEntity instanceof TileEntityHopper && tileEntity.worldObj != null) {
++            // i is the metadeta assoiated with the direction the hopper faces.
++            EnumFacing dir = BlockHopper.getFacing(tileEntity.getBlockMetadata());
++
++            // Facing class provides arrays for direction offset.
++            if (tileEntity.pos.offset(dir).equals(pos)) {
++                ((TileEntityHopper) tileEntity).makeTick();
++            }
++        }
++    }
++
++    // Called from update when the contents have changed, so hoppers need updates.
++    // Check all 6 faces.
++    public void scheduleTicks() {
++        if (this.worldObj != null && this.worldObj.spigotConfig.altHopperTicking) {
++            // Check the top
++            this.scheduleTick(pos.up());
++            // Check the sides
++            for (int i = 2; i < 6; i++) {
++                this.scheduleTick(pos.offset(EnumFacing.getFront(i)));
++            }
++            // Check the bottom.
++            TileEntity tileEntity = this.worldObj.getTileEntity(pos.down());
++            if (tileEntity instanceof TileEntityHopper && tileEntity.worldObj != null) {
++                ((TileEntityHopper) tileEntity).makeTick();
++            }
++        }
++    }
++    // Spigot end
++
++    public TileEntity() {
+         this.pos = BlockPos.ORIGIN;
+         this.blockMetadata = -1;
+     }
+ 
+-    private static void addMapping(Class cl, String id)
+-    {
+-        if (nameToClassMap.containsKey(id))
+-        {
++    public static void addMapping(Class cl, String id) {
++        if (nameToClassMap.containsKey(id)) {
+             throw new IllegalArgumentException("Duplicate id: " + id);
+-        }
+-        else
+-        {
++        } else {
+             nameToClassMap.put(id, cl);
+             classToNameMap.put(cl, id);
+         }
+     }
+ 
+-    public World getWorld()
+-    {
++    public World getWorld() {
+         return this.worldObj;
+     }
+ 
+-    public void setWorldObj(World worldIn)
+-    {
++    public void setWorldObj(World worldIn) {
+         this.worldObj = worldIn;
+     }
+ 
+-    public boolean hasWorldObj()
+-    {
++    public boolean hasWorldObj() {
+         return this.worldObj != null;
+     }
+ 
+-    public void readFromNBT(NBTTagCompound compound)
+-    {
++    public void readFromNBT(NBTTagCompound compound) {
+         this.pos = new BlockPos(compound.getInteger("x"), compound.getInteger("y"), compound.getInteger("z"));
+     }
+ 
+-    public void writeToNBT(NBTTagCompound compound)
+-    {
+-        String s = (String)classToNameMap.get(this.getClass());
++    public void writeToNBT(NBTTagCompound compound) {
++        String s = (String) classToNameMap.get(this.getClass());
+ 
+-        if (s == null)
+-        {
++        if (s == null) {
+             throw new RuntimeException(this.getClass() + " is missing a mapping! This is a bug!");
+-        }
+-        else
+-        {
++        } else {
+             compound.setString("id", s);
+             compound.setInteger("x", this.pos.getX());
+             compound.setInteger("y", this.pos.getY());
+@@ -85,38 +85,29 @@
+         }
+     }
+ 
+-    public static TileEntity createAndLoadEntity(NBTTagCompound nbt)
+-    {
++    public static TileEntity createAndLoadEntity(NBTTagCompound nbt) {
+         TileEntity tileentity = null;
+ 
+-        try
+-        {
++        try {
+             Class oclass = (Class)nameToClassMap.get(nbt.getString("id"));
+ 
+-            if (oclass != null)
+-            {
+-                tileentity = (TileEntity)oclass.newInstance();
++            if (oclass != null) {
++                tileentity = (TileEntity) oclass.newInstance();
+             }
+-        }
+-        catch (Exception exception)
+-        {
++        } catch (Exception exception) {
+             exception.printStackTrace();
+         }
+ 
+-        if (tileentity != null)
+-        {
++        if (tileentity != null) {
+             tileentity.readFromNBT(nbt);
+-        }
+-        else
+-        {
++        } else {
+             logger.warn("Skipping BlockEntity with id " + nbt.getString("id"));
+         }
+ 
+         return tileentity;
+     }
+ 
+-    public int getBlockMetadata()
+-    {
+-        if (this.blockMetadata == -1)
+-        {
++    public int getBlockMetadata() {
++        if (this.blockMetadata == -1) {
+             IBlockState iblockstate = this.worldObj.getBlockState(this.pos);
+             this.blockMetadata = iblockstate.getBlock().getMetaFromState(iblockstate);
+         }
+@@ -126,144 +126,118 @@
+         return this.blockMetadata;
+     }
+ 
+-    public void markDirty()
+-    {
+-        if (this.worldObj != null)
+-        {
++    public void markDirty() {
++        if (this.worldObj != null) {
+             IBlockState iblockstate = this.worldObj.getBlockState(this.pos);
+             this.blockMetadata = iblockstate.getBlock().getMetaFromState(iblockstate);
+             this.worldObj.markChunkDirty(this.pos, this);
+ 
+-            if (this.getBlockType() != Blocks.air)
+-            {
++            if (this.getBlockType() != Blocks.air) {
+                 this.worldObj.updateComparatorOutputLevel(this.pos, this.getBlockType());
+             }
++            // Spigot start - Called when the contents have changed, so hoppers around this
++            // tile need updating.
++            this.scheduleTicks();
++            // Spigot end
+         }
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public double getDistanceSq(double x, double y, double z)
+-    {
+-        double d3 = (double)this.pos.getX() + 0.5D - x;
+-        double d4 = (double)this.pos.getY() + 0.5D - y;
+-        double d5 = (double)this.pos.getZ() + 0.5D - z;
++    // SpigotMCP NOTE -- Is really client sided but, fml needs it
++    public double getDistanceSq(double x, double y, double z) {
++        double d3 = (double) this.pos.getX() + 0.5D - x;
++        double d4 = (double) this.pos.getY() + 0.5D - y;
++        double d5 = (double) this.pos.getZ() + 0.5D - z;
+         return d3 * d3 + d4 * d4 + d5 * d5;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public double getMaxRenderDistanceSquared()
+-    {
+-        return 4096.0D;
+-    }
+-
+-    public BlockPos getPos()
+-    {
++    public BlockPos getPos() {
+         return this.pos;
+     }
+ 
+-    public Block getBlockType()
+-    {
+-        if (this.blockType == null)
+-        {
++    public Block getBlockType() {
++        if (this.blockType == null) {
+             this.blockType = this.worldObj.getBlockState(this.pos).getBlock();
+         }
+ 
+         return this.blockType;
+     }
+ 
+-    public Packet getDescriptionPacket()
+-    {
++    public Packet getDescriptionPacket() {
+         return null;
+     }
+ 
+-    public boolean isInvalid()
+-    {
++    public boolean isInvalid() {
+         return this.tileEntityInvalid;
+     }
+ 
+-    public void invalidate()
+-    {
++    public void invalidate() {
+         this.tileEntityInvalid = true;
+     }
+ 
+-    public void validate()
+-    {
++    public void validate() {
+         this.tileEntityInvalid = false;
+     }
+ 
+-    public boolean receiveClientEvent(int id, int type)
+-    {
++    public boolean receiveClientEvent(int id, int type) {
+         return false;
+     }
+ 
+-    public void updateContainingBlockInfo()
+-    {
++    public void updateContainingBlockInfo() {
+         this.blockType = null;
+         this.blockMetadata = -1;
+     }
+ 
+-    public void addInfoToCrashReport(CrashReportCategory reportCategory)
+-    {
+-        reportCategory.addCrashSectionCallable("Name", new Callable()
+-        {
++    public void addInfoToCrashReport(CrashReportCategory reportCategory) {
++        reportCategory.addCrashSectionCallable("Name", new Callable() {
++
+             private static final String __OBFID = "CL_00000341";
+-            public String call()
+-            {
+-                return (String)TileEntity.classToNameMap.get(TileEntity.this.getClass()) + " // " + TileEntity.this.getClass().getCanonicalName();
++
++            public String call() {
++                return (String) TileEntity.classToNameMap.get(TileEntity.this.getClass()) + " // " + TileEntity.this.getClass().getCanonicalName();
+             }
+         });
+ 
+-        if (this.worldObj != null)
+-        {
++        if (this.worldObj != null) {
+             CrashReportCategory.addBlockInfo(reportCategory, this.pos, this.getBlockType(), this.getBlockMetadata());
+-            reportCategory.addCrashSectionCallable("Actual block type", new Callable()
+-            {
++            reportCategory.addCrashSectionCallable("Actual block type", new Callable() {
++
+                 private static final String __OBFID = "CL_00000343";
+-                public String call()
+-                {
++
++                public String call() {
+                     int i = Block.getIdFromBlock(TileEntity.this.worldObj.getBlockState(TileEntity.this.pos).getBlock());
+ 
+-                    try
+-                    {
+-                        return String.format("ID #%d (%s // %s)", new Object[] {Integer.valueOf(i), Block.getBlockById(i).getUnlocalizedName(), Block.getBlockById(i).getClass().getCanonicalName()});
+-                    }
+-                    catch (Throwable throwable)
+-                    {
++                    try {
++                        return String.format("ID #%d (%s // %s)", new Object[]{Integer.valueOf(i), Block.getBlockById(i).getUnlocalizedName(), Block.getBlockById(i).getClass().getCanonicalName()});
++                    } catch (Throwable throwable) {
+                         return "ID #" + i;
+                     }
+                 }
+             });
+-            reportCategory.addCrashSectionCallable("Actual block data value", new Callable()
+-            {
++            reportCategory.addCrashSectionCallable("Actual block data value", new Callable() {
++
+                 private static final String __OBFID = "CL_00000344";
+-                public String call()
+-                {
++
++                public String call() {
+                     IBlockState iblockstate = TileEntity.this.worldObj.getBlockState(TileEntity.this.pos);
+                     int i = iblockstate.getBlock().getMetaFromState(iblockstate);
+ 
+-                    if (i < 0)
+-                    {
++                    if (i < 0) {
+                         return "Unknown? (Got " + i + ")";
++                    } else {
++                        String s = String.format("%4s", new Object[]{Integer.toBinaryString(i)}).replace(" ", "0");
++                        return String.format("%1$d / 0x%1$X / 0b%2$s", new Object[]{Integer.valueOf(i), s});
+                     }
+-                    else
+-                    {
+-                        String s = String.format("%4s", new Object[] {Integer.toBinaryString(i)}).replace(" ", "0");
+-                        return String.format("%1$d / 0x%1$X / 0b%2$s", new Object[] {Integer.valueOf(i), s});
+-                    }
+                 }
+             });
+         }
+     }
+ 
+-    public void setPos(BlockPos posIn)
+-    {
++    public void setPos(BlockPos posIn) {
+         this.pos = posIn;
+     }
+ 
+-    static
+-    {
++    static {
+         addMapping(TileEntityFurnace.class, "Furnace");
+         addMapping(TileEntityChest.class, "Chest");
+         addMapping(TileEntityEnderChest.class, "EnderChest");
+@@ -284,4 +284,19 @@
+         addMapping(TileEntityFlowerPot.class, "FlowerPot");
+         addMapping(TileEntityBanner.class, "Banner");
+     }
+-}
++
++    // CraftBukkit start - add method
++    public InventoryHolder getOwner() {
++        // Spigot start
++        org.bukkit.block.Block block = worldObj.getWorld().getBlockAt(pos.getX(), pos.getY(), pos.getZ());
++        if (block == null) {
++            org.bukkit.Bukkit.getLogger().log(java.util.logging.Level.WARNING, "No block for owner at %s %d %d %d", new Object[]{worldObj.getWorld(), pos.getX(), pos.getY(), pos.getZ()});
++            return null;
++        }
++        // Spigot end
++        BlockState state = block.getState();
++        if (state instanceof InventoryHolder) return (InventoryHolder) state;
++        return null;
++    }
++    // CraftBukkit end
++}

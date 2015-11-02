@@ -1,0 +1,38 @@
+---a/net/minecraft/enchantment/EnchantmentFireAspect.java
++++b/net/minecraft/enchantment/EnchantmentFireAspect.java
+@@ -2,29 +2,25 @@
+ 
+ import net.minecraft.util.ResourceLocation;
+ 
+-public class EnchantmentFireAspect extends Enchantment
+-{
++public class EnchantmentFireAspect extends Enchantment {
++
+     private static final String __OBFID = "CL_00000116";
+ 
+-    protected EnchantmentFireAspect(int enchID, ResourceLocation enchName, int enchWeight)
+-    {
++    protected EnchantmentFireAspect(int enchID, ResourceLocation enchName, int enchWeight) {
+         super(enchID, enchName, enchWeight, EnumEnchantmentType.WEAPON);
+         this.setName("fire");
+     }
+ 
+-    public int getMinEnchantability(int enchantmentLevel)
+-    {
++    public int getMinEnchantability(int enchantmentLevel) {
+         return 10 + 20 * (enchantmentLevel - 1);
+     }
+ 
+-    public int getMaxEnchantability(int enchantmentLevel)
+-    {
++    public int getMaxEnchantability(int enchantmentLevel) {
+         return super.getMinEnchantability(enchantmentLevel) + 50;
+     }
+ 
+-    public int getMaxLevel()
+-    {
++    public int getMaxLevel() {
+         return 2;
+     }
+-}
++}

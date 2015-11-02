@@ -1,0 +1,22 @@
+---a/net/minecraft/command/ICommandManager.java
++++b/net/minecraft/command/ICommandManager.java
+@@ -2,8 +2,10 @@
+ 
+ import java.util.List;
+ import java.util.Map;
++
+ import net.minecraft.util.BlockPos;
+ 
+-public interface ICommandManager
+-{
++public interface ICommandManager {
++
+     int executeCommand(ICommandSender sender, String rawCommand);
+ 
+     List getTabCompletionOptions(ICommandSender sender, String input, BlockPos pos);
+@@ -13,4 +13,4 @@
+     List getPossibleCommands(ICommandSender sender);
+ 
+     Map getCommands();
+-}
++}

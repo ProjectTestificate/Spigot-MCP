@@ -1,0 +1,26 @@
+---a/net/minecraft/block/BlockHardenedClay.java
++++b/net/minecraft/block/BlockHardenedClay.java
+@@ -5,19 +5,17 @@
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.creativetab.CreativeTabs;
+ 
+-public class BlockHardenedClay extends Block
+-{
++public class BlockHardenedClay extends Block {
++
+     private static final String __OBFID = "CL_00000255";
+ 
+-    public BlockHardenedClay()
+-    {
++    public BlockHardenedClay() {
+         super(Material.rock);
+         this.setCreativeTab(CreativeTabs.tabBlock);
+     }
+ 
+-    public MapColor getMapColor(IBlockState state)
+-    {
++    public MapColor getMapColor(IBlockState state) {
+         return MapColor.adobeColor;
+     }
+-}
++}

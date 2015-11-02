@@ -1,0 +1,223 @@
+---a/net/minecraft/item/ItemBucket.java
++++b/net/minecraft/item/ItemBucket.java
+@@ -14,81 +14,105 @@
+ import net.minecraft.util.MovingObjectPosition;
+ import net.minecraft.world.World;
+ 
+-public class ItemBucket extends Item
+-{
++import org.bukkit.craftbukkit.event.CraftEventFactory;
++import org.bukkit.craftbukkit.inventory.CraftItemStack;
++import org.bukkit.event.player.PlayerBucketEmptyEvent;
++import org.bukkit.event.player.PlayerBucketFillEvent;
++
++public class ItemBucket extends Item {
++
+     private Block isFull;
+     private static final String __OBFID = "CL_00000000";
+ 
+-    public ItemBucket(Block containedBlock)
+-    {
++    public ItemBucket(Block containedBlock) {
+         this.maxStackSize = 1;
+         this.isFull = containedBlock;
+         this.setCreativeTab(CreativeTabs.tabMisc);
+     }
+ 
+-    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
+-    {
++    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
+         boolean flag = this.isFull == Blocks.air;
+         MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(worldIn, playerIn, flag);
+ 
+-        if (movingobjectposition == null)
+-        {
++        if (movingobjectposition == null) {
+             return itemStackIn;
+-        }
+-        else
+-        {
+-            if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+-            {
++        } else {
++            if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                 BlockPos blockpos = movingobjectposition.getBlockPos();
+ 
+-                if (!worldIn.isBlockModifiable(playerIn, blockpos))
+-                {
++                if (!worldIn.isBlockModifiable(playerIn, blockpos)) {
+                     return itemStackIn;
+                 }
+ 
+-                if (flag)
+-                {
+-                    if (!playerIn.canPlayerEdit(blockpos.offset(movingobjectposition.sideHit), movingobjectposition.sideHit, itemStackIn))
+-                    {
++                if (flag) {
++                    if (!playerIn.canPlayerEdit(blockpos.offset(movingobjectposition.sideHit), movingobjectposition.sideHit, itemStackIn)) {
+                         return itemStackIn;
+                     }
+ 
+                     IBlockState iblockstate = worldIn.getBlockState(blockpos);
+                     Material material = iblockstate.getBlock().getMaterial();
+ 
+-                    if (material == Material.water && ((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0)
+-                    {
++                    if (material == Material.water && ((Integer) iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0) {
++                        // CraftBukkit start
++                        PlayerBucketFillEvent event = CraftEventFactory.callPlayerBucketFillEvent(playerIn, blockpos.getX(), blockpos.getY(), blockpos.getZ(), null, itemStackIn, Items.water_bucket);
++
++                        if (event.isCancelled()) {
++                            return itemStackIn;
++                        }
++                        // CraftBukkit end
+                         worldIn.setBlockToAir(blockpos);
+                         playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+-                        return this.fillBucket(itemStackIn, playerIn, Items.water_bucket);
++                        return this.fillBucket(itemStackIn, playerIn, Items.water_bucket, event.getItemStack()); // CraftBukkit - added Event stack
+                     }
+ 
+-                    if (material == Material.lava && ((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0)
+-                    {
++                    if (material == Material.lava && ((Integer) iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0) {
++                        // CraftBukkit start
++                        PlayerBucketFillEvent event = CraftEventFactory.callPlayerBucketFillEvent(playerIn, blockpos.getX(), blockpos.getY(), blockpos.getZ(), null, itemStackIn, Items.lava_bucket);
++
++                        if (event.isCancelled()) {
++                            return itemStackIn;
++                        }
++                        // CraftBukkit end
+                         worldIn.setBlockToAir(blockpos);
+                         playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+-                        return this.fillBucket(itemStackIn, playerIn, Items.lava_bucket);
++                        return this.fillBucket(itemStackIn, playerIn, Items.lava_bucket, event.getItemStack()); // CraftBukkit - added Event stack
+                     }
+-                }
+-                else
+-                {
+-                    if (this.isFull == Blocks.air)
+-                    {
+-                        return new ItemStack(Items.bucket);
++                } else {
++                    if (this.isFull == Blocks.air) {
++                        // CraftBukkit start
++                        PlayerBucketEmptyEvent event = CraftEventFactory.callPlayerBucketEmptyEvent(playerIn, blockpos.getX(), blockpos.getY(), blockpos.getZ(), movingobjectposition.sideHit, itemStackIn);
++
++                        if (event.isCancelled()) {
++                            return itemStackIn;
++                        }
++
++                        return CraftItemStack.asNMSCopy(event.getItemStack());
++                        // CraftBukkit end
+                     }
+ 
+                     BlockPos blockpos1 = blockpos.offset(movingobjectposition.sideHit);
+ 
+-                    if (!playerIn.canPlayerEdit(blockpos1, movingobjectposition.sideHit, itemStackIn))
+-                    {
++                    if (!playerIn.canPlayerEdit(blockpos1, movingobjectposition.sideHit, itemStackIn)) {
+                         return itemStackIn;
+                     }
+ 
+-                    if (this.tryPlaceContainedLiquid(worldIn, blockpos1) && !playerIn.capabilities.isCreativeMode)
+-                    {
++                    // CraftBukkit start
++                    PlayerBucketEmptyEvent event = CraftEventFactory.callPlayerBucketEmptyEvent(playerIn, blockpos.getX(), blockpos.getY(), blockpos.getZ(), movingobjectposition.sideHit, itemStackIn);
++
++                    if (event.isCancelled()) {
++                        return itemStackIn;
++                    }
++                    // CraftBukkit end
++
++                    if (this.tryPlaceContainedLiquid(worldIn, blockpos1) && !playerIn.capabilities.isCreativeMode) {
+                         playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+-                        return new ItemStack(Items.bucket);
++                        return CraftItemStack.asNMSCopy(event.getItemStack()); // CraftBukkit
+                     }
+                 }
+             }
+@@ -96,15 +96,13 @@
+         }
+     }
+ 
+-    private ItemStack fillBucket(ItemStack emptyBuckets, EntityPlayer player, Item fullBucket)
+-    {
+-        if (player.capabilities.isCreativeMode)
+-        {
++    // CraftBukkit - added ob.ItemStack result - TODO: Is this... the right way to handle this?
++    private ItemStack fillBucket(ItemStack emptyBuckets, EntityPlayer player, Item fullBucket, org.bukkit.inventory.ItemStack result) {
++        if (player.capabilities.isCreativeMode) {
+             return emptyBuckets;
+-        }
+-        else if (--emptyBuckets.stackSize <= 0)
+-        {
+-            return new ItemStack(fullBucket);
+-        }
+-        else
+-        {
+-            if (!player.inventory.addItemStackToInventory(new ItemStack(fullBucket)))
+-            {
++        } else if (--emptyBuckets.stackSize <= 0) {
++            return CraftItemStack.asNMSCopy(result); // CraftBukkit
++        } else {
++            if (!player.inventory.addItemStackToInventory(new ItemStack(fullBucket))) {
+                 player.dropPlayerItemWithRandomChoice(new ItemStack(fullBucket, 1, 0), false);
+             }
+ 
+@@ -117,38 +117,27 @@
+         }
+     }
+ 
+-    public boolean tryPlaceContainedLiquid(World worldIn, BlockPos pos)
+-    {
+-        if (this.isFull == Blocks.air)
+-        {
++    public boolean tryPlaceContainedLiquid(World worldIn, BlockPos pos) {
++        if (this.isFull == Blocks.air) {
+             return false;
+-        }
+-        else
+-        {
++        } else {
+             Material material = worldIn.getBlockState(pos).getBlock().getMaterial();
+             boolean flag = !material.isSolid();
+ 
+-            if (!worldIn.isAirBlock(pos) && !flag)
+-            {
++            if (!worldIn.isAirBlock(pos) && !flag) {
+                 return false;
+-            }
+-            else
+-            {
+-                if (worldIn.provider.doesWaterVaporize() && this.isFull == Blocks.flowing_water)
+-                {
++            } else {
++                if (worldIn.provider.doesWaterVaporize() && this.isFull == Blocks.flowing_water) {
+                     int i = pos.getX();
+                     int j = pos.getY();
+                     int k = pos.getZ();
+-                    worldIn.playSoundEffect((double)((float)i + 0.5F), (double)((float)j + 0.5F), (double)((float)k + 0.5F), "random.fizz", 0.5F, 2.6F + (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.8F);
++                    worldIn.playSoundEffect((double) ((float) i + 0.5F), (double) ((float) j + 0.5F), (double) ((float) k + 0.5F), "random.fizz", 0.5F, 2.6F + (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.8F);
+ 
+-                    for (int l = 0; l < 8; ++l)
+-                    {
+-                        worldIn.spawnParticle(EnumParticleTypes.SMOKE_LARGE, (double)i + Math.random(), (double)j + Math.random(), (double)k + Math.random(), 0.0D, 0.0D, 0.0D, new int[0]);
++                    for (int l = 0; l < 8; ++l) {
++                        worldIn.spawnParticle(EnumParticleTypes.SMOKE_LARGE, (double) i + Math.random(), (double) j + Math.random(), (double) k + Math.random(), 0.0D, 0.0D, 0.0D, new int[0]);
+                     }
+-                }
+-                else
+-                {
+-                    if (!worldIn.isRemote && flag && !material.isLiquid())
+-                    {
++                } else {
++                    if (!worldIn.isRemote && flag && !material.isLiquid()) {
+                         worldIn.destroyBlock(pos, true);
+                     }
+ 
+@@ -160,4 +160,4 @@
+             }
+         }
+     }
+-}
++}

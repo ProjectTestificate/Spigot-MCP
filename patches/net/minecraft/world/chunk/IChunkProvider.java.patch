@@ -1,0 +1,25 @@
+---a/net/minecraft/world/chunk/IChunkProvider.java
++++b/net/minecraft/world/chunk/IChunkProvider.java
+@@ -1,11 +1,13 @@
+ package net.minecraft.world.chunk;
+ 
+ import java.util.List;
++
+ import net.minecraft.entity.EnumCreatureType;
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.IProgressUpdate;
+ import net.minecraft.world.World;
+ 
+-public interface IChunkProvider
+-{
++public interface IChunkProvider {
++
+     boolean chunkExists(int x, int z);
+ 
+     Chunk provideChunk(int x, int z);
+@@ -35,4 +35,4 @@
+     void recreateStructures(Chunk p_180514_1_, int p_180514_2_, int p_180514_3_);
+ 
+     void saveExtraData();
+-}
++}

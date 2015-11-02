@@ -1,0 +1,233 @@
+---a/net/minecraft/block/BlockPumpkin.java
++++b/net/minecraft/block/BlockPumpkin.java
+@@ -18,64 +18,74 @@
+ import net.minecraft.util.EnumParticleTypes;
+ import net.minecraft.world.World;
+ 
+-public class BlockPumpkin extends BlockDirectional
+-{
++import org.bukkit.craftbukkit.util.BlockStateListPopulator;
++import org.bukkit.event.block.BlockRedstoneEvent;
++import org.bukkit.event.entity.CreatureSpawnEvent;
++
++public class BlockPumpkin extends BlockDirectional {
++
+     private BlockPattern snowmanBasePattern;
+     private BlockPattern snowmanPattern;
+     private BlockPattern golemBasePattern;
+     private BlockPattern golemPattern;
+     private static final String __OBFID = "CL_00000291";
+ 
+-    protected BlockPumpkin()
+-    {
++    protected BlockPumpkin() {
+         super(Material.gourd);
+         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+         this.setTickRandomly(true);
+         this.setCreativeTab(CreativeTabs.tabBlock);
+     }
+ 
+-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+-    {
++    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+         super.onBlockAdded(worldIn, pos, state);
+         this.trySpawnGolem(worldIn, pos);
+     }
+ 
+-    public boolean canDispenserPlace(World worldIn, BlockPos pos)
+-    {
++    public boolean canDispenserPlace(World worldIn, BlockPos pos) {
+         return this.getSnowmanBasePattern().match(worldIn, pos) != null || this.getGolemBasePattern().match(worldIn, pos) != null;
+     }
+ 
+-    private void trySpawnGolem(World worldIn, BlockPos pos)
+-    {
++    private void trySpawnGolem(World worldIn, BlockPos pos) {
+         BlockPattern.PatternHelper patternhelper;
+         int i;
+         int j;
+ 
+-        if ((patternhelper = this.getSnowmanPattern().match(worldIn, pos)) != null)
+-        {
+-            for (i = 0; i < this.getSnowmanPattern().getThumbLength(); ++i)
+-            {
++        if ((patternhelper = this.getSnowmanPattern().match(worldIn, pos)) != null) {
++            BlockStateListPopulator blockList = new BlockStateListPopulator(worldIn.getWorld()); // CraftBukkit - Use BlockStateListPopulator
++            for (i = 0; i < this.getSnowmanPattern().getThumbLength(); ++i) {
+                 BlockWorldState blockworldstate = patternhelper.translateOffset(0, i, 0);
+-                worldIn.setBlockState(blockworldstate.getPos(), Blocks.air.getDefaultState(), 2);
++                // CraftBukkit start
++                // worldIn.setBlockState(blockworldstate.getPos(), Blocks.air.getDefaultState(), 2);
++                BlockPos pos2 = blockworldstate.getPos();
++                blockList.setTypeId(pos2.getX(), pos2.getY(), pos2.getZ(), 0);
++                // CraftBukkit end
+             }
+ 
+             EntitySnowman entitysnowman = new EntitySnowman(worldIn);
+             BlockPos blockpos2 = patternhelper.translateOffset(0, 2, 0).getPos();
+-            entitysnowman.setLocationAndAngles((double)blockpos2.getX() + 0.5D, (double)blockpos2.getY() + 0.05D, (double)blockpos2.getZ() + 0.5D, 0.0F, 0.0F);
+-            worldIn.spawnEntityInWorld(entitysnowman);
+ 
+-            for (j = 0; j < 120; ++j)
+-            {
+-                worldIn.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, (double)blockpos2.getX() + worldIn.rand.nextDouble(), (double)blockpos2.getY() + worldIn.rand.nextDouble() * 2.5D, (double)blockpos2.getZ() + worldIn.rand.nextDouble(), 0.0D, 0.0D, 0.0D, new int[0]);
+-            }
++            entitysnowman.setLocationAndAngles((double) blockpos2.getX() + 0.5D, (double) blockpos2.getY() + 0.05D, (double) blockpos2.getZ() + 0.5D, 0.0F, 0.0F);
++            // CraftBukkit start
++            if (worldIn.addEntity(entitysnowman, CreatureSpawnEvent.SpawnReason.BUILD_SNOWMAN)) {
++                blockList.updateList();
+ 
+-            for (j = 0; j < this.getSnowmanPattern().getThumbLength(); ++j)
+-            {
+-                BlockWorldState blockworldstate1 = patternhelper.translateOffset(0, j, 0);
+-                worldIn.notifyNeighborsRespectDebug(blockworldstate1.getPos(), Blocks.air);
++                for (j = 0; j < 120; ++j) {
++                    worldIn.spawnParticle(EnumParticleTypes.SNOW_SHOVEL, (double) blockpos2.getX() + worldIn.rand.nextDouble(), (double) blockpos2.getY() + worldIn.rand.nextDouble() * 2.5D, (double) blockpos2.getZ() + worldIn.rand.nextDouble(), 0.0D, 0.0D, 0.0D, new int[0]);
++                }
++
++                for (j = 0; j < this.getSnowmanPattern().getThumbLength(); ++j) {
++                    BlockWorldState shapedetectorblock1 = patternhelper.translateOffset(0, j, 0);
++
++                    worldIn.notifyNeighborsRespectDebug(shapedetectorblock1.getPos(), Blocks.air);
++                }
+             }
+-        }
+-        else if ((patternhelper = this.getGolemPattern().match(worldIn, pos)) != null)
+-        {
+-            for (i = 0; i < this.getGolemPattern().getPalmLength(); ++i)
+-            {
+-                for (int k = 0; k < this.getGolemPattern().getThumbLength(); ++k)
+-                {
++            // CraftBukkit end
++        } else if ((patternhelper = this.getGolemPattern().match(worldIn, pos)) != null) {
++            for (i = 0; i < this.getGolemPattern().getPalmLength(); ++i) {
++                for (int k = 0; k < this.getGolemPattern().getThumbLength(); ++k) {
+                     worldIn.setBlockState(patternhelper.translateOffset(i, k, 0).getPos(), Blocks.air.getDefaultState(), 2);
+                 }
+             }
+@@ -88,15 +88,14 @@
+             BlockPos blockpos1 = patternhelper.translateOffset(1, 2, 0).getPos();
+             EntityIronGolem entityirongolem = new EntityIronGolem(worldIn);
+             entityirongolem.setPlayerCreated(true);
+-            entityirongolem.setLocationAndAngles((double)blockpos1.getX() + 0.5D, (double)blockpos1.getY() + 0.05D, (double)blockpos1.getZ() + 0.5D, 0.0F, 0.0F);
++            entityirongolem.setLocationAndAngles((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.05D, (double) blockpos1.getZ() + 0.5D, 0.0F, 0.0F);
+             worldIn.spawnEntityInWorld(entityirongolem);
+ 
+-            for (j = 0; j < 120; ++j)
+-            {
+-                worldIn.spawnParticle(EnumParticleTypes.SNOWBALL, (double)blockpos1.getX() + worldIn.rand.nextDouble(), (double)blockpos1.getY() + worldIn.rand.nextDouble() * 3.9D, (double)blockpos1.getZ() + worldIn.rand.nextDouble(), 0.0D, 0.0D, 0.0D, new int[0]);
++            for (j = 0; j < 120; ++j) {
++                worldIn.spawnParticle(EnumParticleTypes.SNOWBALL, (double) blockpos1.getX() + worldIn.rand.nextDouble(), (double) blockpos1.getY() + worldIn.rand.nextDouble() * 3.9D, (double) blockpos1.getZ() + worldIn.rand.nextDouble(), 0.0D, 0.0D, 0.0D, new int[0]);
+             }
+ 
+-            for (j = 0; j < this.getGolemPattern().getPalmLength(); ++j)
+-            {
+-                for (int l = 0; l < this.getGolemPattern().getThumbLength(); ++l)
+-                {
++            for (j = 0; j < this.getGolemPattern().getPalmLength(); ++j) {
++                for (int l = 0; l < this.getGolemPattern().getThumbLength(); ++l) {
+                     BlockWorldState blockworldstate2 = patternhelper.translateOffset(j, l, 0);
+                     worldIn.notifyNeighborsRespectDebug(blockworldstate2.getPos(), Blocks.air);
+                 }
+@@ -107,69 +107,81 @@
+         }
+     }
+ 
+-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+-    {
++    // CraftBukkit start
++    @Override
++    public void onNeighborBlockChange(World world, BlockPos position, IBlockState data, Block block) {
++        if (block != null && block.canProvidePower()) {
++            org.bukkit.block.Block bukkitBlock = world.getWorld().getBlockAt(position.getX(), position.getY(), position.getZ());
++            int power = bukkitBlock.getBlockPower();
++
++            BlockRedstoneEvent eventRedstone = new BlockRedstoneEvent(bukkitBlock, power, power);
++            world.getServer().getPluginManager().callEvent(eventRedstone);
++        }
++    }
++    // CraftBukkit end
++
++    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+         return worldIn.getBlockState(pos).getBlock().blockMaterial.isReplaceable() && World.doesBlockHaveSolidTopSurface(worldIn, pos.down());
+     }
+ 
+-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+-    {
++    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+     }
+ 
+-    public IBlockState getStateFromMeta(int meta)
+-    {
++    public IBlockState getStateFromMeta(int meta) {
+         return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta));
+     }
+ 
+-    public int getMetaFromState(IBlockState state)
+-    {
+-        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
++    public int getMetaFromState(IBlockState state) {
++        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex();
+     }
+ 
+-    protected BlockState createBlockState()
+-    {
+-        return new BlockState(this, new IProperty[] {FACING});
++    protected BlockState createBlockState() {
++        return new BlockState(this, new IProperty[]{FACING});
+     }
+ 
+-    protected BlockPattern getSnowmanBasePattern()
+-    {
+-        if (this.snowmanBasePattern == null)
+-        {
+-            this.snowmanBasePattern = FactoryBlockPattern.start().aisle(new String[] {" ", "#", "#"}).where('#', BlockWorldState.hasState(BlockStateHelper.forBlock(Blocks.snow))).build();
++    protected BlockPattern getSnowmanBasePattern() {
++        if (this.snowmanBasePattern == null) {
++            this.snowmanBasePattern = FactoryBlockPattern.start().aisle(new String[]{" ", "#", "#"}).where('#', BlockWorldState.hasState(BlockStateHelper.forBlock(Blocks.snow))).build();
+         }
+ 
+         return this.snowmanBasePattern;
+     }
+ 
+-    protected BlockPattern getSnowmanPattern()
+-    {
+-        if (this.snowmanPattern == null)
+-        {
+-            this.snowmanPattern = FactoryBlockPattern.start().aisle(new String[] {"^", "#", "#"}).where('^', BlockWorldState.hasState(BlockStateHelper.forBlock(Blocks.pumpkin))).where('#', BlockWorldState.hasState(BlockStateHelper.forBlock(Blocks.snow))).build();
++    protected BlockPattern getSnowmanPattern() {
++        if (this.snowmanPattern == null) {
++            this.snowmanPattern = FactoryBlockPattern.start().aisle(new String[]{"^", "#", "#"}).where('^', BlockWorldState.hasState(BlockStateHelper.forBlock(Blocks.pumpkin))).where('#', BlockWorldState.hasState(BlockStateHelper.forBlock(Blocks.snow))).build();
+         }
+ 
+         return this.snowmanPattern;
+     }
+ 
+-    protected BlockPattern getGolemBasePattern()
+-    {
+-        if (this.golemBasePattern == null)
+-        {
+-            this.golemBasePattern = FactoryBlockPattern.start().aisle(new String[] {"~ ~", "###", "~#~"}).where('#', BlockWorldState.hasState(BlockStateHelper.forBlock(Blocks.iron_block))).where('~', BlockWorldState.hasState(BlockStateHelper.forBlock(Blocks.air))).build();
++    protected BlockPattern getGolemBasePattern() {
++        if (this.golemBasePattern == null) {
++            this.golemBasePattern = FactoryBlockPattern.start().aisle(new String[]{"~ ~", "###", "~#~"}).where('#', BlockWorldState.hasState(BlockStateHelper.forBlock(Blocks.iron_block))).where('~', BlockWorldState.hasState(BlockStateHelper.forBlock(Blocks.air))).build();
+         }
+ 
+         return this.golemBasePattern;
+     }
+ 
+-    protected BlockPattern getGolemPattern()
+-    {
+-        if (this.golemPattern == null)
+-        {
+-            this.golemPattern = FactoryBlockPattern.start().aisle(new String[] {"~^~", "###", "~#~"}).where('^', BlockWorldState.hasState(BlockStateHelper.forBlock(Blocks.pumpkin))).where('#', BlockWorldState.hasState(BlockStateHelper.forBlock(Blocks.iron_block))).where('~', BlockWorldState.hasState(BlockStateHelper.forBlock(Blocks.air))).build();
++    protected BlockPattern getGolemPattern() {
++        if (this.golemPattern == null) {
++            this.golemPattern = FactoryBlockPattern.start().aisle(new String[]{"~^~", "###", "~#~"}).where('^', BlockWorldState.hasState(BlockStateHelper.forBlock(Blocks.pumpkin))).where('#', BlockWorldState.hasState(BlockStateHelper.forBlock(Blocks.iron_block))).where('~', BlockWorldState.hasState(BlockStateHelper.forBlock(Blocks.air))).build();
+         }
+ 
+         return this.golemPattern;
+     }
+-}
++}

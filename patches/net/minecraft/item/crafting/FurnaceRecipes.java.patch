@@ -1,0 +1,161 @@
+---a/net/minecraft/item/crafting/FurnaceRecipes.java
++++b/net/minecraft/item/crafting/FurnaceRecipes.java
+@@ -1,10 +1,8 @@
+ package net.minecraft.item.crafting;
+ 
+-import com.google.common.collect.Maps;
+ import java.util.Iterator;
+ import java.util.Map;
+ import java.util.Map.Entry;
++
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockStoneBrick;
+ import net.minecraft.init.Blocks;
+@@ -13,20 +13,24 @@
+ import net.minecraft.item.ItemFishFood;
+ import net.minecraft.item.ItemStack;
+ 
+-public class FurnaceRecipes
+-{
++import com.google.common.collect.Maps;
++
++public class FurnaceRecipes {
++
+     private static final FurnaceRecipes smeltingBase = new FurnaceRecipes();
+-    private Map smeltingList = Maps.newHashMap();
++    public Map smeltingList = Maps.newHashMap(); // SpigotMCP -- Apply access transformation
+     private Map experienceList = Maps.newHashMap();
+     private static final String __OBFID = "CL_00000085";
++    public Map customRecipes = Maps.newHashMap(); // CraftBukkit - add field
+ 
+-    public static FurnaceRecipes instance()
+-    {
++    public static FurnaceRecipes instance() {
+         return smeltingBase;
+     }
+ 
+-    private FurnaceRecipes()
+-    {
++    public FurnaceRecipes() { // SpigotMCP -- Apply access transformation
+         this.addSmeltingRecipeForBlock(Blocks.iron_ore, new ItemStack(Items.iron_ingot), 0.7F);
+         this.addSmeltingRecipeForBlock(Blocks.gold_ore, new ItemStack(Items.gold_ingot), 1.0F);
+         this.addSmeltingRecipeForBlock(Blocks.diamond_ore, new ItemStack(Items.diamond), 1.0F);
+@@ -50,12 +50,10 @@
+         ItemFishFood.FishType[] afishtype = ItemFishFood.FishType.values();
+         int i = afishtype.length;
+ 
+-        for (int j = 0; j < i; ++j)
+-        {
++        for (int j = 0; j < i; ++j) {
+             ItemFishFood.FishType fishtype = afishtype[j];
+ 
+-            if (fishtype.canCook())
+-            {
++            if (fishtype.canCook()) {
+                 this.addSmeltingRecipe(new ItemStack(Items.fish, 1, fishtype.getMetadata()), new ItemStack(Items.cooked_fish, 1, fishtype.getMetadata()), 0.35F);
+             }
+         }
+@@ -66,68 +66,76 @@
+         this.addSmeltingRecipeForBlock(Blocks.quartz_ore, new ItemStack(Items.quartz), 0.2F);
+     }
+ 
+-    public void addSmeltingRecipeForBlock(Block input, ItemStack stack, float experience)
+-    {
++    // CraftBukkit start - add method
++    public void registerRecipe(ItemStack itemstack, ItemStack itemstack1) {
++        this.customRecipes.put(itemstack, itemstack1);
++    }
++    // CraftBukkit end
++
++    public void addSmeltingRecipeForBlock(Block input, ItemStack stack, float experience) {
+         this.addSmelting(Item.getItemFromBlock(input), stack, experience);
+     }
+ 
+-    public void addSmelting(Item input, ItemStack stack, float experience)
+-    {
++    public void addSmelting(Item input, ItemStack stack, float experience) {
+         this.addSmeltingRecipe(new ItemStack(input, 1, 32767), stack, experience);
+     }
+ 
+-    public void addSmeltingRecipe(ItemStack input, ItemStack stack, float experience)
+-    {
++    public void addSmeltingRecipe(ItemStack input, ItemStack stack, float experience) {
+         this.smeltingList.put(input, stack);
+         this.experienceList.put(stack, Float.valueOf(experience));
+     }
+ 
+-    public ItemStack getSmeltingResult(ItemStack stack)
+-    {
+-        Iterator iterator = this.smeltingList.entrySet().iterator();
++    public ItemStack getSmeltingResult(ItemStack stack) {
++        // CraftBukkit start - initialize to customRecipes
++        boolean vanilla = false;
++        Iterator iterator = this.customRecipes.entrySet().iterator();
++        // CraftBukkit end
+         Entry entry;
+ 
+-        do
+-        {
+-            if (!iterator.hasNext())
+-            {
+-                return null;
++        do {
++            if (!iterator.hasNext()) {
++                // CraftBukkit start - fall back to vanilla recipes
++                if (!vanilla && !smeltingList.isEmpty()) {
++                    iterator = this.smeltingList.entrySet().iterator();
++                    vanilla = true;
++                } else {
++                    return null;
++                }
++                // CraftBukkit end
+             }
+ 
+-            entry = (Entry)iterator.next();
+-        }
+-        while (!this.compareItemStacks(stack, (ItemStack)entry.getKey()));
++            entry = (Entry) iterator.next();
++        } while (!this.compareItemStacks(stack, (ItemStack) entry.getKey()));
+ 
+-        return (ItemStack)entry.getValue();
++        return (ItemStack) entry.getValue();
+     }
+ 
+-    private boolean compareItemStacks(ItemStack stack1, ItemStack stack2)
+-    {
++    private boolean compareItemStacks(ItemStack stack1, ItemStack stack2) {
+         return stack2.getItem() == stack1.getItem() && (stack2.getMetadata() == 32767 || stack2.getMetadata() == stack1.getMetadata());
+     }
+ 
+-    public Map getSmeltingList()
+-    {
++    public Map getSmeltingList() {
+         return this.smeltingList;
+     }
+ 
+-    public float getSmeltingExperience(ItemStack stack)
+-    {
++    public float getSmeltingExperience(ItemStack stack) {
+         Iterator iterator = this.experienceList.entrySet().iterator();
+         Entry entry;
+ 
+-        do
+-        {
+-            if (!iterator.hasNext())
+-            {
++        do {
++            if (!iterator.hasNext()) {
+                 return 0.0F;
+             }
+ 
+-            entry = (Entry)iterator.next();
+-        }
+-        while (!this.compareItemStacks(stack, (ItemStack)entry.getKey()));
++            entry = (Entry) iterator.next();
++        } while (!this.compareItemStacks(stack, (ItemStack) entry.getKey()));
+ 
+-        return ((Float)entry.getValue()).floatValue();
++        return ((Float) entry.getValue()).floatValue();
+     }
+-}
++}

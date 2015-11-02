@@ -1,0 +1,641 @@
+---a/net/minecraft/inventory/ContainerEnchantment.java
++++b/net/minecraft/inventory/ContainerEnchantment.java
+@@ -1,7 +1,13 @@
+ package net.minecraft.inventory;
+ 
++import java.util.ArrayList;
++import java.util.HashMap;
+ import java.util.List;
++import java.util.Map;
++import java.util.Map.Entry;
+ import java.util.Random;
++
+ import net.minecraft.enchantment.EnchantmentData;
+ import net.minecraft.enchantment.EnchantmentHelper;
+ import net.minecraft.entity.player.EntityPlayer;
+@@ -12,85 +12,131 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.world.World;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public class ContainerEnchantment extends Container
+-{
+-    public IInventory tableInventory;
++import org.bukkit.craftbukkit.entity.CraftHumanEntity;
++import org.bukkit.craftbukkit.inventory.CraftInventoryEnchanting;
++import org.bukkit.craftbukkit.inventory.CraftInventoryView;
++import org.bukkit.craftbukkit.inventory.CraftItemStack;
++import org.bukkit.enchantments.Enchantment;
++import org.bukkit.entity.Player;
++import org.bukkit.event.enchantment.EnchantItemEvent;
++import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
++import org.bukkit.inventory.InventoryHolder;
++
++public class ContainerEnchantment extends Container {
++
++    // CraftBukkit - make type specific (changed from IInventory)
++    public ContainerEnchantTableInventory tableInventory; // SpigotMCP -- Initialize in constructor (like MCP does)
+     private World worldPointer;
+     private BlockPos position;
+     private Random rand;
+     public int xpSeed;
+     public int[] enchantLevels;
+     public int[] field_178151_h;
++    // CraftBukkit start
++    private CraftInventoryView bukkitEntity = null;
++    private Player player;
++    // CraftBukkit end
+     private static final String __OBFID = "CL_00001745";
+ 
+-    @SideOnly(Side.CLIENT)
+-    public ContainerEnchantment(InventoryPlayer playerInv, World worldIn)
+-    {
+-        this(playerInv, worldIn, BlockPos.ORIGIN);
++    // SpigotMCP Start -- Convert from Annoynomous Inner Class to Inner class
++    // CraftBukkit private -> public
++    public class ContainerEnchantTableInventory extends InventoryBasic {
++
++        private static final String __OBFID = "CL_00001746";
++
++        ContainerEnchantTableInventory(ContainerEnchantment containerenchanttable, String s, boolean flag, int i) {
++            super(s, flag, i);
++        }
++
++        // CraftBukkit start
++        public List transaction = new ArrayList();
++        public Player player;
++        private int maxStack = 64; // SpigotMCP -- Use 64 instead of MAX_STACK
++
++        public ItemStack[] getContents() {
++            return this.inventoryContents;
++        }
++
++        public void onOpen(CraftHumanEntity who) {
++            transaction.add(who);
++        }
++
++        public void onClose(CraftHumanEntity who) {
++            transaction.remove(who);
++        }
++
++        public List getViewers() {
++            return transaction;
++        }
++
++        public InventoryHolder getOwner() {
++            return this.player;
++        }
++
++        public void setMaxStackSize(int size) {
++            maxStack = size;
++        }
++        // CraftBukkit end
++
++        public int getInventoryStackLimit() {
++            return maxStack; // CraftBukkit
++        }
++
++        public void markDirty() {
++            super.markDirty();
++            ContainerEnchantment.this.onCraftMatrixChanged(this);
++        }
++
+     }
++    // SpigotMCP
+ 
+-    public ContainerEnchantment(InventoryPlayer playerInv, World worldIn, BlockPos pos)
+-    {
+-        this.tableInventory = new InventoryBasic("Enchant", true, 2)
+-        {
+-            private static final String __OBFID = "CL_00001746";
+-            public int getInventoryStackLimit()
+-            {
+-                return 64;
+-            }
+-            public void markDirty()
+-            {
+-                super.markDirty();
+-                ContainerEnchantment.this.onCraftMatrixChanged(this);
+-            }
+-        };
++    public ContainerEnchantment(InventoryPlayer playerInv, World worldIn, BlockPos pos) {
++        this.tableInventory = new ContainerEnchantTableInventory(this, "Enchant", true, 2);
+         this.rand = new Random();
+         this.enchantLevels = new int[3];
+-        this.field_178151_h = new int[] { -1, -1, -1};
++        this.field_178151_h = new int[]{-1, -1, -1};
+         this.worldPointer = worldIn;
+         this.position = pos;
+         this.xpSeed = playerInv.player.getXPSeed();
+-        this.addSlotToContainer(new Slot(this.tableInventory, 0, 15, 47)
+-        {
++        this.addSlotToContainer(new Slot(this.tableInventory, 0, 15, 47) {
++
+             private static final String __OBFID = "CL_00001747";
+-            public boolean isItemValid(ItemStack stack)
+-            {
++
++            public boolean isItemValid(ItemStack stack) {
+                 return true;
+             }
+-            public int getSlotStackLimit()
+-            {
++
++            public int getSlotStackLimit() {
+                 return 1;
+             }
+         });
+-        this.addSlotToContainer(new Slot(this.tableInventory, 1, 35, 47)
+-        {
++        this.addSlotToContainer(new Slot(this.tableInventory, 1, 35, 47) {
++
+             private static final String __OBFID = "CL_00002185";
+-            public boolean isItemValid(ItemStack stack)
+-            {
++
++            public boolean isItemValid(ItemStack stack) {
+                 return stack.getItem() == Items.dye && EnumDyeColor.byDyeDamage(stack.getMetadata()) == EnumDyeColor.BLUE;
+             }
+         });
+         int i;
+ 
+-        for (i = 0; i < 3; ++i)
+-        {
+-            for (int j = 0; j < 9; ++j)
+-            {
++        for (i = 0; i < 3; ++i) {
++            for (int j = 0; j < 9; ++j) {
+                 this.addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+             }
+         }
+ 
+-        for (i = 0; i < 9; ++i)
+-        {
++        for (i = 0; i < 9; ++i) {
+             this.addSlotToContainer(new Slot(playerInv, i, 8 + i * 18, 142));
+         }
++
++        // CraftBukkit start
++        player = (Player) playerInv.player.getBukkitEntity();
++        tableInventory.player = player;
++        // CraftBukkit end
+     }
+ 
+-    public void addCraftingToCrafters(ICrafting listener)
+-    {
++    public void addCraftingToCrafters(ICrafting listener) {
+         super.addCraftingToCrafters(listener);
+         listener.sendProgressBarUpdate(this, 0, this.enchantLevels[0]);
+         listener.sendProgressBarUpdate(this, 1, this.enchantLevels[1]);
+@@ -101,12 +101,10 @@
+         listener.sendProgressBarUpdate(this, 6, this.field_178151_h[2]);
+     }
+ 
+-    public void detectAndSendChanges()
+-    {
++    public void detectAndSendChanges() {
+         super.detectAndSendChanges();
+ 
+-        for (int i = 0; i < this.crafters.size(); ++i)
+-        {
+-            ICrafting icrafting = (ICrafting)this.crafters.get(i);
++        for (int i = 0; i < this.crafters.size(); ++i) {
++            ICrafting icrafting = (ICrafting) this.crafters.get(i);
+             icrafting.sendProgressBarUpdate(this, 0, this.enchantLevels[0]);
+             icrafting.sendProgressBarUpdate(this, 1, this.enchantLevels[1]);
+             icrafting.sendProgressBarUpdate(this, 2, this.enchantLevels[2]);
+@@ -118,99 +118,42 @@
+         }
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public void updateProgressBar(int id, int data)
+-    {
+-        if (id >= 0 && id <= 2)
+-        {
+-            this.enchantLevels[id] = data;
+-        }
+-        else if (id == 3)
+-        {
+-            this.xpSeed = data;
+-        }
+-        else if (id >= 4 && id <= 6)
+-        {
+-            this.field_178151_h[id - 4] = data;
+-        }
+-        else
+-        {
+-            super.updateProgressBar(id, data);
+-        }
+-    }
+-
+-    public void onCraftMatrixChanged(IInventory inventoryIn)
+-    {
+-        if (inventoryIn == this.tableInventory)
+-        {
++    public void onCraftMatrixChanged(IInventory inventoryIn) {
++        if (inventoryIn == this.tableInventory) {
+             ItemStack itemstack = inventoryIn.getStackInSlot(0);
+             int i;
+ 
+-            if (itemstack != null && itemstack.isItemEnchantable())
+-            {
+-                if (!this.worldPointer.isRemote)
+-                {
++            if (itemstack != null) { // CraftBukkit - relax condition
++                if (!this.worldPointer.isRemote) {
+                     i = 0;
+                     int j;
+ 
+-                    for (j = -1; j <= 1; ++j)
+-                    {
+-                        for (int k = -1; k <= 1; ++k)
+-                        {
+-                            if ((j != 0 || k != 0) && this.worldPointer.isAirBlock(this.position.add(k, 0, j)) && this.worldPointer.isAirBlock(this.position.add(k, 1, j)))
+-                            {
+-                                if (this.worldPointer.getBlockState(this.position.add(k * 2, 0, j * 2)).getBlock() == Blocks.bookshelf)
+-                                {
++                    for (j = -1; j <= 1; ++j) {
++                        for (int k = -1; k <= 1; ++k) {
++                            if ((j != 0 || k != 0) && this.worldPointer.isAirBlock(this.position.add(k, 0, j)) && this.worldPointer.isAirBlock(this.position.add(k, 1, j))) {
++                                if (this.worldPointer.getBlockState(this.position.add(k * 2, 0, j * 2)).getBlock() == Blocks.bookshelf) {
+                                     ++i;
+                                 }
+ 
+-                                if (this.worldPointer.getBlockState(this.position.add(k * 2, 1, j * 2)).getBlock() == Blocks.bookshelf)
+-                                {
++                                if (this.worldPointer.getBlockState(this.position.add(k * 2, 1, j * 2)).getBlock() == Blocks.bookshelf) {
+                                     ++i;
+                                 }
+ 
+-                                if (k != 0 && j != 0)
+-                                {
+-                                    if (this.worldPointer.getBlockState(this.position.add(k * 2, 0, j)).getBlock() == Blocks.bookshelf)
+-                                    {
++                                if (k != 0 && j != 0) {
++                                    if (this.worldPointer.getBlockState(this.position.add(k * 2, 0, j)).getBlock() == Blocks.bookshelf) {
+                                         ++i;
+                                     }
+ 
+-                                    if (this.worldPointer.getBlockState(this.position.add(k * 2, 1, j)).getBlock() == Blocks.bookshelf)
+-                                    {
++                                    if (this.worldPointer.getBlockState(this.position.add(k * 2, 1, j)).getBlock() == Blocks.bookshelf) {
+                                         ++i;
+                                     }
+ 
+-                                    if (this.worldPointer.getBlockState(this.position.add(k, 0, j * 2)).getBlock() == Blocks.bookshelf)
+-                                    {
++                                    if (this.worldPointer.getBlockState(this.position.add(k, 0, j * 2)).getBlock() == Blocks.bookshelf) {
+                                         ++i;
+                                     }
+ 
+-                                    if (this.worldPointer.getBlockState(this.position.add(k, 1, j * 2)).getBlock() == Blocks.bookshelf)
+-                                    {
++                                    if (this.worldPointer.getBlockState(this.position.add(k, 1, j * 2)).getBlock() == Blocks.bookshelf) {
+                                         ++i;
+                                     }
+                                 }
+@@ -195,26 +195,36 @@
+                         }
+                     }
+ 
+-                    this.rand.setSeed((long)this.xpSeed);
++                    this.rand.setSeed((long) this.xpSeed);
+ 
+-                    for (j = 0; j < 3; ++j)
+-                    {
++                    for (j = 0; j < 3; ++j) {
+                         this.enchantLevels[j] = EnchantmentHelper.calcItemStackEnchantability(this.rand, j, i, itemstack);
+                         this.field_178151_h[j] = -1;
+ 
+-                        if (this.enchantLevels[j] < j + 1)
+-                        {
++                        if (this.enchantLevels[j] < j + 1) {
+                             this.enchantLevels[j] = 0;
+                         }
+                     }
+ 
+-                    for (j = 0; j < 3; ++j)
+-                    {
+-                        if (this.enchantLevels[j] > 0)
+-                        {
++                    // CraftBukkit start
++                    CraftItemStack item = CraftItemStack.asCraftMirror(itemstack);
++                    PrepareItemEnchantEvent event = new PrepareItemEnchantEvent(player, this.getBukkitView(), this.worldPointer.getWorld().getBlockAt(position.getX(), position.getY(), position.getZ()), item, this.enchantLevels, i);
++                    event.setCancelled(!itemstack.isItemEnchantable());
++                    this.worldPointer.getServer().getPluginManager().callEvent(event);
++
++                    if (event.isCancelled()) {
++                        for (i = 0; i < 3; ++i) {
++                            this.enchantLevels[i] = 0;
++                        }
++                        return;
++                    }
++                    // CraftBukkit end
++
++                    for (j = 0; j < 3; ++j) {
++                        if (this.enchantLevels[j] > 0) {
+                             List list = this.func_178148_a(itemstack, j, this.enchantLevels[j]);
+ 
+-                            if (list != null && !list.isEmpty())
+-                            {
+-                                EnchantmentData enchantmentdata = (EnchantmentData)list.get(this.rand.nextInt(list.size()));
++                            if (list != null && !list.isEmpty()) {
++                                EnchantmentData enchantmentdata = (EnchantmentData) list.get(this.rand.nextInt(list.size()));
+                                 this.field_178151_h[j] = enchantmentdata.enchantmentobj.effectId | enchantmentdata.enchantmentLevel << 8;
+                             }
+                         }
+@@ -224,11 +224,8 @@
+ 
+                     this.detectAndSendChanges();
+                 }
+-            }
+-            else
+-            {
+-                for (i = 0; i < 3; ++i)
+-                {
++            } else {
++                for (i = 0; i < 3; ++i) {
+                     this.enchantLevels[i] = 0;
+                     this.field_178151_h[i] = -1;
+                 }
+@@ -236,52 +236,71 @@
+         }
+     }
+ 
+-    public boolean enchantItem(EntityPlayer playerIn, int id)
+-    {
++    public boolean enchantItem(EntityPlayer playerIn, int id) {
+         ItemStack itemstack = this.tableInventory.getStackInSlot(0);
+         ItemStack itemstack1 = this.tableInventory.getStackInSlot(1);
+         int j = id + 1;
+ 
+-        if ((itemstack1 == null || itemstack1.stackSize < j) && !playerIn.capabilities.isCreativeMode)
+-        {
++        if ((itemstack1 == null || itemstack1.stackSize < j) && !playerIn.capabilities.isCreativeMode) {
+             return false;
+-        }
+-        else if (this.enchantLevels[id] > 0 && itemstack != null && (playerIn.experienceLevel >= j && playerIn.experienceLevel >= this.enchantLevels[id] || playerIn.capabilities.isCreativeMode))
+-        {
+-            if (!this.worldPointer.isRemote)
+-            {
++        } else if (this.enchantLevels[id] > 0 && itemstack != null && (playerIn.experienceLevel >= j && playerIn.experienceLevel >= this.enchantLevels[id] || playerIn.capabilities.isCreativeMode)) {
++            if (!this.worldPointer.isRemote) {
+                 List list = this.func_178148_a(itemstack, id, this.enchantLevels[id]);
++                // CraftBukkit start - Provide an empty enchantment list
++                if (list == null) {
++                    list = new ArrayList();
++                }
++                // CraftBukkit end
+                 boolean flag = itemstack.getItem() == Items.book;
+ 
+-                if (list != null)
+-                {
+-                    playerIn.removeExperienceLevel(j);
++                if (list != null) {
++                    // CraftBukkit start
++                    Map<Enchantment, Integer> enchants = new HashMap();
++                    for (Object obj : list) {
++                        EnchantmentData instance = (EnchantmentData) obj;
++                        enchants.put(org.bukkit.enchantments.Enchantment.getById(instance.enchantmentobj.effectId), instance.enchantmentLevel);
++                    }
++                    CraftItemStack item = CraftItemStack.asCraftMirror(itemstack);
+ 
+-                    if (flag)
+-                    {
++                    EnchantItemEvent event = new EnchantItemEvent((Player) playerIn.getBukkitEntity(), this.getBukkitView(), this.worldPointer.getWorld().getBlockAt(position.getX(), position.getY(), position.getZ()), item, this.enchantLevels[id], enchants, id);
++                    this.worldPointer.getServer().getPluginManager().callEvent(event);
++
++                    int level = event.getExpLevelCost();
++                    if (event.isCancelled() || (level > playerIn.experienceLevel && !playerIn.capabilities.isCreativeMode) || event.getEnchantsToAdd().isEmpty()) {
++                        return false;
++                    }
++
++                    if (flag) {
+                         itemstack.setItem(Items.enchanted_book);
+                     }
+ 
+-                    for (int k = 0; k < list.size(); ++k)
+-                    {
+-                        EnchantmentData enchantmentdata = (EnchantmentData)list.get(k);
++                    for (Entry<Enchantment, Integer> entry : event.getEnchantsToAdd().entrySet()) {
++                        try {
++                            if (flag) {
++                                int enchantId = entry.getKey().getId();
++                                if (Enchantment.getById(enchantId) == null) {
++                                    continue;
++                                }
+ 
+-                        if (flag)
+-                        {
+-                            Items.enchanted_book.addEnchantment(itemstack, enchantmentdata);
++                                EnchantmentData enchantment = new EnchantmentData(net.minecraft.enchantment.Enchantment.getEnchantmentById(enchantId), entry.getValue());
++                                Items.enchanted_book.addEnchantment(itemstack, enchantment);
++                            } else {
++                                item.addUnsafeEnchantment(entry.getKey(), entry.getValue());
++                            }
++                        } catch (IllegalArgumentException e) {
++                            /* Just swallow invalid enchantments */
+                         }
+-                        else
+-                        {
+-                            itemstack.addEnchantment(enchantmentdata.enchantmentobj, enchantmentdata.enchantmentLevel);
+-                        }
+                     }
+ 
+-                    if (!playerIn.capabilities.isCreativeMode)
+-                    {
++                    playerIn.removeExperienceLevel(j);
++                    // CraftBukkit end
++
++                    // CraftBukkit - TODO: let plugins change this
++
++                    if (!playerIn.capabilities.isCreativeMode) {
+                         itemstack1.stackSize -= j;
+ 
+-                        if (itemstack1.stackSize <= 0)
+-                        {
+-                            this.tableInventory.setInventorySlotContents(1, (ItemStack)null);
++                        if (itemstack1.stackSize <= 0) {
++                            this.tableInventory.setInventorySlotContents(1, (ItemStack) null);
+                         }
+                     }
+ 
+@@ -293,118 +293,90 @@
+             }
+ 
+             return true;
+-        }
+-        else
+-        {
++        } else {
+             return false;
+         }
+     }
+ 
+-    private List func_178148_a(ItemStack p_178148_1_, int p_178148_2_, int p_178148_3_)
+-    {
+-        this.rand.setSeed((long)(this.xpSeed + p_178148_2_));
++    private List func_178148_a(ItemStack p_178148_1_, int p_178148_2_, int p_178148_3_) {
++        this.rand.setSeed((long) (this.xpSeed + p_178148_2_));
+         List list = EnchantmentHelper.buildEnchantmentList(this.rand, p_178148_1_, p_178148_3_);
+ 
+-        if (p_178148_1_.getItem() == Items.book && list != null && list.size() > 1)
+-        {
++        if (p_178148_1_.getItem() == Items.book && list != null && list.size() > 1) {
+             list.remove(this.rand.nextInt(list.size()));
+         }
+ 
+         return list;
+     }
+ 
+-    @SideOnly(Side.CLIENT)
+-    public int getLapisAmount()
+-    {
+-        ItemStack itemstack = this.tableInventory.getStackInSlot(1);
+-        return itemstack == null ? 0 : itemstack.stackSize;
+-    }
+-
+-    public void onContainerClosed(EntityPlayer playerIn)
+-    {
++    public void onContainerClosed(EntityPlayer playerIn) {
+         super.onContainerClosed(playerIn);
+-
+-        if (!this.worldPointer.isRemote)
+-        {
+-            for (int i = 0; i < this.tableInventory.getSizeInventory(); ++i)
+-            {
++        // CraftBukkit Start - If an enchantable was opened from a null location, set the world to the player's world, preventing a crash
++        if (this.worldPointer == null) {
++            this.worldPointer = playerIn.getEntityWorld();
++        }
++        // CraftBukkit end
++        if (!this.worldPointer.isRemote) {
++            for (int i = 0; i < this.tableInventory.getSizeInventory(); ++i) {
+                 ItemStack itemstack = this.tableInventory.getStackInSlotOnClosing(i);
+ 
+-                if (itemstack != null)
+-                {
++                if (itemstack != null) {
+                     playerIn.dropPlayerItemWithRandomChoice(itemstack, false);
+                 }
+             }
+         }
+     }
+ 
+-    public boolean canInteractWith(EntityPlayer playerIn)
+-    {
+-        return this.worldPointer.getBlockState(this.position).getBlock() != Blocks.enchanting_table ? false : playerIn.getDistanceSq((double)this.position.getX() + 0.5D, (double)this.position.getY() + 0.5D, (double)this.position.getZ() + 0.5D) <= 64.0D;
++    public boolean canInteractWith(EntityPlayer playerIn) {
++        if (!this.checkReachable) return true; // CraftBukkit
++        return this.worldPointer.getBlockState(this.position).getBlock() != Blocks.enchanting_table ? false : playerIn.getDistanceSq((double) this.position.getX() + 0.5D, (double) this.position.getY() + 0.5D, (double) this.position.getZ() + 0.5D) <= 64.0D;
+     }
+ 
+-    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
+-    {
++    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+         ItemStack itemstack = null;
+-        Slot slot = (Slot)this.inventorySlots.get(index);
++        Slot slot = (Slot) this.inventorySlots.get(index);
+ 
+-        if (slot != null && slot.getHasStack())
+-        {
++        if (slot != null && slot.getHasStack()) {
+             ItemStack itemstack1 = slot.getStack();
+             itemstack = itemstack1.copy();
+ 
+-            if (index == 0)
+-            {
+-                if (!this.mergeItemStack(itemstack1, 2, 38, true))
+-                {
++            if (index == 0) {
++                if (!this.mergeItemStack(itemstack1, 2, 38, true)) {
+                     return null;
+                 }
+-            }
+-            else if (index == 1)
+-            {
+-                if (!this.mergeItemStack(itemstack1, 2, 38, true))
+-                {
++            } else if (index == 1) {
++                if (!this.mergeItemStack(itemstack1, 2, 38, true)) {
+                     return null;
+                 }
+-            }
+-            else if (itemstack1.getItem() == Items.dye && EnumDyeColor.byDyeDamage(itemstack1.getMetadata()) == EnumDyeColor.BLUE)
+-            {
+-                if (!this.mergeItemStack(itemstack1, 1, 2, true))
+-                {
++            } else if (itemstack1.getItem() == Items.dye && EnumDyeColor.byDyeDamage(itemstack1.getMetadata()) == EnumDyeColor.BLUE) {
++                if (!this.mergeItemStack(itemstack1, 1, 2, true)) {
+                     return null;
+                 }
+-            }
+-            else
+-            {
+-                if (((Slot)this.inventorySlots.get(0)).getHasStack() || !((Slot)this.inventorySlots.get(0)).isItemValid(itemstack1))
+-                {
++            } else {
++                if (((Slot) this.inventorySlots.get(0)).getHasStack() || !((Slot) this.inventorySlots.get(0)).isItemValid(itemstack1)) {
+                     return null;
+                 }
+ 
+-                if (itemstack1.hasTagCompound() && itemstack1.stackSize == 1)
+-                {
+-                    ((Slot)this.inventorySlots.get(0)).putStack(itemstack1.copy());
++                if (itemstack1.hasTagCompound() && itemstack1.stackSize == 1) {
++                    ((Slot) this.inventorySlots.get(0)).putStack(itemstack1.copy());
+                     itemstack1.stackSize = 0;
+-                }
+-                else if (itemstack1.stackSize >= 1)
+-                {
+-                    ((Slot)this.inventorySlots.get(0)).putStack(new ItemStack(itemstack1.getItem(), 1, itemstack1.getMetadata()));
++                } else if (itemstack1.stackSize >= 1) {
++                    // Spigot start
++                    ItemStack clone = itemstack1.copy();
++                    clone.stackSize = 1;
++                    ((Slot) this.inventorySlots.get(0)).putStack(clone);
++                    // Spigot end
+                     --itemstack1.stackSize;
+                 }
+             }
+ 
+-            if (itemstack1.stackSize == 0)
+-            {
+-                slot.putStack((ItemStack)null);
+-            }
+-            else
+-            {
++            if (itemstack1.stackSize == 0) {
++                slot.putStack((ItemStack) null);
++            } else {
+                 slot.onSlotChanged();
+             }
+ 
+-            if (itemstack1.stackSize == itemstack.stackSize)
+-            {
++            if (itemstack1.stackSize == itemstack.stackSize) {
+                 return null;
+             }
+ 
+@@ -412,4 +412,17 @@
+ 
+         return itemstack;
+     }
+-}
++
++    // CraftBukkit start
++    @Override
++    public org.bukkit.craftbukkit.inventory.CraftInventoryView getBukkitView() {
++        if (bukkitEntity != null) {
++            return bukkitEntity;
++        }
++
++        CraftInventoryEnchanting inventory = new CraftInventoryEnchanting(this.tableInventory);
++        bukkitEntity = new CraftInventoryView(this.player, inventory, this);
++        return bukkitEntity;
++    }
++    // CraftBukkit end
++}

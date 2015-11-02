@@ -1,0 +1,43 @@
+---a/net/minecraft/entity/EntitySpawnPlacementRegistry.java
++++b/net/minecraft/entity/EntitySpawnPlacementRegistry.java
+@@ -1,8 +1,6 @@
+ package net.minecraft.entity;
+ 
+-import com.google.common.collect.Maps;
+ import java.util.HashMap;
++
+ import net.minecraft.entity.boss.EntityDragon;
+ import net.minecraft.entity.boss.EntityWither;
+ import net.minecraft.entity.monster.EntityBlaze;
+@@ -35,18 +35,21 @@
+ import net.minecraft.entity.passive.EntityVillager;
+ import net.minecraft.entity.passive.EntityWolf;
+ 
+-public class EntitySpawnPlacementRegistry
+-{
++import com.google.common.collect.Maps;
++
++public class EntitySpawnPlacementRegistry {
++
+     private static final HashMap field_180110_a = Maps.newHashMap();
+     private static final String __OBFID = "CL_00002254";
+ 
+-    public static EntityLiving.SpawnPlacementType func_180109_a(Class p_180109_0_)
+-    {
+-        return (EntityLiving.SpawnPlacementType)field_180110_a.get(p_180109_0_);
++    public static EntityLiving.SpawnPlacementType func_180109_a(Class p_180109_0_) {
++        return (EntityLiving.SpawnPlacementType) field_180110_a.get(p_180109_0_);
+     }
+ 
+-    static
+-    {
++    static {
+         field_180110_a.put(EntityBat.class, EntityLiving.SpawnPlacementType.ON_GROUND);
+         field_180110_a.put(EntityChicken.class, EntityLiving.SpawnPlacementType.ON_GROUND);
+         field_180110_a.put(EntityCow.class, EntityLiving.SpawnPlacementType.ON_GROUND);
+@@ -80,4 +80,4 @@
+         field_180110_a.put(EntityWitch.class, EntityLiving.SpawnPlacementType.ON_GROUND);
+         field_180110_a.put(EntityZombie.class, EntityLiving.SpawnPlacementType.ON_GROUND);
+     }
+-}
++}

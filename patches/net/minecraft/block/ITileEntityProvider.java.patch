@@ -1,0 +1,13 @@
+---a/net/minecraft/block/ITileEntityProvider.java
++++b/net/minecraft/block/ITileEntityProvider.java
+@@ -3,8 +3,8 @@
+ import net.minecraft.tileentity.TileEntity;
+ import net.minecraft.world.World;
+ 
+-public interface ITileEntityProvider
+-{
++public interface ITileEntityProvider {
++
+     TileEntity createNewTileEntity(World worldIn, int meta);
+-}
++}

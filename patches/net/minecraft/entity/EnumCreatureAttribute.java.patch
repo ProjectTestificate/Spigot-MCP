@@ -1,0 +1,15 @@
+---a/net/minecraft/entity/EnumCreatureAttribute.java
++++b/net/minecraft/entity/EnumCreatureAttribute.java
+@@ -1,11 +1,9 @@
+ package net.minecraft.entity;
+ 
+-public enum EnumCreatureAttribute
+-{
++public enum EnumCreatureAttribute {
+     UNDEFINED,
+     UNDEAD,
+     ARTHROPOD;
+ 
+     private static final String __OBFID = "CL_00001553";
+-}
++}

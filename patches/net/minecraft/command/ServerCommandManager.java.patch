@@ -1,0 +1,109 @@
+---a/net/minecraft/command/ServerCommandManager.java
++++b/net/minecraft/command/ServerCommandManager.java
+@@ -1,6 +1,7 @@
+ package net.minecraft.command;
+ 
+ import java.util.Iterator;
++
+ import net.minecraft.command.common.CommandReplaceItem;
+ import net.minecraft.command.server.CommandAchievement;
+ import net.minecraft.command.server.CommandBanIp;
+@@ -34,12 +34,12 @@
+ import net.minecraft.util.ChatComponentTranslation;
+ import net.minecraft.util.EnumChatFormatting;
+ 
+-public class ServerCommandManager extends CommandHandler implements IAdminCommand
+-{
++public class ServerCommandManager extends CommandHandler implements IAdminCommand {
++
+     private static final String __OBFID = "CL_00000922";
+ 
+-    public ServerCommandManager()
+-    {
++    public ServerCommandManager() {
+         this.registerCommand(new CommandTime());
+         this.registerCommand(new CommandGameMode());
+         this.registerCommand(new CommandDifficulty());
+@@ -84,8 +84,7 @@
+         this.registerCommand(new CommandTitle());
+         this.registerCommand(new CommandEntityData());
+ 
+-        if (MinecraftServer.getServer().isDedicatedServer())
+-        {
++        if (MinecraftServer.getServer().isDedicatedServer()) {
+             this.registerCommand(new CommandOp());
+             this.registerCommand(new CommandDeOp());
+             this.registerCommand(new CommandStop());
+@@ -101,61 +101,49 @@
+             this.registerCommand(new CommandListPlayers());
+             this.registerCommand(new CommandWhitelist());
+             this.registerCommand(new CommandSetPlayerTimeout());
+-        }
+-        else
+-        {
++        } else {
+             this.registerCommand(new CommandPublishLocalServer());
+         }
+ 
+         CommandBase.setAdminCommander(this);
+     }
+ 
+-    public void notifyOperators(ICommandSender sender, ICommand command, int p_152372_3_, String msgFormat, Object ... msgParams)
+-    {
++    public void notifyOperators(ICommandSender sender, ICommand command, int p_152372_3_, String msgFormat, Object... msgParams) {
+         boolean flag = true;
+         MinecraftServer minecraftserver = MinecraftServer.getServer();
+ 
+-        if (!sender.sendCommandFeedback())
+-        {
++        if (!sender.sendCommandFeedback()) {
+             flag = false;
+         }
+ 
+-        ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("chat.type.admin", new Object[] {sender.getName(), new ChatComponentTranslation(msgFormat, msgParams)});
++        ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("chat.type.admin", new Object[]{sender.getName(), new ChatComponentTranslation(msgFormat, msgParams)});
+         chatcomponenttranslation.getChatStyle().setColor(EnumChatFormatting.GRAY);
+         chatcomponenttranslation.getChatStyle().setItalic(Boolean.valueOf(true));
+ 
+-        if (flag)
+-        {
++        if (flag) {
+             Iterator iterator = minecraftserver.getConfigurationManager().playerEntityList.iterator();
+ 
+-            while (iterator.hasNext())
+-            {
+-                EntityPlayer entityplayer = (EntityPlayer)iterator.next();
++            while (iterator.hasNext()) {
++                EntityPlayer entityplayer = (EntityPlayer) iterator.next();
+ 
+-                if (entityplayer != sender && minecraftserver.getConfigurationManager().canSendCommands(entityplayer.getGameProfile()) && command.canCommandSenderUse(sender))
+-                {
++                if (entityplayer != sender && minecraftserver.getConfigurationManager().canSendCommands(entityplayer.getGameProfile()) && command.canCommandSenderUse(sender)) {
+                     entityplayer.addChatMessage(chatcomponenttranslation);
+                 }
+             }
+         }
+ 
+-        if (sender != minecraftserver && minecraftserver.worldServers[0].getGameRules().getGameRuleBooleanValue("logAdminCommands"))
+-        {
++        if (sender != minecraftserver && minecraftserver.worldServers[0].getGameRules().getGameRuleBooleanValue("logAdminCommands") && !org.spigotmc.SpigotConfig.silentCommandBlocks) { // Spigot        {
+             minecraftserver.addChatMessage(chatcomponenttranslation);
+         }
+ 
+         boolean flag1 = minecraftserver.worldServers[0].getGameRules().getGameRuleBooleanValue("sendCommandFeedback");
+ 
+-        if (sender instanceof CommandBlockLogic)
+-        {
+-            flag1 = ((CommandBlockLogic)sender).shouldTrackOutput();
++        if (sender instanceof CommandBlockLogic) {
++            flag1 = ((CommandBlockLogic) sender).shouldTrackOutput();
+         }
+ 
+-        if ((p_152372_3_ & 1) != 1 && flag1)
+-        {
++        if ((p_152372_3_ & 1) != 1 && flag1) {
+             sender.addChatMessage(new ChatComponentTranslation(msgFormat, msgParams));
+         }
+     }
+-}
++}

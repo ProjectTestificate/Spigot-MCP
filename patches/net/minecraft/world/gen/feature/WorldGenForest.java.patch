@@ -1,0 +1,165 @@
+---a/net/minecraft/world/gen/feature/WorldGenForest.java
++++b/net/minecraft/world/gen/feature/WorldGenForest.java
+@@ -1,6 +1,7 @@
+ package net.minecraft.world.gen.feature;
+ 
+ import java.util.Random;
++
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockPlanks;
+ import net.minecraft.block.material.Material;
+@@ -8,99 +8,78 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.world.World;
+ 
+-public class WorldGenForest extends WorldGenAbstractTree
+-{
++public class WorldGenForest extends WorldGenAbstractTree {
++
+     private boolean field_150531_a;
+     private static final String __OBFID = "CL_00000401";
+ 
+-    public WorldGenForest(boolean p_i45449_1_, boolean p_i45449_2_)
+-    {
++    public WorldGenForest(boolean p_i45449_1_, boolean p_i45449_2_) {
+         super(p_i45449_1_);
+         this.field_150531_a = p_i45449_2_;
+     }
+ 
+-    public boolean generate(World worldIn, Random p_180709_2_, BlockPos p_180709_3_)
+-    {
++    public boolean generate(World worldIn, Random p_180709_2_, BlockPos p_180709_3_) {
+         int i = p_180709_2_.nextInt(3) + 5;
+ 
+-        if (this.field_150531_a)
+-        {
++        if (this.field_150531_a) {
+             i += p_180709_2_.nextInt(7);
+         }
+ 
+         boolean flag = true;
+ 
+-        if (p_180709_3_.getY() >= 1 && p_180709_3_.getY() + i + 1 <= 256)
+-        {
++        if (p_180709_3_.getY() >= 1 && p_180709_3_.getY() + i + 1 <= 256) {
+             int k;
+             int l;
+ 
+-            for (int j = p_180709_3_.getY(); j <= p_180709_3_.getY() + 1 + i; ++j)
+-            {
++            for (int j = p_180709_3_.getY(); j <= p_180709_3_.getY() + 1 + i; ++j) {
+                 byte b0 = 1;
+ 
+-                if (j == p_180709_3_.getY())
+-                {
++                if (j == p_180709_3_.getY()) {
+                     b0 = 0;
+                 }
+ 
+-                if (j >= p_180709_3_.getY() + 1 + i - 2)
+-                {
++                if (j >= p_180709_3_.getY() + 1 + i - 2) {
+                     b0 = 2;
+                 }
+ 
+-                for (k = p_180709_3_.getX() - b0; k <= p_180709_3_.getX() + b0 && flag; ++k)
+-                {
+-                    for (l = p_180709_3_.getZ() - b0; l <= p_180709_3_.getZ() + b0 && flag; ++l)
+-                    {
+-                        if (j >= 0 && j < 256)
+-                        {
+-                            if (!this.func_150523_a(worldIn.getBlockState(new BlockPos(k, j, l)).getBlock()))
+-                            {
++                for (k = p_180709_3_.getX() - b0; k <= p_180709_3_.getX() + b0 && flag; ++k) {
++                    for (l = p_180709_3_.getZ() - b0; l <= p_180709_3_.getZ() + b0 && flag; ++l) {
++                        if (j >= 0 && j < 256) {
++                            if (!this.func_150523_a(worldIn.getBlockState(new BlockPos(k, j, l)).getBlock())) {
+                                 flag = false;
+                             }
+-                        }
+-                        else
+-                        {
++                        } else {
+                             flag = false;
+                         }
+                     }
+                 }
+             }
+ 
+-            if (!flag)
+-            {
++            if (!flag) {
+                 return false;
+-            }
+-            else
+-            {
++            } else {
+                 Block block1 = worldIn.getBlockState(p_180709_3_.down()).getBlock();
+ 
+-                if ((block1 == Blocks.grass || block1 == Blocks.dirt || block1 == Blocks.farmland) && p_180709_3_.getY() < 256 - i - 1)
+-                {
++                if ((block1 == Blocks.grass || block1 == Blocks.dirt || block1 == Blocks.farmland) && p_180709_3_.getY() < 256 - i - 1) {
+                     this.func_175921_a(worldIn, p_180709_3_.down());
+                     int i2;
+ 
+-                    for (i2 = p_180709_3_.getY() - 3 + i; i2 <= p_180709_3_.getY() + i; ++i2)
+-                    {
++                    for (i2 = p_180709_3_.getY() - 3 + i; i2 <= p_180709_3_.getY() + i; ++i2) {
+                         k = i2 - (p_180709_3_.getY() + i);
+                         l = 1 - k / 2;
+ 
+-                        for (int i1 = p_180709_3_.getX() - l; i1 <= p_180709_3_.getX() + l; ++i1)
+-                        {
++                        for (int i1 = p_180709_3_.getX() - l; i1 <= p_180709_3_.getX() + l; ++i1) {
+                             int j1 = i1 - p_180709_3_.getX();
+ 
+-                            for (int k1 = p_180709_3_.getZ() - l; k1 <= p_180709_3_.getZ() + l; ++k1)
+-                            {
++                            for (int k1 = p_180709_3_.getZ() - l; k1 <= p_180709_3_.getZ() + l; ++k1) {
+                                 int l1 = k1 - p_180709_3_.getZ();
+ 
+-                                if (Math.abs(j1) != l || Math.abs(l1) != l || p_180709_2_.nextInt(2) != 0 && k != 0)
+-                                {
++                                if (Math.abs(j1) != l || Math.abs(l1) != l || p_180709_2_.nextInt(2) != 0 && k != 0) {
+                                     BlockPos blockpos1 = new BlockPos(i1, i2, k1);
+                                     Block block = worldIn.getBlockState(blockpos1).getBlock();
+ 
+-                                    if (block.getMaterial() == Material.air || block.getMaterial() == Material.leaves)
+-                                    {
++                                    if (block.getMaterial() == Material.air || block.getMaterial() == Material.leaves) {
+                                         this.func_175905_a(worldIn, blockpos1, Blocks.leaves, BlockPlanks.EnumType.BIRCH.getMetadata());
+                                     }
+                                 }
+@@ -108,28 +108,21 @@
+                         }
+                     }
+ 
+-                    for (i2 = 0; i2 < i; ++i2)
+-                    {
++                    for (i2 = 0; i2 < i; ++i2) {
+                         Block block2 = worldIn.getBlockState(p_180709_3_.up(i2)).getBlock();
+ 
+-                        if (block2.getMaterial() == Material.air || block2.getMaterial() == Material.leaves)
+-                        {
++                        if (block2.getMaterial() == Material.air || block2.getMaterial() == Material.leaves) {
+                             this.func_175905_a(worldIn, p_180709_3_.up(i2), Blocks.log, BlockPlanks.EnumType.BIRCH.getMetadata());
+                         }
+                     }
+ 
+                     return true;
+-                }
+-                else
+-                {
++                } else {
+                     return false;
+                 }
+             }
+-        }
+-        else
+-        {
++        } else {
+             return false;
+         }
+     }
+-}
++}

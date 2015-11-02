@@ -1,0 +1,19 @@
+---a/net/minecraft/command/ICommandSender.java
++++b/net/minecraft/command/ICommandSender.java
+@@ -6,8 +6,8 @@
+ import net.minecraft.util.Vec3;
+ import net.minecraft.world.World;
+ 
+-public interface ICommandSender
+-{
++public interface ICommandSender {
++
+     String getName();
+ 
+     IChatComponent getDisplayName();
+@@ -27,4 +27,4 @@
+     boolean sendCommandFeedback();
+ 
+     void setCommandStat(CommandResultStats.Type type, int amount);
+-}
++}

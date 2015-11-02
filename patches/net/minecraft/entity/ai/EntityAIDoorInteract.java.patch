@@ -1,0 +1,119 @@
+---a/net/minecraft/entity/ai/EntityAIDoorInteract.java
++++b/net/minecraft/entity/ai/EntityAIDoorInteract.java
+@@ -9,8 +9,8 @@
+ import net.minecraft.pathfinding.PathPoint;
+ import net.minecraft.util.BlockPos;
+ 
+-public abstract class EntityAIDoorInteract extends EntityAIBase
+-{
++public abstract class EntityAIDoorInteract extends EntityAIBase {
++
+     protected EntityLiving theEntity;
+     protected BlockPos doorPosition;
+     protected BlockDoor doorBlock;
+@@ -19,41 +19,31 @@
+     float entityPositionZ;
+     private static final String __OBFID = "CL_00001581";
+ 
+-    public EntityAIDoorInteract(EntityLiving entityIn)
+-    {
++    public EntityAIDoorInteract(EntityLiving entityIn) {
+         this.doorPosition = BlockPos.ORIGIN;
+         this.theEntity = entityIn;
+ 
+-        if (!(entityIn.getNavigator() instanceof PathNavigateGround))
+-        {
++        if (!(entityIn.getNavigator() instanceof PathNavigateGround)) {
+             throw new IllegalArgumentException("Unsupported mob type for DoorInteractGoal");
+         }
+     }
+ 
+-    public boolean shouldExecute()
+-    {
+-        if (!this.theEntity.isCollidedHorizontally)
+-        {
++    public boolean shouldExecute() {
++        if (!this.theEntity.isCollidedHorizontally) {
+             return false;
+-        }
+-        else
+-        {
+-            PathNavigateGround pathnavigateground = (PathNavigateGround)this.theEntity.getNavigator();
++        } else {
++            PathNavigateGround pathnavigateground = (PathNavigateGround) this.theEntity.getNavigator();
+             PathEntity pathentity = pathnavigateground.getPath();
+ 
+-            if (pathentity != null && !pathentity.isFinished() && pathnavigateground.func_179686_g())
+-            {
+-                for (int i = 0; i < Math.min(pathentity.getCurrentPathIndex() + 2, pathentity.getCurrentPathLength()); ++i)
+-                {
++            if (pathentity != null && !pathentity.isFinished() && pathnavigateground.func_179686_g()) {
++                for (int i = 0; i < Math.min(pathentity.getCurrentPathIndex() + 2, pathentity.getCurrentPathLength()); ++i) {
+                     PathPoint pathpoint = pathentity.getPathPointFromIndex(i);
+                     this.doorPosition = new BlockPos(pathpoint.xCoord, pathpoint.yCoord + 1, pathpoint.zCoord);
+ 
+-                    if (this.theEntity.getDistanceSq((double)this.doorPosition.getX(), this.theEntity.posY, (double)this.doorPosition.getZ()) <= 2.25D)
+-                    {
++                    if (this.theEntity.getDistanceSq((double) this.doorPosition.getX(), this.theEntity.posY, (double) this.doorPosition.getZ()) <= 2.25D) {
+                         this.doorBlock = this.func_179506_a(this.doorPosition);
+ 
+-                        if (this.doorBlock != null)
+-                        {
++                        if (this.doorBlock != null) {
+                             return true;
+                         }
+                     }
+@@ -62,43 +62,34 @@
+                 this.doorPosition = (new BlockPos(this.theEntity)).up();
+                 this.doorBlock = this.func_179506_a(this.doorPosition);
+                 return this.doorBlock != null;
+-            }
+-            else
+-            {
++            } else {
+                 return false;
+             }
+         }
+     }
+ 
+-    public boolean continueExecuting()
+-    {
++    public boolean continueExecuting() {
+         return !this.hasStoppedDoorInteraction;
+     }
+ 
+-    public void startExecuting()
+-    {
++    public void startExecuting() {
+         this.hasStoppedDoorInteraction = false;
+-        this.entityPositionX = (float)((double)((float)this.doorPosition.getX() + 0.5F) - this.theEntity.posX);
+-        this.entityPositionZ = (float)((double)((float)this.doorPosition.getZ() + 0.5F) - this.theEntity.posZ);
++        this.entityPositionX = (float) ((double) ((float) this.doorPosition.getX() + 0.5F) - this.theEntity.posX);
++        this.entityPositionZ = (float) ((double) ((float) this.doorPosition.getZ() + 0.5F) - this.theEntity.posZ);
+     }
+ 
+-    public void updateTask()
+-    {
+-        float f = (float)((double)((float)this.doorPosition.getX() + 0.5F) - this.theEntity.posX);
+-        float f1 = (float)((double)((float)this.doorPosition.getZ() + 0.5F) - this.theEntity.posZ);
++    public void updateTask() {
++        float f = (float) ((double) ((float) this.doorPosition.getX() + 0.5F) - this.theEntity.posX);
++        float f1 = (float) ((double) ((float) this.doorPosition.getZ() + 0.5F) - this.theEntity.posZ);
+         float f2 = this.entityPositionX * f + this.entityPositionZ * f1;
+ 
+-        if (f2 < 0.0F)
+-        {
++        if (f2 < 0.0F) {
+             this.hasStoppedDoorInteraction = true;
+         }
+     }
+ 
+-    private BlockDoor func_179506_a(BlockPos p_179506_1_)
+-    {
++    private BlockDoor func_179506_a(BlockPos p_179506_1_) {
+         Block block = this.theEntity.worldObj.getBlockState(p_179506_1_).getBlock();
+-        return block instanceof BlockDoor && block.getMaterial() == Material.wood ? (BlockDoor)block : null;
++        return block instanceof BlockDoor && block.getMaterial() == Material.wood ? (BlockDoor) block : null;
+     }
+-}
++}

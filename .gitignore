@@ -1,0 +1,20 @@
+# Maven
+target
+
+# IntelliJ
+.idea
+*.iml
+
+# Python Scripts
+gradle.log
+__pycache__
+
+# ForgeGradle
+*.gradle
+gradle-decompile/build.gradle
+gradle-decompile/projects
+gradle-decompile/build
+
+# Lets not get sued by MCP
+decompiled
+src/main/java/net/minecraft

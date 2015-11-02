@@ -1,0 +1,41 @@
+---a/net/minecraft/item/ItemSnowball.java
++++b/net/minecraft/item/ItemSnowball.java
+@@ -6,32 +6,28 @@
+ import net.minecraft.stats.StatList;
+ import net.minecraft.world.World;
+ 
+-public class ItemSnowball extends Item
+-{
++public class ItemSnowball extends Item {
++
+     private static final String __OBFID = "CL_00000069";
+ 
+-    public ItemSnowball()
+-    {
++    public ItemSnowball() {
+         this.maxStackSize = 16;
+         this.setCreativeTab(CreativeTabs.tabMisc);
+     }
+ 
+-    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
+-    {
+-        if (!playerIn.capabilities.isCreativeMode)
+-        {
++    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
++        if (!playerIn.capabilities.isCreativeMode) {
+             --itemStackIn.stackSize;
+         }
+ 
+         worldIn.playSoundAtEntity(playerIn, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+ 
+-        if (!worldIn.isRemote)
+-        {
++        if (!worldIn.isRemote) {
+             worldIn.spawnEntityInWorld(new EntitySnowball(worldIn, playerIn));
+         }
+ 
+         playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+         return itemStackIn;
+     }
+-}
++}

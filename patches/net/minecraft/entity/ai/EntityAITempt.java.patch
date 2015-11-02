@@ -1,0 +1,148 @@
+---a/net/minecraft/entity/ai/EntityAITempt.java
++++b/net/minecraft/entity/ai/EntityAITempt.java
+@@ -6,8 +6,8 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.pathfinding.PathNavigateGround;
+ 
+-public class EntityAITempt extends EntityAIBase
+-{
++public class EntityAITempt extends EntityAIBase {
++
+     private EntityCreature temptedEntity;
+     private double speed;
+     private double targetX;
+@@ -23,109 +23,85 @@
+     private boolean field_75286_m;
+     private static final String __OBFID = "CL_00001616";
+ 
+-    public EntityAITempt(EntityCreature p_i45316_1_, double speedIn, Item p_i45316_4_, boolean p_i45316_5_)
+-    {
++    public EntityAITempt(EntityCreature p_i45316_1_, double speedIn, Item p_i45316_4_, boolean p_i45316_5_) {
+         this.temptedEntity = p_i45316_1_;
+         this.speed = speedIn;
+         this.temptItem = p_i45316_4_;
+         this.scaredByPlayerMovement = p_i45316_5_;
+         this.setMutexBits(3);
+ 
+-        if (!(p_i45316_1_.getNavigator() instanceof PathNavigateGround))
+-        {
++        if (!(p_i45316_1_.getNavigator() instanceof PathNavigateGround)) {
+             throw new IllegalArgumentException("Unsupported mob type for TemptGoal");
+         }
+     }
+ 
+-    public boolean shouldExecute()
+-    {
+-        if (this.delayTemptCounter > 0)
+-        {
++    public boolean shouldExecute() {
++        if (this.delayTemptCounter > 0) {
+             --this.delayTemptCounter;
+             return false;
+-        }
+-        else
+-        {
++        } else {
+             this.temptingPlayer = this.temptedEntity.worldObj.getClosestPlayerToEntity(this.temptedEntity, 10.0D);
+ 
+-            if (this.temptingPlayer == null)
+-            {
++            if (this.temptingPlayer == null) {
+                 return false;
+-            }
+-            else
+-            {
++            } else {
+                 ItemStack itemstack = this.temptingPlayer.getCurrentEquippedItem();
+                 return itemstack == null ? false : itemstack.getItem() == this.temptItem;
+             }
+         }
+     }
+ 
+-    public boolean continueExecuting()
+-    {
+-        if (this.scaredByPlayerMovement)
+-        {
+-            if (this.temptedEntity.getDistanceSqToEntity(this.temptingPlayer) < 36.0D)
+-            {
+-                if (this.temptingPlayer.getDistanceSq(this.targetX, this.targetY, this.targetZ) > 0.010000000000000002D)
+-                {
++    public boolean continueExecuting() {
++        if (this.scaredByPlayerMovement) {
++            if (this.temptedEntity.getDistanceSqToEntity(this.temptingPlayer) < 36.0D) {
++                if (this.temptingPlayer.getDistanceSq(this.targetX, this.targetY, this.targetZ) > 0.010000000000000002D) {
+                     return false;
+                 }
+ 
+-                if (Math.abs((double)this.temptingPlayer.rotationPitch - this.field_75278_f) > 5.0D || Math.abs((double)this.temptingPlayer.rotationYaw - this.field_75279_g) > 5.0D)
+-                {
++                if (Math.abs((double) this.temptingPlayer.rotationPitch - this.field_75278_f) > 5.0D || Math.abs((double) this.temptingPlayer.rotationYaw - this.field_75279_g) > 5.0D) {
+                     return false;
+                 }
+-            }
+-            else
+-            {
++            } else {
+                 this.targetX = this.temptingPlayer.posX;
+                 this.targetY = this.temptingPlayer.posY;
+                 this.targetZ = this.temptingPlayer.posZ;
+             }
+ 
+-            this.field_75278_f = (double)this.temptingPlayer.rotationPitch;
+-            this.field_75279_g = (double)this.temptingPlayer.rotationYaw;
++            this.field_75278_f = (double) this.temptingPlayer.rotationPitch;
++            this.field_75279_g = (double) this.temptingPlayer.rotationYaw;
+         }
+ 
+         return this.shouldExecute();
+     }
+ 
+-    public void startExecuting()
+-    {
++    public void startExecuting() {
+         this.targetX = this.temptingPlayer.posX;
+         this.targetY = this.temptingPlayer.posY;
+         this.targetZ = this.temptingPlayer.posZ;
+         this.isRunning = true;
+-        this.field_75286_m = ((PathNavigateGround)this.temptedEntity.getNavigator()).func_179689_e();
+-        ((PathNavigateGround)this.temptedEntity.getNavigator()).func_179690_a(false);
++        this.field_75286_m = ((PathNavigateGround) this.temptedEntity.getNavigator()).func_179689_e();
++        ((PathNavigateGround) this.temptedEntity.getNavigator()).func_179690_a(false);
+     }
+ 
+-    public void resetTask()
+-    {
++    public void resetTask() {
+         this.temptingPlayer = null;
+         this.temptedEntity.getNavigator().clearPathEntity();
+         this.delayTemptCounter = 100;
+         this.isRunning = false;
+-        ((PathNavigateGround)this.temptedEntity.getNavigator()).func_179690_a(this.field_75286_m);
++        ((PathNavigateGround) this.temptedEntity.getNavigator()).func_179690_a(this.field_75286_m);
+     }
+ 
+-    public void updateTask()
+-    {
+-        this.temptedEntity.getLookHelper().setLookPositionWithEntity(this.temptingPlayer, 30.0F, (float)this.temptedEntity.getVerticalFaceSpeed());
++    public void updateTask() {
++        this.temptedEntity.getLookHelper().setLookPositionWithEntity(this.temptingPlayer, 30.0F, (float) this.temptedEntity.getVerticalFaceSpeed());
+ 
+-        if (this.temptedEntity.getDistanceSqToEntity(this.temptingPlayer) < 6.25D)
+-        {
++        if (this.temptedEntity.getDistanceSqToEntity(this.temptingPlayer) < 6.25D) {
+             this.temptedEntity.getNavigator().clearPathEntity();
+-        }
+-        else
+-        {
++        } else {
+             this.temptedEntity.getNavigator().tryMoveToEntityLiving(this.temptingPlayer, this.speed);
+         }
+     }
+ 
+-    public boolean isRunning()
+-    {
++    public boolean isRunning() {
+         return this.isRunning;
+     }
+-}
++}

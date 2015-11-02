@@ -1,0 +1,16 @@
+---a/net/minecraft/dispenser/IPosition.java
++++b/net/minecraft/dispenser/IPosition.java
+@@ -1,11 +1,11 @@
+ package net.minecraft.dispenser;
+ 
+-public interface IPosition
+-{
++public interface IPosition {
++
+     double getX();
+ 
+     double getY();
+ 
+     double getZ();
+-}
++}

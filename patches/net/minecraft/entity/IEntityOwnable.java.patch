@@ -1,0 +1,14 @@
+---a/net/minecraft/entity/IEntityOwnable.java
++++b/net/minecraft/entity/IEntityOwnable.java
+@@ -1,9 +1,9 @@
+ package net.minecraft.entity;
+ 
+-public interface IEntityOwnable
+-{
++public interface IEntityOwnable {
++
+     String getOwnerId();
+ 
+     Entity getOwner();
+-}
++}

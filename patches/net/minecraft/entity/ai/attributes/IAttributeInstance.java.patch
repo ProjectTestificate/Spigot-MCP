@@ -1,0 +1,27 @@
+---a/net/minecraft/entity/ai/attributes/IAttributeInstance.java
++++b/net/minecraft/entity/ai/attributes/IAttributeInstance.java
+@@ -2,11 +2,7 @@
+ 
+ import java.util.Collection;
+ import java.util.UUID;
+-import net.minecraftforge.fml.relauncher.Side;
+-import net.minecraftforge.fml.relauncher.SideOnly;
+ 
+-public interface IAttributeInstance
+-{
++
++public interface IAttributeInstance {
++
+     IAttribute getAttribute();
+ 
+     double getBaseValue();
+@@ -25,10 +25,4 @@
+ 
+     void removeModifier(AttributeModifier p_111124_1_);
+ 
+-    @SideOnly(Side.CLIENT)
+-    void removeAllModifiers();
+-
+     double getAttributeValue();
+-}
++}

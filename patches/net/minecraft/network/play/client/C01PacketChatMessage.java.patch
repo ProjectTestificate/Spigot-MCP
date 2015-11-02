@@ -1,0 +1,85 @@
+---a/net/minecraft/network/play/client/C01PacketChatMessage.java
++++b/net/minecraft/network/play/client/C01PacketChatMessage.java
+@@ -1,49 +1,65 @@
+ package net.minecraft.network.play.client;
+ 
+ import java.io.IOException;
++import java.util.concurrent.ExecutorService;
++import java.util.concurrent.Executors;
++
+ import net.minecraft.network.INetHandler;
+ import net.minecraft.network.Packet;
+ import net.minecraft.network.PacketBuffer;
+ import net.minecraft.network.play.INetHandlerPlayServer;
+ 
+-public class C01PacketChatMessage implements Packet
+-{
++import com.google.common.util.concurrent.ThreadFactoryBuilder;
++
++public class C01PacketChatMessage implements Packet {
++
+     private String message;
+     private static final String __OBFID = "CL_00001347";
+ 
+-    public C01PacketChatMessage() {}
++    public C01PacketChatMessage() {
++    }
+ 
+-    public C01PacketChatMessage(String messageIn)
+-    {
+-        if (messageIn.length() > 100)
+-        {
++    public C01PacketChatMessage(String messageIn) {
++        if (messageIn.length() > 100) {
+             messageIn = messageIn.substring(0, 100);
+         }
+ 
+         this.message = messageIn;
+     }
+ 
+-    public void readPacketData(PacketBuffer buf) throws IOException
+-    {
++    public void readPacketData(PacketBuffer buf) throws IOException {
+         this.message = buf.readStringFromBuffer(100);
+     }
+ 
+-    public void writePacketData(PacketBuffer buf) throws IOException
+-    {
++    public void writePacketData(PacketBuffer buf) throws IOException {
+         buf.writeString(this.message);
+     }
+ 
+-    public void processPacket(INetHandlerPlayServer handler)
+-    {
++    // Spigot Start
++    private static final ExecutorService executors = Executors.newCachedThreadPool(new ThreadFactoryBuilder().setDaemon(true).setNameFormat("Async Chat Thread - #%d").build());
++
++    public void processPacket(INetHandlerPlayServer handler) {
+         handler.processChatMessage(this);
+     }
+ 
+-    public String getMessage()
+-    {
++    public String getMessage() {
+         return this.message;
+     }
+ 
+-    public void processPacket(INetHandler handler)
+-    {
+-        this.processPacket((INetHandlerPlayServer)handler);
++    public void processPacket(final INetHandler handler) {
++        if (!message.startsWith("/")) {
++            executors.submit(new Runnable() {
++
++                @Override
++                public void run() {
++                    C01PacketChatMessage.this.processPacket((INetHandlerPlayServer) handler);
++                }
++            });
++            return;
++        }
++        // Spigot End
++        this.processPacket((INetHandlerPlayServer) handler);
+     }
+-}
++}
