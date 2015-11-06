@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockGlowstone.java
-+++b/net/minecraft/block/BlockGlowstone.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockGlowstone.java
++++ src\main\java\net\minecraft\block\BlockGlowstone.java
+@@ -1,41 +1,37 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -8,7 +8,8 @@
  import net.minecraft.block.material.MapColor;
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
-@@ -9,34 +9,29 @@
+ import net.minecraft.creativetab.CreativeTabs;
+ import net.minecraft.init.Items;
  import net.minecraft.item.Item;
  import net.minecraft.util.MathHelper;
  
@@ -48,5 +49,4 @@
 +    public MapColor getMapColor(IBlockState state) {
          return MapColor.sandColor;
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenShrub.java
-+++b/net/minecraft/world/gen/feature/WorldGenShrub.java
-@@ -1,67 +1,64 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenShrub.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenShrub.java
+@@ -1,68 +1,64 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -84,5 +84,4 @@
  
          return true;
      }
--}
-+}
+ }

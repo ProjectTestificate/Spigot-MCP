@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenTrees.java
-+++b/net/minecraft/world/gen/feature/WorldGenTrees.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenTrees.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenTrees.java
+@@ -1,242 +1,195 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -8,7 +8,8 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockVine;
  import net.minecraft.block.material.Material;
-@@ -9,21 +9,20 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -34,7 +35,7 @@
          super(p_i2028_1_);
          this.minTreeHeight = p_i2028_2_;
          this.metaWood = p_i2028_3_;
-@@ -31,59 +31,44 @@
+         this.metaLeaves = p_i2028_4_;
          this.vinesGrow = p_i2028_5_;
      }
  
@@ -107,7 +108,9 @@
                      this.func_175921_a(worldIn, p_180709_3_.down());
                      b0 = 3;
                      byte b1 = 0;
-@@ -93,26 +93,21 @@
+                     int i1;
+                     int j1;
+                     int k1;
                      int l1;
                      BlockPos blockpos1;
  
@@ -139,7 +142,7 @@
                                          this.func_175905_a(worldIn, blockpos1, Blocks.leaves, this.metaLeaves);
                                      }
                                  }
-@@ -120,76 +120,60 @@
+                             }
                          }
                      }
  
@@ -232,7 +235,7 @@
                                              this.func_175923_a(worldIn, blockpos2, BlockVine.NORTH_FLAG);
                                          }
                                      }
-@@ -197,14 +197,10 @@
+                                 }
                              }
                          }
  
@@ -251,7 +254,10 @@
                                          j1 = p_180709_2_.nextInt(3);
                                          EnumFacing enumfacing = EnumFacing.getHorizontal(i1).getOpposite();
                                          this.func_175905_a(worldIn, p_180709_3_.add(enumfacing.getFrontOffsetX(), i - 5 + l, enumfacing.getFrontOffsetZ()), Blocks.cocoa, j1 << 2 | EnumFacing.getHorizontal(i1).getHorizontalIndex());
-@@ -215,30 +215,22 @@
+                                     }
+                                 }
+                             }
+                         }
                      }
  
                      return true;
@@ -283,5 +289,4 @@
              p_175923_2_ = p_175923_2_.down();
          }
      }
--}
-+}
+ }

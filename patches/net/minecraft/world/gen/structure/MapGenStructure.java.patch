@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/structure/MapGenStructure.java
-+++b/net/minecraft/world/gen/structure/MapGenStructure.java
-@@ -1,12 +1,10 @@
+--- decompiled\net\minecraft\world\gen\structure\MapGenStructure.java
++++ src\main\java\net\minecraft\world\gen\structure\MapGenStructure.java
+@@ -1,13 +1,13 @@
  package net.minecraft.world.gen.structure;
  
 -import com.google.common.collect.Maps;
@@ -13,7 +13,11 @@
  import net.minecraft.crash.CrashReport;
  import net.minecraft.crash.CrashReportCategory;
  import net.minecraft.nbt.NBTBase;
-@@ -17,57 +17,55 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.util.BlockPos;
+@@ -15,264 +15,229 @@
+ import net.minecraft.world.ChunkCoordIntPair;
+ import net.minecraft.world.World;
  import net.minecraft.world.chunk.ChunkPrimer;
  import net.minecraft.world.gen.MapGenBase;
  
@@ -93,7 +97,8 @@
                          return MapGenStructure.this.getClass().getCanonicalName();
                      }
                  });
-@@ -76,20 +76,17 @@
+                 throw new ReportedException(crashreport);
+             }
          }
      }
  
@@ -118,7 +123,10 @@
                  structurestart.generateStructure(worldIn, p_175794_2_, new StructureBoundingBox(i, j, i + 15, j + 15));
                  structurestart.func_175787_b(p_175794_3_);
                  flag = true;
-@@ -100,30 +100,24 @@
+                 this.func_143026_a(structurestart.func_143019_e(), structurestart.func_143018_f(), structurestart);
+             }
+         }
+ 
          return flag;
      }
  
@@ -157,7 +165,9 @@
                          return structurestart;
                      }
                  }
-@@ -133,133 +133,112 @@
+             }
+         }
+ 
          return null;
      }
  
@@ -330,7 +340,9 @@
                                  this.structureMap.put(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(i, j)), structurestart);
                              }
                          }
-@@ -269,8 +269,7 @@
+                     }
+                 }
+             }
          }
      }
  
@@ -340,9 +352,5 @@
          this.field_143029_e.func_143043_a(p_143026_3_.func_143021_a(p_143026_1_, p_143026_2_), p_143026_1_, p_143026_2_);
          this.field_143029_e.markDirty();
      }
-@@ -278,4 +278,4 @@
-     protected abstract boolean canSpawnStructureAtCoords(int p_75047_1_, int p_75047_2_);
  
-     protected abstract StructureStart getStructureStart(int p_75049_1_, int p_75049_2_);
--}
-+}
+     protected abstract boolean canSpawnStructureAtCoords(int p_75047_1_, int p_75047_2_);

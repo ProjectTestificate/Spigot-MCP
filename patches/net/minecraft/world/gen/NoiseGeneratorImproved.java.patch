@@ -1,6 +1,7 @@
----a/net/minecraft/world/gen/NoiseGeneratorImproved.java
-+++b/net/minecraft/world/gen/NoiseGeneratorImproved.java
-@@ -2,39 +2,36 @@
+--- decompiled\net\minecraft\world\gen\NoiseGeneratorImproved.java
++++ src\main\java\net\minecraft\world\gen\NoiseGeneratorImproved.java
+@@ -1,69 +1,61 @@
+ package net.minecraft.world.gen;
  
  import java.util.Random;
  
@@ -51,7 +52,8 @@
              int j = p_i45469_1_.nextInt(256 - i) + i;
              int k = this.permutations[i];
              this.permutations[i] = this.permutations[j];
-@@ -43,25 +43,21 @@
+             this.permutations[j] = k;
+             this.permutations[i + 256] = this.permutations[i];
          }
      }
  
@@ -81,7 +83,11 @@
          int l;
          int i1;
          double d9;
-@@ -74,8 +74,7 @@
+         double d11;
+         int l1;
+@@ -72,47 +64,42 @@
+         int j2;
+         double d13;
          int k5;
          int j6;
  
@@ -91,7 +97,9 @@
              boolean flag7 = false;
              boolean flag8 = false;
              boolean flag = false;
-@@ -85,35 +85,30 @@
+             boolean flag9 = false;
+             double d21 = 0.0D;
+             double d22 = 0.0D;
              k5 = 0;
              double d23 = 1.0D / p_76308_17_;
  
@@ -134,7 +142,11 @@
                      d13 = d12 * d12 * d12 * (d12 * (d12 * 6.0D - 15.0D) + 10.0D);
                      l = this.permutations[k1] + 0;
                      int i4 = this.permutations[l] + j2;
-@@ -123,9 +123,7 @@
+                     int j4 = this.permutations[k1 + 1] + 0;
+                     i1 = this.permutations[j4] + j2;
+@@ -121,13 +108,11 @@
+                     double d24 = this.lerp(d13, d21, d22);
+                     j6 = k5++;
                      p_76308_1_[j6] += d24 * d23;
                  }
              }
@@ -145,7 +157,11 @@
              l = 0;
              double d7 = 1.0D / p_76308_17_;
              i1 = -1;
-@@ -140,52 +140,45 @@
+             boolean flag1 = false;
+             boolean flag2 = false;
+@@ -138,54 +123,47 @@
+             double d8 = 0.0D;
+             d9 = 0.0D;
              double d10 = 0.0D;
              d11 = 0.0D;
  
@@ -212,9 +228,5 @@
                              i1 = l3;
                              int k4 = this.permutations[j2] + l3;
                              int l4 = this.permutations[k4] + i3;
-@@ -207,4 +207,4 @@
-             }
-         }
-     }
--}
-+}
+                             int i5 = this.permutations[k4 + 1] + i3;
+                             int j5 = this.permutations[j2 + 1] + l3;

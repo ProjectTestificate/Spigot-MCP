@@ -1,6 +1,6 @@
----a/net/minecraft/util/Tuple.java
-+++b/net/minecraft/util/Tuple.java
-@@ -1,25 +1,22 @@
+--- decompiled\net\minecraft\util\Tuple.java
++++ src\main\java\net\minecraft\util\Tuple.java
+@@ -1,24 +1,21 @@
  package net.minecraft.util;
  
 -public class Tuple
@@ -29,5 +29,4 @@
 +    public Object getSecond() {
          return this.b;
      }
--}
-+}
+ }

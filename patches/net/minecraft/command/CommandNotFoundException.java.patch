@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandNotFoundException.java
-+++b/net/minecraft/command/CommandNotFoundException.java
-@@ -1,17 +1,15 @@
+--- decompiled\net\minecraft\command\CommandNotFoundException.java
++++ src\main\java\net\minecraft\command\CommandNotFoundException.java
+@@ -1,16 +1,14 @@
  package net.minecraft.command;
  
 -public class CommandNotFoundException extends CommandException
@@ -20,5 +20,4 @@
 +    public CommandNotFoundException(String p_i1363_1_, Object... p_i1363_2_) {
          super(p_i1363_1_, p_i1363_2_);
      }
--}
-+}
+ }

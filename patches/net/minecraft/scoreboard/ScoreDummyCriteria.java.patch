@@ -1,6 +1,7 @@
----a/net/minecraft/scoreboard/ScoreDummyCriteria.java
-+++b/net/minecraft/scoreboard/ScoreDummyCriteria.java
-@@ -2,35 +2,30 @@
+--- decompiled\net\minecraft\scoreboard\ScoreDummyCriteria.java
++++ src\main\java\net\minecraft\scoreboard\ScoreDummyCriteria.java
+@@ -1,35 +1,30 @@
+ package net.minecraft.scoreboard;
  
  import java.util.List;
  
@@ -41,5 +42,4 @@
 +    public IScoreObjectiveCriteria.EnumRenderType getRenderType() {
          return IScoreObjectiveCriteria.EnumRenderType.INTEGER;
      }
--}
-+}
+ }

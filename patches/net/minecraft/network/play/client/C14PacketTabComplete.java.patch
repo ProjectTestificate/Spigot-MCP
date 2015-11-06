@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/client/C14PacketTabComplete.java
-+++b/net/minecraft/network/play/client/C14PacketTabComplete.java
-@@ -1,71 +1,65 @@
+--- decompiled\net\minecraft\network\play\client\C14PacketTabComplete.java
++++ src\main\java\net\minecraft\network\play\client\C14PacketTabComplete.java
+@@ -1,72 +1,65 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -90,5 +90,4 @@
 +    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
--}
-+}
+ }

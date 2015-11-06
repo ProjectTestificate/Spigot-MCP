@@ -1,6 +1,6 @@
----a/net/minecraft/inventory/InventoryBasic.java
-+++b/net/minecraft/inventory/InventoryBasic.java
-@@ -1,116 +1,130 @@
+--- decompiled\net\minecraft\inventory\InventoryBasic.java
++++ src\main\java\net\minecraft\inventory\InventoryBasic.java
+@@ -1,231 +1,225 @@
  package net.minecraft.inventory;
  
 -import com.google.common.collect.Lists;
@@ -179,7 +179,7 @@
                          this.markDirty();
                          return null;
                      }
-@@ -119,114 +119,94 @@
+                 }
              }
          }
  
@@ -321,5 +321,4 @@
              this.inventoryContents[i] = null;
          }
      }
--}
-+}
+ }

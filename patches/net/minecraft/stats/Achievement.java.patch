@@ -1,6 +1,8 @@
----a/net/minecraft/stats/Achievement.java
-+++b/net/minecraft/stats/Achievement.java
-@@ -6,131 +6,95 @@
+--- decompiled\net\minecraft\stats\Achievement.java
++++ src\main\java\net\minecraft\stats\Achievement.java
+@@ -4,131 +4,98 @@
+ import net.minecraft.item.Item;
+ import net.minecraft.item.ItemStack;
  import net.minecraft.util.ChatComponentTranslation;
  import net.minecraft.util.EnumChatFormatting;
  import net.minecraft.util.IChatComponent;
@@ -150,5 +152,4 @@
 +    public StatBase initIndependentStat() {
          return this.setIndependent();
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/world/gen/layer/GenLayerBiome.java
-+++b/net/minecraft/world/gen/layer/GenLayerBiome.java
-@@ -4,8 +4,8 @@
+--- decompiled\net\minecraft\world\gen\layer\GenLayerBiome.java
++++ src\main\java\net\minecraft\world\gen\layer\GenLayerBiome.java
+@@ -2,115 +2,79 @@
+ 
+ import net.minecraft.world.WorldType;
  import net.minecraft.world.biome.BiomeGenBase;
  import net.minecraft.world.gen.ChunkProviderSettings;
  
@@ -11,7 +13,7 @@
      private BiomeGenBase[] field_151623_c;
      private BiomeGenBase[] field_151621_d;
      private BiomeGenBase[] field_151622_e;
-@@ -13,101 +13,66 @@
+     private BiomeGenBase[] field_151620_f;
      private final ChunkProviderSettings field_175973_g;
      private static final String __OBFID = "CL_00000555";
  
@@ -143,9 +145,5 @@
                      aint1[j1 + i1 * areaWidth] = BiomeGenBase.mushroomIsland.biomeID;
                  }
              }
-@@ -116,4 +116,4 @@
+         }
  
-         return aint1;
-     }
--}
-+}

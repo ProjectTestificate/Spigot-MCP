@@ -1,6 +1,6 @@
----a/net/minecraft/world/SpawnerAnimals.java
-+++b/net/minecraft/world/SpawnerAnimals.java
-@@ -1,11 +1,9 @@
+--- decompiled\net\minecraft\world\SpawnerAnimals.java
++++ src\main\java\net\minecraft\world\SpawnerAnimals.java
+@@ -1,12 +1,12 @@
  package net.minecraft.world;
  
 -import com.google.common.collect.Sets;
@@ -12,7 +12,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.entity.EntityLiving;
  import net.minecraft.entity.EntitySpawnPlacementRegistry;
-@@ -18,55 +18,78 @@
+ import net.minecraft.entity.EnumCreatureType;
+ import net.minecraft.entity.IEntityLivingData;
+@@ -16,159 +16,193 @@
+ import net.minecraft.util.MathHelper;
+ import net.minecraft.util.WeightedRandom;
  import net.minecraft.world.biome.BiomeGenBase;
  import net.minecraft.world.chunk.Chunk;
  
@@ -110,7 +114,10 @@
                          }
                      }
                  }
-@@ -74,36 +74,57 @@
+             }
+ 
+             int k3 = 0;
+             BlockPos blockpos2 = p_77192_1_.getSpawnPoint();
              EnumCreatureType[] aenumcreaturetype = EnumCreatureType.values();
              k = aenumcreaturetype.length;
  
@@ -183,7 +190,8 @@
                                      int k2 = j1;
                                      int l2 = k1;
                                      int i3 = l1;
-@@ -112,65 +112,53 @@
+                                     byte b1 = 6;
+                                     BiomeGenBase.SpawnListEntry spawnlistentry = null;
                                      IEntityLivingData ientitylivingdata = null;
                                      int j3 = 0;
  
@@ -267,7 +275,11 @@
                                                          }
  
                                                          k3 += i2;
-@@ -192,8 +192,7 @@
+                                                     }
+                                                 }
+@@ -190,100 +224,81 @@
+ 
+             return k3;
          }
      }
  
@@ -277,7 +289,8 @@
          Chunk chunk = worldIn.getChunkFromChunkCoords(x, z);
          int k = x * 16 + worldIn.rand.nextInt(16);
          int l = z * 16 + worldIn.rand.nextInt(16);
-@@ -202,31 +202,21 @@
+         int i1 = MathHelper.func_154354_b(chunk.getHeight(new BlockPos(k, 0, l)) + 1, 16);
+         int j1 = worldIn.rand.nextInt(i1 > 0 ? i1 : chunk.getTopFilledSegment() + 16 - 1);
          return new BlockPos(k, j1, l);
      }
  
@@ -315,7 +328,8 @@
                      Block block1 = worldIn.getBlockState(blockpos1).getBlock();
                      boolean flag = block1 != Blocks.bedrock && block1 != Blocks.barrier;
                      return flag && !block.isNormalCube() && !block.getMaterial().isLiquid() && !worldIn.getBlockState(pos.up()).getBlock().isNormalCube();
-@@ -234,12 +234,10 @@
+                 }
+             }
          }
      }
  
@@ -335,7 +349,7 @@
                  int i1 = spawnlistentry.minGroupCount + p_77191_6_.nextInt(1 + spawnlistentry.maxGroupCount - spawnlistentry.minGroupCount);
                  IEntityLivingData ientitylivingdata = null;
                  int j1 = p_77191_2_ + p_77191_6_.nextInt(p_77191_4_);
-@@ -250,38 +250,33 @@
+                 int k1 = p_77191_3_ + p_77191_6_.nextInt(p_77191_5_);
                  int l1 = j1;
                  int i2 = k1;
  
@@ -385,9 +399,5 @@
                              j1 = l1 + p_77191_6_.nextInt(5) - p_77191_6_.nextInt(5);
                          }
                      }
-@@ -289,4 +289,4 @@
+                 }
              }
-         }
-     }
--}
-+}

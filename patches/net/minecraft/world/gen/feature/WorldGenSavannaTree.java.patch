@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenSavannaTree.java
-+++b/net/minecraft/world/gen/feature/WorldGenSavannaTree.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenSavannaTree.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenSavannaTree.java
+@@ -1,128 +1,105 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -8,7 +8,8 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockPlanks;
  import net.minecraft.block.material.Material;
-@@ -9,68 +9,53 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -93,7 +94,9 @@
                      this.func_175921_a(worldIn, p_180709_3_.down());
                      EnumFacing enumfacing = EnumFacing.Plane.HORIZONTAL.random(p_180709_2_);
                      k = i - p_180709_2_.nextInt(4) - 1;
-@@ -80,12 +80,10 @@
+                     l = 3 - p_180709_2_.nextInt(3);
+                     int i1 = p_180709_3_.getX();
+                     int j1 = p_180709_3_.getZ();
                      int k1 = 0;
                      int i2;
  
@@ -108,7 +111,8 @@
                              i1 += enumfacing.getFrontOffsetX();
                              j1 += enumfacing.getFrontOffsetZ();
                              --l;
-@@ -94,8 +94,7 @@
+                         }
+ 
                          BlockPos blockpos1 = new BlockPos(i1, i2, j1);
                          Material material = worldIn.getBlockState(blockpos1).getBlock().getMaterial();
  
@@ -118,7 +122,8 @@
                              this.func_175905_a(worldIn, blockpos1, Blocks.log2, BlockPlanks.EnumType.ACACIA.getMetadata() - 4);
                              k1 = i2;
                          }
-@@ -104,12 +104,9 @@
+                     }
+ 
                      BlockPos blockpos3 = new BlockPos(i1, k1, j1);
                      int k2;
  
@@ -134,7 +139,7 @@
                                  this.func_175924_b(worldIn, blockpos3.add(i2, 0, k2));
                              }
                          }
-@@ -117,10 +117,8 @@
+                     }
  
                      blockpos3 = blockpos3.up();
  
@@ -147,7 +152,11 @@
                              this.func_175924_b(worldIn, blockpos3.add(i2, 0, k2));
                          }
                      }
-@@ -133,25 +133,21 @@
+ 
+                     this.func_175924_b(worldIn, blockpos3.east(2));
+@@ -131,84 +108,68 @@
+                     this.func_175924_b(worldIn, blockpos3.north(2));
+                     i1 = p_180709_3_.getX();
                      j1 = p_180709_3_.getZ();
                      EnumFacing enumfacing1 = EnumFacing.Plane.HORIZONTAL.random(p_180709_2_);
  
@@ -177,7 +186,8 @@
                                      this.func_175905_a(worldIn, blockpos2, Blocks.log2, BlockPlanks.EnumType.ACACIA.getMetadata() - 4);
                                      k1 = j2;
                                  }
-@@ -160,13 +160,11 @@
+                             }
+ 
                              ++l2;
                          }
  
@@ -199,7 +209,7 @@
                                          this.func_175924_b(worldIn, blockpos4.add(j2, 0, i3));
                                      }
                                  }
-@@ -178,10 +178,8 @@
+                             }
  
                              blockpos4 = blockpos4.up();
  
@@ -212,7 +222,7 @@
                                      this.func_175924_b(worldIn, blockpos4.add(j2, 0, i3));
                                  }
                              }
-@@ -189,28 +189,20 @@
+                         }
                      }
  
                      return true;
@@ -242,5 +252,4 @@
              this.func_175905_a(worldIn, p_175924_2_, Blocks.leaves2, 0);
          }
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/network/rcon/RConThreadClient.java
-+++b/net/minecraft/network/rcon/RConThreadClient.java
-@@ -6,13 +6,11 @@
+--- decompiled\net\minecraft\network\rcon\RConThreadClient.java
++++ src\main\java\net\minecraft\network\rcon\RConThreadClient.java
+@@ -4,86 +4,69 @@
+ import java.io.ByteArrayOutputStream;
+ import java.io.DataOutputStream;
  import java.io.IOException;
  import java.net.Socket;
  import java.net.SocketTimeoutException;
@@ -18,7 +20,7 @@
      private static final Logger LOGGER = LogManager.getLogger();
      private boolean loggedIn;
      private Socket clientSocket;
-@@ -21,16 +21,13 @@
+     private byte[] buffer = new byte[1460];
      private String rconPassword;
      private static final String __OBFID = "CL_00001804";
  
@@ -39,7 +41,7 @@
              this.running = false;
          }
  
-@@ -39,33 +39,24 @@
+         this.rconPassword = p_i1537_1_.getStringProperty("rcon.password", "");
          this.logInfo("Rcon connection from: " + socket.getInetAddress());
      }
  
@@ -73,7 +75,9 @@
                          return;
                      }
  
-@@ -69,18 +69,14 @@
+                     int i1 = b0 + 4;
+                     int k = RConUtils.getBytesAsLEInt(this.buffer, i1, i);
+                     i1 += 4;
                      int l = RConUtils.getRemainingBytesAsLEInt(this.buffer, i1);
                      i1 += 4;
  
@@ -97,7 +101,11 @@
                                      this.sendMultipacketResponse(k, "Error executing: " + s1 + " (" + exception.getMessage() + ")");
                                  }
  
-@@ -94,8 +94,7 @@
+                                 continue;
+                             }
+@@ -92,50 +75,40 @@
+                             continue;
+                         case 3:
                              String s = RConUtils.getBytesAsString(this.buffer, i1, i);
                              int j1 = i1 + s.length();
  
@@ -107,7 +115,9 @@
                                  this.loggedIn = true;
                                  this.sendResponse(k, 2, "");
                                  continue;
-@@ -105,24 +105,18 @@
+                             }
+ 
+                             this.loggedIn = false;
                              this.sendLoginFailedResponse();
                              continue;
                          default:
@@ -139,7 +149,7 @@
                  this.closeSocket();
              }
  
-@@ -132,8 +132,7 @@
+             return;
          }
      }
  
@@ -149,7 +159,11 @@
          ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream(1248);
          DataOutputStream dataoutputstream = new DataOutputStream(bytearrayoutputstream);
          byte[] abyte = message.getBytes("UTF-8");
-@@ -146,40 +146,30 @@
+         dataoutputstream.writeInt(Integer.reverseBytes(abyte.length + 10));
+         dataoutputstream.writeInt(Integer.reverseBytes(p_72654_1_));
+@@ -144,39 +117,30 @@
+         dataoutputstream.write(0);
+         dataoutputstream.write(0);
          this.clientSocket.getOutputStream().write(bytearrayoutputstream.toByteArray());
      }
  
@@ -195,6 +209,3 @@
  
              this.clientSocket = null;
          }
-     }
--}
-+}

@@ -1,6 +1,6 @@
----a/net/minecraft/util/ChatStyle.java
-+++b/net/minecraft/util/ChatStyle.java
-@@ -1,5 +1,10 @@
+--- decompiled\net\minecraft\util\ChatStyle.java
++++ src\main\java\net\minecraft\util\ChatStyle.java
+@@ -1,344 +1,254 @@
  package net.minecraft.util;
  
 +import java.lang.reflect.Type;
@@ -11,7 +11,7 @@
  import com.google.gson.JsonDeserializationContext;
  import com.google.gson.JsonDeserializer;
  import com.google.gson.JsonElement;
-@@ -7,17 +7,7 @@
+ import com.google.gson.JsonObject;
  import com.google.gson.JsonPrimitive;
  import com.google.gson.JsonSerializationContext;
  import com.google.gson.JsonSerializer;
@@ -28,7 +28,10 @@
      private ChatStyle parentStyle;
      private EnumChatFormatting color;
      private Boolean bold;
-@@ -25,317 +25,229 @@
+     private Boolean italic;
+     private Boolean underlined;
+     private Boolean strikethrough;
+     private Boolean obfuscated;
      private ClickEvent chatClickEvent;
      private HoverEvent chatHoverEvent;
      private String insertion;
@@ -429,7 +432,11 @@
                          break label65;
                      }
  
-@@ -350,31 +350,33 @@
+                     flag = true;
+                     return flag;
+@@ -348,26 +258,26 @@
+             flag = false;
+             return flag;
          }
      }
  
@@ -465,7 +472,11 @@
          ChatStyle chatstyle = new ChatStyle();
          chatstyle.bold = this.bold;
          chatstyle.italic = this.italic;
-@@ -380,8 +380,7 @@
+         chatstyle.strikethrough = this.strikethrough;
+         chatstyle.underlined = this.underlined;
+@@ -378,12 +288,11 @@
+         chatstyle.parentStyle = this.parentStyle;
+         chatstyle.insertion = this.insertion;
          return chatstyle;
      }
  
@@ -475,7 +486,11 @@
          ChatStyle chatstyle = new ChatStyle();
          chatstyle.setBold(Boolean.valueOf(this.getBold()));
          chatstyle.setItalic(Boolean.valueOf(this.getItalic()));
-@@ -395,177 +395,136 @@
+         chatstyle.setStrikethrough(Boolean.valueOf(this.getStrikethrough()));
+         chatstyle.setUnderlined(Boolean.valueOf(this.getUnderlined()));
+@@ -393,177 +302,143 @@
+         chatstyle.setChatHoverEvent(this.getChatHoverEvent());
+         chatstyle.setInsertion(this.getInsertion());
          return chatstyle;
      }
  
@@ -744,10 +759,9 @@
 +                return jsonobject;
              }
          }
--}
 +
 +        public JsonElement serialize(Object p_serialize_1_, Type p_serialize_2_, JsonSerializationContext p_serialize_3_) {
 +            return this.serialize((ChatStyle) p_serialize_1_, p_serialize_2_, p_serialize_3_);
 +        }
 +    }
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/village/VillageDoorInfo.java
-+++b/net/minecraft/village/VillageDoorInfo.java
-@@ -3,8 +3,8 @@
+--- decompiled\net\minecraft\village\VillageDoorInfo.java
++++ src\main\java\net\minecraft\village\VillageDoorInfo.java
+@@ -1,110 +1,92 @@
+ package net.minecraft.village;
+ 
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  
@@ -11,7 +13,8 @@
      private final BlockPos doorBlockPos;
      private final BlockPos insideBlock;
      private final EnumFacing insideDirection;
-@@ -13,99 +13,80 @@
+     private int lastActivityTimestamp;
+     private boolean isDetachedFromVillageFlag;
      private int doorOpeningRestrictionCounter;
      private static final String __OBFID = "CL_00001630";
  
@@ -130,5 +133,4 @@
 +    public void func_179853_a(boolean p_179853_1_) {
          this.isDetachedFromVillageFlag = p_179853_1_;
      }
--}
-+}
+ }

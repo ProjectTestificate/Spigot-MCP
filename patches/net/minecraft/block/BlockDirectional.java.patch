@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockDirectional.java
-+++b/net/minecraft/block/BlockDirectional.java
-@@ -4,14 +4,13 @@
+--- decompiled\net\minecraft\block\BlockDirectional.java
++++ src\main\java\net\minecraft\block\BlockDirectional.java
+@@ -2,15 +2,14 @@
+ 
+ import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.PropertyDirection;
  import net.minecraft.util.EnumFacing;
  
@@ -16,5 +18,4 @@
 +    protected BlockDirectional(Material materialIn) {
          super(materialIn);
      }
--}
-+}
+ }

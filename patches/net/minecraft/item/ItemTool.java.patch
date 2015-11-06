@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemTool.java
-+++b/net/minecraft/item/ItemTool.java
-@@ -1,8 +1,6 @@
+--- decompiled\net\minecraft\item\ItemTool.java
++++ src\main\java\net\minecraft\item\ItemTool.java
+@@ -1,87 +1,71 @@
  package net.minecraft.item;
  
 -import com.google.common.collect.Multimap;
@@ -9,7 +9,7 @@
  import net.minecraft.block.Block;
  import net.minecraft.creativetab.CreativeTabs;
  import net.minecraft.entity.EntityLivingBase;
-@@ -9,19 +9,17 @@
+ import net.minecraft.entity.SharedMonsterAttributes;
  import net.minecraft.entity.ai.attributes.AttributeModifier;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
@@ -34,7 +34,9 @@
          this.toolMaterial = material;
          this.effectiveBlocks = effectiveBlocks;
          this.maxStackSize = 1;
-@@ -31,58 +31,42 @@
+         this.setMaxDamage(material.getMaxUses());
+         this.efficiencyOnProperMaterial = material.getEfficiencyOnProperMaterial();
+         this.damageVsEntity = attackDamage + material.getDamageVsEntity();
          this.setCreativeTab(CreativeTabs.tabTools);
      }
  
@@ -101,5 +103,4 @@
 +        multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(itemModifierUUID, "Tool modifier", (double) this.damageVsEntity, 0));
          return multimap;
      }
--}
-+}
+ }

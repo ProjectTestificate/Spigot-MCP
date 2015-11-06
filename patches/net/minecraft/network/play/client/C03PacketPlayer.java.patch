@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/client/C03PacketPlayer.java
-+++b/net/minecraft/network/play/client/C03PacketPlayer.java
-@@ -1,222 +1,162 @@
+--- decompiled\net\minecraft\network\play\client\C03PacketPlayer.java
++++ src\main\java\net\minecraft\network\play\client\C03PacketPlayer.java
+@@ -1,223 +1,163 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -313,6 +313,5 @@
 +        public void processPacket(INetHandler handler) {
 +            super.processPacket((INetHandlerPlayServer) handler);
          }
--}
 +    }
-+}
+ }

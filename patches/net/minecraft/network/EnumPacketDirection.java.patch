@@ -1,6 +1,6 @@
----a/net/minecraft/network/EnumPacketDirection.java
-+++b/net/minecraft/network/EnumPacketDirection.java
-@@ -1,10 +1,8 @@
+--- decompiled\net\minecraft\network\EnumPacketDirection.java
++++ src\main\java\net\minecraft\network\EnumPacketDirection.java
+@@ -1,9 +1,8 @@
  package net.minecraft.network;
  
 -public enum EnumPacketDirection
@@ -10,5 +10,4 @@
      CLIENTBOUND;
  
      private static final String __OBFID = "CL_00002307";
--}
-+}
+ }

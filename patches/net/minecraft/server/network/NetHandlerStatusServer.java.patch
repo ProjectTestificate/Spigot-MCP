@@ -1,6 +1,6 @@
----a/net/minecraft/server/network/NetHandlerStatusServer.java
-+++b/net/minecraft/server/network/NetHandlerStatusServer.java
-@@ -1,34 +1,172 @@
+--- decompiled\net\minecraft\server\network\NetHandlerStatusServer.java
++++ src\main\java\net\minecraft\server\network\NetHandlerStatusServer.java
+@@ -1,35 +1,166 @@
  package net.minecraft.server.network;
  
 +import java.net.InetSocketAddress;
@@ -177,5 +177,4 @@
 +        this.networkManager.sendPacket(new S01PacketPong(packetIn.getClientTime()), ChannelFutureListener.CLOSE); // Close on completion
 +        // CraftBukkit end
      }
--}
-+}
+ }

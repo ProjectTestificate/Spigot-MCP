@@ -1,6 +1,6 @@
----a/net/minecraft/block/state/BlockPistonStructureHelper.java
-+++b/net/minecraft/block/state/BlockPistonStructureHelper.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\block\state\BlockPistonStructureHelper.java
++++ src\main\java\net\minecraft\block\state\BlockPistonStructureHelper.java
+@@ -1,184 +1,146 @@
  package net.minecraft.block.state;
  
 -import com.google.common.collect.Lists;
@@ -10,7 +10,8 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockPistonBase;
  import net.minecraft.block.material.Material;
-@@ -11,8 +11,10 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -23,7 +24,8 @@
      private final World world;
      private final BlockPos pistonPos;
      private final BlockPos blockToMove;
-@@ -21,53 +21,38 @@
+     private final EnumFacing moveDirection;
+     private final List toMove = Lists.newArrayList();
      private final List toDestroy = Lists.newArrayList();
      private static final String __OBFID = "CL_00002033";
  
@@ -89,7 +91,8 @@
                      return false;
                  }
              }
-@@ -76,50 +76,34 @@
+ 
+             return true;
          }
      }
  
@@ -151,7 +154,7 @@
                          return false;
                      }
                  }
-@@ -127,29 +127,24 @@
+ 
                  int i1 = 0;
                  int j;
  
@@ -187,7 +190,9 @@
                                  return false;
                              }
                          }
-@@ -159,24 +159,20 @@
+ 
+                         return true;
+                     }
  
                      block = this.world.getBlockState(blockpos2).getBlock();
  
@@ -216,7 +221,11 @@
                          return false;
                      }
  
-@@ -188,8 +188,7 @@
+                     this.toMove.add(blockpos2);
+                     ++i1;
+@@ -186,12 +148,11 @@
+                 }
+             }
          }
      }
  
@@ -226,7 +235,11 @@
          ArrayList arraylist = Lists.newArrayList();
          ArrayList arraylist1 = Lists.newArrayList();
          ArrayList arraylist2 = Lists.newArrayList();
-@@ -202,17 +202,14 @@
+         arraylist.addAll(this.toMove.subList(0, p_177255_2_));
+         arraylist1.addAll(this.toMove.subList(this.toMove.size() - p_177255_1_, this.toMove.size()));
+@@ -200,33 +161,28 @@
+         this.toMove.addAll(arraylist);
+         this.toMove.addAll(arraylist1);
          this.toMove.addAll(arraylist2);
      }
  
@@ -247,7 +260,7 @@
                  return false;
              }
          }
-@@ -220,14 +220,11 @@
+ 
          return true;
      }
  
@@ -262,5 +275,4 @@
 +    public List getBlocksToDestroy() {
          return this.toDestroy;
      }
--}
-+}
+ }

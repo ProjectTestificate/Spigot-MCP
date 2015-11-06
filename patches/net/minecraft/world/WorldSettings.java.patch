@@ -1,6 +1,7 @@
----a/net/minecraft/world/WorldSettings.java
-+++b/net/minecraft/world/WorldSettings.java
-@@ -2,11 +2,7 @@
+--- decompiled\net\minecraft\world\WorldSettings.java
++++ src\main\java\net\minecraft\world\WorldSettings.java
+@@ -1,205 +1,149 @@
+ package net.minecraft.world;
  
  import net.minecraft.entity.player.PlayerCapabilities;
  import net.minecraft.world.storage.WorldInfo;
@@ -15,7 +16,10 @@
      private final long seed;
      private final WorldSettings.GameType theGameType;
      private final boolean mapFeaturesEnabled;
-@@ -17,8 +17,7 @@
+     private final boolean hardcoreEnabled;
+     private final WorldType terrainType;
+     private boolean commandsAllowed;
+     private boolean bonusChestEnabled;
      private String worldName;
      private static final String __OBFID = "CL_00000147";
  
@@ -25,7 +29,8 @@
          this.worldName = "";
          this.seed = seedIn;
          this.theGameType = gameType;
-@@ -27,77 +27,57 @@
+         this.mapFeaturesEnabled = enableMapFeatures;
+         this.hardcoreEnabled = hardcoreMode;
          this.terrainType = worldTypeIn;
      }
  
@@ -116,7 +121,10 @@
          NOT_SET(-1, ""),
          SURVIVAL(0, "survival"),
          CREATIVE(1, "creative"),
-@@ -108,38 +108,30 @@
+         ADVENTURE(2, "adventure"),
+         SPECTATOR(3, "spectator");
+         int id;
+         String name;
  
          private static final String __OBFID = "CL_00000148";
  
@@ -163,7 +171,9 @@
                  capabilities.allowFlying = false;
                  capabilities.isCreativeMode = false;
                  capabilities.disableDamage = false;
-@@ -150,57 +150,31 @@
+                 capabilities.isFlying = false;
+             }
+ 
              capabilities.allowEdit = !this.isAdventure();
          }
  
@@ -225,5 +235,4 @@
 -            return SURVIVAL;
 -        }
      }
--}
-+}
+ }

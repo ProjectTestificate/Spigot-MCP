@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockMycelium.java
-+++b/net/minecraft/block/BlockMycelium.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockMycelium.java
++++ src\main\java\net\minecraft\block\BlockMycelium.java
+@@ -1,91 +1,93 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -8,7 +8,9 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyBool;
-@@ -10,50 +10,53 @@
+ import net.minecraft.block.state.BlockState;
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.creativetab.CreativeTabs;
  import net.minecraft.init.Blocks;
  import net.minecraft.item.Item;
  import net.minecraft.util.BlockPos;
@@ -102,7 +104,7 @@
                          }
                      }
                  }
-@@ -63,41 +63,15 @@
+             }
          }
      }
  
@@ -135,5 +137,4 @@
 +    protected BlockState createBlockState() {
 +        return new BlockState(this, new IProperty[]{SNOWY});
      }
--}
-+}
+ }

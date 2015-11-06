@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/ChunkProviderFlat.java
-+++b/net/minecraft/world/gen/ChunkProviderFlat.java
-@@ -1,11 +1,9 @@
+--- decompiled\net\minecraft\world\gen\ChunkProviderFlat.java
++++ src\main\java\net\minecraft\world\gen\ChunkProviderFlat.java
+@@ -1,12 +1,12 @@
  package net.minecraft.world.gen;
  
 -import com.google.common.collect.Lists;
@@ -12,7 +12,11 @@
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.entity.EnumCreatureType;
  import net.minecraft.init.Blocks;
-@@ -25,8 +25,10 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.IProgressUpdate;
+@@ -23,12 +23,14 @@
+ import net.minecraft.world.gen.structure.MapGenStronghold;
+ import net.minecraft.world.gen.structure.MapGenStructure;
  import net.minecraft.world.gen.structure.MapGenVillage;
  import net.minecraft.world.gen.structure.StructureOceanMonument;
  
@@ -25,7 +29,11 @@
      private World worldObj;
      private Random random;
      private final IBlockState[] cachedBlockIDs = new IBlockState[256];
-@@ -38,56 +38,46 @@
+     private final FlatGeneratorInfo flatWorldGenInfo;
+     private final List structureGenerators = Lists.newArrayList();
+@@ -36,256 +38,213 @@
+     private final boolean hasDungeons;
+     private WorldGenLakes waterLakeGenerator;
      private WorldGenLakes lavaLakeGenerator;
      private static final String __OBFID = "CL_00000391";
  
@@ -97,7 +105,7 @@
              this.lavaLakeGenerator = new WorldGenLakes(Blocks.lava);
          }
  
-@@ -95,17 +95,14 @@
+         this.hasDungeons = this.flatWorldGenInfo.getWorldFeatures().containsKey("dungeon");
          boolean flag1 = true;
          Iterator iterator = this.flatWorldGenInfo.getFlatLayers().iterator();
  
@@ -118,7 +126,9 @@
                      flag1 = false;
                      this.cachedBlockIDs[j] = iblockstate;
                  }
-@@ -114,17 +114,14 @@
+             }
+         }
+ 
          this.hasDecoration = flag1 ? false : this.flatWorldGenInfo.getWorldFeatures().containsKey("decoration");
      }
  
@@ -145,7 +155,8 @@
                          chunkprimer.setBlockState(l, k, i1, iblockstate);
                      }
                  }
-@@ -137,33 +137,29 @@
+             }
+         }
  
          Iterator iterator = this.structureGenerators.iterator();
  
@@ -185,7 +196,8 @@
          int k = p_73153_2_ * 16;
          int l = p_73153_3_ * 16;
          BlockPos blockpos = new BlockPos(k, 0, l);
-@@ -171,94 +171,78 @@
+         BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(new BlockPos(k + 16, 0, l + 16));
+         boolean flag = false;
          this.random.setSeed(this.worldObj.getSeed());
          long i1 = this.random.nextLong() / 2L * 2L + 1L;
          long j1 = this.random.nextLong() / 2L * 2L + 1L;
@@ -304,7 +316,8 @@
                      return mapgenstructure.getClosestStrongholdPos(worldIn, p_180513_3_);
                  }
              }
-@@ -268,25 +268,20 @@
+         }
+ 
          return null;
      }
  
@@ -334,5 +347,4 @@
 +    public Chunk provideChunk(BlockPos blockPosIn) {
          return this.provideChunk(blockPosIn.getX() >> 4, blockPosIn.getZ() >> 4);
      }
--}
-+}
+ }

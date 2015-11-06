@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenSpikes.java
-+++b/net/minecraft/world/gen/feature/WorldGenSpikes.java
-@@ -1,22 +1,23 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenSpikes.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenSpikes.java
+@@ -1,73 +1,62 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -33,7 +33,7 @@
              int i = p_180709_2_.nextInt(32) + 6;
              int j = p_180709_2_.nextInt(4) + 1;
              int k;
-@@ -28,33 +28,25 @@
+             int l;
              int i1;
              int j1;
  
@@ -72,7 +72,7 @@
                              worldIn.setBlockState(new BlockPos(l, k, i1), Blocks.obsidian.getDefaultState(), 2);
                          }
                      }
-@@ -60,14 +60,12 @@
+                 }
              }
  
              EntityEnderCrystal entityendercrystal = new EntityEnderCrystal(worldIn);
@@ -88,5 +88,4 @@
              return false;
          }
      }
--}
-+}
+ }

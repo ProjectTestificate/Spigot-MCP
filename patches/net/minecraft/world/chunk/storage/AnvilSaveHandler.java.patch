@@ -1,6 +1,6 @@
----a/net/minecraft/world/chunk/storage/AnvilSaveHandler.java
-+++b/net/minecraft/world/chunk/storage/AnvilSaveHandler.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\chunk\storage\AnvilSaveHandler.java
++++ src\main\java\net\minecraft\world\chunk\storage\AnvilSaveHandler.java
+@@ -1,62 +1,51 @@
  package net.minecraft.world.chunk.storage;
  
  import java.io.File;
@@ -8,7 +8,8 @@
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.world.WorldProvider;
  import net.minecraft.world.WorldProviderEnd;
-@@ -9,56 +9,44 @@
+ import net.minecraft.world.WorldProviderHell;
+ import net.minecraft.world.storage.SaveHandler;
  import net.minecraft.world.storage.ThreadedFileIOBase;
  import net.minecraft.world.storage.WorldInfo;
  
@@ -74,5 +75,3 @@
  
          RegionFileCache.clearRegionFileReferences();
      }
--}
-+}

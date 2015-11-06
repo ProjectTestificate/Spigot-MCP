@@ -1,6 +1,6 @@
----a/net/minecraft/util/AxisAlignedBB.java
-+++b/net/minecraft/util/AxisAlignedBB.java
-@@ -1,7 +1,7 @@
+--- decompiled\net\minecraft\util\AxisAlignedBB.java
++++ src\main\java\net\minecraft\util\AxisAlignedBB.java
+@@ -1,365 +1,287 @@
  package net.minecraft.util;
  
 -public class AxisAlignedBB
@@ -10,7 +10,8 @@
      public final double minX;
      public final double minY;
      public final double minZ;
-@@ -10,8 +10,7 @@
+     public final double maxX;
+     public final double maxY;
      public final double maxZ;
      private static final String __OBFID = "CL_00000607";
  
@@ -20,7 +21,8 @@
          this.minX = Math.min(x1, x2);
          this.minY = Math.min(y1, y2);
          this.minZ = Math.min(z1, z2);
-@@ -20,24 +20,22 @@
+         this.maxX = Math.max(x1, x2);
+         this.maxY = Math.max(y1, y2);
          this.maxZ = Math.max(z1, z2);
      }
  
@@ -47,7 +49,7 @@
          double d3 = this.minX;
          double d4 = this.minY;
          double d5 = this.minZ;
-@@ -39,38 +39,28 @@
+         double d6 = this.maxX;
          double d7 = this.maxY;
          double d8 = this.maxZ;
  
@@ -93,7 +95,9 @@
          double d3 = this.minX - x;
          double d4 = this.minY - y;
          double d5 = this.minZ - z;
-@@ -80,8 +80,7 @@
+         double d6 = this.maxX + x;
+         double d7 = this.maxY + y;
+         double d8 = this.maxZ + z;
          return new AxisAlignedBB(d3, d4, d5, d6, d7, d8);
      }
  
@@ -103,7 +107,9 @@
          double d0 = Math.min(this.minX, other.minX);
          double d1 = Math.min(this.minY, other.minY);
          double d2 = Math.min(this.minZ, other.minZ);
-@@ -91,8 +91,7 @@
+         double d3 = Math.max(this.maxX, other.maxX);
+         double d4 = Math.max(this.maxY, other.maxY);
+         double d5 = Math.max(this.maxZ, other.maxZ);
          return new AxisAlignedBB(d0, d1, d2, d3, d4, d5);
      }
  
@@ -113,7 +119,9 @@
          double d6 = Math.min(x1, x2);
          double d7 = Math.min(y1, y2);
          double d8 = Math.min(z1, z2);
-@@ -102,130 +102,98 @@
+         double d9 = Math.max(x1, x2);
+         double d10 = Math.max(y1, y2);
+         double d11 = Math.max(z1, z2);
          return new AxisAlignedBB(d6, d7, d8, d9, d10, d11);
      }
  
@@ -270,7 +278,9 @@
          double d3 = this.minX + x;
          double d4 = this.minY + y;
          double d5 = this.minZ + z;
-@@ -235,8 +235,7 @@
+         double d6 = this.maxX - x;
+         double d7 = this.maxY - y;
+         double d8 = this.maxZ - z;
          return new AxisAlignedBB(d3, d4, d5, d6, d7, d8);
      }
  
@@ -280,7 +290,7 @@
          Vec3 vec32 = p_72327_1_.getIntermediateWithXValue(p_72327_2_, this.minX);
          Vec3 vec33 = p_72327_1_.getIntermediateWithXValue(p_72327_2_, this.maxX);
          Vec3 vec34 = p_72327_1_.getIntermediateWithYValue(p_72327_2_, this.minY);
-@@ -244,97 +244,72 @@
+         Vec3 vec35 = p_72327_1_.getIntermediateWithYValue(p_72327_2_, this.maxY);
          Vec3 vec36 = p_72327_1_.getIntermediateWithZValue(p_72327_2_, this.minZ);
          Vec3 vec37 = p_72327_1_.getIntermediateWithZValue(p_72327_2_, this.maxZ);
  
@@ -399,7 +409,7 @@
                  enumfacing = EnumFacing.SOUTH;
              }
  
-@@ -343,24 +343,19 @@
+             return new MovingObjectPosition(vec38, enumfacing);
          }
      }
  
@@ -426,5 +436,4 @@
 +    public String toString() {
          return "box[" + this.minX + ", " + this.minY + ", " + this.minZ + " -> " + this.maxX + ", " + this.maxY + ", " + this.maxZ + "]";
      }
--}
-+}
+ }

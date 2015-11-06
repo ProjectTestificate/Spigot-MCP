@@ -1,6 +1,6 @@
----a/net/minecraft/block/IGrowable.java
-+++b/net/minecraft/block/IGrowable.java
-@@ -1,14 +1,16 @@
+--- decompiled\net\minecraft\block\IGrowable.java
++++ src\main\java\net\minecraft\block\IGrowable.java
+@@ -1,14 +1,15 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -18,5 +18,3 @@
      boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state);
  
      void grow(World worldIn, Random rand, BlockPos pos, IBlockState state);
--}
-+}

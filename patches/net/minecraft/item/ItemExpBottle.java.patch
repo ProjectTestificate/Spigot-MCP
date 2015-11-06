@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemExpBottle.java
-+++b/net/minecraft/item/ItemExpBottle.java
-@@ -5,40 +5,27 @@
+--- decompiled\net\minecraft\item\ItemExpBottle.java
++++ src\main\java\net\minecraft\item\ItemExpBottle.java
+@@ -3,39 +3,28 @@
+ import net.minecraft.creativetab.CreativeTabs;
+ import net.minecraft.entity.item.EntityExpBottle;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.stats.StatList;
  import net.minecraft.world.World;
@@ -45,6 +47,3 @@
  
          playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
          return itemStackIn;
-     }
--}
-+}

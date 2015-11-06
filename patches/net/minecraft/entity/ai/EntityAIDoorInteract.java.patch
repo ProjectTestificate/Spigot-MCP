@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIDoorInteract.java
-+++b/net/minecraft/entity/ai/EntityAIDoorInteract.java
-@@ -9,8 +9,8 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIDoorInteract.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIDoorInteract.java
+@@ -7,96 +7,79 @@
+ import net.minecraft.pathfinding.PathEntity;
+ import net.minecraft.pathfinding.PathNavigateGround;
  import net.minecraft.pathfinding.PathPoint;
  import net.minecraft.util.BlockPos;
  
@@ -11,7 +13,8 @@
      protected EntityLiving theEntity;
      protected BlockPos doorPosition;
      protected BlockDoor doorBlock;
-@@ -19,41 +19,31 @@
+     boolean hasStoppedDoorInteraction;
+     float entityPositionX;
      float entityPositionZ;
      private static final String __OBFID = "CL_00001581";
  
@@ -63,7 +66,8 @@
                              return true;
                          }
                      }
-@@ -62,43 +62,34 @@
+                 }
+ 
                  this.doorPosition = (new BlockPos(this.theEntity)).up();
                  this.doorBlock = this.func_179506_a(this.doorPosition);
                  return this.doorBlock != null;
@@ -115,5 +119,4 @@
 -        return block instanceof BlockDoor && block.getMaterial() == Material.wood ? (BlockDoor)block : null;
 +        return block instanceof BlockDoor && block.getMaterial() == Material.wood ? (BlockDoor) block : null;
      }
--}
-+}
+ }

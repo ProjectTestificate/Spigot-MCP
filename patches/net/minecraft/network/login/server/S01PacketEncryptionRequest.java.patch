@@ -1,6 +1,7 @@
----a/net/minecraft/network/login/server/S01PacketEncryptionRequest.java
-+++b/net/minecraft/network/login/server/S01PacketEncryptionRequest.java
-@@ -2,52 +2,48 @@
+--- decompiled\net\minecraft\network\login\server\S01PacketEncryptionRequest.java
++++ src\main\java\net\minecraft\network\login\server\S01PacketEncryptionRequest.java
+@@ -1,70 +1,49 @@
+ package net.minecraft.network.login.server;
  
  import java.io.IOException;
  import java.security.PublicKey;
@@ -81,5 +82,4 @@
 -    {
 -        return this.verifyToken;
 -    }
--}
-+}
+ }

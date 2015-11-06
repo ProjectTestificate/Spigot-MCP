@@ -1,6 +1,8 @@
----a/net/minecraft/item/crafting/RecipesBanners.java
-+++b/net/minecraft/item/crafting/RecipesBanners.java
-@@ -10,390 +10,316 @@
+--- decompiled\net\minecraft\item\crafting\RecipesBanners.java
++++ src\main\java\net\minecraft\item\crafting\RecipesBanners.java
+@@ -8,391 +8,322 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.nbt.NBTTagList;
  import net.minecraft.tileentity.TileEntityBanner;
  import net.minecraft.world.World;
  
@@ -595,10 +597,9 @@
 -            }
 +            return aitemstack;
          }
--}
 +
 +        RecipeDuplicatePattern(Object p_i45779_1_) {
 +            this();
 +        }
 +    }
-+}
+ }

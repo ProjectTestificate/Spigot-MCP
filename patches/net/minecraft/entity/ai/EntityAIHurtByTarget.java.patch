@@ -1,6 +1,7 @@
----a/net/minecraft/entity/ai/EntityAIHurtByTarget.java
-+++b/net/minecraft/entity/ai/EntityAIHurtByTarget.java
-@@ -2,63 +2,57 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIHurtByTarget.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIHurtByTarget.java
+@@ -1,77 +1,68 @@
+ package net.minecraft.entity.ai;
  
  import java.util.Iterator;
  import java.util.List;
@@ -80,7 +81,9 @@
                          this.func_179446_a(entitycreature, this.taskOwner.getAITarget());
                      }
                  }
-@@ -70,10 +70,8 @@
+             }
+         }
+ 
          super.startExecuting();
      }
  
@@ -90,5 +93,4 @@
 +    protected void func_179446_a(EntityCreature p_179446_1_, EntityLivingBase p_179446_2_) {
 +        p_179446_1_.setGoalTarget(p_179446_2_, org.bukkit.event.entity.EntityTargetEvent.TargetReason.TARGET_ATTACKED_NEARBY_ENTITY, true); // CraftBukkit - reason);
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockFlower.java
-+++b/net/minecraft/block/BlockFlower.java
-@@ -1,73 +1,48 @@
+--- decompiled\net\minecraft\block\BlockFlower.java
++++ src\main\java\net\minecraft\block\BlockFlower.java
+@@ -1,113 +1,80 @@
  package net.minecraft.block;
  
 -import com.google.common.base.Predicate;
@@ -94,7 +94,7 @@
                  }
              });
          }
-@@ -75,38 +75,27 @@
+ 
          return this.type;
      }
  
@@ -140,7 +140,11 @@
          DANDELION(BlockFlower.EnumFlowerColor.YELLOW, 0, "dandelion"),
          POPPY(BlockFlower.EnumFlowerColor.RED, 0, "poppy"),
          BLUE_ORCHID(BlockFlower.EnumFlowerColor.RED, 1, "blue_orchid", "blueOrchid"),
-@@ -124,85 +124,67 @@
+         ALLIUM(BlockFlower.EnumFlowerColor.RED, 2, "allium"),
+         HOUSTONIA(BlockFlower.EnumFlowerColor.RED, 3, "houstonia"),
+@@ -122,86 +89,69 @@
+         private final String name;
+         private final String unlocalizedName;
  
          private static final String __OBFID = "CL_00002119";
  
@@ -243,5 +247,4 @@
              }
          }
      }
--}
-+}
+ }

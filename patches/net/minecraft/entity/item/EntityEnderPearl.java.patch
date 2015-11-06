@@ -1,6 +1,8 @@
----a/net/minecraft/entity/item/EntityEnderPearl.java
-+++b/net/minecraft/entity/item/EntityEnderPearl.java
-@@ -10,61 +10,55 @@
+--- decompiled\net\minecraft\entity\item\EntityEnderPearl.java
++++ src\main\java\net\minecraft\entity\item\EntityEnderPearl.java
+@@ -8,82 +8,86 @@
+ import net.minecraft.entity.projectile.EntityThrowable;
+ import net.minecraft.util.DamageSource;
  import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.util.MovingObjectPosition;
  import net.minecraft.world.World;
@@ -104,7 +106,7 @@
                  }
              }
  
-@@ -73,18 +73,13 @@
+             this.setDead();
          }
      }
  
@@ -124,5 +126,4 @@
              super.onUpdate();
          }
      }
--}
-+}
+ }

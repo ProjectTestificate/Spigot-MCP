@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemSnowball.java
-+++b/net/minecraft/item/ItemSnowball.java
-@@ -6,32 +6,28 @@
+--- decompiled\net\minecraft\item\ItemSnowball.java
++++ src\main\java\net\minecraft\item\ItemSnowball.java
+@@ -4,31 +4,27 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.entity.projectile.EntitySnowball;
  import net.minecraft.stats.StatList;
  import net.minecraft.world.World;
  
@@ -36,6 +38,3 @@
  
          playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
          return itemStackIn;
-     }
--}
-+}

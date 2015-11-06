@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/structure/StructureVillagePieces.java
-+++b/net/minecraft/world/gen/structure/StructureVillagePieces.java
-@@ -1,11 +1,9 @@
+--- decompiled\net\minecraft\world\gen\structure\StructureVillagePieces.java
++++ src\main\java\net\minecraft\world\gen\structure\StructureVillagePieces.java
+@@ -1,12 +1,12 @@
  package net.minecraft.world.gen.structure;
  
 -import com.google.common.collect.Lists;
@@ -12,7 +12,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockSandStone;
  import net.minecraft.block.BlockStairs;
-@@ -26,12 +26,20 @@
+ import net.minecraft.block.BlockTorch;
+ import net.minecraft.block.material.Material;
+@@ -24,16 +24,19 @@
+ import net.minecraft.util.WeightedRandomChestContent;
+ import net.minecraft.world.World;
  import net.minecraft.world.biome.BiomeGenBase;
  import net.minecraft.world.biome.WorldChunkManager;
  
@@ -32,7 +36,11 @@
          MapGenStructureIO.registerStructureComponent(StructureVillagePieces.House1.class, "ViBH");
          MapGenStructureIO.registerStructureComponent(StructureVillagePieces.Field1.class, "ViDF");
          MapGenStructureIO.registerStructureComponent(StructureVillagePieces.Field2.class, "ViF");
-@@ -47,8 +47,7 @@
+         MapGenStructureIO.registerStructureComponent(StructureVillagePieces.Torch.class, "ViL");
+         MapGenStructureIO.registerStructureComponent(StructureVillagePieces.Hall.class, "ViPH");
+@@ -45,12 +48,11 @@
+         MapGenStructureIO.registerStructureComponent(StructureVillagePieces.Path.class, "ViSR");
+         MapGenStructureIO.registerStructureComponent(StructureVillagePieces.House3.class, "ViTRH");
          MapGenStructureIO.registerStructureComponent(StructureVillagePieces.Well.class, "ViW");
      }
  
@@ -42,7 +50,11 @@
          ArrayList arraylist = Lists.newArrayList();
          arraylist.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.House4Garden.class, 4, MathHelper.getRandomIntegerInRange(p_75084_0_, 2 + p_75084_1_, 4 + p_75084_1_ * 2)));
          arraylist.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.Church.class, 20, MathHelper.getRandomIntegerInRange(p_75084_0_, 0 + p_75084_1_, 1 + p_75084_1_)));
-@@ -61,10 +61,8 @@
+         arraylist.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.House1.class, 20, MathHelper.getRandomIntegerInRange(p_75084_0_, 0 + p_75084_1_, 2 + p_75084_1_)));
+         arraylist.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.WoodHut.class, 3, MathHelper.getRandomIntegerInRange(p_75084_0_, 2 + p_75084_1_, 5 + p_75084_1_ * 3)));
+@@ -59,124 +61,91 @@
+         arraylist.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.Field2.class, 3, MathHelper.getRandomIntegerInRange(p_75084_0_, 2 + p_75084_1_, 4 + p_75084_1_ * 2)));
+         arraylist.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.House2.class, 15, MathHelper.getRandomIntegerInRange(p_75084_0_, 0, 1 + p_75084_1_)));
          arraylist.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.House3.class, 8, MathHelper.getRandomIntegerInRange(p_75084_0_, 0 + p_75084_1_, 3 + p_75084_1_ * 2)));
          Iterator iterator = arraylist.iterator();
  
@@ -55,7 +67,7 @@
                  iterator.remove();
              }
          }
-@@ -72,18 +72,15 @@
+ 
          return arraylist;
      }
  
@@ -78,7 +90,7 @@
                  flag = true;
              }
          }
-@@ -91,90 +91,62 @@
+ 
          return flag ? i : -1;
      }
  
@@ -190,7 +202,11 @@
                                  p_176067_0_.structureVillageWeightedPieceList.remove(pieceweight);
                              }
  
-@@ -186,37 +186,28 @@
+                             return village;
+                         }
+@@ -184,1742 +153,1557 @@
+                 }
+             }
  
              StructureBoundingBox structureboundingbox = StructureVillagePieces.Torch.func_175856_a(p_176067_0_, p_176067_1_, p_176067_2_, p_176067_3_, p_176067_4_, p_176067_5_, p_176067_6_);
  
@@ -235,7 +251,7 @@
                      p_176066_1_.add(village);
                      p_176066_0_.field_74932_i.add(village);
                      return village;
-@@ -224,26 +224,18 @@
+                 }
              }
  
              return null;
@@ -266,7 +282,7 @@
                  StructureVillagePieces.Path path = new StructureVillagePieces.Path(p_176069_0_, p_176069_7_, p_176069_2_, structureboundingbox, p_176069_6_);
                  int i1 = (path.boundingBox.minX + path.boundingBox.maxX) / 2;
                  int j1 = (path.boundingBox.minZ + path.boundingBox.maxZ) / 2;
-@@ -250,8 +250,7 @@
+                 int k1 = path.boundingBox.maxX - path.boundingBox.minX;
                  int l1 = path.boundingBox.maxZ - path.boundingBox.minZ;
                  int i2 = k1 > l1 ? k1 : l1;
  
@@ -276,7 +292,7 @@
                      p_176069_1_.add(path);
                      p_176069_0_.field_74930_j.add(path);
                      return path;
-@@ -259,1669 +259,1498 @@
+                 }
              }
  
              return null;
@@ -3138,6 +3154,5 @@
 +            this.spawnVillagers(worldIn, p_74875_3_, 1, 1, 2, 1);
 +            return true;
          }
--}
 +    }
-+}
+ }

@@ -1,6 +1,7 @@
----a/net/minecraft/world/gen/feature/WorldGenBlockBlob.java
-+++b/net/minecraft/world/gen/feature/WorldGenBlockBlob.java
-@@ -2,36 +2,33 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenBlockBlob.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenBlockBlob.java
+@@ -1,71 +1,62 @@
+ package net.minecraft.world.gen.feature;
  
  import java.util.Iterator;
  import java.util.Random;
@@ -48,7 +49,9 @@
                              break label47;
                          }
                      }
-@@ -43,27 +43,23 @@
+ 
+                     p_180709_3_ = p_180709_3_.down();
+                     continue;
                  }
              }
  
@@ -82,9 +85,5 @@
                          worldIn.setBlockState(blockpos1, this.field_150545_a.getDefaultState(), 4);
                      }
                  }
-@@ -74,4 +74,4 @@
-             return true;
-         }
-     }
--}
-+}
+ 
+                 p_180709_3_ = p_180709_3_.add(-(i1 + 1) + p_180709_2_.nextInt(2 + i1 * 2), 0 - p_180709_2_.nextInt(2), -(i1 + 1) + p_180709_2_.nextInt(2 + i1 * 2));

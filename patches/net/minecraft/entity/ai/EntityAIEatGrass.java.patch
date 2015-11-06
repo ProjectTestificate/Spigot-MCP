@@ -1,6 +1,6 @@
----a/net/minecraft/entity/ai/EntityAIEatGrass.java
-+++b/net/minecraft/entity/ai/EntityAIEatGrass.java
-@@ -1,7 +1,5 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIEatGrass.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIEatGrass.java
+@@ -1,92 +1,79 @@
  package net.minecraft.entity.ai;
  
 -import com.google.common.base.Predicate;
@@ -8,7 +8,8 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockTallGrass;
  import net.minecraft.block.state.pattern.BlockStateHelper;
-@@ -10,79 +10,76 @@
+ import net.minecraft.entity.EntityLiving;
+ import net.minecraft.init.Blocks;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -114,9 +115,5 @@
                          this.entityWorld.playAuxSFX(2001, blockpos1, Block.getIdFromBlock(Blocks.grass));
                          this.entityWorld.setBlockState(blockpos1, Blocks.dirt.getDefaultState(), 2);
                      }
-@@ -94,4 +94,4 @@
-             }
-         }
-     }
--}
-+}
+ 
+                     this.grassEaterEntity.eatGrassBonus();

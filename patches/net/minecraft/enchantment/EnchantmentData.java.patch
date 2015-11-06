@@ -1,6 +1,7 @@
----a/net/minecraft/enchantment/EnchantmentData.java
-+++b/net/minecraft/enchantment/EnchantmentData.java
-@@ -2,17 +2,16 @@
+--- decompiled\net\minecraft\enchantment\EnchantmentData.java
++++ src\main\java\net\minecraft\enchantment\EnchantmentData.java
+@@ -1,17 +1,16 @@
+ package net.minecraft.enchantment;
  
  import net.minecraft.util.WeightedRandom;
  
@@ -19,5 +20,4 @@
          this.enchantmentobj = enchantmentObj;
          this.enchantmentLevel = enchLevel;
      }
--}
-+}
+ }

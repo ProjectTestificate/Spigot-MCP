@@ -1,6 +1,8 @@
----a/net/minecraft/enchantment/EnchantmentDigging.java
-+++b/net/minecraft/enchantment/EnchantmentDigging.java
-@@ -4,34 +4,29 @@
+--- decompiled\net\minecraft\enchantment\EnchantmentDigging.java
++++ src\main\java\net\minecraft\enchantment\EnchantmentDigging.java
+@@ -2,35 +2,30 @@
+ 
+ import net.minecraft.init.Items;
  import net.minecraft.item.ItemStack;
  import net.minecraft.util.ResourceLocation;
  
@@ -40,5 +42,4 @@
 +    public boolean canApply(ItemStack stack) {
          return stack.getItem() == Items.shears ? true : super.canApply(stack);
      }
--}
-+}
+ }

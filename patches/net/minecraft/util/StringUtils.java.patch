@@ -1,6 +1,6 @@
----a/net/minecraft/util/StringUtils.java
-+++b/net/minecraft/util/StringUtils.java
-@@ -1,32 +1,13 @@
+--- decompiled\net\minecraft\util\StringUtils.java
++++ src\main\java\net\minecraft\util\StringUtils.java
+@@ -1,31 +1,14 @@
  package net.minecraft.util;
  
  import java.util.regex.Pattern;
@@ -35,5 +35,4 @@
 +    public static boolean isNullOrEmpty(String string) {
          return org.apache.commons.lang3.StringUtils.isEmpty(string);
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenLiquids.java
-+++b/net/minecraft/world/gen/feature/WorldGenLiquids.java
-@@ -1,82 +1,67 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenLiquids.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenLiquids.java
+@@ -1,86 +1,69 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -103,9 +103,5 @@
                  worldIn.setBlockState(p_180709_3_, this.field_150521_a.getDefaultState(), 2);
                  worldIn.forceBlockUpdateTick(this.field_150521_a, p_180709_3_, p_180709_2_);
              }
-@@ -86,4 +86,4 @@
+ 
              return true;
-         }
-     }
--}
-+}

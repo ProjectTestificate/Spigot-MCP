@@ -1,6 +1,6 @@
----a/net/minecraft/entity/ai/attributes/IAttribute.java
-+++b/net/minecraft/entity/ai/attributes/IAttribute.java
-@@ -1,7 +1,7 @@
+--- decompiled\net\minecraft\entity\ai\attributes\IAttribute.java
++++ src\main\java\net\minecraft\entity\ai\attributes\IAttribute.java
+@@ -1,9 +1,9 @@
  package net.minecraft.entity.ai.attributes;
  
 -public interface IAttribute
@@ -10,9 +10,5 @@
      String getAttributeUnlocalizedName();
  
      double clampValue(double p_111109_1_);
-@@ -11,4 +11,4 @@
-     boolean getShouldWatch();
  
-     IAttribute func_180372_d();
--}
-+}
+     double getDefaultValue();

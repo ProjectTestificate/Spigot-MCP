@@ -1,6 +1,6 @@
----a/net/minecraft/event/ClickEvent.java
-+++b/net/minecraft/event/ClickEvent.java
-@@ -1,80 +1,62 @@
+--- decompiled\net\minecraft\event\ClickEvent.java
++++ src\main\java\net\minecraft\event\ClickEvent.java
+@@ -1,83 +1,65 @@
  package net.minecraft.event;
  
 -import com.google.common.collect.Maps;
@@ -102,7 +102,11 @@
          OPEN_URL("open_url", true),
          OPEN_FILE("open_file", false),
          RUN_COMMAND("run_command", true),
-@@ -88,38 +88,31 @@
+         TWITCH_USER_INFO("twitch_user_info", false),
+         SUGGEST_COMMAND("suggest_command", true),
+@@ -86,38 +68,32 @@
+         private final boolean allowedInChat;
+         private final String canonicalName;
  
          private static final String __OBFID = "CL_00001261";
  
@@ -146,5 +150,3 @@
              }
          }
      }
--}
-+}

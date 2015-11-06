@@ -1,6 +1,7 @@
----a/net/minecraft/entity/ai/attributes/RangedAttribute.java
-+++b/net/minecraft/entity/ai/attributes/RangedAttribute.java
-@@ -2,48 +2,39 @@
+--- decompiled\net\minecraft\entity\ai\attributes\RangedAttribute.java
++++ src\main\java\net\minecraft\entity\ai\attributes\RangedAttribute.java
+@@ -1,48 +1,39 @@
+ package net.minecraft.entity.ai.attributes;
  
  import net.minecraft.util.MathHelper;
  
@@ -57,5 +58,4 @@
          p_111109_1_ = MathHelper.clamp_double(p_111109_1_, this.minimumValue, this.maximumValue);
          return p_111109_1_;
      }
--}
-+}
+ }

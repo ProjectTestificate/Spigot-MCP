@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandEffect.java
-+++b/net/minecraft/command/CommandEffect.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\command\CommandEffect.java
++++ src\main\java\net\minecraft\command\CommandEffect.java
+@@ -1,148 +1,113 @@
  package net.minecraft.command;
  
  import java.util.List;
@@ -8,7 +8,7 @@
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.potion.Potion;
  import net.minecraft.potion.PotionEffect;
-@@ -8,61 +8,45 @@
+ import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.ChatComponentTranslation;
  
@@ -88,7 +88,10 @@
                          throw numberinvalidexception;
                      }
  
-@@ -73,77 +73,57 @@
+                     i = potion.id;
+                 }
+ 
+                 int j = 600;
                  int l = 30;
                  int k = 0;
  
@@ -183,5 +186,4 @@
 +    public boolean isUsernameIndex(String[] args, int index) {
          return index == 0;
      }
--}
-+}
+ }

@@ -1,13 +1,16 @@
----a/net/minecraft/entity/EntityMinecartCommandBlock.java
-+++b/net/minecraft/entity/EntityMinecartCommandBlock.java
-@@ -1,6 +1,5 @@
+--- decompiled\net\minecraft\entity\EntityMinecartCommandBlock.java
++++ src\main\java\net\minecraft\entity\EntityMinecartCommandBlock.java
+@@ -1,138 +1,117 @@
  package net.minecraft.entity;
  
 -import io.netty.buffer.ByteBuf;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.command.server.CommandBlockLogic;
  import net.minecraft.entity.item.EntityMinecart;
-@@ -11,129 +11,107 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.init.Blocks;
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.IChatComponent;
  import net.minecraft.util.Vec3;
  import net.minecraft.world.World;
@@ -176,5 +179,4 @@
              this.commandBlockLogic.setCommand(this.getDataWatcher().getWatchableObjectString(23));
          }
      }
--}
-+}
+ }

@@ -1,6 +1,7 @@
----a/net/minecraft/world/LockCode.java
-+++b/net/minecraft/world/LockCode.java
-@@ -2,43 +2,35 @@
+--- decompiled\net\minecraft\world\LockCode.java
++++ src\main\java\net\minecraft\world\LockCode.java
+@@ -1,43 +1,35 @@
+ package net.minecraft.world;
  
  import net.minecraft.nbt.NBTTagCompound;
  
@@ -51,5 +52,4 @@
              return EMPTY_CODE;
          }
      }
--}
-+}
+ }

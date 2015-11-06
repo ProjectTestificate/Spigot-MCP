@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockRedstoneDiode.java
-+++b/net/minecraft/block/BlockRedstoneDiode.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockRedstoneDiode.java
++++ src\main\java\net\minecraft\block\BlockRedstoneDiode.java
+@@ -1,277 +1,227 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -8,7 +8,7 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.entity.EntityLivingBase;
-@@ -8,119 +8,100 @@
+ import net.minecraft.init.Blocks;
  import net.minecraft.item.ItemStack;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -167,7 +167,8 @@
                      b0 = -2;
                  }
  
-@@ -131,88 +131,71 @@
+                 worldIn.updateBlockTick(pos, this, this.getDelay(state), b0);
+             }
          }
      }
  
@@ -277,7 +278,8 @@
                  EnumFacing enumfacing = aenumfacing[j];
                  worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this);
              }
-@@ -221,40 +221,33 @@
+         }
+ 
          super.onBlockDestroyedByPlayer(worldIn, pos, state);
      }
  
@@ -326,7 +328,9 @@
          return this.getDelay(state);
      }
  
-@@ -264,9 +264,7 @@
+     protected abstract int getDelay(IBlockState state);
+ 
+     protected abstract IBlockState getPoweredState(IBlockState unpoweredState);
  
      protected abstract IBlockState getUnpoweredState(IBlockState poweredState);
  
@@ -341,5 +345,4 @@
 -    {
 -        return EnumWorldBlockLayer.CUTOUT;
 -    }
--}
-+}
+ }

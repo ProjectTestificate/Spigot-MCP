@@ -1,6 +1,8 @@
----a/net/minecraft/command/CommandResultStats.java
-+++b/net/minecraft/command/CommandResultStats.java
-@@ -5,46 +5,39 @@
+--- decompiled\net\minecraft\command\CommandResultStats.java
++++ src\main\java\net\minecraft\command\CommandResultStats.java
+@@ -3,224 +3,186 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.scoreboard.Score;
  import net.minecraft.scoreboard.ScoreObjective;
  import net.minecraft.scoreboard.Scoreboard;
  
@@ -59,7 +61,8 @@
                          Score score = scoreboard.getValueFromObjective(s1, scoreobjective);
                          score.setScorePoints(p_179672_3_);
                      }
-@@ -55,24 +55,19 @@
+                 }
+             }
          }
      }
  
@@ -86,7 +89,8 @@
                      String s2 = nbttagcompound1.getString(s);
                      String s3 = nbttagcompound1.getString(s1);
                      func_179667_a(this, type, s2, s3);
-@@ -79,93 +79,76 @@
+                 }
+             }
          }
      }
  
@@ -196,7 +200,10 @@
          SUCCESS_COUNT(0, "SuccessCount"),
          AFFECTED_BLOCKS(1, "AffectedBlocks"),
          AFFECTED_ENTITIES(2, "AffectedEntities"),
-@@ -176,31 +176,26 @@
+         AFFECTED_ITEMS(3, "AffectedItems"),
+         QUERY_RESULT(4, "QueryResult");
+         final int typeID;
+         final String typeName;
  
          private static final String __OBFID = "CL_00002363";
  
@@ -233,7 +240,7 @@
                  CommandResultStats.Type type = atype[k];
                  astring[i++] = type.getTypeName();
              }
-@@ -208,17 +208,14 @@
+ 
              return astring;
          }
  
@@ -254,9 +261,5 @@
                      return type;
                  }
              }
-@@ -226,4 +226,4 @@
+ 
              return null;
-         }
-     }
--}
-+}

@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandTitle.java
-+++b/net/minecraft/command/CommandTitle.java
-@@ -1,53 +1,46 @@
+--- decompiled\net\minecraft\command\CommandTitle.java
++++ src\main\java\net\minecraft\command\CommandTitle.java
+@@ -1,123 +1,98 @@
  package net.minecraft.command;
  
 -import com.google.gson.JsonParseException;
@@ -70,7 +70,7 @@
                      throw new WrongUsageException("commands.title.usage.times", new Object[0]);
                  }
              }
-@@ -56,19 +56,13 @@
+ 
              EntityPlayerMP entityplayermp = getPlayer(sender, args[0]);
              S45PacketTitle.Type type = S45PacketTitle.Type.byName(args[1]);
  
@@ -91,7 +91,7 @@
                          int i = parseInt(args[2]);
                          int j = parseInt(args[3]);
                          int k = parseInt(args[4]);
-@@ -73,53 +73,38 @@
+                         S45PacketTitle s45packettitle2 = new S45PacketTitle(i, j, k);
                          entityplayermp.playerNetServerHandler.sendPacket(s45packettitle2);
                          notifyOperators(sender, this, "commands.title.success", new Object[0]);
                      }
@@ -152,5 +152,4 @@
 +    public boolean isUsernameIndex(String[] args, int index) {
          return index == 0;
      }
--}
-+}
+ }

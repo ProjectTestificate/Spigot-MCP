@@ -1,6 +1,6 @@
----a/net/minecraft/enchantment/EnchantmentDurability.java
-+++b/net/minecraft/enchantment/EnchantmentDurability.java
-@@ -1,41 +1,37 @@
+--- decompiled\net\minecraft\enchantment\EnchantmentDurability.java
++++ src\main\java\net\minecraft\enchantment\EnchantmentDurability.java
+@@ -1,42 +1,37 @@
  package net.minecraft.enchantment;
  
  import java.util.Random;
@@ -51,5 +51,4 @@
 +    public static boolean negateDamage(ItemStack p_92097_0_, int p_92097_1_, Random p_92097_2_) {
          return p_92097_0_.getItem() instanceof ItemArmor && p_92097_2_.nextFloat() < 0.6F ? false : p_92097_2_.nextInt(p_92097_1_ + 1) > 0;
      }
--}
-+}
+ }

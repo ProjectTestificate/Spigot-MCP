@@ -1,6 +1,8 @@
----a/net/minecraft/network/status/INetHandlerStatusServer.java
-+++b/net/minecraft/network/status/INetHandlerStatusServer.java
-@@ -4,10 +4,10 @@
+--- decompiled\net\minecraft\network\status\INetHandlerStatusServer.java
++++ src\main\java\net\minecraft\network\status\INetHandlerStatusServer.java
+@@ -2,11 +2,11 @@
+ 
+ import net.minecraft.network.INetHandler;
  import net.minecraft.network.status.client.C00PacketServerQuery;
  import net.minecraft.network.status.client.C01PacketPing;
  
@@ -11,5 +13,4 @@
      void processPing(C01PacketPing packetIn);
  
      void processServerQuery(C00PacketServerQuery packetIn);
--}
-+}
+ }

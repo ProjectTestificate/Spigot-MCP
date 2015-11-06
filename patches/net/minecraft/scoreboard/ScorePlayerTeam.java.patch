@@ -1,6 +1,6 @@
----a/net/minecraft/scoreboard/ScorePlayerTeam.java
-+++b/net/minecraft/scoreboard/ScorePlayerTeam.java
-@@ -1,13 +1,10 @@
+--- decompiled\net\minecraft\scoreboard\ScorePlayerTeam.java
++++ src\main\java\net\minecraft\scoreboard\ScorePlayerTeam.java
+@@ -1,16 +1,16 @@
  package net.minecraft.scoreboard;
  
 -import com.google.common.collect.Sets;
@@ -20,7 +20,11 @@
      private final Scoreboard theScoreboard;
      private final String registeredName;
      private final Set membershipSet = Sets.newHashSet();
-@@ -22,8 +22,7 @@
+     private String teamNameSPT;
+     private String namePrefixSPT = "";
+@@ -20,160 +20,123 @@
+     private Team.EnumVisible field_178778_i;
+     private Team.EnumVisible field_178776_j;
      private EnumChatFormatting field_178777_k;
      private static final String __OBFID = "CL_00000616";
  
@@ -30,7 +34,8 @@
          this.field_178778_i = Team.EnumVisible.ALWAYS;
          this.field_178776_j = Team.EnumVisible.ALWAYS;
          this.field_178777_k = EnumChatFormatting.RESET;
-@@ -32,149 +32,112 @@
+         this.theScoreboard = p_i2308_1_;
+         this.registeredName = name;
          this.teamNameSPT = name;
      }
  
@@ -205,5 +210,4 @@
 +    public EnumChatFormatting func_178775_l() {
          return this.field_178777_k;
      }
--}
-+}
+ }

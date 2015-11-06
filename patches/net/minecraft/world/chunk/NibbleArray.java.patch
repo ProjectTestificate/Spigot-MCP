@@ -1,6 +1,6 @@
----a/net/minecraft/world/chunk/NibbleArray.java
-+++b/net/minecraft/world/chunk/NibbleArray.java
-@@ -1,73 +1,59 @@
+--- decompiled\net\minecraft\world\chunk\NibbleArray.java
++++ src\main\java\net\minecraft\world\chunk\NibbleArray.java
+@@ -1,72 +1,58 @@
  package net.minecraft.world.chunk;
  
 -public class NibbleArray
@@ -89,5 +89,4 @@
 +    public byte[] getData() {
          return this.data;
      }
--}
-+}
+ }

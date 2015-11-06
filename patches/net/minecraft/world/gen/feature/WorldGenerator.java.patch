@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenerator.java
-+++b/net/minecraft/world/gen/feature/WorldGenerator.java
-@@ -1,48 +1,43 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenerator.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenerator.java
+@@ -1,49 +1,43 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -61,5 +61,4 @@
              worldIn.setBlockState(p_175903_2_, p_175903_3_, 2);
          }
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemFishingRod.java
-+++b/net/minecraft/item/ItemFishingRod.java
-@@ -5,46 +5,37 @@
+--- decompiled\net\minecraft\item\ItemFishingRod.java
++++ src\main\java\net\minecraft\item\ItemFishingRod.java
+@@ -3,65 +3,55 @@
+ import net.minecraft.creativetab.CreativeTabs;
+ import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.entity.projectile.EntityFishHook;
  import net.minecraft.stats.StatList;
  import net.minecraft.world.World;
@@ -68,7 +70,9 @@
              }
  
              playerIn.swingItem();
-@@ -55,14 +55,11 @@
+             playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+         }
+ 
          return itemStackIn;
      }
  
@@ -83,5 +87,4 @@
 +    public int getItemEnchantability() {
          return 1;
      }
--}
-+}
+ }

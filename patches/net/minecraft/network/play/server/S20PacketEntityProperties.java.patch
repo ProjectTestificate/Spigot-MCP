@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S20PacketEntityProperties.java
-+++b/net/minecraft/network/play/server/S20PacketEntityProperties.java
-@@ -1,54 +1,50 @@
+--- decompiled\net\minecraft\network\play\server\S20PacketEntityProperties.java
++++ src\main\java\net\minecraft\network\play\server\S20PacketEntityProperties.java
+@@ -1,136 +1,111 @@
  package net.minecraft.network.play.server;
  
 -import com.google.common.collect.Lists;
@@ -69,7 +69,8 @@
                  UUID uuid = buf.readUuid();
                  arraylist.add(new AttributeModifier(uuid, "Unknown synced attribute modifier", buf.readDouble(), buf.readByte()));
              }
-@@ -58,22 +58,19 @@
+ 
+             this.field_149444_b.add(new S20PacketEntityProperties.Snapshot(s, d0, arraylist));
          }
      }
  
@@ -98,7 +99,7 @@
                  buf.writeUuid(attributemodifier.getID());
                  buf.writeDouble(attributemodifier.getAmount());
                  buf.writeByte(attributemodifier.getOperation());
-@@ -82,56 +82,37 @@
+             }
          }
      }
  
@@ -161,5 +162,4 @@
              return this.field_151411_d;
          }
      }
--}
-+}
+ }

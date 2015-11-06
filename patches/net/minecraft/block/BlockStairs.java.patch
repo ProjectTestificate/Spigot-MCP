@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockStairs.java
-+++b/net/minecraft/block/BlockStairs.java
-@@ -3,6 +3,7 @@
+--- decompiled\net\minecraft\block\BlockStairs.java
++++ src\main\java\net\minecraft\block\BlockStairs.java
+@@ -1,10 +1,11 @@
+ package net.minecraft.block;
+ 
  import java.util.Arrays;
  import java.util.List;
  import java.util.Random;
@@ -8,7 +10,11 @@
  import net.minecraft.block.material.MapColor;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyDirection;
-@@ -17,29 +17,26 @@
+ import net.minecraft.block.properties.PropertyEnum;
+ import net.minecraft.block.state.BlockState;
+@@ -15,34 +16,31 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.init.Blocks;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -44,7 +50,11 @@
          super(modelState.getBlock().blockMaterial);
          this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(HALF, BlockStairs.EnumHalf.BOTTOM).withProperty(SHAPE, BlockStairs.EnumShape.STRAIGHT));
          this.modelBlock = modelState.getBlock();
-@@ -52,144 +52,109 @@
+         this.modelState = modelState;
+         this.setHardness(this.modelBlock.blockHardness);
+@@ -50,255 +48,201 @@
+         this.setStepSound(this.modelBlock.stepSound);
+         this.setLightOpacity(255);
          this.setCreativeTab(CreativeTabs.tabBlock);
      }
  
@@ -217,7 +227,8 @@
                      return flag ? 2 : 1;
                  }
              }
-@@ -192,92 +192,72 @@
+         }
+ 
          return 0;
      }
  
@@ -333,7 +344,8 @@
                      return flag ? 2 : 1;
                  }
              }
-@@ -286,17 +286,15 @@
+         }
+ 
          return 0;
      }
  
@@ -355,7 +367,11 @@
              f = 0.0F;
              f1 = 0.5F;
          }
-@@ -310,90 +310,68 @@
+ 
+         float f2 = 0.0F;
+@@ -308,116 +252,91 @@
+         boolean flag1 = true;
+         IBlockState iblockstate1;
          Block block;
          EnumFacing enumfacing1;
  
@@ -467,7 +483,10 @@
                      f2 = 0.5F;
                      flag1 = false;
                  }
-@@ -405,17 +405,15 @@
+             }
+         }
+ 
+         this.setBlockBounds(f2, f, f4, f3, f1, f5);
          return flag1;
      }
  
@@ -489,7 +508,11 @@
              f = 0.0F;
              f1 = 0.5F;
          }
-@@ -429,91 +429,69 @@
+ 
+         float f2 = 0.0F;
+@@ -427,325 +346,243 @@
+         boolean flag1 = false;
+         IBlockState iblockstate1;
          Block block;
          EnumFacing enumfacing1;
  
@@ -602,7 +625,7 @@
                      f2 = 0.5F;
                      f3 = 1.0F;
                      flag1 = true;
-@@ -522,151 +522,105 @@
+                 }
              }
          }
  
@@ -779,7 +802,7 @@
                  amovingobjectposition[j] = super.collisionRayTrace(worldIn, pos, start, end);
              }
          }
-@@ -674,8 +674,7 @@
+ 
          int[] aint1 = aint;
          int k = aint.length;
  
@@ -789,7 +812,9 @@
              int i1 = aint1[l];
              amovingobjectposition[i1] = null;
          }
-@@ -685,16 +685,13 @@
+ 
+         MovingObjectPosition movingobjectposition1 = null;
+         double d1 = 0.0D;
          MovingObjectPosition[] amovingobjectposition1 = amovingobjectposition;
          int j1 = amovingobjectposition.length;
  
@@ -809,7 +834,9 @@
                      movingobjectposition1 = movingobjectposition;
                      d1 = d0;
                  }
-@@ -704,28 +704,24 @@
+             }
+         }
+ 
          return movingobjectposition1;
      }
  
@@ -849,7 +876,9 @@
                  case 0:
                      state = state.withProperty(SHAPE, BlockStairs.EnumShape.STRAIGHT);
                      break;
-@@ -739,11 +739,8 @@
+                 case 1:
+                     state = state.withProperty(SHAPE, BlockStairs.EnumShape.INNER_RIGHT);
+                     break;
                  case 2:
                      state = state.withProperty(SHAPE, BlockStairs.EnumShape.INNER_LEFT);
              }
@@ -863,7 +892,11 @@
                  case 0:
                      state = state.withProperty(SHAPE, BlockStairs.EnumShape.STRAIGHT);
                      break;
-@@ -758,38 +758,32 @@
+                 case 1:
+                     state = state.withProperty(SHAPE, BlockStairs.EnumShape.OUTER_RIGHT);
+@@ -756,61 +593,52 @@
+         }
+ 
          return state;
      }
  
@@ -908,7 +941,9 @@
          STRAIGHT("straight"),
          INNER_LEFT("inner_left"),
          INNER_RIGHT("inner_right"),
-@@ -798,20 +798,16 @@
+         OUTER_LEFT("outer_left"),
+         OUTER_RIGHT("outer_right");
+         private final String name;
  
          private static final String __OBFID = "CL_00002061";
  
@@ -930,5 +965,4 @@
              return this.name;
          }
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/nbt/NBTTagEnd.java
-+++b/net/minecraft/nbt/NBTTagEnd.java
-@@ -4,27 +4,26 @@
+--- decompiled\net\minecraft\nbt\NBTTagEnd.java
++++ src\main\java\net\minecraft\nbt\NBTTagEnd.java
+@@ -2,28 +2,27 @@
+ 
+ import java.io.DataInput;
  import java.io.DataOutput;
  import java.io.IOException;
  
@@ -36,5 +38,4 @@
 +    public NBTBase copy() {
          return new NBTTagEnd();
      }
--}
-+}
+ }

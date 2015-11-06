@@ -1,6 +1,6 @@
----a/net/minecraft/world/storage/ISaveHandler.java
-+++b/net/minecraft/world/storage/ISaveHandler.java
-@@ -1,11 +1,15 @@
+--- decompiled\net\minecraft\world\storage\ISaveHandler.java
++++ src\main\java\net\minecraft\world\storage\ISaveHandler.java
+@@ -1,15 +1,17 @@
  package net.minecraft.world.storage;
  
  import java.io.File;
@@ -18,11 +18,14 @@
      WorldInfo loadWorldInfo();
  
      void checkSessionLock() throws MinecraftException;
-@@ -27,4 +27,6 @@
+ 
+     IChunkLoader getChunkLoader(WorldProvider provider);
+@@ -25,6 +27,8 @@
+     File getWorldDirectory();
+ 
      File getMapFileFromName(String mapName);
  
      String getWorldDirectoryName();
--}
 +
 +    UUID getUUID(); // CraftBukkit
-+}
+ }

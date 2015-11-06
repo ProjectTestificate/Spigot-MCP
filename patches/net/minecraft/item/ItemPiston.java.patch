@@ -1,6 +1,7 @@
----a/net/minecraft/item/ItemPiston.java
-+++b/net/minecraft/item/ItemPiston.java
-@@ -2,18 +2,16 @@
+--- decompiled\net\minecraft\item\ItemPiston.java
++++ src\main\java\net\minecraft\item\ItemPiston.java
+@@ -1,18 +1,16 @@
+ package net.minecraft.item;
  
  import net.minecraft.block.Block;
  
@@ -21,5 +22,4 @@
 +    public int getMetadata(int damage) {
          return 7;
      }
--}
-+}
+ }

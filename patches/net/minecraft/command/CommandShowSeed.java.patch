@@ -1,6 +1,8 @@
----a/net/minecraft/command/CommandShowSeed.java
-+++b/net/minecraft/command/CommandShowSeed.java
-@@ -5,34 +5,29 @@
+--- decompiled\net\minecraft\command\CommandShowSeed.java
++++ src\main\java\net\minecraft\command\CommandShowSeed.java
+@@ -3,35 +3,30 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.ChatComponentTranslation;
  import net.minecraft.world.World;
  
@@ -42,5 +44,4 @@
 +        Object object = sender instanceof EntityPlayer ? ((EntityPlayer) sender).worldObj : MinecraftServer.getServer().worldServerForDimension(0);
 +        sender.addChatMessage(new ChatComponentTranslation("commands.seed.success", new Object[]{Long.valueOf(((World) object).getSeed())}));
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/world/gen/structure/StructureStart.java
-+++b/net/minecraft/world/gen/structure/StructureStart.java
-@@ -3,64 +3,59 @@
+--- decompiled\net\minecraft\world\gen\structure\StructureStart.java
++++ src\main\java\net\minecraft\world\gen\structure\StructureStart.java
+@@ -1,177 +1,157 @@
+ package net.minecraft.world.gen.structure;
+ 
  import java.util.Iterator;
  import java.util.LinkedList;
  import java.util.Random;
@@ -83,7 +85,8 @@
          NBTTagCompound nbttagcompound = new NBTTagCompound();
          nbttagcompound.setString("id", MapGenStructureIO.func_143033_a(this));
          nbttagcompound.setInteger("ChunkX", p_143021_1_);
-@@ -71,9 +71,8 @@
+         nbttagcompound.setInteger("ChunkZ", p_143021_2_);
+         nbttagcompound.setTag("BB", this.boundingBox.func_151535_h());
          NBTTagList nbttaglist = new NBTTagList();
          Iterator iterator = this.components.iterator();
  
@@ -95,7 +98,8 @@
              nbttaglist.appendTag(structurecomponent.func_143010_b());
          }
  
-@@ -82,36 +82,35 @@
+         nbttagcompound.setTag("Children", nbttaglist);
+         this.func_143022_a(nbttagcompound);
          return nbttagcompound;
      }
  
@@ -142,7 +146,7 @@
              k += p_75067_2_.nextInt(j - k);
          }
  
-@@ -120,25 +120,21 @@
+         int l = k - this.boundingBox.maxY;
          this.boundingBox.offset(0, l, 0);
          Iterator iterator = this.components.iterator();
  
@@ -173,7 +177,7 @@
              i1 = p_75070_3_;
          }
  
-@@ -146,34 +146,29 @@
+         int l = i1 - this.boundingBox.minY;
          this.boundingBox.offset(0, l, 0);
          Iterator iterator = this.components.iterator();
  
@@ -213,5 +217,4 @@
 +    public int func_143018_f() {
          return this.field_143023_d;
      }
--}
-+}
+ }

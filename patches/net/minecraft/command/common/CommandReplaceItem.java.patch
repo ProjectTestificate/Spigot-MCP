@@ -1,6 +1,6 @@
----a/net/minecraft/command/common/CommandReplaceItem.java
-+++b/net/minecraft/command/common/CommandReplaceItem.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\command\common\CommandReplaceItem.java
++++ src\main\java\net\minecraft\command\common\CommandReplaceItem.java
+@@ -1,10 +1,10 @@
  package net.minecraft.command.common;
  
 -import com.google.common.collect.Maps;
@@ -10,7 +10,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.command.CommandBase;
  import net.minecraft.command.CommandException;
-@@ -23,41 +23,37 @@
+ import net.minecraft.command.CommandResultStats;
+ import net.minecraft.command.ICommandSender;
+@@ -21,87 +21,69 @@
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.tileentity.TileEntity;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -68,7 +72,8 @@
                      throw new WrongUsageException("commands.replaceitem.usage", new Object[0]);
                  }
  
-@@ -69,18 +69,14 @@
+                 flag = true;
+             }
  
              byte b0;
  
@@ -92,7 +97,10 @@
                      throw new WrongUsageException("commands.replaceitem.entity.usage", new Object[0]);
                  }
  
-@@ -92,11 +92,9 @@
+                 b0 = 2;
+             }
+ 
+             int l = b0 + 1;
              int i = this.getSlotForShortcut(args[b0]);
              Item item;
  
@@ -110,7 +118,11 @@
                      throw numberinvalidexception;
                  }
  
-@@ -111,128 +111,102 @@
+                 item = null;
+             }
+@@ -109,132 +91,106 @@
+             ++l;
+             int j = args.length > l ? parseInt(args[l++], 1, 64) : 1;
              int k = args.length > l ? parseInt(args[l++]) : 0;
              ItemStack itemstack = new ItemStack(item, j, k);
  
@@ -274,9 +286,5 @@
              SHORTCUTS.put("slot.horse." + var0, Integer.valueOf(500 + var0));
          }
  
-@@ -245,4 +245,4 @@
-         SHORTCUTS.put("slot.horse.armor", Integer.valueOf(401));
-         SHORTCUTS.put("slot.horse.chest", Integer.valueOf(499));
-     }
--}
-+}
+         SHORTCUTS.put("slot.weapon", Integer.valueOf(99));
+         SHORTCUTS.put("slot.armor.head", Integer.valueOf(103));

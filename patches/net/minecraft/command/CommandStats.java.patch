@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandStats.java
-+++b/net/minecraft/command/CommandStats.java
-@@ -1,11 +1,9 @@
+--- decompiled\net\minecraft\command\CommandStats.java
++++ src\main\java\net\minecraft\command\CommandStats.java
+@@ -1,219 +1,176 @@
  package net.minecraft.command;
  
 -import com.google.common.collect.Lists;
@@ -12,7 +12,9 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.scoreboard.ScoreObjective;
  import net.minecraft.server.MinecraftServer;
-@@ -14,40 +14,36 @@
+ import net.minecraft.tileentity.TileEntity;
+ import net.minecraft.tileentity.TileEntityCommandBlock;
+ import net.minecraft.tileentity.TileEntitySign;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -69,7 +71,8 @@
                      throw new WrongUsageException("commands.stats.usage", new Object[0]);
                  }
  
-@@ -59,18 +59,14 @@
+                 flag = true;
+             }
  
              byte b0;
  
@@ -93,7 +96,9 @@
                      throw new WrongUsageException("commands.stats.entity.usage", new Object[0]);
                  }
  
-@@ -81,31 +81,22 @@
+                 b0 = 2;
+             }
+ 
              int i = b0 + 1;
              String s = args[b0];
  
@@ -130,7 +135,9 @@
                          throw new WrongUsageException("commands.stats.block.clear.usage", new Object[0]);
                      }
  
-@@ -113,68 +113,52 @@
+                     throw new WrongUsageException("commands.stats.entity.clear.usage", new Object[0]);
+                 }
+             }
  
              CommandResultStats.Type type = CommandResultStats.Type.getTypeByName(args[i++]);
  
@@ -218,7 +225,8 @@
                      blockpos = func_175757_a(sender, args, 1, false);
                      tileentity = world.getTileEntity(blockpos);
                      tileentity.markDirty();
-@@ -183,29 +183,26 @@
+                 }
+             }
          }
      }
  
@@ -255,7 +263,7 @@
                  arraylist.add(scoreobjective.getName());
              }
          }
-@@ -212,9 +212,7 @@
+ 
          return arraylist;
      }
  
@@ -264,5 +272,4 @@
 +    public boolean isUsernameIndex(String[] args, int index) {
          return args.length > 0 && args[0].equals("entity") && index == 1;
      }
--}
-+}
+ }

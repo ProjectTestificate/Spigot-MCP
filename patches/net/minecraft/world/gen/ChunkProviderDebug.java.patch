@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/ChunkProviderDebug.java
-+++b/net/minecraft/world/gen/ChunkProviderDebug.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\world\gen\ChunkProviderDebug.java
++++ src\main\java\net\minecraft\world\gen\ChunkProviderDebug.java
+@@ -1,10 +1,10 @@
  package net.minecraft.world.gen;
  
 -import com.google.common.collect.Lists;
@@ -10,7 +10,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.entity.EnumCreatureType;
-@@ -16,34 +16,34 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.util.BlockPos;
+@@ -14,145 +14,128 @@
+ import net.minecraft.world.biome.BiomeGenBase;
+ import net.minecraft.world.chunk.Chunk;
  import net.minecraft.world.chunk.ChunkPrimer;
  import net.minecraft.world.chunk.IChunkProvider;
  
@@ -54,7 +58,7 @@
                      chunkprimer.setBlockState(k, 70, l, iblockstate);
                  }
              }
-@@ -51,32 +51,28 @@
+         }
  
          Chunk chunk = new Chunk(this.world, chunkprimer, x, z);
          chunk.generateSkylightMap();
@@ -97,7 +101,7 @@
                  }
              }
          }
-@@ -86,74 +86,64 @@
+ 
          return iblockstate;
      }
  
@@ -190,5 +194,4 @@
 -        field_177462_b = MathHelper.ceiling_float_int(MathHelper.sqrt_float((float)field_177464_a.size()));
 +        field_177462_b = MathHelper.ceiling_float_int(MathHelper.sqrt_float((float) field_177464_a.size()));
      }
--}
-+}
+ }

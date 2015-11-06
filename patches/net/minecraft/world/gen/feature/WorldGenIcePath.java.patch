@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenIcePath.java
-+++b/net/minecraft/world/gen/feature/WorldGenIcePath.java
-@@ -1,53 +1,45 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenIcePath.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenIcePath.java
+@@ -1,57 +1,47 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -69,9 +69,5 @@
                                  worldIn.setBlockState(blockpos1, this.field_150555_a.getDefaultState(), 2);
                              }
                          }
-@@ -60,4 +60,4 @@
-             return true;
-         }
-     }
--}
-+}
+                     }
+                 }

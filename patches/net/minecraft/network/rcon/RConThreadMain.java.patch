@@ -1,13 +1,14 @@
----a/net/minecraft/network/rcon/RConThreadMain.java
-+++b/net/minecraft/network/rcon/RConThreadMain.java
-@@ -1,6 +1,5 @@
+--- decompiled\net\minecraft\network\rcon\RConThreadMain.java
++++ src\main\java\net\minecraft\network\rcon\RConThreadMain.java
+@@ -1,140 +1,109 @@
  package net.minecraft.network.rcon;
  
 -import com.google.common.collect.Maps;
  import java.io.IOException;
  import java.net.InetAddress;
  import java.net.ServerSocket;
-@@ -9,11 +9,7 @@
+ import java.net.Socket;
+ import java.net.SocketTimeoutException;
  import java.util.Iterator;
  import java.util.Map;
  import java.util.Map.Entry;
@@ -24,7 +25,8 @@
      private int rconPort;
      private int serverPort;
      private String hostname;
-@@ -23,30 +23,26 @@
+     private ServerSocket serverSocket;
+     private String rconPassword;
      private Map clientThreads;
      private static final String __OBFID = "CL_00001805";
  
@@ -59,7 +61,7 @@
              this.hostname = "0.0.0.0";
          }
  
-@@ -54,88 +54,62 @@
+         this.initClientThreadList();
          this.serverSocket = null;
      }
  
@@ -166,5 +168,4 @@
              this.logWarning("Invalid rcon port " + this.rconPort + " found in \'" + this.server.getSettingsFilename() + "\', rcon disabled!");
          }
      }
--}
-+}
+ }

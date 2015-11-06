@@ -1,6 +1,6 @@
----a/net/minecraft/world/biome/WorldChunkManager.java
-+++b/net/minecraft/world/biome/WorldChunkManager.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\world\biome\WorldChunkManager.java
++++ src\main\java\net\minecraft\world\biome\WorldChunkManager.java
+@@ -1,32 +1,31 @@
  package net.minecraft.world.biome;
  
 -import com.google.common.collect.Lists;
@@ -10,7 +10,8 @@
  import net.minecraft.crash.CrashReport;
  import net.minecraft.crash.CrashReportCategory;
  import net.minecraft.util.BlockPos;
-@@ -11,11 +11,7 @@
+ import net.minecraft.util.ReportedException;
+ import net.minecraft.world.World;
  import net.minecraft.world.WorldType;
  import net.minecraft.world.gen.layer.GenLayer;
  import net.minecraft.world.gen.layer.IntCache;
@@ -26,7 +27,7 @@
      private GenLayer genBiomes;
      private GenLayer biomeIndexLayer;
      private BiomeCache biomeCache;
-@@ -23,8 +23,7 @@
+     private List biomesToSpawnIn;
      private String field_180301_f;
      private static final String __OBFID = "CL_00000166";
  
@@ -36,7 +37,11 @@
          this.biomeCache = new BiomeCache(this);
          this.field_180301_f = "";
          this.biomesToSpawnIn = Lists.newArrayList();
-@@ -37,8 +37,7 @@
+         this.biomesToSpawnIn.add(BiomeGenBase.forest);
+         this.biomesToSpawnIn.add(BiomeGenBase.plains);
+@@ -35,65 +34,53 @@
+         this.biomesToSpawnIn.add(BiomeGenBase.forestHills);
+         this.biomesToSpawnIn.add(BiomeGenBase.jungle);
          this.biomesToSpawnIn.add(BiomeGenBase.jungleHills);
      }
  
@@ -46,7 +51,7 @@
          this();
          this.field_180301_f = p_i45744_4_;
          GenLayer[] agenlayer = GenLayer.initializeAllBiomeGenerators(p_i45744_1_, p_i45744_3_, p_i45744_4_);
-@@ -46,51 +46,41 @@
+         this.genBiomes = agenlayer[0];
          this.biomeIndexLayer = agenlayer[1];
      }
  
@@ -111,7 +116,11 @@
                  CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Invalid Biome id");
                  CrashReportCategory crashreportcategory = crashreport.makeCategory("DownfallBlock");
                  crashreportcategory.addCrashSection("biome id", Integer.valueOf(i1));
-@@ -107,39 +107,22 @@
+                 crashreportcategory.addCrashSection("downfalls[] size", Integer.valueOf(listToReuse.length));
+                 crashreportcategory.addCrashSection("x", Integer.valueOf(x));
+@@ -105,38 +92,26 @@
+         }
+ 
          return listToReuse;
      }
  
@@ -151,7 +160,11 @@
              CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Invalid Biome id");
              CrashReportCategory crashreportcategory = crashreport.makeCategory("RawBiomeBlock");
              crashreportcategory.addCrashSection("biomes[] size", Integer.valueOf(p_76937_1_.length));
-@@ -146,32 +146,25 @@
+             crashreportcategory.addCrashSection("x", Integer.valueOf(p_76937_2_));
+             crashreportcategory.addCrashSection("z", Integer.valueOf(p_76937_3_));
+@@ -144,70 +119,57 @@
+             crashreportcategory.addCrashSection("h", Integer.valueOf(p_76937_5_));
+             throw new ReportedException(crashreport);
          }
      }
  
@@ -190,7 +203,7 @@
                  listToReuse[i1] = BiomeGenBase.getBiomeFromBiomeList(aint[i1], BiomeGenBase.field_180279_ad);
              }
  
-@@ -179,8 +179,7 @@
+             return listToReuse;
          }
      }
  
@@ -200,7 +213,9 @@
          IntCache.resetIntCache();
          int l = p_76940_1_ - p_76940_3_ >> 2;
          int i1 = p_76940_2_ - p_76940_3_ >> 2;
-@@ -190,23 +190,18 @@
+         int j1 = p_76940_1_ + p_76940_3_ >> 2;
+         int k1 = p_76940_2_ + p_76940_3_ >> 2;
+         int l1 = j1 - l + 1;
          int i2 = k1 - i1 + 1;
          int[] aint = this.genBiomes.getInts(l, i1, l1, i2);
  
@@ -227,7 +242,11 @@
              CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Invalid Biome id");
              CrashReportCategory crashreportcategory = crashreport.makeCategory("Layer");
              crashreportcategory.addCrashSection("Layer", this.genBiomes.toString());
-@@ -217,8 +217,7 @@
+             crashreportcategory.addCrashSection("x", Integer.valueOf(p_76940_1_));
+             crashreportcategory.addCrashSection("z", Integer.valueOf(p_76940_2_));
+@@ -215,12 +177,11 @@
+             crashreportcategory.addCrashSection("allowed", p_76940_4_);
+             throw new ReportedException(crashreport);
          }
      }
  
@@ -237,7 +256,11 @@
          IntCache.resetIntCache();
          int l = x - range >> 2;
          int i1 = z - range >> 2;
-@@ -230,14 +230,12 @@
+         int j1 = x + range >> 2;
+         int k1 = z + range >> 2;
+@@ -228,26 +189,23 @@
+         int i2 = k1 - i1 + 1;
+         int[] aint = this.genBiomes.getInts(l, i1, l1, i2);
          BlockPos blockpos = null;
          int j2 = 0;
  
@@ -254,7 +277,8 @@
                  blockpos = new BlockPos(l2, 0, i3);
                  ++j2;
              }
-@@ -246,9 +246,7 @@
+         }
+ 
          return blockpos;
      }
  
@@ -263,5 +287,4 @@
 +    public void cleanupCache() {
          this.biomeCache.cleanupCache();
      }
--}
-+}
+ }

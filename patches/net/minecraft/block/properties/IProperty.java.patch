@@ -1,6 +1,7 @@
----a/net/minecraft/block/properties/IProperty.java
-+++b/net/minecraft/block/properties/IProperty.java
-@@ -2,8 +2,8 @@
+--- decompiled\net\minecraft\block\properties\IProperty.java
++++ src\main\java\net\minecraft\block\properties\IProperty.java
+@@ -1,11 +1,11 @@
+ package net.minecraft.block.properties;
  
  import java.util.Collection;
  
@@ -11,9 +12,5 @@
      String getName();
  
      Collection getAllowedValues();
-@@ -11,4 +11,4 @@
-     Class getValueClass();
  
-     String getName(Comparable value);
--}
-+}
+     Class getValueClass();

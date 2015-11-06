@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemBook.java
-+++b/net/minecraft/item/ItemBook.java
-@@ -1,17 +1,15 @@
+--- decompiled\net\minecraft\item\ItemBook.java
++++ src\main\java\net\minecraft\item\ItemBook.java
+@@ -1,16 +1,14 @@
  package net.minecraft.item;
  
 -public class ItemBook extends Item
@@ -20,5 +20,4 @@
 +    public int getItemEnchantability() {
          return 1;
      }
--}
-+}
+ }

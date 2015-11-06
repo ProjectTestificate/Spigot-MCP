@@ -1,6 +1,6 @@
----a/net/minecraft/network/NetworkManager.java
-+++b/net/minecraft/network/NetworkManager.java
-@@ -1,56 +1,18 @@
+--- decompiled\net\minecraft\network\NetworkManager.java
++++ src\main\java\net\minecraft\network\NetworkManager.java
+@@ -1,424 +1,318 @@
  package net.minecraft.network;
  
 -import com.google.common.collect.Queues;
@@ -47,7 +47,7 @@
  import org.apache.commons.lang3.ArrayUtils;
  import org.apache.commons.lang3.Validate;
  import org.apache.logging.log4j.LogManager;
-@@ -43,176 +43,187 @@
+ import org.apache.logging.log4j.Logger;
  import org.apache.logging.log4j.Marker;
  import org.apache.logging.log4j.MarkerManager;
  
@@ -302,7 +302,9 @@
                          channelfuture1.addListeners(futureListeners);
                      }
  
-@@ -222,209 +222,127 @@
+                     channelfuture1.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
+                 }
+             });
          }
      }
  
@@ -558,6 +560,5 @@
 +            this.packet = inPacket;
 +            this.futureListeners = inFutureListeners;
          }
--}
 +    }
-+}
+ }

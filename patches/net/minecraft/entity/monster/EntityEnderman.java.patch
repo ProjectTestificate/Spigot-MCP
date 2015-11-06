@@ -1,6 +1,6 @@
----a/net/minecraft/entity/monster/EntityEnderman.java
-+++b/net/minecraft/entity/monster/EntityEnderman.java
-@@ -1,14 +1,10 @@
+--- decompiled\net\minecraft\entity\monster\EntityEnderman.java
++++ src\main\java\net\minecraft\entity\monster\EntityEnderman.java
+@@ -1,14 +1,13 @@
  package net.minecraft.entity.monster;
  
 -import com.google.common.base.Predicate;
@@ -14,7 +14,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
-@@ -39,16 +39,28 @@
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.EntityLivingBase;
+@@ -37,20 +36,25 @@
+ import net.minecraft.util.EnumParticleTypes;
+ import net.minecraft.util.MathHelper;
  import net.minecraft.util.Vec3;
  import net.minecraft.world.World;
  
@@ -40,7 +44,11 @@
          super(worldIn);
          this.setSize(0.6F, 2.9F);
          this.stepHeight = 1.0F;
-@@ -61,22 +61,22 @@
+         this.tasks.addTask(0, new EntityAISwimming(this));
+         this.tasks.addTask(2, new EntityAIAttackOnCollide(this, 1.0D, false));
+@@ -59,331 +63,280 @@
+         this.tasks.addTask(8, new EntityAILookIdle(this));
+         this.tasks.addTask(10, new EntityEnderman.AIPlaceBlock());
          this.tasks.addTask(11, new EntityEnderman.AITakeBlock());
          this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
          this.targetTasks.addTask(2, new EntityEnderman.AIFindPlayer());
@@ -71,7 +79,7 @@
          super.applyEntityAttributes();
          this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
          this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.30000001192092896D);
-@@ -84,52 +84,41 @@
+         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(7.0D);
          this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(64.0D);
      }
  
@@ -137,7 +145,7 @@
              double d0 = vec31.lengthVector();
              vec31 = vec31.normalize();
              double d1 = vec3.dotProduct(vec31);
-@@ -136,13 +136,11 @@
+             return d1 > 1.0D - 0.025D / d0 ? p_70821_1_.canEntityBeSeen(this) : false;
          }
      }
  
@@ -161,7 +169,7 @@
              }
          }
  
-@@ -155,26 +155,20 @@
+         this.isJumping = false;
          super.onLivingUpdate();
      }
  
@@ -193,7 +201,9 @@
                  this.setScreaming(false);
                  this.isAggressive = false;
                  this.teleportRandomly();
-@@ -183,27 +183,24 @@
+             }
+         }
+ 
          super.updateAITasks();
      }
  
@@ -227,7 +237,9 @@
          double d3 = this.posX;
          double d4 = this.posY;
          double d5 = this.posZ;
-@@ -213,54 +213,51 @@
+         this.posX = p_70825_1_;
+         this.posY = p_70825_3_;
+         this.posZ = p_70825_5_;
          boolean flag = false;
          BlockPos blockpos = new BlockPos(this.posX, this.posY, this.posZ);
  
@@ -308,7 +320,8 @@
              }
  
              this.worldObj.playSoundEffect(d3, d4, d5, "mob.endermen.portal", 1.0F, 1.0F);
-@@ -271,84 +271,63 @@
+             this.playSound("mob.endermen.portal", 1.0F, 1.0F);
+             return true;
          }
      }
  
@@ -416,7 +429,10 @@
                              return true;
                          }
                      }
-@@ -361,8 +361,7 @@
+ 
+                     return false;
+                 }
+             }
  
              boolean flag = super.attackEntityFrom(source, amount);
  
@@ -426,7 +442,7 @@
                  this.teleportRandomly();
              }
  
-@@ -370,18 +370,15 @@
+             return flag;
          }
      }
  
@@ -449,7 +465,11 @@
          carriableBlocks.add(Blocks.grass);
          carriableBlocks.add(Blocks.dirt);
          carriableBlocks.add(Blocks.sand);
-@@ -398,44 +398,38 @@
+         carriableBlocks.add(Blocks.gravel);
+         carriableBlocks.add(Blocks.yellow_flower);
+@@ -396,173 +349,150 @@
+         carriableBlocks.add(Blocks.pumpkin);
+         carriableBlocks.add(Blocks.melon_block);
          carriableBlocks.add(Blocks.mycelium);
      }
  
@@ -503,7 +523,7 @@
              this.field_179448_g = null;
              this.field_179449_j.setScreaming(false);
              IAttributeInstance iattributeinstance = this.field_179449_j.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
-@@ -443,33 +443,23 @@
+             iattributeinstance.removeModifier(EntityEnderman.attackingSpeedBoostModifier);
              super.resetTask();
          }
  
@@ -545,7 +565,8 @@
                      this.targetEntity = this.field_179448_g;
                      this.field_179448_g = null;
                      super.startExecuting();
-@@ -478,28 +478,18 @@
+                     this.field_179449_j.playSound("mob.endermen.stare", 1.0F, 1.0F);
+                     this.field_179449_j.setScreaming(true);
                      IAttributeInstance iattributeinstance = this.field_179449_j.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
                      iattributeinstance.applyModifier(EntityEnderman.attackingSpeedBoostModifier);
                  }
@@ -573,7 +594,9 @@
                          this.field_179451_i = 0;
                      }
                  }
-@@ -503,18 +503,17 @@
+ 
+                 super.updateTask();
+             }
          }
      }
  
@@ -596,7 +619,9 @@
              Random random = this.field_179475_a.getRNG();
              World world = this.field_179475_a.worldObj;
              int i = MathHelper.floor_double(this.field_179475_a.posX - 1.0D + random.nextDouble() * 2.0D);
-@@ -524,33 +524,37 @@
+             int j = MathHelper.floor_double(this.field_179475_a.posY + random.nextDouble() * 2.0D);
+             int k = MathHelper.floor_double(this.field_179475_a.posZ - 1.0D + random.nextDouble() * 2.0D);
+             BlockPos blockpos = new BlockPos(i, j, k);
              Block block = world.getBlockState(blockpos).getBlock();
              Block block1 = world.getBlockState(blockpos.down()).getBlock();
  
@@ -640,7 +665,9 @@
              Random random = this.field_179473_a.getRNG();
              World world = this.field_179473_a.worldObj;
              int i = MathHelper.floor_double(this.field_179473_a.posX - 2.0D + random.nextDouble() * 4.0D);
-@@ -558,14 +558,20 @@
+             int j = MathHelper.floor_double(this.field_179473_a.posY + random.nextDouble() * 3.0D);
+             int k = MathHelper.floor_double(this.field_179473_a.posZ - 2.0D + random.nextDouble() * 4.0D);
+             BlockPos blockpos = new BlockPos(i, j, k);
              IBlockState iblockstate = world.getBlockState(blockpos);
              Block block = iblockstate.getBlock();
  
@@ -658,5 +685,4 @@
              }
          }
      }
--}
-+}
+ }

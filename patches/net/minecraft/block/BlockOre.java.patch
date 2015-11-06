@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockOre.java
-+++b/net/minecraft/block/BlockOre.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockOre.java
++++ src\main\java\net\minecraft\block\BlockOre.java
+@@ -1,8 +1,9 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -8,7 +8,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.creativetab.CreativeTabs;
-@@ -12,50 +12,41 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.init.Items;
+@@ -10,53 +11,44 @@
+ import net.minecraft.item.Item;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  
@@ -69,7 +73,11 @@
          if (this.getItemDropped(state, worldIn.rand, fortune) != Item.getItemFromBlock(this))
          {
              int j = 0;
-@@ -82,14 +82,38 @@
+ 
+             if (this == Blocks.coal_ore)
+@@ -80,17 +72,40 @@
+                 j = MathHelper.getRandomIntegerInRange(worldIn.rand, 2, 5);
+             }
  
              this.dropXpOnBlockBreak(worldIn, pos, j);
          }
@@ -111,5 +119,4 @@
 +    public int damageDropped(IBlockState state) {
          return this == Blocks.lapis_ore ? EnumDyeColor.BLUE.getDyeDamage() : 0;
      }
--}
-+}
+ }

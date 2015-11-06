@@ -1,13 +1,17 @@
----a/net/minecraft/entity/passive/EntityOcelot.java
-+++b/net/minecraft/entity/passive/EntityOcelot.java
-@@ -1,6 +1,5 @@
+--- decompiled\net\minecraft\entity\passive\EntityOcelot.java
++++ src\main\java\net\minecraft\entity\passive\EntityOcelot.java
+@@ -1,8 +1,7 @@
  package net.minecraft.entity.passive;
  
 -import com.google.common.base.Predicate;
  import net.minecraft.block.Block;
  import net.minecraft.block.material.Material;
  import net.minecraft.entity.Entity;
-@@ -27,20 +27,24 @@
+ import net.minecraft.entity.EntityAgeable;
+ import net.minecraft.entity.IEntityLivingData;
+@@ -25,322 +24,301 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.pathfinding.PathNavigateGround;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.DamageSource;
@@ -37,7 +41,10 @@
          this.tasks.addTask(1, new EntityAISwimming(this));
          this.tasks.addTask(2, this.aiSit);
          this.tasks.addTask(3, this.aiTempt = new EntityAITempt(this, 0.6D, Items.fish, true));
-@@ -52,101 +52,107 @@
+         this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.0D, 10.0F, 5.0F));
+         this.tasks.addTask(6, new EntityAIOcelotSit(this, 0.8D));
+         this.tasks.addTask(7, new EntityAILeapAtTarget(this, 0.3F));
+         this.tasks.addTask(8, new EntityAIOcelotAttack(this));
          this.tasks.addTask(9, new EntityAIMate(this, 0.8D));
          this.tasks.addTask(10, new EntityAIWander(this, 0.8D));
          this.tasks.addTask(11, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
@@ -188,7 +195,8 @@
      public boolean attackEntityFrom(DamageSource source, float amount)
      {
          if (this.isEntityInvulnerable(source))
-@@ -154,51 +154,45 @@
+         {
+             return false;
          }
          else
          {
@@ -258,7 +266,9 @@
                  }
              }
  
-@@ -208,12 +208,10 @@
+             return true;
+         }
+ 
          return super.interact(player);
      }
  
@@ -273,7 +283,8 @@
              entityocelot.setOwnerId(this.getOwnerId());
              entityocelot.setTamed(true);
              entityocelot.setTameSkin(this.getTameSkin());
-@@ -222,62 +222,46 @@
+         }
+ 
          return entityocelot;
      }
  
@@ -351,7 +362,7 @@
                  return true;
              }
          }
-@@ -285,63 +285,54 @@
+ 
          return false;
      }
  
@@ -430,5 +441,4 @@
 +    public EntityAgeable createChild(EntityAgeable ageable) {
          return this.func_180493_b(ageable);
      }
--}
-+}
+ }

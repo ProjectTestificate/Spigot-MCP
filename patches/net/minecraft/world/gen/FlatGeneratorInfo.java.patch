@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/FlatGeneratorInfo.java
-+++b/net/minecraft/world/gen/FlatGeneratorInfo.java
-@@ -1,208 +1,172 @@
+--- decompiled\net\minecraft\world\gen\FlatGeneratorInfo.java
++++ src\main\java\net\minecraft\world\gen\FlatGeneratorInfo.java
+@@ -1,335 +1,273 @@
  package net.minecraft.world.gen;
  
 -import com.google.common.collect.Lists;
@@ -257,7 +257,8 @@
              return null;
          }
  
-@@ -212,25 +212,20 @@
+         FlatLayerInfo flatlayerinfo = new FlatLayerInfo(p_180715_0_, k, block, l);
+         flatlayerinfo.setMinY(p_180715_2_);
          return flatlayerinfo;
      }
  
@@ -285,7 +286,8 @@
                      return null;
                  }
  
-@@ -237,98 +237,75 @@
+                 arraylist.add(flatlayerinfo);
+                 j += flatlayerinfo.getLayerCount();
              }
  
              return arraylist;
@@ -400,9 +402,5 @@
          FlatGeneratorInfo flatgeneratorinfo = new FlatGeneratorInfo();
          flatgeneratorinfo.setBiome(BiomeGenBase.plains.biomeID);
          flatgeneratorinfo.getFlatLayers().add(new FlatLayerInfo(1, Blocks.bedrock));
-@@ -337,4 +337,4 @@
-         flatgeneratorinfo.getWorldFeatures().put("village", Maps.newHashMap());
-         return flatgeneratorinfo;
-     }
--}
-+}
+         flatgeneratorinfo.getFlatLayers().add(new FlatLayerInfo(2, Blocks.dirt));
+         flatgeneratorinfo.getFlatLayers().add(new FlatLayerInfo(1, Blocks.grass));

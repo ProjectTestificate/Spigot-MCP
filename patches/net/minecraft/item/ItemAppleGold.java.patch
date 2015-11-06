@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemAppleGold.java
-+++b/net/minecraft/item/ItemAppleGold.java
-@@ -1,55 +1,36 @@
+--- decompiled\net\minecraft\item\ItemAppleGold.java
++++ src\main\java\net\minecraft\item\ItemAppleGold.java
+@@ -1,61 +1,37 @@
  package net.minecraft.item;
  
 -import java.util.List;
@@ -71,5 +71,4 @@
 -        subItems.add(new ItemStack(itemIn, 1, 0));
 -        subItems.add(new ItemStack(itemIn, 1, 1));
 -    }
--}
-+}
+ }

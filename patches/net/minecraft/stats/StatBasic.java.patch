@@ -1,6 +1,7 @@
----a/net/minecraft/stats/StatBasic.java
-+++b/net/minecraft/stats/StatBasic.java
-@@ -2,25 +2,22 @@
+--- decompiled\net\minecraft\stats\StatBasic.java
++++ src\main\java\net\minecraft\stats\StatBasic.java
+@@ -1,25 +1,22 @@
+ package net.minecraft.stats;
  
  import net.minecraft.util.IChatComponent;
  
@@ -29,5 +30,4 @@
          StatList.generalStats.add(this);
          return this;
      }
--}
-+}
+ }

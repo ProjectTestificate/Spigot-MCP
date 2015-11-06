@@ -1,6 +1,6 @@
----a/net/minecraft/entity/EntityTracker.java
-+++b/net/minecraft/entity/EntityTracker.java
-@@ -1,13 +1,9 @@
+--- decompiled\net\minecraft\entity\EntityTracker.java
++++ src\main\java\net\minecraft\entity\EntityTracker.java
+@@ -1,13 +1,12 @@
  package net.minecraft.entity;
  
 -import com.google.common.collect.Lists;
@@ -13,7 +13,11 @@
  import net.minecraft.crash.CrashReport;
  import net.minecraft.crash.CrashReportCategory;
  import net.minecraft.entity.boss.EntityDragon;
-@@ -38,320 +38,243 @@
+ import net.minecraft.entity.boss.EntityWither;
+ import net.minecraft.entity.item.EntityArmorStand;
+@@ -36,323 +35,245 @@
+ import net.minecraft.network.Packet;
+ import net.minecraft.util.IntHashMap;
  import net.minecraft.util.ReportedException;
  import net.minecraft.world.WorldServer;
  import net.minecraft.world.chunk.Chunk;
@@ -435,5 +439,4 @@
              }
          }
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/layer/GenLayerHills.java
-+++b/net/minecraft/world/gen/layer/GenLayerHills.java
-@@ -1,186 +1,128 @@
+--- decompiled\net\minecraft\world\gen\layer\GenLayerHills.java
++++ src\main\java\net\minecraft\world\gen\layer\GenLayerHills.java
+@@ -1,191 +1,130 @@
  package net.minecraft.world.gen.layer;
  
  import net.minecraft.world.biome.BiomeGenBase;
@@ -234,9 +234,5 @@
                              aint2[j1 + i1 * areaWidth] = k1;
                          }
                      }
-@@ -193,4 +193,4 @@
- 
-         return aint2;
-     }
--}
-+}
+                 }
+             }

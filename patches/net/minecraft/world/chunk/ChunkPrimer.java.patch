@@ -1,6 +1,8 @@
----a/net/minecraft/world/chunk/ChunkPrimer.java
-+++b/net/minecraft/world/chunk/ChunkPrimer.java
-@@ -4,52 +4,41 @@
+--- decompiled\net\minecraft\world\chunk\ChunkPrimer.java
++++ src\main\java\net\minecraft\world\chunk\ChunkPrimer.java
+@@ -2,53 +2,42 @@
+ 
+ import net.minecraft.block.Block;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.init.Blocks;
  
@@ -64,5 +66,4 @@
              throw new IndexOutOfBoundsException("The coordinate is out of range");
          }
      }
--}
-+}
+ }

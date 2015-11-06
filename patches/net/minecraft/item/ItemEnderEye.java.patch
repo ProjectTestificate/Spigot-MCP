@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemEnderEye.java
-+++b/net/minecraft/item/ItemEnderEye.java
-@@ -13,84 +13,71 @@
+--- decompiled\net\minecraft\item\ItemEnderEye.java
++++ src\main\java\net\minecraft\item\ItemEnderEye.java
+@@ -11,161 +11,132 @@
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.util.MovingObjectPosition;
  import net.minecraft.world.World;
  
@@ -104,7 +106,8 @@
                              flag = false;
                              break;
                          }
-@@ -99,31 +99,25 @@
+                     }
+ 
                      int j1;
                      BlockPos blockpos4;
  
@@ -142,7 +145,9 @@
                                  blockpos4 = blockpos1.offset(enumfacing1, j1);
                                  worldIn.setBlockState(blockpos4, Blocks.end_portal.getDefaultState(), 2);
                              }
-@@ -133,38 +133,28 @@
+                         }
+                     }
+                 }
  
                  return true;
              }
@@ -188,9 +193,5 @@
                          --itemStackIn.stackSize;
                      }
  
-@@ -174,4 +174,4 @@
-             return itemStackIn;
-         }
-     }
--}
-+}
+                     playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+                 }

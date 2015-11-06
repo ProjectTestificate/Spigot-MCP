@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandDefaultGameMode.java
-+++b/net/minecraft/command/CommandDefaultGameMode.java
-@@ -1,51 +1,44 @@
+--- decompiled\net\minecraft\command\CommandDefaultGameMode.java
++++ src\main\java\net\minecraft\command\CommandDefaultGameMode.java
+@@ -1,52 +1,44 @@
  package net.minecraft.command;
  
  import java.util.Iterator;
@@ -65,5 +65,4 @@
              }
          }
      }
--}
-+}
+ }

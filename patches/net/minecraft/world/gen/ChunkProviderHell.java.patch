@@ -1,6 +1,7 @@
----a/net/minecraft/world/gen/ChunkProviderHell.java
-+++b/net/minecraft/world/gen/ChunkProviderHell.java
-@@ -2,6 +2,7 @@
+--- decompiled\net\minecraft\world\gen\ChunkProviderHell.java
++++ src\main\java\net\minecraft\world\gen\ChunkProviderHell.java
+@@ -1,9 +1,10 @@
+ package net.minecraft.world.gen;
  
  import java.util.List;
  import java.util.Random;
@@ -8,7 +9,11 @@
  import net.minecraft.block.BlockFalling;
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
-@@ -25,8 +25,8 @@
+ import net.minecraft.block.state.pattern.BlockHelper;
+ import net.minecraft.entity.EnumCreatureType;
+@@ -23,12 +24,12 @@
+ import net.minecraft.world.gen.feature.WorldGenHellLava;
+ import net.minecraft.world.gen.feature.WorldGenMinable;
  import net.minecraft.world.gen.feature.WorldGenerator;
  import net.minecraft.world.gen.structure.MapGenNetherBridge;
  
@@ -19,7 +24,11 @@
      private final World worldObj;
      private final boolean field_177466_i;
      private final Random hellRNG;
-@@ -58,8 +58,7 @@
+     private double[] slowsandNoise = new double[256];
+     private double[] gravelNoise = new double[256];
+@@ -56,12 +57,11 @@
+     double[] noiseData3;
+     double[] noiseData4;
      double[] noiseData5;
      private static final String __OBFID = "CL_00000392";
  
@@ -29,7 +38,11 @@
          this.field_177467_w = new WorldGenMinable(Blocks.quartz_ore.getDefaultState(), 14, BlockHelper.forBlock(Blocks.netherrack));
          this.field_177473_x = new WorldGenHellLava(Blocks.flowing_lava, true);
          this.field_177472_y = new WorldGenHellLava(Blocks.flowing_lava, false);
-@@ -79,8 +79,7 @@
+         this.field_177471_z = new GeneratorBushFeature(Blocks.brown_mushroom);
+         this.field_177465_A = new GeneratorBushFeature(Blocks.red_mushroom);
+@@ -77,60 +77,51 @@
+         this.netherrackExculsivityNoiseGen = new NoiseGeneratorOctaves(this.hellRNG, 4);
+         this.netherNoiseGen6 = new NoiseGeneratorOctaves(this.hellRNG, 10);
          this.netherNoiseGen7 = new NoiseGeneratorOctaves(this.hellRNG, 16);
      }
  
@@ -39,7 +52,7 @@
          byte b0 = 4;
          byte b1 = 32;
          int k = b0 + 1;
-@@ -88,12 +88,9 @@
+         byte b2 = 17;
          int l = b0 + 1;
          this.noiseField = this.initializeNoiseField(this.noiseField, p_180515_1_ * b0, 0, p_180515_2_ * b0, k, b2, l);
  
@@ -55,7 +68,10 @@
                      double d0 = 0.125D;
                      double d1 = this.noiseField[((i1 + 0) * l + j1 + 0) * b2 + k1 + 0];
                      double d2 = this.noiseField[((i1 + 0) * l + j1 + 1) * b2 + k1 + 0];
-@@ -104,31 +104,26 @@
+                     double d3 = this.noiseField[((i1 + 1) * l + j1 + 0) * b2 + k1 + 0];
+                     double d4 = this.noiseField[((i1 + 1) * l + j1 + 1) * b2 + k1 + 0];
+                     double d5 = (this.noiseField[((i1 + 0) * l + j1 + 0) * b2 + k1 + 1] - d1) * d0;
+                     double d6 = (this.noiseField[((i1 + 0) * l + j1 + 1) * b2 + k1 + 1] - d2) * d0;
                      double d7 = (this.noiseField[((i1 + 1) * l + j1 + 0) * b2 + k1 + 1] - d3) * d0;
                      double d8 = (this.noiseField[((i1 + 1) * l + j1 + 1) * b2 + k1 + 1] - d4) * d0;
  
@@ -92,7 +108,11 @@
                                      iblockstate = Blocks.netherrack.getDefaultState();
                                  }
  
-@@ -153,89 +153,67 @@
+                                 int k2 = i2 + i1 * 4;
+                                 int l2 = l1 + k1 * 8;
+@@ -151,131 +142,103 @@
+                 }
+             }
          }
      }
  
@@ -202,7 +222,7 @@
                          p_180516_3_.setBlockState(l, k1, k, Blocks.bedrock.getDefaultState());
                      }
                  }
-@@ -244,35 +244,31 @@
+             }
          }
      }
  
@@ -247,7 +267,11 @@
              p_73164_1_ = new double[p_73164_5_ * p_73164_6_ * p_73164_7_];
          }
  
-@@ -288,63 +288,50 @@
+         double d0 = 684.412D;
+         double d1 = 2053.236D;
+@@ -286,66 +249,53 @@
+         this.noiseData3 = this.netherNoiseGen2.generateNoiseOctaves(this.noiseData3, p_73164_2_, p_73164_3_, p_73164_4_, p_73164_5_, p_73164_6_, p_73164_7_, d0, d1, d0);
+         int k1 = 0;
          double[] adouble1 = new double[p_73164_6_];
          int l1;
  
@@ -326,7 +350,11 @@
                          d9 = MathHelper.clamp_double(d9, 0.0D, 1.0D);
                          d4 = d4 * (1.0D - d9) + -10.0D * d9;
                      }
-@@ -357,100 +357,82 @@
+ 
+                     p_73164_1_[k1] = d4;
+@@ -355,127 +305,105 @@
+         }
+ 
          return p_73164_1_;
      }
  
@@ -448,7 +476,8 @@
                  return this.genNetherBridge.getSpawnList();
              }
          }
-@@ -459,24 +459,19 @@
+ 
+         BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(p_177458_2_);
          return biomegenbase.getSpawnableList(p_177458_1_);
      }
  
@@ -476,5 +505,4 @@
 +    public Chunk provideChunk(BlockPos blockPosIn) {
          return this.provideChunk(blockPosIn.getX() >> 4, blockPosIn.getZ() >> 4);
      }
--}
-+}
+ }

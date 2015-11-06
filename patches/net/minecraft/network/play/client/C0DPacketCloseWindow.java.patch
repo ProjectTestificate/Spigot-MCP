@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/client/C0DPacketCloseWindow.java
-+++b/net/minecraft/network/play/client/C0DPacketCloseWindow.java
-@@ -1,42 +1,48 @@
+--- decompiled\net\minecraft\network\play\client\C0DPacketCloseWindow.java
++++ src\main\java\net\minecraft\network\play\client\C0DPacketCloseWindow.java
+@@ -1,43 +1,48 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -66,5 +66,4 @@
 +    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
--}
-+}
+ }

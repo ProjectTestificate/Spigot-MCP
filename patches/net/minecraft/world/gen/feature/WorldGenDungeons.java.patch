@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenDungeons.java
-+++b/net/minecraft/world/gen/feature/WorldGenDungeons.java
-@@ -1,10 +1,8 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenDungeons.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenDungeons.java
+@@ -1,33 +1,51 @@
  package net.minecraft.world.gen.feature;
  
 -import com.google.common.collect.Lists;
@@ -11,7 +11,10 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.init.Blocks;
  import net.minecraft.init.Items;
-@@ -14,16 +14,36 @@
+ import net.minecraft.tileentity.TileEntity;
+ import net.minecraft.tileentity.TileEntityChest;
+ import net.minecraft.tileentity.TileEntityMobSpawner;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.util.WeightedRandomChestContent;
  import net.minecraft.world.World;
@@ -54,7 +57,11 @@
          boolean flag = true;
          int i = p_180709_2_.nextInt(2) + 2;
          int j = -i - 1;
-@@ -41,66 +41,46 @@
+         int k = i + 1;
+         boolean flag1 = true;
+@@ -39,115 +57,88 @@
+         int l1;
+         int i2;
          int j2;
          BlockPos blockpos1;
  
@@ -134,7 +141,9 @@
                                  worldIn.setBlockState(blockpos1, Blocks.cobblestone.getDefaultState(), 2);
                              }
                          }
-@@ -107,12 +107,10 @@
+                     }
+                 }
+             }
  
              l1 = 0;
  
@@ -152,7 +161,7 @@
                          label197:
                          {
                              j2 = p_180709_3_.getX() + p_180709_2_.nextInt(i * 2 + 1) - i;
-@@ -122,29 +122,24 @@
+                             int l2 = p_180709_3_.getY();
                              int i3 = p_180709_3_.getZ() + p_180709_2_.nextInt(l * 2 + 1) - l;
                              BlockPos blockpos2 = new BlockPos(j2, l2, i3);
  
@@ -191,7 +200,11 @@
                                      }
  
                                      break label197;
-@@ -165,30 +165,21 @@
+                                 }
+                             }
+@@ -163,27 +154,21 @@
+             }
+ 
              worldIn.setBlockState(p_180709_3_, Blocks.mob_spawner.getDefaultState(), 2);
              TileEntity tileentity = worldIn.getTileEntity(p_180709_3_);
  
@@ -221,5 +234,4 @@
 +    private String pickMobSpawner(Random p_76543_1_) {
          return SPAWNERTYPES[p_76543_1_.nextInt(SPAWNERTYPES.length)];
      }
--}
-+}
+ }

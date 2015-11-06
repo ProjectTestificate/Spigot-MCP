@@ -1,6 +1,7 @@
----a/net/minecraft/block/BlockChest.java
-+++b/net/minecraft/block/BlockChest.java
-@@ -2,6 +2,7 @@
+--- decompiled\net\minecraft\block\BlockChest.java
++++ src\main\java\net\minecraft\block\BlockChest.java
+@@ -1,9 +1,10 @@
+ package net.minecraft.block;
  
  import java.util.Iterator;
  import java.util.Random;
@@ -8,7 +9,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyDirection;
-@@ -27,15 +27,15 @@
+ import net.minecraft.block.state.BlockState;
+ import net.minecraft.block.state.IBlockState;
+@@ -25,564 +26,442 @@
+ import net.minecraft.util.MathHelper;
+ import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.ILockableContainer;
  import net.minecraft.world.World;
  
@@ -27,7 +32,7 @@
          super(Material.wood);
          this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
          this.chestType = type;
-@@ -43,70 +43,52 @@
+         this.setCreativeTab(CreativeTabs.tabDecorations);
          this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
      }
  
@@ -115,7 +120,10 @@
          state = state.withProperty(FACING, enumfacing);
          BlockPos blockpos1 = pos.north();
          BlockPos blockpos2 = pos.south();
-@@ -118,139 +118,106 @@
+         BlockPos blockpos3 = pos.west();
+         BlockPos blockpos4 = pos.east();
+         boolean flag = this == worldIn.getBlockState(blockpos1).getBlock();
+         boolean flag1 = this == worldIn.getBlockState(blockpos2).getBlock();
          boolean flag2 = this == worldIn.getBlockState(blockpos3).getBlock();
          boolean flag3 = this == worldIn.getBlockState(blockpos4).getBlock();
  
@@ -286,7 +294,10 @@
                      enumfacing = EnumFacing.WEST;
                  }
              }
-@@ -261,23 +261,19 @@
+ 
+             state = state.withProperty(FACING, enumfacing);
+             worldIn.setBlockState(pos, state, 3);
+             return state;
          }
      }
  
@@ -318,7 +329,8 @@
                      enumfacing = null;
                      break;
                  }
-@@ -288,26 +288,20 @@
+ 
+                 enumfacing = enumfacing1;
              }
          }
  
@@ -351,7 +363,7 @@
                  enumfacing2 = enumfacing2.getOpposite();
              }
  
-@@ -315,46 +315,38 @@
+             return state.withProperty(FACING, enumfacing2);
          }
      }
  
@@ -409,7 +421,9 @@
                  return false;
              }
  
-@@ -366,70 +366,53 @@
+             ++i;
+         }
+ 
          return i <= 1;
      }
  
@@ -494,7 +508,7 @@
                  playerIn.displayGUIChest(ilockablecontainer);
              }
  
-@@ -435,155 +435,120 @@
+             return true;
          }
      }
  
@@ -689,5 +703,4 @@
 +    protected BlockState createBlockState() {
 +        return new BlockState(this, new IProperty[]{FACING});
      }
--}
-+}
+ }

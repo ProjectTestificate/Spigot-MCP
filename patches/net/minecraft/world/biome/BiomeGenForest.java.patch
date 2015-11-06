@@ -1,6 +1,6 @@
----a/net/minecraft/world/biome/BiomeGenForest.java
-+++b/net/minecraft/world/biome/BiomeGenForest.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\biome\BiomeGenForest.java
++++ src\main\java\net\minecraft\world\biome\BiomeGenForest.java
+@@ -1,177 +1,144 @@
  package net.minecraft.world.biome;
  
  import java.util.Random;
@@ -8,7 +8,10 @@
  import net.minecraft.block.BlockDoublePlant;
  import net.minecraft.block.BlockFlower;
  import net.minecraft.entity.passive.EntityWolf;
-@@ -11,26 +11,22 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.MathHelper;
+ import net.minecraft.world.World;
+ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
  import net.minecraft.world.gen.feature.WorldGenBigMushroom;
  import net.minecraft.world.gen.feature.WorldGenCanopyTree;
  import net.minecraft.world.gen.feature.WorldGenForest;
@@ -40,7 +43,8 @@
              this.theBiomeDecorator.treesPerChunk = 6;
              this.theBiomeDecorator.flowersPerChunk = 100;
              this.theBiomeDecorator.grassPerChunk = 1;
-@@ -39,92 +39,71 @@
+         }
+ 
          this.setFillerBlockMetadata(5159473);
          this.setTemperatureRainfall(0.7F, 0.8F);
  
@@ -154,7 +158,9 @@
                              worldgenabstracttree.func_180711_a(worldIn, p_180624_2_, blockpos1);
                          }
                      }
-@@ -134,42 +134,32 @@
+                 }
+             }
+         }
  
          i = p_180624_2_.nextInt(5) - 3;
  
@@ -205,7 +211,11 @@
                          ++l;
                          continue;
                      }
-@@ -183,51 +183,31 @@
+                 }
+ 
+@@ -181,42 +148,31 @@
+         }
+ 
          super.decorate(worldIn, p_180624_2_, p_180624_3_);
      }
  
@@ -257,5 +267,3 @@
              };
          }
      }
--}
-+}

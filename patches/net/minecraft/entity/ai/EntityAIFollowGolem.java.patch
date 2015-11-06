@@ -1,6 +1,7 @@
----a/net/minecraft/entity/ai/EntityAIFollowGolem.java
-+++b/net/minecraft/entity/ai/EntityAIFollowGolem.java
-@@ -2,49 +2,40 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIFollowGolem.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIFollowGolem.java
+@@ -1,94 +1,77 @@
+ package net.minecraft.entity.ai;
  
  import java.util.Iterator;
  import java.util.List;
@@ -65,7 +66,10 @@
                          this.theGolem = entityirongolem;
                          break;
                      }
-@@ -57,39 +57,32 @@
+                 }
+ 
+                 return this.theGolem != null;
+             }
          }
      }
  
@@ -109,5 +113,4 @@
              this.theVillager.getNavigator().clearPathEntity();
          }
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIMoveTowardsRestriction.java
-+++b/net/minecraft/entity/ai/EntityAIMoveTowardsRestriction.java
-@@ -4,8 +4,8 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIMoveTowardsRestriction.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIMoveTowardsRestriction.java
+@@ -2,56 +2,46 @@
+ 
+ import net.minecraft.entity.EntityCreature;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.Vec3;
  
@@ -11,7 +13,7 @@
      private EntityCreature theEntity;
      private double movePosX;
      private double movePosY;
-@@ -13,29 +13,22 @@
+     private double movePosZ;
      private double movementSpeed;
      private static final String __OBFID = "CL_00001598";
  
@@ -49,7 +51,8 @@
                  this.movePosX = vec3.xCoord;
                  this.movePosY = vec3.yCoord;
                  this.movePosZ = vec3.zCoord;
-@@ -45,14 +45,11 @@
+                 return true;
+             }
          }
      }
  
@@ -64,5 +67,4 @@
 +    public void startExecuting() {
          this.theEntity.getNavigator().tryMoveToXYZ(this.movePosX, this.movePosY, this.movePosZ, this.movementSpeed);
      }
--}
-+}
+ }

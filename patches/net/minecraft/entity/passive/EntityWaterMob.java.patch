@@ -1,6 +1,8 @@
----a/net/minecraft/entity/passive/EntityWaterMob.java
-+++b/net/minecraft/entity/passive/EntityWaterMob.java
-@@ -5,70 +5,57 @@
+--- decompiled\net\minecraft\entity\passive\EntityWaterMob.java
++++ src\main\java\net\minecraft\entity\passive\EntityWaterMob.java
+@@ -3,71 +3,58 @@
+ import net.minecraft.entity.EntityLiving;
+ import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.util.DamageSource;
  import net.minecraft.world.World;
  
@@ -83,5 +85,4 @@
 +    public boolean isPushedByWater() {
          return false;
      }
--}
-+}
+ }

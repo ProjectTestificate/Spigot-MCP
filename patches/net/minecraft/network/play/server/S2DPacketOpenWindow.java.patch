@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S2DPacketOpenWindow.java
-+++b/net/minecraft/network/play/server/S2DPacketOpenWindow.java
-@@ -1,14 +1,14 @@
+--- decompiled\net\minecraft\network\play\server\S2DPacketOpenWindow.java
++++ src\main\java\net\minecraft\network\play\server\S2DPacketOpenWindow.java
+@@ -1,113 +1,69 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -21,7 +21,7 @@
      private int windowId;
      private String inventoryType;
      private IChatComponent windowTitle;
-@@ -18,61 +18,53 @@
+     private int slotCount;
      private int entityId;
      private static final String __OBFID = "CL_00001293";
  
@@ -129,5 +129,4 @@
 -    {
 -        return this.slotCount > 0;
 -    }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/world/gen/structure/MapGenStructureData.java
-+++b/net/minecraft/world/gen/structure/MapGenStructureData.java
-@@ -3,39 +3,33 @@
+--- decompiled\net\minecraft\world\gen\structure\MapGenStructureData.java
++++ src\main\java\net\minecraft\world\gen\structure\MapGenStructureData.java
+@@ -1,40 +1,34 @@
+ package net.minecraft.world.gen.structure;
+ 
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.world.WorldSavedData;
  
@@ -46,5 +48,4 @@
 +    public NBTTagCompound func_143041_a() {
          return this.field_143044_a;
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/world/border/WorldBorder.java
-+++b/net/minecraft/world/border/WorldBorder.java
-@@ -1,16 +1,14 @@
+--- decompiled\net\minecraft\world\border\WorldBorder.java
++++ src\main\java\net\minecraft\world\border\WorldBorder.java
+@@ -1,19 +1,20 @@
  package net.minecraft.world.border;
  
 -import com.google.common.collect.Lists;
@@ -24,7 +24,11 @@
      private final List listeners = Lists.newArrayList();
      private double centerX = 0.0D;
      private double centerZ = 0.0D;
-@@ -25,7 +25,9 @@
+     private double startDiameter = 6.0E7D;
+     private double endDiameter;
+@@ -23,274 +24,238 @@
+     private double damageAmount;
+     private double damageBuffer;
      private int warningTime;
      private int warningDistance;
      private static final String __OBFID = "CL_00002012";
@@ -36,7 +40,8 @@
          this.endDiameter = this.startDiameter;
          this.worldSize = 29999984;
          this.damageAmount = 0.2D;
-@@ -36,29 +36,36 @@
+         this.damageBuffer = 5.0D;
+         this.warningTime = 15;
          this.warningDistance = 5;
      }
  
@@ -84,7 +89,9 @@
          double d2 = z - this.minZ();
          double d3 = this.maxZ() - z;
          double d4 = x - this.minX();
-@@ -67,90 +67,74 @@
+         double d5 = this.maxX() - x;
+         double d6 = Math.min(d4, d5);
+         d6 = Math.min(d6, d2);
          return Math.min(d6, d3);
      }
  
@@ -197,7 +204,9 @@
                  return this.startDiameter + (this.endDiameter - this.startDiameter) * d0;
              }
  
-@@ -160,138 +160,110 @@
+             this.setTransition(this.endDiameter);
+         }
+ 
          return this.startDiameter;
      }
  
@@ -363,5 +372,4 @@
              iborderlistener.onWarningDistanceChanged(this, warningDistance);
          }
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIWander.java
-+++b/net/minecraft/entity/ai/EntityAIWander.java
-@@ -3,8 +3,8 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIWander.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIWander.java
+@@ -1,80 +1,67 @@
+ package net.minecraft.entity.ai;
+ 
  import net.minecraft.entity.EntityCreature;
  import net.minecraft.util.Vec3;
  
@@ -11,7 +13,9 @@
      private EntityCreature entity;
      private double xPosition;
      private double yPosition;
-@@ -14,41 +14,33 @@
+     private double zPosition;
+     private double speed;
+     private int field_179481_f;
      private boolean field_179482_g;
      private static final String __OBFID = "CL_00001608";
  
@@ -62,7 +66,8 @@
              this.xPosition = vec3.xCoord;
              this.yPosition = vec3.yCoord;
              this.zPosition = vec3.zCoord;
-@@ -58,24 +58,19 @@
+             this.field_179482_g = false;
+             return true;
          }
      }
  
@@ -89,5 +94,4 @@
 +    public void func_179479_b(int p_179479_1_) {
          this.field_179481_f = p_179479_1_;
      }
--}
-+}
+ }

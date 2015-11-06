@@ -1,6 +1,8 @@
----a/net/minecraft/command/server/CommandBanIp.java
-+++b/net/minecraft/command/server/CommandBanIp.java
-@@ -5,6 +5,7 @@
+--- decompiled\net\minecraft\command\server\CommandBanIp.java
++++ src\main\java\net\minecraft\command\server\CommandBanIp.java
+@@ -3,10 +3,11 @@
+ import java.util.Date;
+ import java.util.Iterator;
  import java.util.List;
  import java.util.regex.Matcher;
  import java.util.regex.Pattern;
@@ -8,7 +10,11 @@
  import net.minecraft.command.CommandBase;
  import net.minecraft.command.CommandException;
  import net.minecraft.command.ICommandSender;
-@@ -16,88 +16,70 @@
+ import net.minecraft.command.PlayerNotFoundException;
+ import net.minecraft.command.WrongUsageException;
+@@ -14,89 +15,71 @@
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.server.management.IPBanEntry;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.IChatComponent;
  
@@ -116,5 +122,4 @@
 -            notifyOperators(p_147210_1_, this, "commands.banip.success.players", new Object[] {p_147210_2_, joinNiceString(astring)});
 -        }
      }
--}
-+}
+ }

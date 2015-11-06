@@ -1,6 +1,8 @@
----a/net/minecraft/command/server/CommandListPlayers.java
-+++b/net/minecraft/command/server/CommandListPlayers.java
-@@ -8,31 +8,27 @@
+--- decompiled\net\minecraft\command\server\CommandListPlayers.java
++++ src\main\java\net\minecraft\command\server\CommandListPlayers.java
+@@ -6,32 +6,28 @@
+ import net.minecraft.command.ICommandSender;
+ import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.ChatComponentText;
  import net.minecraft.util.ChatComponentTranslation;
  
@@ -37,5 +39,4 @@
          sender.addChatMessage(new ChatComponentText(MinecraftServer.getServer().getConfigurationManager().func_180602_f()));
          sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, i);
      }
--}
-+}
+ }

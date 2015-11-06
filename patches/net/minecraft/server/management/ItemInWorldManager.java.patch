@@ -1,6 +1,7 @@
----a/net/minecraft/server/management/ItemInWorldManager.java
-+++b/net/minecraft/server/management/ItemInWorldManager.java
-@@ -2,15 +2,23 @@
+--- decompiled\net\minecraft\server\management\ItemInWorldManager.java
++++ src\main\java\net\minecraft\server\management\ItemInWorldManager.java
+@@ -1,29 +1,43 @@
+ package net.minecraft.server.management;
  
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockChest;
@@ -22,7 +23,8 @@
  import net.minecraft.tileentity.TileEntity;
  import net.minecraft.tileentity.TileEntityChest;
  import net.minecraft.util.BlockPos;
-@@ -19,7 +19,9 @@
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.world.ILockableContainer;
  import net.minecraft.world.World;
  import net.minecraft.world.WorldServer;
  import net.minecraft.world.WorldSettings;
@@ -42,7 +44,11 @@
      public World theWorld;
      public EntityPlayerMP thisPlayerMP;
      private WorldSettings.GameType gameType;
-@@ -35,8 +35,7 @@
+     private boolean isDestroyingBlock;
+     private int initialDamage;
+@@ -33,392 +47,498 @@
+     private BlockPos field_180241_i;
+     private int initialBlockDamage;
      private int durabilityRemainingOnBlock;
      private static final String __OBFID = "CL_00001442";
  
@@ -52,7 +58,7 @@
          this.gameType = WorldSettings.GameType.NOT_SET;
          this.field_180240_f = BlockPos.ORIGIN;
          this.field_180241_i = BlockPos.ORIGIN;
-@@ -44,90 +44,71 @@
+         this.durabilityRemainingOnBlock = -1;
          this.theWorld = worldIn;
      }
  
@@ -165,7 +171,7 @@
                      this.theWorld.sendBlockBreakProgress(this.thisPlayerMP.getEntityId(), this.field_180240_f, j);
                      this.durabilityRemainingOnBlock = j;
                  }
-@@ -135,149 +135,235 @@
+             }
          }
      }
  
@@ -455,7 +461,8 @@
                          return false;
                      }
                  }
-@@ -281,72 +281,61 @@
+             }
+ 
              this.theWorld.playAuxSFXAtEntity(this.thisPlayerMP, 2001, pos, Block.getStateId(iblockstate));
              boolean flag1 = this.removeBlock(pos);
  
@@ -550,7 +557,7 @@
                  }
  
                  return true;
-@@ -355,73 +355,132 @@
+             }
          }
      }
  
@@ -708,5 +715,4 @@
 +    public void setWorld(WorldServer serverWorld) {
          this.theWorld = serverWorld;
      }
--}
-+}
+ }

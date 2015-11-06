@@ -1,6 +1,6 @@
----a/net/minecraft/entity/item/EntityBoat.java
-+++b/net/minecraft/entity/item/EntityBoat.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\entity\item\EntityBoat.java
++++ src\main\java\net\minecraft\entity\item\EntityBoat.java
+@@ -1,8 +1,9 @@
  package net.minecraft.entity.item;
  
  import java.util.List;
@@ -8,7 +8,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.material.Material;
  import net.minecraft.entity.Entity;
-@@ -17,11 +17,7 @@
+ import net.minecraft.entity.EntityLivingBase;
+ import net.minecraft.entity.player.EntityPlayer;
+@@ -15,555 +16,509 @@
+ import net.minecraft.util.DamageSource;
+ import net.minecraft.util.EntityDamageSourceIndirect;
  import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
@@ -32,7 +36,8 @@
      private boolean isBoatEmpty;
      private double speedMultiplier;
      private int boatPosRotationIncrements;
-@@ -30,20 +30,52 @@
+     private double boatX;
+     private double boatY;
      private double boatZ;
      private double boatYaw;
      private double boatPitch;
@@ -72,7 +77,7 @@
          super(worldIn);
          this.isBoatEmpty = true;
          this.speedMultiplier = 0.07D;
-@@ -47,35 +47,29 @@
+         this.preventEntitySpawning = true;
          this.setSize(1.5F, 0.6F);
      }
  
@@ -114,7 +119,8 @@
          this(worldIn);
          this.setPosition(p_i1705_2_, p_i1705_4_, p_i1705_6_);
          this.motionX = 0.0D;
-@@ -84,40 +84,54 @@
+         this.motionY = 0.0D;
+         this.motionZ = 0.0D;
          this.prevPosX = p_i1705_2_;
          this.prevPosY = p_i1705_4_;
          this.prevPosZ = p_i1705_6_;
@@ -191,7 +197,8 @@
                          this.dropItemWithOffset(Items.boat, 1, 0.0F);
                      }
  
-@@ -128,94 +128,30 @@
+                     this.setDead();
+                 }
  
                  return true;
              }
@@ -297,7 +304,9 @@
              this.setDamageTaken(this.getDamageTaken() - 1.0F);
          }
  
-@@ -224,16 +224,14 @@
+         this.prevPosX = this.posX;
+         this.prevPosY = this.posY;
+         this.prevPosZ = this.posZ;
          byte b0 = 5;
          double d0 = 0.0D;
  
@@ -318,7 +327,8 @@
              }
          }
  
-@@ -241,27 +241,23 @@
+         double d9 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+         double d2;
          double d4;
          int j;
  
@@ -353,7 +363,10 @@
                      d7 = this.posX + d2 + d4 * d5 * 0.7D;
                      d8 = this.posZ + d4 - d2 * d5 * 0.7D;
                      this.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, d7, this.posY - 0.125D, d8, this.motionX, this.motionY, this.motionZ, new int[0]);
-@@ -271,37 +271,31 @@
+                 }
+             }
+         }
+ 
          double d10;
          double d11;
  
@@ -393,7 +406,9 @@
                      this.motionX *= 0.5D;
                      this.motionY *= 0.5D;
                      this.motionZ *= 0.5D;
-@@ -303,92 +303,94 @@
+                 }
+ 
+                 this.motionX *= 0.9900000095367432D;
                  this.motionY *= 0.949999988079071D;
                  this.motionZ *= 0.9900000095367432D;
              }
@@ -525,7 +540,8 @@
              {
                  this.motionX *= 0.5D;
                  this.motionY *= 0.5D;
-@@ -393,104 +393,116 @@
+                 this.motionZ *= 0.5D;
+             }
  
              this.moveEntity(this.motionX, this.motionY, this.motionZ);
  
@@ -689,7 +705,7 @@
                  playerIn.mountEntity(this);
              }
  
-@@ -498,72 +498,63 @@
+             return true;
          }
      }
  
@@ -788,5 +804,4 @@
 -    {
 -        this.isBoatEmpty = p_70270_1_;
 -    }
--}
-+}
+ }

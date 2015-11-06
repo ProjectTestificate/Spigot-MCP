@@ -1,6 +1,6 @@
----a/net/minecraft/block/state/BlockStateBase.java
-+++b/net/minecraft/block/state/BlockStateBase.java
-@@ -1,75 +1,62 @@
+--- decompiled\net\minecraft\block\state\BlockStateBase.java
++++ src\main\java\net\minecraft\block\state\BlockStateBase.java
+@@ -1,76 +1,65 @@
  package net.minecraft.block.state;
  
 -import com.google.common.base.Function;
@@ -103,9 +103,5 @@
              stringbuilder.append("[");
              COMMA_JOINER.appendTo(stringbuilder, Iterables.transform(this.getProperties().entrySet(), MAP_ENTRY_TO_STRING));
              stringbuilder.append("]");
-@@ -76,4 +76,4 @@
+         }
  
-         return stringbuilder.toString();
-     }
--}
-+}

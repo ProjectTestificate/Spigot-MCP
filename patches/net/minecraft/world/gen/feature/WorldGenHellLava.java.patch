@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenHellLava.java
-+++b/net/minecraft/world/gen/feature/WorldGenHellLava.java
-@@ -1,90 +1,75 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenHellLava.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenHellLava.java
+@@ -1,94 +1,77 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -112,9 +112,5 @@
                  worldIn.setBlockState(p_180709_3_, this.field_150553_a.getDefaultState(), 2);
                  worldIn.forceBlockUpdateTick(this.field_150553_a, p_180709_3_, p_180709_2_);
              }
-@@ -94,4 +94,4 @@
+ 
              return true;
-         }
-     }
--}
-+}

@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenMegaJungle.java
-+++b/net/minecraft/world/gen/feature/WorldGenMegaJungle.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenMegaJungle.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenMegaJungle.java
+@@ -1,111 +1,94 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -8,7 +8,7 @@
  import net.minecraft.block.BlockVine;
  import net.minecraft.block.material.Material;
  import net.minecraft.init.Blocks;
-@@ -8,76 +8,63 @@
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  
@@ -105,7 +105,7 @@
                              this.func_175932_b(worldIn, p_180709_2_, blockpos2.east(), BlockVine.WEST_FLAG);
                              this.func_175932_b(worldIn, p_180709_2_, blockpos2.north(), BlockVine.SOUTH_FLAG);
                          }
-@@ -85,12 +85,10 @@
+                     }
  
                      BlockPos blockpos3 = blockpos1.south().east();
  
@@ -120,7 +120,7 @@
                              this.func_175932_b(worldIn, p_180709_2_, blockpos3.east(), BlockVine.WEST_FLAG);
                              this.func_175932_b(worldIn, p_180709_2_, blockpos3.south(), BlockVine.NORTH_FLAG);
                          }
-@@ -98,12 +98,10 @@
+                     }
  
                      BlockPos blockpos4 = blockpos1.south();
  
@@ -135,7 +135,11 @@
                              this.func_175932_b(worldIn, p_180709_2_, blockpos4.west(), BlockVine.EAST_FLAG);
                              this.func_175932_b(worldIn, p_180709_2_, blockpos4.south(), BlockVine.NORTH_FLAG);
                          }
-@@ -115,27 +115,21 @@
+                     }
+                 }
+@@ -113,28 +96,23 @@
+ 
+             return true;
          }
      }
  
@@ -166,5 +170,4 @@
              this.func_175925_a(worldIn, p_175930_2_.up(j), p_175930_3_ + 1 - j);
          }
      }
--}
-+}
+ }

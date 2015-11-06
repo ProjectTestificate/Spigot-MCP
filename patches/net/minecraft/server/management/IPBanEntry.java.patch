@@ -1,6 +1,6 @@
----a/net/minecraft/server/management/IPBanEntry.java
-+++b/net/minecraft/server/management/IPBanEntry.java
-@@ -1,38 +1,32 @@
+--- decompiled\net\minecraft\server\management\IPBanEntry.java
++++ src\main\java\net\minecraft\server\management\IPBanEntry.java
+@@ -1,38 +1,33 @@
  package net.minecraft.server.management;
  
 -import com.google.gson.JsonObject;
@@ -50,5 +50,4 @@
              super.onSerialization(data);
          }
      }
--}
-+}
+ }

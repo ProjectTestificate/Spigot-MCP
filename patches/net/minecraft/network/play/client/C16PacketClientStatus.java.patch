@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/client/C16PacketClientStatus.java
-+++b/net/minecraft/network/play/client/C16PacketClientStatus.java
-@@ -1,53 +1,49 @@
+--- decompiled\net\minecraft\network\play\client\C16PacketClientStatus.java
++++ src\main\java\net\minecraft\network\play\client\C16PacketClientStatus.java
+@@ -1,52 +1,47 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -67,6 +67,3 @@
          OPEN_INVENTORY_ACHIEVEMENT;
  
          private static final String __OBFID = "CL_00001349";
-     }
--}
-+}

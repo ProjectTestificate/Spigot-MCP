@@ -1,6 +1,6 @@
----a/net/minecraft/block/properties/PropertyBool.java
-+++b/net/minecraft/block/properties/PropertyBool.java
-@@ -1,35 +1,30 @@
+--- decompiled\net\minecraft\block\properties\PropertyBool.java
++++ src\main\java\net\minecraft\block\properties\PropertyBool.java
+@@ -1,35 +1,31 @@
  package net.minecraft.block.properties;
  
 -import com.google.common.collect.ImmutableSet;
@@ -45,5 +45,4 @@
 +    public String getName(Comparable value) {
 +        return this.getName0((Boolean) value);
      }
--}
-+}
+ }

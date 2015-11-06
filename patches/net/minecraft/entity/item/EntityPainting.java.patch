@@ -1,6 +1,6 @@
----a/net/minecraft/entity/item/EntityPainting.java
-+++b/net/minecraft/entity/item/EntityPainting.java
-@@ -1,8 +1,6 @@
+--- decompiled\net\minecraft\entity\item\EntityPainting.java
++++ src\main\java\net\minecraft\entity\item\EntityPainting.java
+@@ -1,154 +1,108 @@
  package net.minecraft.entity.item;
  
 -import com.google.common.collect.Lists;
@@ -9,7 +9,9 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityHanging;
  import net.minecraft.entity.player.EntityPlayer;
-@@ -11,117 +11,80 @@
+ import net.minecraft.init.Items;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
@@ -150,7 +152,8 @@
                      return;
                  }
              }
-@@ -130,15 +130,13 @@
+ 
+             this.entityDropItem(new ItemStack(Items.painting), 0.0F);
          }
      }
  
@@ -177,7 +180,11 @@
          KEBAB("Kebab", 16, 16, 0, 0),
          AZTEC("Aztec", 16, 16, 16, 0),
          ALBAN("Alban", 16, 16, 32, 0),
-@@ -182,8 +182,7 @@
+         AZTEC_2("Aztec2", 16, 16, 48, 0),
+         BOMB("Bomb", 16, 16, 64, 0),
+@@ -180,12 +134,11 @@
+         public final int offsetX;
+         public final int offsetY;
  
          private static final String __OBFID = "CL_00001557";
  
@@ -187,9 +194,5 @@
              this.title = p_i1598_3_;
              this.sizeX = p_i1598_4_;
              this.sizeY = p_i1598_5_;
-@@ -191,4 +191,4 @@
+             this.offsetX = p_i1598_6_;
              this.offsetY = p_i1598_7_;
-         }
-     }
--}
-+}

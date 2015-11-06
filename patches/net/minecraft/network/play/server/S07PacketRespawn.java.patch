@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S07PacketRespawn.java
-+++b/net/minecraft/network/play/server/S07PacketRespawn.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\network\play\server\S07PacketRespawn.java
++++ src\main\java\net\minecraft\network\play\server\S07PacketRespawn.java
+@@ -1,86 +1,57 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -8,7 +8,7 @@
  import net.minecraft.network.INetHandler;
  import net.minecraft.network.Packet;
  import net.minecraft.network.PacketBuffer;
-@@ -8,57 +8,48 @@
+ import net.minecraft.network.play.INetHandlerPlayClient;
  import net.minecraft.world.EnumDifficulty;
  import net.minecraft.world.WorldSettings;
  import net.minecraft.world.WorldType;
@@ -99,5 +99,4 @@
 -    {
 -        return this.field_149085_d;
 -    }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/util/ChatComponentTranslationFormatException.java
-+++b/net/minecraft/util/ChatComponentTranslationFormatException.java
-@@ -1,22 +1,19 @@
+--- decompiled\net\minecraft\util\ChatComponentTranslationFormatException.java
++++ src\main\java\net\minecraft\util\ChatComponentTranslationFormatException.java
+@@ -1,21 +1,18 @@
  package net.minecraft.util;
  
 -public class ChatComponentTranslationFormatException extends IllegalArgumentException
@@ -29,5 +29,4 @@
 +    public ChatComponentTranslationFormatException(ChatComponentTranslation component, Throwable cause) {
 +        super(String.format("Error while parsing: %s", new Object[]{component}), cause);
      }
--}
-+}
+ }

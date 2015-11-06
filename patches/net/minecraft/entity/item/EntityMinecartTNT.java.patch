@@ -1,6 +1,8 @@
----a/net/minecraft/entity/item/EntityMinecartTNT.java
-+++b/net/minecraft/entity/item/EntityMinecartTNT.java
-@@ -12,69 +12,54 @@
+--- decompiled\net\minecraft\entity\item\EntityMinecartTNT.java
++++ src\main\java\net\minecraft\entity\item\EntityMinecartTNT.java
+@@ -10,191 +10,139 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.DamageSource;
  import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.world.Explosion;
  import net.minecraft.world.World;
@@ -86,7 +88,7 @@
                  this.explodeCart(entityarrow.motionX * entityarrow.motionX + entityarrow.motionY * entityarrow.motionY + entityarrow.motionZ * entityarrow.motionZ);
              }
          }
-@@ -82,120 +82,81 @@
+ 
          return super.attackEntityFrom(source, amount);
      }
  
@@ -227,5 +229,4 @@
          super.writeEntityToNBT(tagCompound);
          tagCompound.setInteger("TNTFuse", this.minecartTNTFuse);
      }
--}
-+}
+ }

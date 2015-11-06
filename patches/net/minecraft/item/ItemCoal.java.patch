@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemCoal.java
-+++b/net/minecraft/item/ItemCoal.java
-@@ -1,23 +1,18 @@
+--- decompiled\net\minecraft\item\ItemCoal.java
++++ src\main\java\net\minecraft\item\ItemCoal.java
+@@ -1,30 +1,19 @@
  package net.minecraft.item;
  
 -import java.util.List;
@@ -35,5 +35,4 @@
 -        subItems.add(new ItemStack(itemIn, 1, 0));
 -        subItems.add(new ItemStack(itemIn, 1, 1));
 -    }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/nbt/NBTTagByte.java
-+++b/net/minecraft/nbt/NBTTagByte.java
-@@ -4,90 +4,74 @@
+--- decompiled\net\minecraft\nbt\NBTTagByte.java
++++ src\main\java\net\minecraft\nbt\NBTTagByte.java
+@@ -2,91 +2,75 @@
+ 
+ import java.io.DataInput;
  import java.io.DataOutput;
  import java.io.IOException;
  
@@ -115,5 +117,4 @@
 +    public float getFloat() {
 +        return (float) this.data;
      }
--}
-+}
+ }

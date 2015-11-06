@@ -1,6 +1,6 @@
----a/net/minecraft/block/state/pattern/BlockPattern.java
-+++b/net/minecraft/block/state/pattern/BlockPattern.java
-@@ -1,61 +1,51 @@
+--- decompiled\net\minecraft\block\state\pattern\BlockPattern.java
++++ src\main\java\net\minecraft\block\state\pattern\BlockPattern.java
+@@ -1,180 +1,151 @@
  package net.minecraft.block.state.pattern;
  
 -import com.google.common.base.Predicate;
@@ -88,7 +88,9 @@
                          return null;
                      }
                  }
-@@ -72,34 +72,28 @@
+             }
+         }
+ 
          return new BlockPattern.PatternHelper(pos, finger, thumb, lcache);
      }
  
@@ -130,7 +132,10 @@
                              return patternhelper;
                          }
                      }
-@@ -110,74 +110,52 @@
+                 }
+             }
+         }
+ 
          return null;
      }
  
@@ -230,7 +235,6 @@
 +        public EnumFacing getFinger() {
 +            return this.finger;
          }
--}
 +
 +        public EnumFacing getThumb() {
 +            return this.thumb;
@@ -240,4 +244,4 @@
 +            return (BlockWorldState) this.lcache.getUnchecked(BlockPattern.translateOffset(this.pos, this.getFinger(), this.getThumb(), palmOffset, thumbOffset, fingerOffset));
 +        }
 +    }
-+}
+ }

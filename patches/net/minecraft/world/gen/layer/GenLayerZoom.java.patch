@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/layer/GenLayerZoom.java
-+++b/net/minecraft/world/gen/layer/GenLayerZoom.java
-@@ -1,17 +1,16 @@
+--- decompiled\net\minecraft\world\gen\layer\GenLayerZoom.java
++++ src\main\java\net\minecraft\world\gen\layer\GenLayerZoom.java
+@@ -1,66 +1,59 @@
  package net.minecraft.world.gen.layer;
  
 -public class GenLayerZoom extends GenLayer
@@ -22,7 +22,10 @@
          int i1 = areaX >> 1;
          int j1 = areaY >> 1;
          int k1 = (areaWidth >> 1) + 2;
-@@ -22,20 +22,17 @@
+         int l1 = (areaHeight >> 1) + 2;
+         int[] aint = this.parent.getInts(i1, j1, k1, l1);
+         int i2 = k1 - 1 << 1;
+         int j2 = l1 - 1 << 1;
          int[] aint1 = IntCache.getIntCache(i2 * j2);
          int l2;
  
@@ -48,7 +51,8 @@
                  aint1[l2++ + i2] = this.selectModeOrRandom(j3, l3, k3, i4);
                  j3 = l3;
                  k3 = i4;
-@@ -44,24 +44,20 @@
+             }
+         }
  
          int[] aint2 = IntCache.getIntCache(areaWidth * areaHeight);
  
@@ -76,5 +80,4 @@
 -        return (GenLayer)object;
 +        return (GenLayer) object;
      }
--}
-+}
+ }

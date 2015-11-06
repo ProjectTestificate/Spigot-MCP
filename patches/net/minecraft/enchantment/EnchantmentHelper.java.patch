@@ -1,6 +1,6 @@
----a/net/minecraft/enchantment/EnchantmentHelper.java
-+++b/net/minecraft/enchantment/EnchantmentHelper.java
-@@ -1,7 +1,5 @@
+--- decompiled\net\minecraft\enchantment\EnchantmentHelper.java
++++ src\main\java\net\minecraft\enchantment\EnchantmentHelper.java
+@@ -1,16 +1,15 @@
  package net.minecraft.enchantment;
  
 -import com.google.common.collect.Lists;
@@ -8,7 +8,7 @@
  import java.util.ArrayList;
  import java.util.HashMap;
  import java.util.Iterator;
-@@ -9,6 +9,7 @@
+ import java.util.LinkedHashMap;
  import java.util.List;
  import java.util.Map;
  import java.util.Random;
@@ -16,7 +16,11 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.EnumCreatureAttribute;
-@@ -21,8 +21,11 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.init.Items;
+@@ -19,447 +18,370 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.nbt.NBTTagList;
  import net.minecraft.util.DamageSource;
  import net.minecraft.util.WeightedRandom;
  
@@ -30,7 +34,7 @@
      private static final Random enchantmentRand = new Random();
      private static final EnchantmentHelper.ModifierDamage enchantmentModifierDamage = new EnchantmentHelper.ModifierDamage(null);
      private static final EnchantmentHelper.ModifierLiving enchantmentModifierLiving = new EnchantmentHelper.ModifierLiving(null);
-@@ -30,31 +30,21 @@
+     private static final EnchantmentHelper.HurtIterator field_151388_d = new EnchantmentHelper.HurtIterator(null);
      private static final EnchantmentHelper.DamageIterator field_151389_e = new EnchantmentHelper.DamageIterator(null);
      private static final String __OBFID = "CL_00000107";
  
@@ -67,7 +71,9 @@
                          return short2;
                      }
                  }
-@@ -62,13 +62,11 @@
+ 
+                 return 0;
+             }
          }
      }
  
@@ -86,7 +92,9 @@
                  short short1 = nbttaglist.getCompoundTagAt(i).getShort("id");
                  short short2 = nbttaglist.getCompoundTagAt(i).getShort("lvl");
                  linkedhashmap.put(Integer.valueOf(short1), Integer.valueOf(short2));
-@@ -80,62 +80,48 @@
+             }
+         }
+ 
          return linkedhashmap;
      }
  
@@ -165,7 +173,8 @@
                      j = i1;
                  }
              }
-@@ -144,23 +144,17 @@
+ 
+             return j;
          }
      }
  
@@ -192,7 +201,7 @@
                          modifier.calculateModifier(Enchantment.getEnchantmentById(short1), short2);
                      }
                  }
-@@ -166,138 +166,121 @@
+             }
          }
      }
  
@@ -364,7 +373,7 @@
                  return itemstack;
              }
          }
-@@ -305,16 +305,13 @@
+ 
          return null;
      }
  
@@ -388,7 +397,8 @@
                  p_77514_2_ = 15;
              }
  
-@@ -326,29 +326,23 @@
+             int l = p_77514_0_.nextInt(8) + 1 + (p_77514_2_ >> 1) + p_77514_0_.nextInt(p_77514_2_ + 1);
+             return p_77514_1_ == 0 ? Math.max(l / 3, 1) : (p_77514_1_ == 1 ? l * 2 / 3 + 1 : Math.max(l, p_77514_2_ * 2));
          }
      }
  
@@ -426,7 +436,8 @@
                      p_77504_1_.addEnchantment(enchantmentdata.enchantmentobj, enchantmentdata.enchantmentLevel);
                  }
              }
-@@ -358,66 +358,53 @@
+         }
+ 
          return p_77504_1_;
      }
  
@@ -509,7 +520,7 @@
                                      iterator.remove();
                                  }
  
-@@ -425,9 +425,8 @@
+                                 break;
                              }
                          }
  
@@ -521,7 +532,10 @@
                              arraylist.add(enchantmentdata2);
                          }
                      }
-@@ -438,20 +438,17 @@
+                 }
+             }
+ 
+             return arraylist;
          }
      }
  
@@ -554,7 +568,11 @@
                              hashmap = Maps.newHashMap();
                          }
  
-@@ -470,88 +470,71 @@
+                         hashmap.put(Integer.valueOf(enchantment.effectId), new EnchantmentData(enchantment, l));
+                     }
+@@ -468,86 +390,82 @@
+         }
+ 
          return hashmap;
      }
  
@@ -683,7 +701,6 @@
 -            }
 +        private ModifierLiving() {
          }
--}
 +
 +        public void calculateModifier(Enchantment p_77493_1_, int p_77493_2_) {
 +            this.livingModifier += p_77493_1_.calcDamageByCreature(p_77493_2_, this.entityLiving);
@@ -693,4 +710,4 @@
 +            this();
 +        }
 +    }
-+}
+ }

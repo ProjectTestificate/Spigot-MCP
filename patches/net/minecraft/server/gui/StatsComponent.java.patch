@@ -1,6 +1,6 @@
----a/net/minecraft/server/gui/StatsComponent.java
-+++b/net/minecraft/server/gui/StatsComponent.java
-@@ -1,20 +1,15 @@
+--- decompiled\net\minecraft\server\gui\StatsComponent.java
++++ src\main\java\net\minecraft\server\gui\StatsComponent.java
+@@ -1,88 +1,77 @@
  package net.minecraft.server.gui;
  
 -import java.awt.Color;
@@ -28,7 +28,7 @@
      private static final DecimalFormat field_120040_a = new DecimalFormat("########0.000");
      private int[] field_120038_b = new int[256];
      private int field_120039_c;
-@@ -22,25 +22,23 @@
+     private String[] field_120036_d = new String[11];
      private final MinecraftServer field_120037_e;
      private static final String __OBFID = "CL_00001796";
  
@@ -60,7 +60,7 @@
          long i = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
          System.gc();
          this.field_120036_d[0] = "Memory use: " + i / 1024L / 1024L + " mb (" + Runtime.getRuntime().freeMemory() * 100L / Runtime.getRuntime().maxMemory() + "% free)";
-@@ -48,26 +48,22 @@
+         this.field_120036_d[1] = "Avg tick: " + field_120040_a.format(this.func_120035_a(this.field_120037_e.tickTimeArray) * 1.0E-6D) + " ms";
          this.repaint();
      }
  
@@ -92,7 +92,7 @@
              int j = this.field_120038_b[i + this.field_120039_c & 255];
              p_paint_1_.setColor(new Color(j + 28 << 16));
              p_paint_1_.fillRect(i, 100 - j, 1, j);
-@@ -75,15 +75,12 @@
+         }
  
          p_paint_1_.setColor(Color.BLACK);
  
@@ -108,5 +108,4 @@
              }
          }
      }
--}
-+}
+ }

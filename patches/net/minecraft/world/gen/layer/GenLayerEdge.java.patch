@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/layer/GenLayerEdge.java
-+++b/net/minecraft/world/gen/layer/GenLayerEdge.java
-@@ -1,19 +1,18 @@
+--- decompiled\net\minecraft\world\gen\layer\GenLayerEdge.java
++++ src\main\java\net\minecraft\world\gen\layer\GenLayerEdge.java
+@@ -1,60 +1,52 @@
  package net.minecraft.world.gen.layer;
  
 -public class GenLayerEdge extends GenLayer
@@ -27,7 +27,10 @@
              case 1:
              default:
                  return this.getIntsCoolWarm(areaX, areaY, areaWidth, areaHeight);
-@@ -26,8 +26,7 @@
+             case 2:
+                 return this.getIntsHeatIce(areaX, areaY, areaWidth, areaHeight);
+             case 3:
+                 return this.getIntsSpecial(areaX, areaY, areaWidth, areaHeight);
          }
      }
  
@@ -37,7 +40,7 @@
          int i1 = p_151626_1_ - 1;
          int j1 = p_151626_2_ - 1;
          int k1 = 1 + p_151626_3_ + 1;
-@@ -35,18 +35,14 @@
+         int l1 = 1 + p_151626_4_ + 1;
          int[] aint = this.parent.getInts(i1, j1, k1, l1);
          int[] aint1 = IntCache.getIntCache(p_151626_3_ * p_151626_4_);
  
@@ -57,7 +60,7 @@
                      int l2 = aint[j2 + 1 + (i2 + 1 - 1) * k1];
                      int i3 = aint[j2 + 1 + 1 + (i2 + 1) * k1];
                      int j3 = aint[j2 + 1 - 1 + (i2 + 1) * k1];
-@@ -51,8 +51,7 @@
+                     int k3 = aint[j2 + 1 + (i2 + 1 + 1) * k1];
                      boolean flag = l2 == 3 || i3 == 3 || j3 == 3 || k3 == 3;
                      boolean flag1 = l2 == 4 || i3 == 4 || j3 == 4 || k3 == 4;
  
@@ -67,7 +70,11 @@
                          k2 = 2;
                      }
                  }
-@@ -64,8 +64,7 @@
+ 
+                 aint1[j2 + i2 * p_151626_3_] = k2;
+@@ -62,36 +54,31 @@
+         }
+ 
          return aint1;
      }
  
@@ -77,7 +84,7 @@
          int i1 = p_151624_1_ - 1;
          int j1 = p_151624_2_ - 1;
          int k1 = 1 + p_151624_3_ + 1;
-@@ -73,16 +73,12 @@
+         int l1 = 1 + p_151624_4_ + 1;
          int[] aint = this.parent.getInts(i1, j1, k1, l1);
          int[] aint1 = IntCache.getIntCache(p_151624_3_ * p_151624_4_);
  
@@ -95,7 +102,7 @@
                      int l2 = aint[j2 + 1 + (i2 + 1 - 1) * k1];
                      int i3 = aint[j2 + 1 + 1 + (i2 + 1) * k1];
                      int j3 = aint[j2 + 1 - 1 + (i2 + 1) * k1];
-@@ -88,8 +88,7 @@
+                     int k3 = aint[j2 + 1 + (i2 + 1 + 1) * k1];
                      boolean flag = l2 == 2 || i3 == 2 || j3 == 2 || k3 == 2;
                      boolean flag1 = l2 == 1 || i3 == 1 || j3 == 1 || k3 == 1;
  
@@ -105,7 +112,11 @@
                          k2 = 3;
                      }
                  }
-@@ -101,20 +101,16 @@
+ 
+                 aint1[j2 + i2 * p_151624_3_] = k2;
+@@ -99,74 +86,59 @@
+         }
+ 
          return aint1;
      }
  
@@ -131,7 +142,10 @@
                      k1 |= 1 + this.nextInt(15) << 8 & 3840;
                  }
  
-@@ -125,8 +125,7 @@
+                 aint1[j1 + i1 * p_151625_3_] = k1;
+             }
+         }
+ 
          return aint1;
      }
  
@@ -141,7 +155,7 @@
          COOL_WARM,
          HEAT_ICE,
          SPECIAL;
-@@ -134,42 +134,28 @@
+ 
          private static final String __OBFID = "CL_00000549";
      }
  
@@ -199,6 +213,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

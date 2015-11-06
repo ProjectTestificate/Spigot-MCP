@@ -1,6 +1,6 @@
----a/net/minecraft/item/crafting/ShapedRecipes.java
-+++b/net/minecraft/item/crafting/ShapedRecipes.java
-@@ -1,40 +1,102 @@
+--- decompiled\net\minecraft\item\crafting\ShapedRecipes.java
++++ src\main\java\net\minecraft\item\crafting\ShapedRecipes.java
+@@ -1,145 +1,187 @@
  package net.minecraft.item.crafting;
  
 +import java.util.Arrays;
@@ -117,7 +117,7 @@
                  aitemstack[i] = new ItemStack(itemstack.getItem().getContainerItem());
              }
          }
-@@ -44,25 +44,17 @@
+ 
          return aitemstack;
      }
  
@@ -142,7 +142,8 @@
                      return true;
                  }
              }
-@@ -65,48 +65,35 @@
+         }
+ 
          return false;
      }
  
@@ -197,7 +198,9 @@
                          return false;
                      }
                  }
-@@ -112,18 +112,14 @@
+             }
+         }
+ 
          return true;
      }
  
@@ -222,7 +225,7 @@
                  }
              }
          }
-@@ -132,15 +132,12 @@
+ 
          return itemstack;
      }
  
@@ -238,11 +241,10 @@
          this.field_92101_f = true;
          return this;
      }
--}
 +
 +    // Spigot start
 +    public List getIngredients() {
 +        return Arrays.asList(recipeItems);
 +    }
 +    // Spigot end
-+}
+ }

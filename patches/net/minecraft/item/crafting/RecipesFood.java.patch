@@ -1,6 +1,8 @@
----a/net/minecraft/item/crafting/RecipesFood.java
-+++b/net/minecraft/item/crafting/RecipesFood.java
-@@ -5,23 +5,22 @@
+--- decompiled\net\minecraft\item\crafting\RecipesFood.java
++++ src\main\java\net\minecraft\item\crafting\RecipesFood.java
+@@ -3,24 +3,23 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.init.Items;
  import net.minecraft.item.EnumDyeColor;
  import net.minecraft.item.ItemStack;
  
@@ -36,5 +38,4 @@
 +        p_77608_1_.addShapelessRecipe(new ItemStack(Items.blaze_powder, 2), new Object[]{Items.blaze_rod});
 +        p_77608_1_.addShapelessRecipe(new ItemStack(Items.magma_cream), new Object[]{Items.blaze_powder, Items.slime_ball});
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandBlockData.java
-+++b/net/minecraft/command/CommandBlockData.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\command\CommandBlockData.java
++++ src\main\java\net\minecraft\command\CommandBlockData.java
+@@ -1,96 +1,77 @@
  package net.minecraft.command;
  
  import java.util.List;
@@ -8,7 +8,7 @@
  import net.minecraft.nbt.JsonToNBT;
  import net.minecraft.nbt.NBTException;
  import net.minecraft.nbt.NBTTagCompound;
-@@ -8,90 +8,70 @@
+ import net.minecraft.tileentity.TileEntity;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -118,5 +118,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
          return args.length > 0 && args.length <= 3 ? func_175771_a(args, 0, pos) : null;
      }
--}
-+}
+ }

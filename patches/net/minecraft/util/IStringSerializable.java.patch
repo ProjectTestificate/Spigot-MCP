@@ -1,6 +1,6 @@
----a/net/minecraft/util/IStringSerializable.java
-+++b/net/minecraft/util/IStringSerializable.java
-@@ -1,7 +1,7 @@
+--- decompiled\net\minecraft\util\IStringSerializable.java
++++ src\main\java\net\minecraft\util\IStringSerializable.java
+@@ -1,6 +1,6 @@
  package net.minecraft.util;
  
 -public interface IStringSerializable
@@ -8,5 +8,4 @@
 +public interface IStringSerializable {
 +
      String getName();
--}
-+}
+ }

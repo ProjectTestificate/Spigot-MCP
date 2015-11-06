@@ -1,6 +1,6 @@
----a/net/minecraft/command/ServerCommand.java
-+++b/net/minecraft/command/ServerCommand.java
-@@ -1,19 +1,13 @@
+--- decompiled\net\minecraft\command\ServerCommand.java
++++ src\main\java\net\minecraft\command\ServerCommand.java
+@@ -1,18 +1,14 @@
  package net.minecraft.command;
  
 -import net.minecraftforge.fml.relauncher.Side;
@@ -21,5 +21,4 @@
          this.input = input;
          this.sender = sender;
      }
--}
-+}
+ }

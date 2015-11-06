@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/structure/MapGenNetherBridge.java
-+++b/net/minecraft/world/gen/structure/MapGenNetherBridge.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\world\gen\structure\MapGenNetherBridge.java
++++ src\main\java\net\minecraft\world\gen\structure\MapGenNetherBridge.java
+@@ -1,75 +1,71 @@
  package net.minecraft.world.gen.structure;
  
 -import com.google.common.collect.Lists;
@@ -10,7 +10,7 @@
  import net.minecraft.entity.monster.EntityBlaze;
  import net.minecraft.entity.monster.EntityMagmaCube;
  import net.minecraft.entity.monster.EntityPigZombie;
-@@ -10,67 +10,64 @@
+ import net.minecraft.entity.monster.EntitySkeleton;
  import net.minecraft.world.World;
  import net.minecraft.world.biome.BiomeGenBase;
  
@@ -103,6 +103,5 @@
 +            this.updateBoundingBox();
 +            this.setRandomHeight(worldIn, p_i2040_2_, 48, 70);
          }
--}
 +    }
-+}
+ }

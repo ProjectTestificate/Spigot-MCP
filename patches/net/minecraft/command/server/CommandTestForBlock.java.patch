@@ -1,6 +1,7 @@
----a/net/minecraft/command/server/CommandTestForBlock.java
-+++b/net/minecraft/command/server/CommandTestForBlock.java
-@@ -2,6 +2,7 @@
+--- decompiled\net\minecraft\command\server\CommandTestForBlock.java
++++ src\main\java\net\minecraft\command\server\CommandTestForBlock.java
+@@ -1,9 +1,10 @@
+ package net.minecraft.command.server;
  
  import java.util.Iterator;
  import java.util.List;
@@ -8,7 +9,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.command.CommandBase;
-@@ -19,182 +19,137 @@
+ import net.minecraft.command.CommandException;
+ import net.minecraft.command.CommandResultStats;
+@@ -17,216 +18,164 @@
+ import net.minecraft.nbt.NBTTagList;
+ import net.minecraft.tileentity.TileEntity;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -246,7 +251,7 @@
                                  ++j;
                                  continue;
                              }
-@@ -206,8 +206,7 @@
+ 
                              flag1 = true;
                          }
  
@@ -256,7 +261,10 @@
                              return false;
                          }
  
-@@ -218,17 +218,12 @@
+                         ++i;
+                         break;
+                     }
+                 }
  
                  return true;
              }
@@ -273,5 +281,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
          return args.length > 0 && args.length <= 3 ? func_175771_a(args, 0, pos) : (args.length == 4 ? func_175762_a(args, Block.blockRegistry.getKeys()) : null);
      }
--}
-+}
+ }

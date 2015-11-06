@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandTime.java
-+++b/net/minecraft/command/CommandTime.java
-@@ -1,77 +1,64 @@
+--- decompiled\net\minecraft\command\CommandTime.java
++++ src\main\java\net\minecraft\command\CommandTime.java
+@@ -1,105 +1,86 @@
  package net.minecraft.command;
  
  import java.util.List;
@@ -101,7 +101,8 @@
                      return;
                  }
              }
-@@ -81,27 +81,21 @@
+         }
+ 
          throw new WrongUsageException("commands.time.usage", new Object[0]);
      }
  
@@ -134,5 +135,4 @@
 +            worldserver.setWorldTime(worldserver.getWorldTime() + (long) p_71553_2_);
          }
      }
--}
-+}
+ }

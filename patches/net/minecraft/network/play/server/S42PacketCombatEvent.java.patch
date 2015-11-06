@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S42PacketCombatEvent.java
-+++b/net/minecraft/network/play/server/S42PacketCombatEvent.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\network\play\server\S42PacketCombatEvent.java
++++ src\main\java\net\minecraft\network\play\server\S42PacketCombatEvent.java
+@@ -1,33 +1,33 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -8,7 +8,7 @@
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.network.INetHandler;
  import net.minecraft.network.Packet;
-@@ -8,8 +8,8 @@
+ import net.minecraft.network.PacketBuffer;
  import net.minecraft.network.play.INetHandlerPlayClient;
  import net.minecraft.util.CombatTracker;
  
@@ -19,7 +19,7 @@
      public S42PacketCombatEvent.Event field_179776_a;
      public int field_179774_b;
      public int field_179775_c;
-@@ -17,14 +17,15 @@
+     public int field_179772_d;
      public String field_179773_e;
      private static final String __OBFID = "CL_00002299";
  
@@ -39,7 +39,11 @@
              case 1:
                  this.field_179772_d = p_i45970_1_.func_180134_f();
                  this.field_179775_c = entitylivingbase == null ? -1 : entitylivingbase.getEntityId();
-@@ -37,53 +37,42 @@
+                 break;
+             case 2:
+@@ -35,85 +35,67 @@
+                 this.field_179775_c = entitylivingbase == null ? -1 : entitylivingbase.getEntityId();
+                 this.field_179773_e = p_i45970_1_.getDeathMessage().getUnformattedText();
          }
      }
  
@@ -103,7 +107,7 @@
          ENTER_COMBAT,
          END_COMBAT,
          ENTITY_DIED;
-@@ -90,33 +90,22 @@
+ 
          private static final String __OBFID = "CL_00002297";
      }
  
@@ -147,6 +151,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

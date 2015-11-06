@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockDoor.java
-+++b/net/minecraft/block/BlockDoor.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockDoor.java
++++ src\main\java\net\minecraft\block\BlockDoor.java
+@@ -1,8 +1,9 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -8,7 +8,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyBool;
-@@ -15,16 +15,12 @@
+ import net.minecraft.block.properties.PropertyDirection;
+ import net.minecraft.block.properties.PropertyEnum;
+@@ -13,272 +14,210 @@
+ import net.minecraft.init.Items;
+ import net.minecraft.item.Item;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -30,7 +34,7 @@
      public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
      public static final PropertyBool OPEN = PropertyBool.create("open");
      public static final PropertyEnum HINGE = PropertyEnum.create("hinge", BlockDoor.EnumHingePosition.class);
-@@ -33,250 +33,189 @@
+     public static final PropertyBool POWERED = PropertyBool.create("powered");
      public static final PropertyEnum HALF = PropertyEnum.create("half", BlockDoor.EnumDoorHalf.class);
      private static final String __OBFID = "CL_00000230";
  
@@ -349,7 +353,11 @@
          IBlockState iblockstate = worldIn.getBlockState(pos);
          int i = iblockstate.getBlock().getMetaFromState(iblockstate);
          boolean flag = isTop(i);
-@@ -291,52 +291,31 @@
+         IBlockState iblockstate1 = worldIn.getBlockState(pos.down());
+         int j = iblockstate1.getBlock().getMetaFromState(iblockstate1);
+@@ -289,171 +228,128 @@
+         boolean flag1 = (i1 & 1) != 0;
+         boolean flag2 = (i1 & 2) != 0;
          return removeHalfBit(k) | (flag ? 8 : 0) | (flag1 ? 16 : 0) | (flag2 ? 32 : 0);
      }
  
@@ -404,7 +412,7 @@
                  state = state.withProperty(FACING, iblockstate1.getValue(FACING)).withProperty(OPEN, iblockstate1.getValue(OPEN));
              }
          }
-@@ -338,42 +338,28 @@
+ 
          return state;
      }
  
@@ -455,7 +463,7 @@
                  i |= 4;
              }
          }
-@@ -381,80 +381,65 @@
+ 
          return i;
      }
  
@@ -550,5 +558,4 @@
              return this == LEFT ? "left" : "right";
          }
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemPotion.java
-+++b/net/minecraft/item/ItemPotion.java
-@@ -1,72 +1,56 @@
+--- decompiled\net\minecraft\item\ItemPotion.java
++++ src\main\java\net\minecraft\item\ItemPotion.java
+@@ -1,402 +1,161 @@
  package net.minecraft.item;
  
 -import com.google.common.collect.HashMultimap;
@@ -86,7 +86,8 @@
                  list = PotionHelper.getPotionEffects(stack.getMetadata(), false);
                  this.effectCache.put(Integer.valueOf(stack.getMetadata()), list);
              }
-@@ -74,13 +74,11 @@
+ 
+             return list;
          }
      }
  
@@ -102,7 +103,7 @@
              list = PotionHelper.getPotionEffects(meta, false);
              this.effectCache.put(Integer.valueOf(meta), list);
          }
-@@ -87,25 +87,19 @@
+ 
          return list;
      }
  
@@ -133,7 +134,7 @@
                      playerIn.addPotionEffect(new PotionEffect(potioneffect));
                  }
              }
-@@ -112,10 +112,8 @@
+         }
  
          playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
  
@@ -146,7 +147,9 @@
                  return new ItemStack(Items.glass_bottle);
              }
  
-@@ -125,90 +125,60 @@
+             playerIn.inventory.addItemStackToInventory(new ItemStack(Items.glass_bottle));
+         }
+ 
          return stack;
      }
  
@@ -439,5 +442,4 @@
 -            subItems.add(new ItemStack(itemIn, 1, j));
 -        }
 -    }
--}
-+}
+ }

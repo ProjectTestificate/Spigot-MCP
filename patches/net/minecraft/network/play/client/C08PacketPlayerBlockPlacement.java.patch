@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/client/C08PacketPlayerBlockPlacement.java
-+++b/net/minecraft/network/play/client/C08PacketPlayerBlockPlacement.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\network\play\client\C08PacketPlayerBlockPlacement.java
++++ src\main\java\net\minecraft\network\play\client\C08PacketPlayerBlockPlacement.java
+@@ -1,98 +1,102 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -8,7 +8,7 @@
  import net.minecraft.item.ItemStack;
  import net.minecraft.network.INetHandler;
  import net.minecraft.network.Packet;
-@@ -8,8 +8,8 @@
+ import net.minecraft.network.PacketBuffer;
  import net.minecraft.network.play.INetHandlerPlayServer;
  import net.minecraft.util.BlockPos;
  
@@ -19,7 +19,9 @@
      private static final BlockPos field_179726_a = new BlockPos(-1, -1, -1);
      private BlockPos position;
      private int placedBlockDirection;
-@@ -19,14 +19,16 @@
+     private ItemStack stack;
+     private float facingX;
+     private float facingY;
      private float facingZ;
      private static final String __OBFID = "CL_00001371";
  
@@ -41,7 +43,8 @@
          this.position = p_i45931_1_;
          this.placedBlockDirection = p_i45931_2_;
          this.stack = p_i45931_3_ != null ? p_i45931_3_.copy() : null;
-@@ -36,64 +36,55 @@
+         this.facingX = p_i45931_4_;
+         this.facingY = p_i45931_5_;
          this.facingZ = p_i45931_6_;
      }
  
@@ -122,7 +125,6 @@
 +    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
--}
 +
 +    // SpigotMCP Start -- Remove as already fixed by mcp
 +    /*
@@ -134,4 +136,4 @@
 +    // CraftBukkit end
 +    */
 +    // SpigotMCP End
-+}
+ }

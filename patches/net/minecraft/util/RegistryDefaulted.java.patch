@@ -1,6 +1,6 @@
----a/net/minecraft/util/RegistryDefaulted.java
-+++b/net/minecraft/util/RegistryDefaulted.java
-@@ -1,19 +1,17 @@
+--- decompiled\net\minecraft\util\RegistryDefaulted.java
++++ src\main\java\net\minecraft\util\RegistryDefaulted.java
+@@ -1,18 +1,16 @@
  package net.minecraft.util;
  
 -public class RegistryDefaulted extends RegistrySimple
@@ -22,5 +22,4 @@
          Object object1 = super.getObject(p_82594_1_);
          return object1 == null ? this.defaultObject : object1;
      }
--}
-+}
+ }

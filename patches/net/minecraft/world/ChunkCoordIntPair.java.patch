@@ -1,6 +1,7 @@
----a/net/minecraft/world/ChunkCoordIntPair.java
-+++b/net/minecraft/world/ChunkCoordIntPair.java
-@@ -2,90 +2,72 @@
+--- decompiled\net\minecraft\world\ChunkCoordIntPair.java
++++ src\main\java\net\minecraft\world\ChunkCoordIntPair.java
+@@ -1,90 +1,72 @@
+ package net.minecraft.world;
  
  import net.minecraft.util.BlockPos;
  
@@ -109,5 +110,4 @@
 +    public String toString() {
          return "[" + this.chunkXPos + ", " + this.chunkZPos + "]";
      }
--}
-+}
+ }

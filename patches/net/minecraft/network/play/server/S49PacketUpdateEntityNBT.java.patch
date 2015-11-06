@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S49PacketUpdateEntityNBT.java
-+++b/net/minecraft/network/play/server/S49PacketUpdateEntityNBT.java
-@@ -1,50 +1,43 @@
+--- decompiled\net\minecraft\network\play\server\S49PacketUpdateEntityNBT.java
++++ src\main\java\net\minecraft\network\play\server\S49PacketUpdateEntityNBT.java
+@@ -1,61 +1,43 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -73,5 +73,4 @@
 -    {
 -        this.func_179762_a((INetHandlerPlayClient)handler);
 -    }
--}
-+}
+ }

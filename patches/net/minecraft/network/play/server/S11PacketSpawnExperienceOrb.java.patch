@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S11PacketSpawnExperienceOrb.java
-+++b/net/minecraft/network/play/server/S11PacketSpawnExperienceOrb.java
-@@ -1,15 +1,15 @@
+--- decompiled\net\minecraft\network\play\server\S11PacketSpawnExperienceOrb.java
++++ src\main\java\net\minecraft\network\play\server\S11PacketSpawnExperienceOrb.java
+@@ -1,90 +1,56 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -22,7 +22,7 @@
      private int field_148992_a;
      private int field_148990_b;
      private int field_148991_c;
-@@ -19,9 +19,11 @@
+     private int field_148988_d;
      private int field_148989_e;
      private static final String __OBFID = "CL_00001277";
  
@@ -36,7 +36,7 @@
          this.field_148992_a = p_i45167_1_.getEntityId();
          this.field_148990_b = MathHelper.floor_double(p_i45167_1_.posX * 32.0D);
          this.field_148991_c = MathHelper.floor_double(p_i45167_1_.posY * 32.0D);
-@@ -30,8 +30,7 @@
+         this.field_148988_d = MathHelper.floor_double(p_i45167_1_.posZ * 32.0D);
          this.field_148989_e = p_i45167_1_.getXpValue();
      }
  
@@ -46,7 +46,7 @@
          this.field_148992_a = buf.readVarIntFromBuffer();
          this.field_148990_b = buf.readInt();
          this.field_148991_c = buf.readInt();
-@@ -39,8 +39,7 @@
+         this.field_148988_d = buf.readInt();
          this.field_148989_e = buf.readShort();
      }
  
@@ -56,7 +56,7 @@
          buf.writeVarIntToBuffer(this.field_148992_a);
          buf.writeInt(this.field_148990_b);
          buf.writeInt(this.field_148991_c);
-@@ -48,15 +48,11 @@
+         buf.writeInt(this.field_148988_d);
          buf.writeShort(this.field_148989_e);
      }
  
@@ -102,5 +102,4 @@
 -    {
 -        return this.field_148989_e;
 -    }
--}
-+}
+ }

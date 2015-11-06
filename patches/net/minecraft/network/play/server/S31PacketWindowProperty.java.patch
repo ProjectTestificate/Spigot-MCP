@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S31PacketWindowProperty.java
-+++b/net/minecraft/network/play/server/S31PacketWindowProperty.java
-@@ -1,50 +1,46 @@
+--- decompiled\net\minecraft\network\play\server\S31PacketWindowProperty.java
++++ src\main\java\net\minecraft\network\play\server\S31PacketWindowProperty.java
+@@ -1,68 +1,46 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -80,5 +80,4 @@
 -    {
 -        return this.field_149185_c;
 -    }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/world/biome/BiomeGenMutated.java
-+++b/net/minecraft/world/biome/BiomeGenMutated.java
-@@ -1,20 +1,19 @@
+--- decompiled\net\minecraft\world\biome\BiomeGenMutated.java
++++ src\main\java\net\minecraft\world\biome\BiomeGenMutated.java
+@@ -1,23 +1,22 @@
  package net.minecraft.world.biome;
  
 -import com.google.common.collect.Lists;
@@ -28,7 +28,11 @@
          super(p_i45381_1_);
          this.baseBiome = p_i45381_2_;
          this.func_150557_a(p_i45381_2_.color, true);
-@@ -40,51 +40,31 @@
+         this.biomeName = p_i45381_2_.biomeName + " M";
+         this.topBlock = p_i45381_2_.topBlock;
+@@ -38,52 +37,33 @@
+         this.rainfall = p_i45381_2_.rainfall;
+         this.minHeight = p_i45381_2_.minHeight + 0.1F;
          this.maxHeight = p_i45381_2_.maxHeight + 0.2F;
      }
  
@@ -85,5 +89,4 @@
 +    public BiomeGenBase.TempCategory getTempCategory() {
          return this.baseBiome.getTempCategory();
      }
--}
-+}
+ }

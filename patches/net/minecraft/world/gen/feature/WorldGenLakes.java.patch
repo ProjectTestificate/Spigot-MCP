@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenLakes.java
-+++b/net/minecraft/world/gen/feature/WorldGenLakes.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenLakes.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenLakes.java
+@@ -1,66 +1,56 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -8,7 +8,8 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.material.Material;
  import net.minecraft.init.Blocks;
-@@ -9,36 +9,30 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.world.EnumSkyBlock;
  import net.minecraft.world.World;
  import net.minecraft.world.biome.BiomeGenBase;
  
@@ -53,7 +54,7 @@
                  double d0 = p_180709_2_.nextDouble() * 6.0D + 3.0D;
                  double d1 = p_180709_2_.nextDouble() * 4.0D + 2.0D;
                  double d2 = p_180709_2_.nextDouble() * 6.0D + 3.0D;
-@@ -46,26 +46,20 @@
+                 double d3 = p_180709_2_.nextDouble() * (16.0D - d0 - 2.0D) + 1.0D + d0 / 2.0D;
                  double d4 = p_180709_2_.nextDouble() * (8.0D - d1 - 4.0D) + 2.0D + d1 / 2.0D;
                  double d5 = p_180709_2_.nextDouble() * (16.0D - d2 - 2.0D) + 1.0D + d2 / 2.0D;
  
@@ -80,7 +81,11 @@
                                  aboolean[(l * 16 + i1) * 8 + j1] = true;
                              }
                          }
-@@ -70,29 +70,21 @@
+                     }
+                 }
+@@ -68,107 +58,80 @@
+ 
+             int k;
              int k1;
              boolean flag;
  
@@ -112,7 +117,7 @@
                                  return false;
                              }
                          }
-@@ -96,45 +96,31 @@
+                     }
                  }
              }
  
@@ -164,7 +169,8 @@
                                      worldIn.setBlockState(blockpos1, Blocks.grass.getDefaultState(), 2);
                                  }
                              }
-@@ -138,24 +138,16 @@
+                         }
+                     }
                  }
              }
  
@@ -188,7 +194,7 @@
                                  worldIn.setBlockState(p_180709_3_.add(j, k, k1), Blocks.stone.getDefaultState(), 2);
                              }
                          }
-@@ -157,20 +157,14 @@
+                     }
                  }
              }
  
@@ -209,9 +215,5 @@
                              worldIn.setBlockState(p_180709_3_.add(j, b0, k1), Blocks.ice.getDefaultState(), 2);
                          }
                      }
-@@ -176,4 +176,4 @@
-             return true;
-         }
-     }
--}
-+}
+                 }
+             }

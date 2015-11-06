@@ -1,6 +1,8 @@
----a/net/minecraft/inventory/ContainerFurnace.java
-+++b/net/minecraft/inventory/ContainerFurnace.java
-@@ -5,11 +5,7 @@
+--- decompiled\net\minecraft\inventory\ContainerFurnace.java
++++ src\main\java\net\minecraft\inventory\ContainerFurnace.java
+@@ -3,159 +3,139 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.entity.player.InventoryPlayer;
  import net.minecraft.item.ItemStack;
  import net.minecraft.item.crafting.FurnaceRecipes;
  import net.minecraft.tileentity.TileEntityFurnace;
@@ -17,7 +19,7 @@
      private final IInventory tileFurnace;
      private int field_178152_f;
      private int field_178153_g;
-@@ -17,59 +17,82 @@
+     private int field_178154_h;
      private int field_178155_i;
      private static final String __OBFID = "CL_00001748";
  
@@ -107,7 +109,10 @@
                  icrafting.sendProgressBarUpdate(this, 3, this.tileFurnace.getField(3));
              }
          }
-@@ -80,86 +80,53 @@
+ 
+         this.field_178152_f = this.tileFurnace.getField(2);
+         this.field_178154_h = this.tileFurnace.getField(0);
+         this.field_178155_i = this.tileFurnace.getField(1);
          this.field_178153_g = this.tileFurnace.getField(3);
      }
  
@@ -208,9 +213,5 @@
                  return null;
              }
  
-@@ -162,4 +162,4 @@
- 
-         return itemstack;
-     }
--}
-+}
+             slot.onPickupFromSlot(playerIn, itemstack1);
+         }

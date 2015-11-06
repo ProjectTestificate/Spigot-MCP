@@ -1,6 +1,8 @@
----a/net/minecraft/inventory/SlotFurnaceOutput.java
-+++b/net/minecraft/inventory/SlotFurnaceOutput.java
-@@ -6,73 +6,66 @@
+--- decompiled\net\minecraft\inventory\SlotFurnaceOutput.java
++++ src\main\java\net\minecraft\inventory\SlotFurnaceOutput.java
+@@ -4,93 +4,93 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.init.Items;
  import net.minecraft.item.ItemStack;
  import net.minecraft.item.crafting.FurnaceRecipes;
  import net.minecraft.stats.AchievementList;
@@ -106,7 +108,8 @@
                  j = EntityXPOrb.getXPSplit(i);
                  i -= j;
                  this.thePlayer.worldObj.spawnEntityInWorld(new EntityXPOrb(this.thePlayer.worldObj, this.thePlayer.posX, this.thePlayer.posY + 0.5D, this.thePlayer.posZ + 0.5D, j));
-@@ -83,15 +83,12 @@
+             }
+         }
  
          this.field_75228_b = 0;
  
@@ -122,5 +125,4 @@
              this.thePlayer.triggerAchievement(AchievementList.cookFish);
          }
      }
--}
-+}
+ }

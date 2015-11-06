@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockDispenser.java
-+++b/net/minecraft/block/BlockDispenser.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockDispenser.java
++++ src\main\java\net\minecraft\block\BlockDispenser.java
+@@ -1,8 +1,9 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -8,7 +8,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyBool;
-@@ -24,61 +24,48 @@
+ import net.minecraft.block.properties.PropertyDirection;
+ import net.minecraft.block.state.BlockState;
+@@ -22,240 +23,189 @@
+ import net.minecraft.tileentity.TileEntityDispenser;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.util.RegistryDefaulted;
  import net.minecraft.world.World;
@@ -86,7 +90,8 @@
                      enumfacing = EnumFacing.WEST;
                  }
              }
-@@ -88,177 +88,137 @@
+ 
+             worldIn.setBlockState(pos, state.withProperty(FACING, enumfacing).withProperty(TRIGGERED, Boolean.valueOf(false)), 2);
          }
      }
  
@@ -304,5 +309,4 @@
 +    protected BlockState createBlockState() {
 +        return new BlockState(this, new IProperty[]{FACING, TRIGGERED});
      }
--}
-+}
+ }

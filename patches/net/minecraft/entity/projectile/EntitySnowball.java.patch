@@ -1,6 +1,8 @@
----a/net/minecraft/entity/projectile/EntitySnowball.java
-+++b/net/minecraft/entity/projectile/EntitySnowball.java
-@@ -7,48 +7,40 @@
+--- decompiled\net\minecraft\entity\projectile\EntitySnowball.java
++++ src\main\java\net\minecraft\entity\projectile\EntitySnowball.java
+@@ -5,49 +5,41 @@
+ import net.minecraft.util.DamageSource;
+ import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.util.MovingObjectPosition;
  import net.minecraft.world.World;
  
@@ -58,5 +60,4 @@
              this.setDead();
          }
      }
--}
-+}
+ }

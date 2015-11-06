@@ -1,6 +1,6 @@
----a/net/minecraft/command/server/CommandSetBlock.java
-+++b/net/minecraft/command/server/CommandSetBlock.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\command\server\CommandSetBlock.java
++++ src\main\java\net\minecraft\command\server\CommandSetBlock.java
+@@ -1,8 +1,9 @@
  package net.minecraft.command.server;
  
  import java.util.List;
@@ -8,7 +8,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.command.CommandBase;
-@@ -17,91 +17,71 @@
+ import net.minecraft.command.CommandException;
+ import net.minecraft.command.CommandResultStats;
+@@ -15,117 +16,90 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.tileentity.TileEntity;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -125,7 +129,7 @@
                      }
  
                      world.setBlockState(blockpos, Blocks.air.getDefaultState(), block == Blocks.air ? 2 : 4);
-@@ -112,18 +112,13 @@
+                 }
  
                  IBlockState iblockstate = block.getStateFromMeta(i);
  
@@ -148,7 +152,11 @@
                              nbttagcompound.setInteger("x", blockpos.getX());
                              nbttagcompound.setInteger("y", blockpos.getY());
                              nbttagcompound.setInteger("z", blockpos.getZ());
-@@ -139,10 +139,8 @@
+                             tileentity.readFromNBT(nbttagcompound);
+                         }
+@@ -137,10 +111,9 @@
+                 }
+             }
          }
      }
  
@@ -158,5 +166,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 +        return args.length > 0 && args.length <= 3 ? func_175771_a(args, 0, pos) : (args.length == 4 ? func_175762_a(args, Block.blockRegistry.getKeys()) : (args.length == 6 ? getListOfStringsMatchingLastWord(args, new String[]{"replace", "destroy", "keep"}) : null));
      }
--}
-+}
+ }

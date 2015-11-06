@@ -1,6 +1,6 @@
----a/net/minecraft/command/server/CommandListBans.java
-+++b/net/minecraft/command/server/CommandListBans.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\command\server\CommandListBans.java
++++ src\main\java\net\minecraft\command\server\CommandListBans.java
+@@ -1,54 +1,46 @@
  package net.minecraft.command.server;
  
  import java.util.List;
@@ -8,7 +8,8 @@
  import net.minecraft.command.CommandBase;
  import net.minecraft.command.CommandException;
  import net.minecraft.command.ICommandSender;
-@@ -9,47 +9,38 @@
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.ChatComponentText;
  import net.minecraft.util.ChatComponentTranslation;
  
@@ -67,5 +68,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 +        return args.length == 1 ? getListOfStringsMatchingLastWord(args, new String[]{"players", "ips"}) : null;
      }
--}
-+}
+ }

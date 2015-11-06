@@ -1,6 +1,6 @@
----a/net/minecraft/profiler/PlayerUsageSnooper.java
-+++b/net/minecraft/profiler/PlayerUsageSnooper.java
-@@ -1,24 +1,19 @@
+--- decompiled\net\minecraft\profiler\PlayerUsageSnooper.java
++++ src\main\java\net\minecraft\profiler\PlayerUsageSnooper.java
+@@ -1,27 +1,25 @@
  package net.minecraft.profiler;
  
 -import com.google.common.collect.Maps;
@@ -31,7 +31,11 @@
      private final Map field_152773_a = Maps.newHashMap();
      private final Map field_152774_b = Maps.newHashMap();
      private final String uniqueID = UUID.randomUUID().toString();
-@@ -32,15 +32,11 @@
+     private final URL serverUrl;
+     private final IPlayerUsage playerStatsCollector;
+@@ -30,46 +28,37 @@
+     private final long minecraftStartTimeMilis;
+     private boolean isRunning;
      private int selfCounter;
      private static final String __OBFID = "CL_00001515";
  
@@ -49,7 +53,7 @@
              throw new IllegalArgumentException();
          }
  
-@@ -47,29 +47,23 @@
+         this.playerStatsCollector = playerStatCollector;
          this.minecraftStartTimeMilis = startTime;
      }
  
@@ -86,7 +90,11 @@
                                  hashmap.putAll(PlayerUsageSnooper.this.field_152773_a);
                              }
  
-@@ -82,8 +82,7 @@
+                             hashmap.put("snooper_count", Integer.valueOf(PlayerUsageSnooper.access$308(PlayerUsageSnooper.this)));
+                             hashmap.put("snooper_token", PlayerUsageSnooper.this.uniqueID);
+@@ -80,12 +69,11 @@
+                 }
+             }, 0L, 900000L);
          }
      }
  
@@ -96,7 +104,11 @@
          this.addJvmArgsToSnooper();
          this.addClientStat("snooper_token", this.uniqueID);
          this.addStatToSnooper("snooper_token", this.uniqueID);
-@@ -95,19 +95,16 @@
+         this.addStatToSnooper("os_name", System.getProperty("os.name"));
+         this.addStatToSnooper("os_version", System.getProperty("os.version"));
+@@ -93,110 +81,62 @@
+         this.addStatToSnooper("java_version", System.getProperty("java.version"));
+         this.addStatToSnooper("version", "1.8");
          this.playerStatsCollector.addServerTypeToSnooper(this);
      }
  
@@ -120,7 +132,7 @@
                  this.addClientStat("jvm_arg[" + i++ + "]", s);
              }
          }
-@@ -115,8 +115,7 @@
+ 
          this.addClientStat("jvm_args", Integer.valueOf(i));
      }
  
@@ -130,7 +142,7 @@
          this.addStatToSnooper("memory_total", Long.valueOf(Runtime.getRuntime().totalMemory()));
          this.addStatToSnooper("memory_max", Long.valueOf(Runtime.getRuntime().maxMemory()));
          this.addStatToSnooper("memory_free", Long.valueOf(Runtime.getRuntime().freeMemory()));
-@@ -124,80 +124,35 @@
+         this.addStatToSnooper("cpu_cores", Integer.valueOf(Runtime.getRuntime().availableProcessors()));
          this.playerStatsCollector.addServerStatsToSnooper(this);
      }
  
@@ -217,5 +229,4 @@
 +    static int access$308(PlayerUsageSnooper p_access$308_0_) {
          return p_access$308_0_.selfCounter++;
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/item/crafting/RecipesArmorDyes.java
-+++b/net/minecraft/item/crafting/RecipesArmorDyes.java
-@@ -1,8 +1,6 @@
+--- decompiled\net\minecraft\item\crafting\RecipesArmorDyes.java
++++ src\main\java\net\minecraft\item\crafting\RecipesArmorDyes.java
+@@ -1,47 +1,47 @@
  package net.minecraft.item.crafting;
  
 -import com.google.common.collect.Lists;
@@ -9,7 +9,8 @@
  import net.minecraft.entity.passive.EntitySheep;
  import net.minecraft.init.Items;
  import net.minecraft.inventory.InventoryCrafting;
-@@ -10,33 +10,38 @@
+ import net.minecraft.item.EnumDyeColor;
+ import net.minecraft.item.ItemArmor;
  import net.minecraft.item.ItemStack;
  import net.minecraft.world.World;
  
@@ -64,7 +65,11 @@
                          return false;
                      }
  
-@@ -51,8 +51,7 @@
+                     arraylist.add(itemstack1);
+                 }
+@@ -49,12 +49,11 @@
+         }
+ 
          return itemstack != null && !arraylist.isEmpty();
      }
  
@@ -74,7 +79,11 @@
          ItemStack itemstack = null;
          int[] aint = new int[3];
          int i = 0;
-@@ -64,47 +64,38 @@
+         int j = 0;
+         ItemArmor itemarmor = null;
+@@ -62,102 +61,86 @@
+         int l;
+         float f;
          float f1;
          int l1;
  
@@ -141,7 +150,9 @@
                      i += Math.max(j1, Math.max(k1, l1));
                      aint[0] += j1;
                      aint[1] += k1;
-@@ -115,17 +115,13 @@
+                     aint[2] += l1;
+                     ++j;
+                 }
              }
          }
  
@@ -169,7 +180,7 @@
              l1 = (k << 8) + i1;
              l1 = (l1 << 8) + l;
              itemarmor.setColor(itemstack, l1);
-@@ -136,31 +136,25 @@
+             return itemstack;
          }
      }
  
@@ -203,6 +214,3 @@
          }
  
          return aitemstack;
-     }
--}
-+}

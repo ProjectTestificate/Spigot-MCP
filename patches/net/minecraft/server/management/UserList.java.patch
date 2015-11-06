@@ -1,6 +1,6 @@
----a/net/minecraft/server/management/UserList.java
-+++b/net/minecraft/server/management/UserList.java
-@@ -1,32 +1,8 @@
+--- decompiled\net\minecraft\server\management\UserList.java
++++ src\main\java\net\minecraft\server\management\UserList.java
+@@ -1,262 +1,235 @@
  package net.minecraft.server.management;
  
 -import com.google.common.base.Charsets;
@@ -22,7 +22,8 @@
  import java.io.IOException;
  import java.lang.reflect.ParameterizedType;
  import java.lang.reflect.Type;
-@@ -23,241 +23,224 @@
+ import java.util.ArrayList;
+ import java.util.Collection;
  import java.util.Iterator;
  import java.util.List;
  import java.util.Map;
@@ -351,5 +352,4 @@
              this();
          }
      }
--}
-+}
+ }

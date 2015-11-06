@@ -1,6 +1,6 @@
----a/net/minecraft/inventory/ContainerWorkbench.java
-+++b/net/minecraft/inventory/ContainerWorkbench.java
-@@ -1,128 +1,133 @@
+--- decompiled\net\minecraft\inventory\ContainerWorkbench.java
++++ src\main\java\net\minecraft\inventory\ContainerWorkbench.java
+@@ -1,141 +1,156 @@
  package net.minecraft.inventory;
  
  import net.minecraft.entity.player.EntityPlayer;
@@ -194,7 +194,9 @@
                  return null;
              }
  
-@@ -134,9 +134,7 @@
+             slot.onPickupFromSlot(playerIn, itemstack1);
+         }
+ 
          return itemstack;
      }
  
@@ -203,7 +205,6 @@
 +    public boolean canMergeSlot(ItemStack p_94530_1_, Slot p_94530_2_) {
          return p_94530_2_.inventory != this.craftResult && super.canMergeSlot(p_94530_1_, p_94530_2_);
      }
--}
 +
 +    // CraftBukkit start
 +    @Override
@@ -217,4 +218,4 @@
 +        return bukkitEntity;
 +    }
 +    // CraftBukkit end
-+}
+ }

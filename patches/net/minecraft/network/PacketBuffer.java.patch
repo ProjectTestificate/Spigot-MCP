@@ -1,6 +1,6 @@
----a/net/minecraft/network/PacketBuffer.java
-+++b/net/minecraft/network/PacketBuffer.java
-@@ -1,14 +1,5 @@
+--- decompiled\net\minecraft\network\PacketBuffer.java
++++ src\main\java\net\minecraft\network\PacketBuffer.java
+@@ -1,1010 +1,821 @@
  package net.minecraft.network;
  
 -import com.google.common.base.Charsets;
@@ -15,7 +15,9 @@
  import java.io.IOException;
  import java.io.InputStream;
  import java.io.OutputStream;
-@@ -18,6 +18,7 @@
+ import java.nio.ByteBuffer;
+ import java.nio.ByteOrder;
+ import java.nio.channels.GatheringByteChannel;
  import java.nio.channels.ScatteringByteChannel;
  import java.nio.charset.Charset;
  import java.util.UUID;
@@ -23,7 +25,8 @@
  import net.minecraft.item.Item;
  import net.minecraft.item.ItemStack;
  import net.minecraft.nbt.CompressedStreamTools;
-@@ -26,18 +26,41 @@
+ import net.minecraft.nbt.NBTSizeTracker;
+ import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.IChatComponent;
  
@@ -64,7 +67,7 @@
                  return j;
              }
          }
-@@ -49,104 +49,85 @@
+ 
          return 5;
      }
  
@@ -193,7 +196,7 @@
              this.writeByte(input & 127 | 128);
              input >>>= 7;
          }
-@@ -156,70 +156,51 @@
+ 
          this.writeByte(input);
      }
  
@@ -281,7 +284,7 @@
                  nbttagcompound = stack.getTagCompound();
              }
  
-@@ -224,788 +224,632 @@
+             this.writeNBTTagCompoundToBuffer(nbttagcompound);
          }
      }
  
@@ -1229,5 +1232,4 @@
 +    public boolean release(int p_release_1_) {
          return this.buf.release(p_release_1_);
      }
--}
-+}
+ }

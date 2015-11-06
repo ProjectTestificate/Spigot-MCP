@@ -1,6 +1,6 @@
----a/net/minecraft/network/EnumConnectionState.java
-+++b/net/minecraft/network/EnumConnectionState.java
-@@ -1,17 +1,7 @@
+--- decompiled\net\minecraft\network\EnumConnectionState.java
++++ src\main\java\net\minecraft\network\EnumConnectionState.java
+@@ -1,14 +1,10 @@
  package net.minecraft.network;
  
 -import com.google.common.collect.BiMap;
@@ -14,7 +14,11 @@
  import net.minecraft.network.handshake.client.C00Handshake;
  import net.minecraft.network.login.client.C00PacketLoginStart;
  import net.minecraft.network.login.client.C01PacketEncryptionResponse;
-@@ -112,17 +112,24 @@
+ import net.minecraft.network.login.server.S00PacketDisconnect;
+ import net.minecraft.network.login.server.S01PacketEncryptionRequest;
+@@ -110,23 +106,28 @@
+ import net.minecraft.network.play.server.S49PacketUpdateEntityNBT;
+ import net.minecraft.network.status.client.C00PacketServerQuery;
  import net.minecraft.network.status.client.C01PacketPing;
  import net.minecraft.network.status.server.S00PacketServerInfo;
  import net.minecraft.network.status.server.S01PacketPong;
@@ -45,7 +49,11 @@
          private static final String __OBFID = "CL_00001250";
          {
              this.registerPacket(EnumPacketDirection.CLIENTBOUND, S00PacketKeepAlive.class);
-@@ -229,8 +229,7 @@
+             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S01PacketJoinGame.class);
+             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S02PacketChat.class);
+@@ -227,22 +228,20 @@
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, C17PacketCustomPayload.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, C18PacketSpectate.class);
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C19PacketResourcePackStatus.class);
          }
      },
@@ -55,7 +63,8 @@
          private static final String __OBFID = "CL_00001247";
          {
              this.registerPacket(EnumPacketDirection.SERVERBOUND, C00PacketServerQuery.class);
-@@ -239,8 +239,7 @@
+             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S00PacketServerInfo.class);
+             this.registerPacket(EnumPacketDirection.SERVERBOUND, C01PacketPing.class);
              this.registerPacket(EnumPacketDirection.CLIENTBOUND, S01PacketPong.class);
          }
      },
@@ -65,7 +74,11 @@
          private static final String __OBFID = "CL_00001249";
          {
              this.registerPacket(EnumPacketDirection.CLIENTBOUND, S00PacketDisconnect.class);
-@@ -258,102 +258,81 @@
+             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S01PacketEncryptionRequest.class);
+             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S02PacketLoginSuccess.class);
+@@ -256,101 +255,81 @@
+     private final int id;
+     private final Map directionMaps;
  
      private static final String __OBFID = "CL_00001245";
  
@@ -193,6 +206,3 @@
                  }
              }
          }
-     }
--}
-+}

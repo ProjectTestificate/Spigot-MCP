@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockOldLog.java
-+++b/net/minecraft/block/BlockOldLog.java
-@@ -1,53 +1,37 @@
+--- decompiled\net\minecraft\block\BlockOldLog.java
++++ src\main\java\net\minecraft\block\BlockOldLog.java
+@@ -1,55 +1,40 @@
  package net.minecraft.block;
  
 -import com.google.common.base.Predicate;
@@ -68,7 +68,11 @@
              case 0:
                  iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.Y);
                  break;
-@@ -64,13 +64,11 @@
+             case 4:
+                 iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.X);
+@@ -62,17 +47,15 @@
+         }
+ 
          return iblockstate;
      }
  
@@ -85,7 +89,11 @@
              case 1:
                  i |= 4;
                  break;
-@@ -84,56 +84,41 @@
+             case 2:
+                 i |= 8;
+@@ -82,56 +65,43 @@
+         }
+ 
          return i;
      }
  
@@ -164,6 +172,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

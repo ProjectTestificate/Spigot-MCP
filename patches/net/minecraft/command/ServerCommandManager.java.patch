@@ -1,6 +1,6 @@
----a/net/minecraft/command/ServerCommandManager.java
-+++b/net/minecraft/command/ServerCommandManager.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\command\ServerCommandManager.java
++++ src\main\java\net\minecraft\command\ServerCommandManager.java
+@@ -1,8 +1,9 @@
  package net.minecraft.command;
  
  import java.util.Iterator;
@@ -8,7 +8,11 @@
  import net.minecraft.command.common.CommandReplaceItem;
  import net.minecraft.command.server.CommandAchievement;
  import net.minecraft.command.server.CommandBanIp;
-@@ -34,12 +34,12 @@
+ import net.minecraft.command.server.CommandBanPlayer;
+ import net.minecraft.command.server.CommandBlockLogic;
+@@ -32,16 +33,15 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.ChatComponentTranslation;
  import net.minecraft.util.EnumChatFormatting;
  
@@ -24,7 +28,11 @@
          this.registerCommand(new CommandTime());
          this.registerCommand(new CommandGameMode());
          this.registerCommand(new CommandDifficulty());
-@@ -84,8 +84,7 @@
+         this.registerCommand(new CommandDefaultGameMode());
+         this.registerCommand(new CommandKill());
+@@ -82,12 +82,11 @@
+         this.registerCommand(new CommandMessageRaw());
+         this.registerCommand(new CommandWorldBorder());
          this.registerCommand(new CommandTitle());
          this.registerCommand(new CommandEntityData());
  
@@ -34,7 +42,11 @@
              this.registerCommand(new CommandOp());
              this.registerCommand(new CommandDeOp());
              this.registerCommand(new CommandStop());
-@@ -101,61 +101,49 @@
+             this.registerCommand(new CommandSaveAll());
+             this.registerCommand(new CommandSaveOff());
+@@ -99,61 +98,51 @@
+             this.registerCommand(new CommandPardonPlayer());
+             this.registerCommand(new CommandServerKick());
              this.registerCommand(new CommandListPlayers());
              this.registerCommand(new CommandWhitelist());
              this.registerCommand(new CommandSetPlayerTimeout());
@@ -105,5 +117,4 @@
              sender.addChatMessage(new ChatComponentTranslation(msgFormat, msgParams));
          }
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockPistonMoving.java
-+++b/net/minecraft/block/BlockPistonMoving.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockPistonMoving.java
++++ src\main\java\net\minecraft\block\BlockPistonMoving.java
+@@ -1,8 +1,9 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -8,7 +8,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyDirection;
-@@ -19,136 +19,105 @@
+ import net.minecraft.block.properties.PropertyEnum;
+ import net.minecraft.block.state.BlockState;
+@@ -17,270 +18,208 @@
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.util.MovingObjectPosition;
  import net.minecraft.util.Vec3;
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.World;
@@ -176,7 +180,7 @@
                  f = 1.0F - f;
              }
  
-@@ -156,55 +156,46 @@
+             return this.getBoundingBox(worldIn, pos, tileentitypiston.getPistonState(), f, tileentitypiston.getFacing());
          }
      }
  
@@ -248,7 +252,7 @@
                  double d0 = axisalignedbb.minX;
                  double d1 = axisalignedbb.minY;
                  double d2 = axisalignedbb.minZ;
-@@ -213,76 +213,55 @@
+                 double d3 = axisalignedbb.maxX;
                  double d4 = axisalignedbb.maxY;
                  double d5 = axisalignedbb.maxZ;
  
@@ -343,5 +347,4 @@
 +    protected BlockState createBlockState() {
 +        return new BlockState(this, new IProperty[]{FACING, TYPE});
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/nbt/JsonToNBT.java
-+++b/net/minecraft/nbt/JsonToNBT.java
-@@ -1,78 +1,59 @@
+--- decompiled\net\minecraft\nbt\JsonToNBT.java
++++ src\main\java\net\minecraft\nbt\JsonToNBT.java
+@@ -1,564 +1,440 @@
  package net.minecraft.nbt;
  
 -import com.google.common.base.Splitter;
@@ -105,7 +105,8 @@
                          ++i;
                      }
  
-@@ -83,15 +83,11 @@
+                     stack.push(Character.valueOf(c0));
+                 }
              }
          }
  
@@ -128,7 +129,7 @@
                  i = 1;
              }
  
-@@ -102,179 +102,139 @@
+             return i;
          }
      }
  
@@ -346,7 +347,10 @@
                      return p_179269_0_.substring(0, k + 1);
                  }
  
-@@ -287,94 +287,67 @@
+                 flag2 = true;
+             }
+         }
+ 
          return p_179269_0_.substring(0, j);
      }
  
@@ -460,7 +464,8 @@
                      return -1;
                  }
              }
-@@ -381,185 +381,151 @@
+         }
+ 
          return -1;
      }
  
@@ -750,6 +755,5 @@
 +                return new NBTTagString(stringbuilder.toString());
              }
          }
--}
 +    }
-+}
+ }

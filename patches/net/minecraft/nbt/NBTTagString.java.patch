@@ -1,6 +1,8 @@
----a/net/minecraft/nbt/NBTTagString.java
-+++b/net/minecraft/nbt/NBTTagString.java
-@@ -4,78 +4,63 @@
+--- decompiled\net\minecraft\nbt\NBTTagString.java
++++ src\main\java\net\minecraft\nbt\NBTTagString.java
+@@ -2,79 +2,64 @@
+ 
+ import java.io.DataInput;
  import java.io.DataOutput;
  import java.io.IOException;
  
@@ -96,5 +98,4 @@
 +    public String getString() {
          return this.data;
      }
--}
-+}
+ }

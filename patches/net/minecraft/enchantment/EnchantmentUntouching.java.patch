@@ -1,6 +1,8 @@
----a/net/minecraft/enchantment/EnchantmentUntouching.java
-+++b/net/minecraft/enchantment/EnchantmentUntouching.java
-@@ -4,39 +4,33 @@
+--- decompiled\net\minecraft\enchantment\EnchantmentUntouching.java
++++ src\main\java\net\minecraft\enchantment\EnchantmentUntouching.java
+@@ -2,40 +2,34 @@
+ 
+ import net.minecraft.init.Items;
  import net.minecraft.item.ItemStack;
  import net.minecraft.util.ResourceLocation;
  
@@ -46,5 +48,4 @@
 +    public boolean canApply(ItemStack stack) {
          return stack.getItem() == Items.shears ? true : super.canApply(stack);
      }
--}
-+}
+ }

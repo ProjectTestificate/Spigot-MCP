@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAILookAtTradePlayer.java
-+++b/net/minecraft/entity/ai/EntityAILookAtTradePlayer.java
-@@ -3,28 +3,23 @@
+--- decompiled\net\minecraft\entity\ai\EntityAILookAtTradePlayer.java
++++ src\main\java\net\minecraft\entity\ai\EntityAILookAtTradePlayer.java
+@@ -1,29 +1,24 @@
+ package net.minecraft.entity.ai;
+ 
  import net.minecraft.entity.passive.EntityVillager;
  import net.minecraft.entity.player.EntityPlayer;
  
@@ -33,5 +35,4 @@
              return false;
          }
      }
--}
-+}
+ }

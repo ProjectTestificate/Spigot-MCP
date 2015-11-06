@@ -1,6 +1,6 @@
----a/net/minecraft/entity/EntityCreature.java
-+++b/net/minecraft/entity/EntityCreature.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\entity\EntityCreature.java
++++ src\main\java\net\minecraft\entity\EntityCreature.java
+@@ -1,150 +1,133 @@
  package net.minecraft.entity;
  
  import java.util.UUID;
@@ -8,7 +8,8 @@
  import net.minecraft.entity.ai.EntityAIBase;
  import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
  import net.minecraft.entity.ai.attributes.AttributeModifier;
-@@ -9,8 +9,10 @@
+ import net.minecraft.entity.passive.EntityTameable;
+ import net.minecraft.pathfinding.PathNavigateGround;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -21,7 +22,8 @@
      public static final UUID field_110179_h = UUID.fromString("E199AD21-BA8A-4C53-8D13-6182D5C69D3A");
      public static final AttributeModifier field_110181_i = (new AttributeModifier(field_110179_h, "Fleeing speed bonus", 2.0D, 2)).setSaved(false);
      private BlockPos homePosition;
-@@ -19,91 +19,75 @@
+     private float maximumHomeDistance;
+     private EntityAIBase aiBase;
      private boolean field_110180_bt;
      private static final String __OBFID = "CL_00001558";
  
@@ -136,7 +138,7 @@
                  }
  
                  this.field_110180_bt = true;
-@@ -112,39 +112,33 @@
+             }
  
              this.func_142017_o(f);
  
@@ -185,7 +187,6 @@
      }
  
 -    protected void func_142017_o(float p_142017_1_) {}
--}
 +    protected void func_142017_o(float p_142017_1_) {
 +    }
-+}
+ }

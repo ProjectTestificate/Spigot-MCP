@@ -1,6 +1,6 @@
----a/net/minecraft/scoreboard/IScoreObjectiveCriteria.java
-+++b/net/minecraft/scoreboard/IScoreObjectiveCriteria.java
-@@ -1,11 +1,10 @@
+--- decompiled\net\minecraft\scoreboard\IScoreObjectiveCriteria.java
++++ src\main\java\net\minecraft\scoreboard\IScoreObjectiveCriteria.java
+@@ -1,64 +1,94 @@
  package net.minecraft.scoreboard;
  
 -import com.google.common.collect.Maps;
@@ -18,7 +18,7 @@
      Map INSTANCES = Maps.newHashMap();
      IScoreObjectiveCriteria DUMMY = new ScoreDummyCriteria("dummy");
      IScoreObjectiveCriteria TRIGGER = new ScoreDummyCriteria("trigger");
-@@ -14,8 +14,42 @@
+     IScoreObjectiveCriteria deathCount = new ScoreDummyCriteria("deathCount");
      IScoreObjectiveCriteria playerKillCount = new ScoreDummyCriteria("playerKillCount");
      IScoreObjectiveCriteria totalKillCount = new ScoreDummyCriteria("totalKillCount");
      IScoreObjectiveCriteria health = new ScoreHealthCriteria("health");
@@ -63,7 +63,9 @@
  
      String getName();
  
-@@ -25,8 +25,7 @@
+     int func_96635_a(List p_96635_1_);
+ 
+     boolean isReadOnly();
  
      IScoreObjectiveCriteria.EnumRenderType getRenderType();
  
@@ -73,7 +75,7 @@
          INTEGER("integer"),
          HEARTS("hearts");
          private static final Map field_178801_c = Maps.newHashMap();
-@@ -34,33 +34,27 @@
+         private final String field_178798_d;
  
          private static final String __OBFID = "CL_00001960";
  
@@ -111,5 +113,3 @@
              }
          }
      }
--}
-+}

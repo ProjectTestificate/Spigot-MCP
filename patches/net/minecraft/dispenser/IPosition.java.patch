@@ -1,6 +1,6 @@
----a/net/minecraft/dispenser/IPosition.java
-+++b/net/minecraft/dispenser/IPosition.java
-@@ -1,11 +1,11 @@
+--- decompiled\net\minecraft\dispenser\IPosition.java
++++ src\main\java\net\minecraft\dispenser\IPosition.java
+@@ -1,9 +1,9 @@
  package net.minecraft.dispenser;
  
 -public interface IPosition
@@ -12,5 +12,3 @@
      double getY();
  
      double getZ();
--}
-+}

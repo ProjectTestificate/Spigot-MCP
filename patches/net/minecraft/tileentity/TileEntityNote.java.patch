@@ -1,6 +1,8 @@
----a/net/minecraft/tileentity/TileEntityNote.java
-+++b/net/minecraft/tileentity/TileEntityNote.java
-@@ -7,60 +7,62 @@
+--- decompiled\net\minecraft\tileentity\TileEntityNote.java
++++ src\main\java\net\minecraft\tileentity\TileEntityNote.java
+@@ -5,61 +5,60 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  
@@ -81,5 +83,4 @@
 +            // CraftBukkit end
          }
      }
--}
-+}
+ }

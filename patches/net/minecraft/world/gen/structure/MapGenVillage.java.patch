@@ -1,6 +1,8 @@
----a/net/minecraft/world/gen/structure/MapGenVillage.java
-+++b/net/minecraft/world/gen/structure/MapGenVillage.java
-@@ -4,80 +4,69 @@
+--- decompiled\net\minecraft\world\gen\structure\MapGenVillage.java
++++ src\main\java\net\minecraft\world\gen\structure\MapGenVillage.java
+@@ -2,163 +2,142 @@
+ 
+ import java.util.Arrays;
  import java.util.Iterator;
  import java.util.List;
  import java.util.Map;
@@ -102,7 +104,7 @@
                  return true;
              }
          }
-@@ -86,80 +86,63 @@
+ 
          return false;
      }
  
@@ -223,11 +225,10 @@
 +            super.func_143022_a(p_143022_1_);
 +            p_143022_1_.setBoolean("Valid", this.hasMoreThanTwoComponents);
          }
--}
 +
 +        public void func_143017_b(NBTTagCompound p_143017_1_) {
 +            super.func_143017_b(p_143017_1_);
 +            this.hasMoreThanTwoComponents = p_143017_1_.getBoolean("Valid");
 +        }
 +    }
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/server/network/NetHandlerLoginServer.java
-+++b/net/minecraft/server/network/NetHandlerLoginServer.java
-@@ -1,26 +1,15 @@
+--- decompiled\net\minecraft\server\network\NetHandlerLoginServer.java
++++ src\main\java\net\minecraft\server\network\NetHandlerLoginServer.java
+@@ -1,21 +1,19 @@
  package net.minecraft.server.network;
  
 -import com.google.common.base.Charsets;
@@ -25,7 +25,11 @@
  import net.minecraft.network.NetworkManager;
  import net.minecraft.network.login.INetHandlerLoginServer;
  import net.minecraft.network.login.client.C00PacketLoginStart;
-@@ -27,10 +27,16 @@
+ import net.minecraft.network.login.client.C01PacketEncryptionResponse;
+ import net.minecraft.network.login.server.S00PacketDisconnect;
+@@ -25,16 +23,30 @@
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.server.gui.IUpdatePlayerListBox;
  import net.minecraft.util.ChatComponentText;
  import net.minecraft.util.CryptManager;
  import net.minecraft.util.IChatComponent;
@@ -54,7 +58,11 @@
      private static final AtomicInteger AUTHENTICATOR_THREAD_ID = new AtomicInteger(0);
      private static final Logger logger = LogManager.getLogger();
      private static final Random RANDOM = new Random();
-@@ -45,7 +45,9 @@
+     private final byte[] verifyToken = new byte[4];
+     private final MinecraftServer server;
+@@ -43,182 +55,237 @@
+     private int connectionTimer;
+     private GameProfile loginGameProfile;
      private String serverId;
      private SecretKey secretKey;
      private static final String __OBFID = "CL_00001458";
@@ -66,7 +74,7 @@
          this.currentLoginState = NetHandlerLoginServer.LoginState.HELLO;
          this.serverId = "";
          this.server = p_i45298_1_;
-@@ -55,166 +55,121 @@
+         this.networkManager = p_i45298_2_;
          RANDOM.nextBytes(this.verifyToken);
      }
  
@@ -286,11 +294,11 @@
          HELLO,
          KEY,
          AUTHENTICATING,
-@@ -221,4 +221,103 @@
+         READY_TO_ACCEPT,
+         ACCEPTED;
  
          private static final String __OBFID = "CL_00001463";
      }
--}
 +
 +    // SpigotMCP Start -- Convert anonomous inner class to inner class
 +    public class ThreadPlayerLookupUUID extends Thread {
@@ -390,4 +398,4 @@
 +        // Spigot End
 +    }
 +    // SpigotMCP End
-+}
+ }

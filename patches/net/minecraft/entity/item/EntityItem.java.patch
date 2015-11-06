@@ -1,6 +1,6 @@
----a/net/minecraft/entity/item/EntityItem.java
-+++b/net/minecraft/entity/item/EntityItem.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\entity\item\EntityItem.java
++++ src\main\java\net\minecraft\entity\item\EntityItem.java
+@@ -1,490 +1,491 @@
  package net.minecraft.entity.item;
  
  import java.util.Iterator;
@@ -8,7 +8,8 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.player.EntityPlayer;
-@@ -9,76 +9,83 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.init.Items;
  import net.minecraft.item.Item;
  import net.minecraft.item.ItemStack;
  import net.minecraft.nbt.NBTTagCompound;
@@ -121,7 +122,9 @@
                  --this.delayBeforeCanPickup;
              }
  
-@@ -90,179 +90,193 @@
+             this.prevPosX = this.posX;
+             this.prevPosY = this.posY;
+             this.prevPosZ = this.posZ;
              this.motionY -= 0.03999999910593033D;
              this.noClip = this.pushOutOfBlocks(this.posX, (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D, this.posZ);
              this.moveEntity(this.motionX, this.motionY, this.motionZ);
@@ -412,7 +415,7 @@
                  this.setDead();
              }
  
-@@ -271,224 +271,205 @@
+             return false;
          }
      }
  
@@ -708,5 +711,4 @@
          this.setInfinitePickupDelay();
          this.age = 5999;
      }
--}
-+}
+ }

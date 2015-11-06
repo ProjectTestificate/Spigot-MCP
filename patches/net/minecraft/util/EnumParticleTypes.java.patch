@@ -1,6 +1,6 @@
----a/net/minecraft/util/EnumParticleTypes.java
-+++b/net/minecraft/util/EnumParticleTypes.java
-@@ -1,12 +1,8 @@
+--- decompiled\net\minecraft\util\EnumParticleTypes.java
++++ src\main\java\net\minecraft\util\EnumParticleTypes.java
+@@ -1,14 +1,14 @@
  package net.minecraft.util;
  
 -import com.google.common.collect.Lists;
@@ -17,7 +17,11 @@
      EXPLOSION_NORMAL("explode", 0, true),
      EXPLOSION_LARGE("largeexplode", 1, true),
      EXPLOSION_HUGE("hugeexplosion", 2, true),
-@@ -58,72 +58,59 @@
+     FIREWORKS_SPARK("fireworksSpark", 3, false),
+     WATER_BUBBLE("bubble", 4, false),
+@@ -56,73 +56,61 @@
+     private static final Map field_179365_U = Maps.newHashMap();
+     private static final String[] field_179368_V;
  
      private static final String __OBFID = "CL_00002317";
  
@@ -102,5 +106,4 @@
 -        field_179368_V = (String[])var0.toArray(new String[var0.size()]);
 +        field_179368_V = (String[]) var0.toArray(new String[var0.size()]);
      }
--}
-+}
+ }

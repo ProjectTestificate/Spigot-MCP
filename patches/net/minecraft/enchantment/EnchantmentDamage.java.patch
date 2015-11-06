@@ -1,6 +1,8 @@
----a/net/minecraft/enchantment/EnchantmentDamage.java
-+++b/net/minecraft/enchantment/EnchantmentDamage.java
-@@ -9,72 +9,61 @@
+--- decompiled\net\minecraft\enchantment\EnchantmentDamage.java
++++ src\main\java\net\minecraft\enchantment\EnchantmentDamage.java
+@@ -7,68 +7,57 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.potion.Potion;
  import net.minecraft.potion.PotionEffect;
  import net.minecraft.util.ResourceLocation;
  
@@ -86,5 +88,3 @@
              }
          }
      }
--}
-+}

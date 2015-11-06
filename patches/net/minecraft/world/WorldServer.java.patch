@@ -1,6 +1,6 @@
----a/net/minecraft/world/WorldServer.java
-+++b/net/minecraft/world/WorldServer.java
-@@ -1,16 +1,6 @@
+--- decompiled\net\minecraft\world\WorldServer.java
++++ src\main\java\net\minecraft\world\WorldServer.java
+@@ -1,51 +1,58 @@
  package net.minecraft.world;
  
 -import com.google.common.base.Predicate;
@@ -13,7 +13,7 @@
  import java.util.Iterator;
  import java.util.List;
  import java.util.Map;
-@@ -13,8 +13,12 @@
+ import java.util.Random;
  import java.util.Set;
  import java.util.TreeSet;
  import java.util.UUID;
@@ -26,7 +26,8 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.crash.CrashReport;
-@@ -23,9 +23,7 @@
+ import net.minecraft.crash.CrashReportCategory;
+ import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.EntityTracker;
  import net.minecraft.entity.EnumCreatureType;
@@ -37,7 +38,9 @@
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.entity.player.EntityPlayerMP;
  import net.minecraft.init.Blocks;
-@@ -36,7 +36,6 @@
+ import net.minecraft.init.Items;
+ import net.minecraft.item.Item;
+ import net.minecraft.network.play.server.S19PacketEntityStatus;
  import net.minecraft.network.play.server.S24PacketBlockAction;
  import net.minecraft.network.play.server.S27PacketExplosion;
  import net.minecraft.network.play.server.S2APacketParticles;
@@ -45,7 +48,7 @@
  import net.minecraft.network.play.server.S2CPacketSpawnGlobalEntity;
  import net.minecraft.profiler.Profiler;
  import net.minecraft.scoreboard.ScoreboardSaveData;
-@@ -44,6 +44,17 @@
+ import net.minecraft.scoreboard.ServerScoreboard;
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.server.management.PlayerManager;
  import net.minecraft.tileentity.TileEntity;
@@ -63,7 +66,11 @@
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumParticleTypes;
-@@ -67,17 +67,38 @@
+ import net.minecraft.util.IProgressUpdate;
+ import net.minecraft.util.IThreadListener;
+@@ -65,20 +72,42 @@
+ import net.minecraft.world.gen.feature.WorldGeneratorBonusChest;
+ import net.minecraft.world.gen.structure.StructureBoundingBox;
  import net.minecraft.world.storage.ISaveHandler;
  import net.minecraft.world.storage.MapStorage;
  import net.minecraft.world.storage.WorldInfo;
@@ -107,7 +114,11 @@
      private final PlayerManager thePlayerManager;
      private final Set pendingTickListEntriesHashSet = Sets.newHashSet();
      private final TreeSet pendingTickListEntriesTreeSet = new TreeSet();
-@@ -88,84 +88,173 @@
+     private final Map entitiesByUuid = Maps.newHashMap();
+     public ChunkProviderServer theChunkProviderServer;
+@@ -86,507 +115,594 @@
+     private boolean allPlayersSleeping;
+     private int updateEntityTick;
      private final Teleporter worldTeleporter;
      private final SpawnerAnimals mobSpawner = new SpawnerAnimals();
      protected final VillageSiege villageSiege = new VillageSiege(this);
@@ -314,7 +325,8 @@
                  long i = this.worldInfo.getWorldTime() + 24000L;
                  this.worldInfo.setWorldTime(i - i % 24000L);
              }
-@@ -177,76 +177,92 @@
+ 
+             this.wakeAllPlayers();
          }
  
          this.theProfiler.startSection("mobSpawner");
@@ -427,7 +439,8 @@
                      ++j;
                  }
              }
-@@ -254,17 +254,14 @@
+ 
+             this.allPlayersSleeping = j > 0 && j >= this.playerEntities.size() - i;
          }
      }
  
@@ -449,7 +462,7 @@
                  entityplayer.wakeUpPlayer(false, false, true);
              }
          }
-@@ -272,96 +272,97 @@
+ 
          this.resetRainAndThunder();
      }
  
@@ -610,7 +623,7 @@
                  this.playMoodSoundAndCheckLight(k, l, chunk);
                  this.theProfiler.endStartSection("tickChunk");
                  chunk.func_150804_b(false);
-@@ -367,39 +367,51 @@
+                 this.theProfiler.endStartSection("thunder");
                  int i1;
                  BlockPos blockpos;
  
@@ -677,7 +690,7 @@
                          this.getBlockState(blockpos1).getBlock().fillWithRain(this, blockpos1);
                      }
                  }
-@@ -407,17 +407,14 @@
+ 
                  this.theProfiler.endStartSection("tickBlocks");
                  i1 = this.getGameRules().getInt("randomTickSpeed");
  
@@ -701,7 +714,10 @@
                                  this.updateLCG = this.updateLCG * 3 + 1013904223;
                                  int l1 = this.updateLCG >> 2;
                                  int i2 = l1 & 15;
-@@ -430,8 +430,7 @@
+                                 int j2 = l1 >> 8 & 15;
+                                 int k2 = l1 >> 16 & 15;
+                                 ++j;
+                                 BlockPos blockpos2 = new BlockPos(i2 + k, k2 + extendedblockstorage.getYLocation(), j2 + l);
                                  IBlockState iblockstate = extendedblockstorage.get(i2, k2, j2);
                                  Block block = iblockstate.getBlock();
  
@@ -711,7 +727,9 @@
                                      ++i;
                                      block.randomTick(this, blockpos2, iblockstate, this.rand);
                                  }
-@@ -441,53 +441,56 @@
+                             }
+                         }
+                     }
                  }
              }
          }
@@ -788,7 +806,10 @@
                          iblockstate.getBlock().updateTick(this, nextticklistentry.position, iblockstate, this.rand);
                      }
                  }
-@@ -500,94 +500,78 @@
+ 
+                 return;
+             }
+ 
              p_175654_3_ = 1;
          }
  
@@ -910,7 +931,11 @@
                          break;
                      }
  
-@@ -597,33 +597,26 @@
+                     this.pendingTickListEntriesTreeSet.remove(nextticklistentry);
+                     this.pendingTickListEntriesHashSet.remove(nextticklistentry);
+@@ -595,37 +711,29 @@
+ 
+                 this.theProfiler.endSection();
                  this.theProfiler.startSection("ticking");
                  Iterator iterator = this.pendingTickListEntriesThisTick.iterator();
  
@@ -951,7 +976,11 @@
                          this.scheduleUpdate(nextticklistentry.position, nextticklistentry.getBlock(), 0);
                      }
                  }
-@@ -635,8 +635,7 @@
+ 
+                 this.theProfiler.endSection();
+@@ -633,57 +741,46 @@
+                 return !this.pendingTickListEntriesTreeSet.isEmpty();
+             }
          }
      }
  
@@ -961,7 +990,8 @@
          ChunkCoordIntPair chunkcoordintpair = p_72920_1_.getChunkCoordIntPair();
          int i = (chunkcoordintpair.chunkXPos << 4) - 2;
          int j = i + 16 + 2;
-@@ -645,43 +645,33 @@
+         int k = (chunkcoordintpair.chunkZPos << 4) - 2;
+         int l = k + 16 + 2;
          return this.func_175712_a(new StructureBoundingBox(i, 0, k, j, 256, l), p_72920_2_);
      }
  
@@ -1015,7 +1045,11 @@
                          arraylist = Lists.newArrayList();
                      }
  
-@@ -693,87 +693,107 @@
+                     arraylist.add(nextticklistentry);
+                 }
+@@ -691,102 +788,119 @@
+         }
+ 
          return arraylist;
      }
  
@@ -1158,7 +1192,10 @@
                      ;
                  }
  
-@@ -783,8 +783,7 @@
+                 throw new ReportedException(crashreport);
+             }
+ 
+             this.worldInfo.setServerInitialized(true);
          }
      }
  
@@ -1168,7 +1205,11 @@
          this.worldInfo.setMapFeaturesEnabled(false);
          this.worldInfo.setAllowCommands(true);
          this.worldInfo.setRaining(false);
-@@ -798,19 +798,13 @@
+         this.worldInfo.setThundering(false);
+         this.worldInfo.setCleanWeatherTime(1000000000);
+@@ -796,371 +910,364 @@
+         this.worldInfo.setDifficulty(EnumDifficulty.PEACEFUL);
+         this.worldInfo.setDifficultyLocked(true);
          this.getGameRules().setOrCreateGameRule("doDaylightCycle", "false");
      }
  
@@ -1191,7 +1232,9 @@
              this.findingSpawnPoint = true;
              WorldChunkManager worldchunkmanager = this.provider.getWorldChunkManager();
              List list = worldchunkmanager.getBiomesToSpawnIn();
-@@ -819,26 +819,55 @@
+             Random random = new Random(this.getSeed());
+             BlockPos blockpos = worldchunkmanager.findBiomePosition(0, 0, 256, list, random);
+             int i = 0;
              int j = this.provider.getAverageGroundLevel();
              int k = 0;
  
@@ -1239,7 +1282,7 @@
                      break;
                  }
              }
-@@ -846,77 +846,65 @@
+ 
              this.worldInfo.setSpawn(new BlockPos(i, j, k));
              this.findingSpawnPoint = false;
  
@@ -1335,7 +1378,10 @@
          this.checkSessionLock();
          this.worldInfo.setBorderSize(this.getWorldBorder().getDiameter());
          this.worldInfo.getBorderCenterX(this.getWorldBorder().getCenterX());
-@@ -927,117 +927,119 @@
+         this.worldInfo.getBorderCenterZ(this.getWorldBorder().getCenterZ());
+         this.worldInfo.setBorderSafeZone(this.getWorldBorder().getDamageBuffer());
+         this.worldInfo.setBorderDamagePerBlock(this.getWorldBorder().getDamageAmount());
+         this.worldInfo.setBorderWarningDistance(this.getWorldBorder().getWarningDistance());
          this.worldInfo.setBorderWarningTime(this.getWorldBorder().getWarningTime());
          this.worldInfo.setBorderLerpTarget(this.getWorldBorder().getTargetSize());
          this.worldInfo.setBorderLerpTime(this.getWorldBorder().getTimeUntilTarget());
@@ -1507,7 +1553,7 @@
                  }
              }
  
-@@ -1048,120 +1048,115 @@
+             this.field_147490_S[i].clear();
          }
      }
  
@@ -1675,10 +1721,9 @@
 -            }
 +        private ServerBlockEventList() {
          }
--}
 +
 +        ServerBlockEventList(Object p_i1521_1_) {
 +            this();
 +        }
 +    }
-+}
+ }

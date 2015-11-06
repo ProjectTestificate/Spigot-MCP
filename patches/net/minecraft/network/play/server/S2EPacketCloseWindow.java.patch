@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S2EPacketCloseWindow.java
-+++b/net/minecraft/network/play/server/S2EPacketCloseWindow.java
-@@ -1,39 +1,37 @@
+--- decompiled\net\minecraft\network\play\server\S2EPacketCloseWindow.java
++++ src\main\java\net\minecraft\network\play\server\S2EPacketCloseWindow.java
+@@ -1,40 +1,37 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -51,5 +51,4 @@
 +    public void processPacket(INetHandler handler) {
 +        this.func_180731_a((INetHandlerPlayClient) handler);
      }
--}
-+}
+ }

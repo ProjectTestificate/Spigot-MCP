@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S19PacketEntityHeadLook.java
-+++b/net/minecraft/network/play/server/S19PacketEntityHeadLook.java
-@@ -1,48 +1,43 @@
+--- decompiled\net\minecraft\network\play\server\S19PacketEntityHeadLook.java
++++ src\main\java\net\minecraft\network\play\server\S19PacketEntityHeadLook.java
+@@ -1,60 +1,43 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -72,5 +72,4 @@
 -    {
 -        this.func_180745_a((INetHandlerPlayClient)handler);
 -    }
--}
-+}
+ }

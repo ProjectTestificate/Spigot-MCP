@@ -1,6 +1,6 @@
----a/net/minecraft/entity/item/EntityFallingBlock.java
-+++b/net/minecraft/entity/item/EntityFallingBlock.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\entity\item\EntityFallingBlock.java
++++ src\main\java\net\minecraft\entity\item\EntityFallingBlock.java
+@@ -1,10 +1,10 @@
  package net.minecraft.entity.item;
  
 -import com.google.common.collect.Lists;
@@ -10,7 +10,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockAnvil;
  import net.minecraft.block.BlockFalling;
-@@ -22,11 +22,7 @@
+ import net.minecraft.block.ITileEntityProvider;
+ import net.minecraft.block.material.Material;
+@@ -20,32 +20,32 @@
+ import net.minecraft.util.DamageSource;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.MathHelper;
  import net.minecraft.util.ResourceLocation;
  import net.minecraft.world.World;
@@ -28,7 +32,10 @@
      private IBlockState fallTile;
      public int fallTime;
      public boolean shouldDropItem = true;
-@@ -37,13 +37,11 @@
+     private boolean field_145808_f;
+     private boolean hurtEntities;
+     private int fallHurtMax = 40;
+     private float fallHurtAmount = 2.0F;
      public NBTTagCompound tileEntityData;
      private static final String __OBFID = "CL_00001668";
  
@@ -44,7 +51,11 @@
          super(worldIn);
          this.fallTile = fallingBlockState;
          this.preventEntitySpawning = true;
-@@ -57,42 +57,35 @@
+         this.setSize(0.98F, 0.98F);
+         this.setPosition(x, y, z);
+@@ -55,47 +55,39 @@
+         this.prevPosX = x;
+         this.prevPosY = y;
          this.prevPosZ = z;
      }
  
@@ -98,7 +109,11 @@
                      this.setDead();
                      return;
                  }
-@@ -105,44 +105,42 @@
+             }
+ 
+@@ -103,209 +95,167 @@
+             this.moveEntity(this.motionX, this.motionY, this.motionZ);
+             this.motionX *= 0.9800000190734863D;
              this.motionY *= 0.9800000190734863D;
              this.motionZ *= 0.9800000190734863D;
  
@@ -161,7 +176,8 @@
                                              nbttagcompound.setTag(s, nbtbase.copy());
                                          }
                                      }
-@@ -151,15 +151,11 @@
+ 
+                                     tileentity.readFromNBT(nbttagcompound);
                                      tileentity.markDirty();
                                  }
                              }
@@ -182,7 +198,9 @@
                          this.entityDropItem(new ItemStack(block, 1, block.damageDropped(this.fallTile)), 0.0F);
                      }
  
-@@ -171,37 +171,33 @@
+                     this.setDead();
+                 }
+             }
          }
      }
  
@@ -234,7 +252,7 @@
                          this.fallTile = this.fallTile.withProperty(BlockAnvil.DAMAGE, Integer.valueOf(j));
                      }
                  }
-@@ -210,103 +210,72 @@
+             }
          }
      }
  
@@ -354,5 +372,4 @@
 +    public IBlockState getBlock() {
          return this.fallTile;
      }
--}
-+}
+ }

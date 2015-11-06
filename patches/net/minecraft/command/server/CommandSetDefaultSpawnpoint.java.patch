@@ -1,6 +1,6 @@
----a/net/minecraft/command/server/CommandSetDefaultSpawnpoint.java
-+++b/net/minecraft/command/server/CommandSetDefaultSpawnpoint.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\command\server\CommandSetDefaultSpawnpoint.java
++++ src\main\java\net\minecraft\command\server\CommandSetDefaultSpawnpoint.java
+@@ -1,58 +1,50 @@
  package net.minecraft.command.server;
  
  import java.util.List;
@@ -8,7 +8,8 @@
  import net.minecraft.command.CommandBase;
  import net.minecraft.command.CommandException;
  import net.minecraft.command.ICommandSender;
-@@ -9,34 +9,29 @@
+ import net.minecraft.command.WrongUsageException;
+ import net.minecraft.network.play.server.S05PacketSpawnPosition;
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.BlockPos;
  
@@ -55,7 +56,8 @@
                  throw new WrongUsageException("commands.setworldspawn.usage", new Object[0]);
              }
  
-@@ -48,11 +48,10 @@
+             blockpos = func_175757_a(sender, args, 0, true);
+         }
  
          sender.getEntityWorld().setSpawnPoint(blockpos);
          MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(new S05PacketSpawnPosition(blockpos));
@@ -68,5 +70,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
          return args.length > 0 && args.length <= 3 ? func_175771_a(args, 0, pos) : null;
      }
--}
-+}
+ }

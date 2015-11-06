@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/client/C0EPacketClickWindow.java
-+++b/net/minecraft/network/play/client/C0EPacketClickWindow.java
-@@ -1,14 +1,14 @@
+--- decompiled\net\minecraft\network\play\client\C0EPacketClickWindow.java
++++ src\main\java\net\minecraft\network\play\client\C0EPacketClickWindow.java
+@@ -1,94 +1,74 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -21,7 +21,8 @@
      private int windowId;
      private int slotId;
      private int usedButton;
-@@ -19,35 +19,14 @@
+     private short actionNumber;
+     private ItemStack clickedItem;
      private int mode;
      private static final String __OBFID = "CL_00001353";
  
@@ -51,7 +52,8 @@
          this.windowId = buf.readByte();
          this.slotId = buf.readShort();
          this.usedButton = buf.readByte();
-@@ -47,8 +47,7 @@
+         this.actionNumber = buf.readShort();
+         this.mode = buf.readByte();
          this.clickedItem = buf.readItemStackFromBuffer();
      }
  
@@ -61,7 +63,8 @@
          buf.writeByte(this.windowId);
          buf.writeShort(this.slotId);
          buf.writeByte(this.usedButton);
-@@ -57,39 +57,31 @@
+         buf.writeShort(this.actionNumber);
+         buf.writeByte(this.mode);
          buf.writeItemStackToBuffer(this.clickedItem);
      }
  
@@ -107,5 +110,4 @@
 +    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
--}
-+}
+ }

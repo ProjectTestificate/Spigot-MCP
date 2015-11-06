@@ -1,6 +1,6 @@
----a/net/minecraft/inventory/InventoryEnderChest.java
-+++b/net/minecraft/inventory/InventoryEnderChest.java
-@@ -1,58 +1,93 @@
+--- decompiled\net\minecraft\inventory\InventoryEnderChest.java
++++ src\main\java\net\minecraft\inventory\InventoryEnderChest.java
+@@ -1,88 +1,115 @@
  package net.minecraft.inventory;
  
 +import java.util.ArrayList;
@@ -114,7 +114,8 @@
                  itemstack.writeToNBT(nbttagcompound);
                  nbttaglist.appendTag(nbttagcompound);
              }
-@@ -62,30 +62,24 @@
+         }
+ 
          return nbttaglist;
      }
  
@@ -147,6 +148,3 @@
  
          super.closeInventory(player);
          this.associatedChest = null;
-     }
--}
-+}

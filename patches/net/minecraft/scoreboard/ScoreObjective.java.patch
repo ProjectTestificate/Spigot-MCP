@@ -1,6 +1,6 @@
----a/net/minecraft/scoreboard/ScoreObjective.java
-+++b/net/minecraft/scoreboard/ScoreObjective.java
-@@ -1,10 +1,6 @@
+--- decompiled\net\minecraft\scoreboard\ScoreObjective.java
++++ src\main\java\net\minecraft\scoreboard\ScoreObjective.java
+@@ -1,61 +1,46 @@
  package net.minecraft.scoreboard;
  
 -import net.minecraftforge.fml.relauncher.Side;
@@ -13,7 +13,7 @@
      private final Scoreboard theScoreboard;
      private final String name;
      private final IScoreObjectiveCriteria objectiveCriteria;
-@@ -12,8 +12,7 @@
+     private IScoreObjectiveCriteria.EnumRenderType renderType;
      private String displayName;
      private static final String __OBFID = "CL_00000614";
  
@@ -23,7 +23,7 @@
          this.theScoreboard = p_i2307_1_;
          this.name = p_i2307_2_;
          this.objectiveCriteria = p_i2307_3_;
-@@ -21,48 +21,29 @@
+         this.displayName = p_i2307_2_;
          this.renderType = p_i2307_3_.getRenderType();
      }
  
@@ -70,5 +70,4 @@
          this.renderType = type;
          this.theScoreboard.func_96532_b(this);
      }
--}
-+}
+ }

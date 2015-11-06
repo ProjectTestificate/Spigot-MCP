@@ -1,6 +1,7 @@
----a/net/minecraft/world/WorldProvider.java
-+++b/net/minecraft/world/WorldProvider.java
-@@ -2,8 +2,6 @@
+--- decompiled\net\minecraft\world\WorldProvider.java
++++ src\main\java\net\minecraft\world\WorldProvider.java
+@@ -1,26 +1,23 @@
+ package net.minecraft.world;
  
  import net.minecraft.init.Blocks;
  import net.minecraft.util.BlockPos;
@@ -9,7 +10,9 @@
  import net.minecraft.world.biome.BiomeGenBase;
  import net.minecraft.world.biome.WorldChunkManager;
  import net.minecraft.world.biome.WorldChunkManagerHell;
-@@ -13,11 +13,7 @@
+ import net.minecraft.world.border.WorldBorder;
+ import net.minecraft.world.chunk.IChunkProvider;
+ import net.minecraft.world.gen.ChunkProviderDebug;
  import net.minecraft.world.gen.ChunkProviderFlat;
  import net.minecraft.world.gen.ChunkProviderGenerate;
  import net.minecraft.world.gen.FlatGeneratorInfo;
@@ -26,7 +29,11 @@
      protected World worldObj;
      private WorldType terrainType;
      private String generatorSettings;
-@@ -30,8 +30,7 @@
+     protected WorldChunkManager worldChunkMgr;
+     protected boolean isHellWorld;
+@@ -28,201 +25,112 @@
+     protected final float[] lightBrightnessTable = new float[16];
+     protected int dimensionId;
      private final float[] colorsSunriseSunset = new float[4];
      private static final String __OBFID = "CL_00000386";
  
@@ -36,7 +43,7 @@
          this.worldObj = worldIn;
          this.terrainType = worldIn.getWorldInfo().getTerrainType();
          this.generatorSettings = worldIn.getWorldInfo().getGeneratorOptions();
-@@ -39,191 +39,102 @@
+         this.registerWorldChunkManager();
          this.generateLightBrightnessTable();
      }
  
@@ -255,5 +262,4 @@
 +    public WorldBorder getWorldBorder() {
          return new WorldBorder();
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockSlime.java
-+++b/net/minecraft/block/BlockSlime.java
-@@ -4,53 +4,35 @@
+--- decompiled\net\minecraft\block\BlockSlime.java
++++ src\main\java\net\minecraft\block\BlockSlime.java
+@@ -2,60 +2,41 @@
+ 
+ import net.minecraft.block.material.Material;
  import net.minecraft.creativetab.CreativeTabs;
  import net.minecraft.entity.Entity;
  import net.minecraft.util.BlockPos;
@@ -69,9 +71,5 @@
              double d0 = 0.4D + Math.abs(entityIn.motionY) * 0.2D;
              entityIn.motionX *= d0;
              entityIn.motionZ *= d0;
-@@ -61,4 +61,4 @@
+         }
  
-         super.onEntityCollidedWithBlock(worldIn, pos, entityIn);
-     }
--}
-+}

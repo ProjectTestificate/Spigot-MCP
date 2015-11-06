@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemBucket.java
-+++b/net/minecraft/item/ItemBucket.java
-@@ -14,81 +14,105 @@
+--- decompiled\net\minecraft\item\ItemBucket.java
++++ src\main\java\net\minecraft\item\ItemBucket.java
+@@ -12,146 +12,147 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.util.MovingObjectPosition;
  import net.minecraft.world.World;
  
@@ -136,7 +138,8 @@
                      }
                  }
              }
-@@ -96,15 +96,13 @@
+ 
+             return itemStackIn;
          }
      }
  
@@ -164,7 +167,7 @@
                  player.dropPlayerItemWithRandomChoice(new ItemStack(fullBucket, 1, 0), false);
              }
  
-@@ -117,38 +117,27 @@
+             return emptyBuckets;
          }
      }
  
@@ -215,9 +218,5 @@
                          worldIn.destroyBlock(pos, true);
                      }
  
-@@ -160,4 +160,4 @@
-             }
-         }
-     }
--}
-+}
+                     worldIn.setBlockState(pos, this.isFull.getDefaultState(), 3);
+                 }

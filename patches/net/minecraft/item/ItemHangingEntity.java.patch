@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemHangingEntity.java
-+++b/net/minecraft/item/ItemHangingEntity.java
-@@ -9,41 +9,39 @@
+--- decompiled\net\minecraft\item\ItemHangingEntity.java
++++ src\main\java\net\minecraft\item\ItemHangingEntity.java
+@@ -7,47 +7,59 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -79,7 +81,11 @@
                          worldIn.spawnEntityInWorld(entityhanging);
                      }
  
-@@ -57,10 +57,8 @@
+                     --stack.stackSize;
+                 }
+@@ -55,10 +67,9 @@
+                 return true;
+             }
          }
      }
  
@@ -89,5 +95,4 @@
 +    private EntityHanging createEntity(World worldIn, BlockPos pos, EnumFacing clickedSide) {
 +        return (EntityHanging) (this.hangingEntityClass == EntityPainting.class ? new EntityPainting(worldIn, pos, clickedSide) : (this.hangingEntityClass == EntityItemFrame.class ? new EntityItemFrame(worldIn, pos, clickedSide) : null));
      }
--}
-+}
+ }

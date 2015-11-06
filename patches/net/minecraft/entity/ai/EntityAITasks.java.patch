@@ -1,6 +1,6 @@
----a/net/minecraft/entity/ai/EntityAITasks.java
-+++b/net/minecraft/entity/ai/EntityAITasks.java
-@@ -1,42 +1,42 @@
+--- decompiled\net\minecraft\entity\ai\EntityAITasks.java
++++ src\main\java\net\minecraft\entity\ai\EntityAITasks.java
+@@ -1,164 +1,144 @@
  package net.minecraft.entity.ai;
  
 -import com.google.common.collect.Lists;
@@ -63,7 +63,9 @@
                      entityaibase1.resetTask();
                      this.executingTaskEntries.remove(entityaitaskentry);
                  }
-@@ -49,23 +49,19 @@
+ 
+                 iterator.remove();
+             }
          }
      }
  
@@ -95,7 +97,7 @@
                          continue;
                      }
  
-@@ -75,23 +75,18 @@
+                     entityaitaskentry.action.resetTask();
                      this.executingTaskEntries.remove(entityaitaskentry);
                  }
  
@@ -124,7 +126,10 @@
                      entityaitaskentry.action.resetTask();
                      iterator.remove();
                  }
-@@ -102,40 +102,33 @@
+             }
+         }
+ 
+         this.theProfiler.endSection();
          this.theProfiler.startSection("goalTick");
          iterator = this.executingTaskEntries.iterator();
  
@@ -177,7 +182,8 @@
                      return false;
                  }
              }
-@@ -144,22 +144,19 @@
+         }
+ 
          return true;
      }
  
@@ -202,5 +208,4 @@
              this.action = p_i1627_3_;
          }
      }
--}
-+}
+ }

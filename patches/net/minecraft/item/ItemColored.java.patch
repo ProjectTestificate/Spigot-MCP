@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemColored.java
-+++b/net/minecraft/item/ItemColored.java
-@@ -1,55 +1,38 @@
+--- decompiled\net\minecraft\item\ItemColored.java
++++ src\main\java\net\minecraft\item\ItemColored.java
+@@ -1,54 +1,39 @@
  package net.minecraft.item;
  
  import net.minecraft.block.Block;
@@ -64,5 +64,4 @@
              return i >= 0 && i < this.subtypeNames.length ? super.getUnlocalizedName(stack) + "." + this.subtypeNames[i] : super.getUnlocalizedName(stack);
          }
      }
--}
-+}
+ }

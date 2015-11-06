@@ -1,6 +1,8 @@
----a/net/minecraft/stats/StatCrafting.java
-+++b/net/minecraft/stats/StatCrafting.java
-@@ -3,24 +3,19 @@
+--- decompiled\net\minecraft\stats\StatCrafting.java
++++ src\main\java\net\minecraft\stats\StatCrafting.java
+@@ -1,31 +1,22 @@
+ package net.minecraft.stats;
+ 
  import net.minecraft.item.Item;
  import net.minecraft.scoreboard.IScoreObjectiveCriteria;
  import net.minecraft.util.IChatComponent;
@@ -34,5 +36,4 @@
 -    {
 -        return this.field_150960_a;
 -    }
--}
-+}
+ }

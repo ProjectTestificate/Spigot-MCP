@@ -1,6 +1,6 @@
----a/net/minecraft/inventory/Container.java
-+++b/net/minecraft/inventory/Container.java
-@@ -1,107 +1,112 @@
+--- decompiled\net\minecraft\inventory\Container.java
++++ src\main\java\net\minecraft\inventory\Container.java
+@@ -1,480 +1,456 @@
  package net.minecraft.inventory;
  
 -import com.google.common.collect.Lists;
@@ -163,7 +163,7 @@
                  return slot;
              }
          }
-@@ -109,370 +109,340 @@
+ 
          return null;
      }
  
@@ -692,7 +692,11 @@
                                  }
  
                                  slot3.onPickupFromSlot(playerIn, itemstack2);
-@@ -488,144 +488,104 @@
+                             }
+                         }
+@@ -486,215 +462,158 @@
+         }
+ 
          return itemstack;
      }
  
@@ -870,7 +874,7 @@
                      slot.putStack(stack.copy());
                      slot.onSlotChanged();
                      stack.stackSize = 0;
-@@ -633,11 +633,9 @@
+                     flag1 = true;
                      break;
                  }
  
@@ -885,7 +889,8 @@
                      ++k;
                  }
              }
-@@ -647,39 +647,27 @@
+         }
+ 
          return flag1;
      }
  
@@ -931,7 +936,7 @@
              int i = stackSizeMatters ? 0 : stack.stackSize;
              flag1 |= slotIn.getStack().stackSize + i <= stack.getMaxStackSize();
          }
-@@ -687,15 +687,11 @@
+ 
          return flag1;
      }
  
@@ -947,7 +952,11 @@
                  break;
              case 1:
                  p_94525_2_.stackSize = 1;
-@@ -704,41 +704,32 @@
+                 break;
+             case 2:
+@@ -702,42 +621,34 @@
+         }
+ 
          p_94525_2_.stackSize += p_94525_3_;
      }
  
@@ -997,5 +1006,4 @@
              return MathHelper.floor_float(f * 14.0F) + (i > 0 ? 1 : 0);
          }
      }
--}
-+}
+ }

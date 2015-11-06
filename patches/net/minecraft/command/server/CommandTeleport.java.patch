@@ -1,6 +1,7 @@
----a/net/minecraft/command/server/CommandTeleport.java
-+++b/net/minecraft/command/server/CommandTeleport.java
-@@ -2,8 +2,10 @@
+--- decompiled\net\minecraft\command\server\CommandTeleport.java
++++ src\main\java\net\minecraft\command\server\CommandTeleport.java
+@@ -1,179 +1,147 @@
+ package net.minecraft.command.server;
  
  import java.util.EnumSet;
  import java.util.List;
@@ -11,7 +12,9 @@
  import net.minecraft.command.ICommandSender;
  import net.minecraft.command.WrongUsageException;
  import net.minecraft.entity.Entity;
-@@ -13,168 +13,126 @@
+ import net.minecraft.entity.player.EntityPlayerMP;
+ import net.minecraft.network.play.server.S08PacketPlayerPosLook;
+ import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.MathHelper;
  
@@ -225,7 +228,6 @@
 +    public boolean isUsernameIndex(String[] args, int index) {
          return index == 0;
      }
--}
 +
 +
 +    // CraftBukkit start - fix decompile error
@@ -234,4 +236,4 @@
 +        return compareTo((ICommand) o);
 +    }
 +    // CraftBukkit end
-+}
+ }

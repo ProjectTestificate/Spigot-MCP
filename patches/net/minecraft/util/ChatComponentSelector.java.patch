@@ -1,6 +1,7 @@
----a/net/minecraft/util/ChatComponentSelector.java
-+++b/net/minecraft/util/ChatComponentSelector.java
-@@ -2,66 +2,53 @@
+--- decompiled\net\minecraft\util\ChatComponentSelector.java
++++ src\main\java\net\minecraft\util\ChatComponentSelector.java
+@@ -1,66 +1,53 @@
+ package net.minecraft.util;
  
  import java.util.Iterator;
  
@@ -80,5 +81,4 @@
 +    public IChatComponent createCopy() {
          return this.func_179991_h();
      }
--}
-+}
+ }

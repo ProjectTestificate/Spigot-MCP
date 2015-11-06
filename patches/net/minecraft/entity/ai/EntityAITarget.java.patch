@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAITarget.java
-+++b/net/minecraft/entity/ai/EntityAITarget.java
-@@ -12,8 +12,10 @@
+--- decompiled\net\minecraft\entity\ai\EntityAITarget.java
++++ src\main\java\net\minecraft\entity\ai\EntityAITarget.java
+@@ -10,207 +10,152 @@
+ import net.minecraft.pathfinding.PathEntity;
+ import net.minecraft.pathfinding.PathPoint;
  import net.minecraft.scoreboard.Team;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.MathHelper;
@@ -14,7 +16,8 @@
      protected final EntityCreature taskOwner;
      protected boolean shouldCheckSight;
      private boolean nearbyOnly;
-@@ -24,127 +24,89 @@
+     private int targetSearchStatus;
+     private int targetSearchDelay;
      private int targetUnseenTicks;
      private static final String __OBFID = "CL_00001626";
  
@@ -173,7 +176,8 @@
                      return false;
                  }
  
-@@ -154,34 +154,23 @@
+                 return !p_179445_3_ || p_179445_0_.getEntitySenses().canSee(p_179445_1_);
+             }
          }
      }
  
@@ -214,7 +218,8 @@
                      return false;
                  }
              }
-@@ -188,30 +188,22 @@
+ 
+             return true;
          }
      }
  
@@ -249,5 +254,4 @@
              }
          }
      }
--}
-+}
+ }

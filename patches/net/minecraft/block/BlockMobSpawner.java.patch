@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockMobSpawner.java
-+++b/net/minecraft/block/BlockMobSpawner.java
-@@ -1,66 +1,59 @@
+--- decompiled\net\minecraft\block\BlockMobSpawner.java
++++ src\main\java\net\minecraft\block\BlockMobSpawner.java
+@@ -1,67 +1,59 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -91,5 +91,4 @@
 +    public int getRenderType() {
 +        return 3;
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockRedstoneTorch.java
-+++b/net/minecraft/block/BlockRedstoneTorch.java
-@@ -1,12 +1,8 @@
+--- decompiled\net\minecraft\block\BlockRedstoneTorch.java
++++ src\main\java\net\minecraft\block\BlockRedstoneTorch.java
+@@ -1,225 +1,193 @@
  package net.minecraft.block;
  
 -import com.google.common.collect.Lists;
@@ -13,7 +13,9 @@
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.creativetab.CreativeTabs;
  import net.minecraft.init.Blocks;
-@@ -14,41 +14,36 @@
+ import net.minecraft.item.Item;
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.World;
@@ -70,7 +72,8 @@
                      return true;
                  }
              }
-@@ -57,170 +57,140 @@
+         }
+ 
          return false;
      }
  
@@ -306,6 +309,5 @@
 +            this.pos = pos;
 +            this.time = time;
          }
--}
 +    }
-+}
+ }

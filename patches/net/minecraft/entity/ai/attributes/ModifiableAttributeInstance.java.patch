@@ -1,6 +1,6 @@
----a/net/minecraft/entity/ai/attributes/ModifiableAttributeInstance.java
-+++b/net/minecraft/entity/ai/attributes/ModifiableAttributeInstance.java
-@@ -1,22 +1,12 @@
+--- decompiled\net\minecraft\entity\ai\attributes\ModifiableAttributeInstance.java
++++ src\main\java\net\minecraft\entity\ai\attributes\ModifiableAttributeInstance.java
+@@ -1,209 +1,158 @@
  package net.minecraft.entity.ai.attributes;
  
 -import com.google.common.collect.Lists;
@@ -26,7 +26,10 @@
      private final BaseAttributeMap attributeMap;
      private final IAttribute genericAttribute;
      private final Map mapByOperation = Maps.newHashMap();
-@@ -25,109 +25,88 @@
+     private final Map mapByName = Maps.newHashMap();
+     private final Map mapByUUID = Maps.newHashMap();
+     private double baseValue;
+     private boolean needsUpdate = true;
      private double cachedValue;
      private static final String __OBFID = "CL_00001567";
  
@@ -163,7 +166,8 @@
                  this.mapByName.remove(p_111124_1_.getName());
              }
          }
-@@ -136,28 +136,8 @@
+ 
+         this.mapByUUID.remove(p_111124_1_.getID());
          this.flagForUpdate();
      }
  
@@ -194,7 +198,7 @@
              this.cachedValue = this.computeValue();
              this.needsUpdate = false;
          }
-@@ -165,48 +165,40 @@
+ 
          return this.cachedValue;
      }
  
@@ -250,6 +254,3 @@
          }
  
          return hashset;
-     }
--}
-+}

@@ -1,6 +1,8 @@
----a/net/minecraft/world/chunk/storage/ChunkLoader.java
-+++b/net/minecraft/world/chunk/storage/ChunkLoader.java
-@@ -7,12 +7,12 @@
+--- decompiled\net\minecraft\world\chunk\storage\ChunkLoader.java
++++ src\main\java\net\minecraft\world\chunk\storage\ChunkLoader.java
+@@ -5,16 +5,15 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.world.biome.BiomeGenBase;
  import net.minecraft.world.biome.WorldChunkManager;
  import net.minecraft.world.chunk.NibbleArray;
  
@@ -16,7 +18,11 @@
          int i = nbt.getInteger("xPos");
          int j = nbt.getInteger("zPos");
          ChunkLoader.AnvilConverterData anvilconverterdata = new ChunkLoader.AnvilConverterData(i, j);
-@@ -26,27 +26,22 @@
+         anvilconverterdata.blocks = nbt.getByteArray("Blocks");
+         anvilconverterdata.data = new NibbleArrayReader(nbt.getByteArray("Data"), 7);
+@@ -24,60 +23,49 @@
+         anvilconverterdata.terrainPopulated = nbt.getBoolean("TerrainPopulated");
+         anvilconverterdata.entities = nbt.getTagList("Entities", 10);
          anvilconverterdata.tileEntities = nbt.getTagList("TileEntities", 10);
          anvilconverterdata.tileTicks = nbt.getTagList("TileTicks", 10);
  
@@ -49,7 +55,8 @@
              aint[i] = p_76690_0_.heightmap[i];
          }
  
-@@ -55,27 +55,21 @@
+         p_76690_1_.setIntArray("HeightMap", aint);
+         p_76690_1_.setBoolean("TerrainPopulated", p_76690_0_.terrainPopulated);
          NBTTagList nbttaglist = new NBTTagList();
          int k;
  
@@ -83,7 +90,11 @@
                                  ++i1;
                                  continue;
                              }
-@@ -89,23 +89,18 @@
+ 
+                             flag = false;
+@@ -87,35 +75,31 @@
+                         break;
+                     }
                  }
              }
  
@@ -111,7 +122,8 @@
                              nibblearray.set(k2, k1, l1, p_76690_0_.data.get(k2, k1 + (j << 4), l1));
                              nibblearray1.set(k2, k1, l1, p_76690_0_.skyLight.get(k2, k1 + (j << 4), l1));
                              nibblearray2.set(k2, k1, l1, p_76690_0_.blockLight.get(k2, k1 + (j << 4), l1));
-@@ -113,7 +113,7 @@
+                         }
+                     }
                  }
  
                  NBTTagCompound nbttagcompound1 = new NBTTagCompound();
@@ -120,7 +132,11 @@
                  nbttagcompound1.setByteArray("Blocks", abyte1);
                  nbttagcompound1.setByteArray("Data", nibblearray.getData());
                  nbttagcompound1.setByteArray("SkyLight", nibblearray1.getData());
-@@ -125,11 +125,9 @@
+                 nbttagcompound1.setByteArray("BlockLight", nibblearray2.getData());
+                 nbttaglist.appendTag(nbttagcompound1);
+@@ -123,46 +107,42 @@
+         }
+ 
          p_76690_1_.setTag("Sections", nbttaglist);
          byte[] abyte = new byte[256];
  
@@ -135,7 +151,7 @@
              }
          }
  
-@@ -137,33 +137,29 @@
+         p_76690_1_.setByteArray("Biomes", abyte);
          p_76690_1_.setTag("Entities", p_76690_0_.entities);
          p_76690_1_.setTag("TileEntities", p_76690_0_.tileEntities);
  
@@ -186,6 +202,5 @@
 +            this.x = p_i1999_1_;
 +            this.z = p_i1999_2_;
          }
--}
 +    }
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/item/crafting/RecipesWeapons.java
-+++b/net/minecraft/item/crafting/RecipesWeapons.java
-@@ -5,33 +5,29 @@
+--- decompiled\net\minecraft\item\crafting\RecipesWeapons.java
++++ src\main\java\net\minecraft\item\crafting\RecipesWeapons.java
+@@ -3,33 +3,29 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.init.Items;
  import net.minecraft.item.Item;
  import net.minecraft.item.ItemStack;
  
@@ -43,5 +45,4 @@
 +        p_77583_1_.addRecipe(new ItemStack(Items.bow, 1), new Object[]{" #X", "# X", " #X", 'X', Items.string, '#', Items.stick});
 +        p_77583_1_.addRecipe(new ItemStack(Items.arrow, 4), new Object[]{"X", "#", "Y", 'Y', Items.feather, 'X', Items.flint, '#', Items.stick});
      }
--}
-+}
+ }

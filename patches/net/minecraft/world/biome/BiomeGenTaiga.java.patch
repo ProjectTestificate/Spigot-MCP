@@ -1,6 +1,6 @@
----a/net/minecraft/world/biome/BiomeGenTaiga.java
-+++b/net/minecraft/world/biome/BiomeGenTaiga.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\biome\BiomeGenTaiga.java
++++ src\main\java\net\minecraft\world\biome\BiomeGenTaiga.java
+@@ -1,8 +1,9 @@
  package net.minecraft.world.biome;
  
  import java.util.Random;
@@ -8,7 +8,11 @@
  import net.minecraft.block.BlockDirt;
  import net.minecraft.block.BlockDoublePlant;
  import net.minecraft.block.BlockTallGrass;
-@@ -17,8 +17,8 @@
+ import net.minecraft.entity.passive.EntityWolf;
+ import net.minecraft.init.Blocks;
+@@ -15,103 +16,87 @@
+ import net.minecraft.world.gen.feature.WorldGenTaiga1;
+ import net.minecraft.world.gen.feature.WorldGenTaiga2;
  import net.minecraft.world.gen.feature.WorldGenTallGrass;
  import net.minecraft.world.gen.feature.WorldGenerator;
  
@@ -19,7 +23,8 @@
      private static final WorldGenTaiga1 field_150639_aC = new WorldGenTaiga1();
      private static final WorldGenTaiga2 field_150640_aD = new WorldGenTaiga2(false);
      private static final WorldGenMegaPineTree field_150641_aE = new WorldGenMegaPineTree(false, false);
-@@ -27,49 +27,40 @@
+     private static final WorldGenMegaPineTree field_150642_aF = new WorldGenMegaPineTree(false, true);
+     private static final WorldGenBlockBlob field_150643_aG = new WorldGenBlockBlob(Blocks.mossy_cobblestone, 0);
      private int field_150644_aH;
      private static final String __OBFID = "CL_00000186";
  
@@ -78,7 +83,9 @@
                  k = p_180624_2_.nextInt(16) + 8;
                  l = p_180624_2_.nextInt(16) + 8;
                  BlockPos blockpos1 = worldIn.getHorizon(p_180624_3_.add(k, 0, l));
-@@ -79,8 +79,7 @@
+                 field_150643_aG.generate(worldIn, p_180624_2_, blockpos1);
+             }
+         }
  
          DOUBLE_PLANT_GENERATOR.func_180710_a(BlockDoublePlant.EnumPlantType.FERN);
  
@@ -88,7 +95,9 @@
              j = p_180624_2_.nextInt(16) + 8;
              k = p_180624_2_.nextInt(16) + 8;
              l = p_180624_2_.nextInt(worldIn.getHorizon(p_180624_3_.add(j, 0, k)).getY() + 32);
-@@ -90,20 +90,15 @@
+             DOUBLE_PLANT_GENERATOR.generate(worldIn, p_180624_2_, p_180624_3_.add(j, l, k));
+         }
+ 
          super.decorate(worldIn, p_180624_2_, p_180624_3_);
      }
  
@@ -112,7 +121,7 @@
                  this.topBlock = Blocks.dirt.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL);
              }
          }
-@@ -110,9 +110,7 @@
+ 
          this.generateBiomeTerrain(worldIn, p_180622_2_, p_180622_3_, p_180622_4_, p_180622_5_, p_180622_6_);
      }
  
@@ -121,5 +130,4 @@
 +    public BiomeGenBase createMutatedBiome(int p_180277_1_) {
          return this.biomeID == BiomeGenBase.megaTaiga.biomeID ? (new BiomeGenTaiga(p_180277_1_, 2)).func_150557_a(5858897, true).setBiomeName("Mega Spruce Taiga").setFillerBlockMetadata(5159473).setTemperatureRainfall(0.25F, 0.8F).setHeight(new BiomeGenBase.Height(this.minHeight, this.maxHeight)) : super.createMutatedBiome(p_180277_1_);
      }
--}
-+}
+ }

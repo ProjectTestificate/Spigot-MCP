@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemCarrotOnAStick.java
-+++b/net/minecraft/item/ItemCarrotOnAStick.java
-@@ -6,45 +6,26 @@
+--- decompiled\net\minecraft\item\ItemCarrotOnAStick.java
++++ src\main\java\net\minecraft\item\ItemCarrotOnAStick.java
+@@ -4,49 +4,31 @@
+ import net.minecraft.entity.passive.EntityPig;
+ import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.init.Items;
  import net.minecraft.stats.StatList;
  import net.minecraft.world.World;
@@ -55,9 +57,5 @@
                      ItemStack itemstack1 = new ItemStack(Items.fishing_rod);
                      itemstack1.setTagCompound(itemStackIn.getTagCompound());
                      return itemstack1;
-@@ -55,4 +55,4 @@
-         playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
-         return itemStackIn;
-     }
--}
-+}
+                 }
+             }

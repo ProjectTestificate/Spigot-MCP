@@ -1,6 +1,6 @@
----a/net/minecraft/entity/passive/EntityBat.java
-+++b/net/minecraft/entity/passive/EntityBat.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\entity\passive\EntityBat.java
++++ src\main\java\net\minecraft\entity\passive\EntityBat.java
+@@ -1,241 +1,198 @@
  package net.minecraft.entity.passive;
  
  import java.util.Calendar;
@@ -8,7 +8,10 @@
  import net.minecraft.block.Block;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.SharedMonsterAttributes;
-@@ -11,176 +11,146 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.DamageSource;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  
@@ -242,7 +245,7 @@
                  this.setIsBatHanging(false);
              }
  
-@@ -191,36 +191,28 @@
+             return super.attackEntityFrom(source, amount);
          }
      }
  
@@ -287,7 +290,7 @@
                  return false;
              }
  
-@@ -229,14 +229,11 @@
+             return i > this.rand.nextInt(b0) ? false : super.getCanSpawnHere();
          }
      }
  
@@ -302,5 +305,4 @@
 +    public float getEyeHeight() {
          return this.height / 2.0F;
      }
--}
-+}
+ }

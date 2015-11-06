@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S37PacketStatistics.java
-+++b/net/minecraft/network/play/server/S37PacketStatistics.java
-@@ -1,69 +1,60 @@
+--- decompiled\net\minecraft\network\play\server\S37PacketStatistics.java
++++ src\main\java\net\minecraft\network\play\server\S37PacketStatistics.java
+@@ -1,74 +1,61 @@
  package net.minecraft.network.play.server;
  
 -import com.google.common.collect.Maps;
@@ -93,5 +93,4 @@
 -    {
 -        this.processPacket((INetHandlerPlayClient)handler);
 -    }
--}
-+}
+ }

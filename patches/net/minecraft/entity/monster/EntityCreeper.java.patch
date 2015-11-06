@@ -1,13 +1,17 @@
----a/net/minecraft/entity/monster/EntityCreeper.java
-+++b/net/minecraft/entity/monster/EntityCreeper.java
-@@ -1,6 +1,5 @@
+--- decompiled\net\minecraft\entity\monster\EntityCreeper.java
++++ src\main\java\net\minecraft\entity\monster\EntityCreeper.java
+@@ -1,8 +1,7 @@
  package net.minecraft.entity.monster;
  
 -import com.google.common.base.Predicate;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.SharedMonsterAttributes;
  import net.minecraft.entity.ai.EntityAIAttackOnCollide;
-@@ -21,33 +21,34 @@
+ import net.minecraft.entity.ai.EntityAIAvoidEntity;
+ import net.minecraft.entity.ai.EntityAICreeperSwell;
+@@ -19,259 +18,259 @@
+ import net.minecraft.item.Item;
+ import net.minecraft.item.ItemStack;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.util.DamageSource;
  import net.minecraft.world.World;
@@ -58,7 +62,10 @@
              }
          }, 6.0F, 1.0D, 1.2D));
          this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 1.0D, false));
-@@ -59,98 +59,81 @@
+         this.tasks.addTask(5, new EntityAIWander(this, 0.8D));
+         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+         this.tasks.addTask(6, new EntityAILookIdle(this));
+         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
          this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[0]));
      }
  
@@ -182,7 +189,8 @@
                  this.timeSinceIgnited = this.fuseTime;
                  this.explode();
              }
-@@ -159,82 +159,93 @@
+         }
+ 
          super.onUpdate();
      }
  
@@ -316,7 +324,9 @@
                  this.func_146079_cb();
                  itemstack.damageItem(1, player);
                  return true;
-@@ -244,37 +244,38 @@
+             }
+         }
+ 
          return super.interact(player);
      }
  
@@ -368,5 +378,4 @@
 +    public void func_175493_co() {
          ++this.field_175494_bm;
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/entity/effect/EntityWeatherEffect.java
-+++b/net/minecraft/entity/effect/EntityWeatherEffect.java
-@@ -3,13 +3,12 @@
+--- decompiled\net\minecraft\entity\effect\EntityWeatherEffect.java
++++ src\main\java\net\minecraft\entity\effect\EntityWeatherEffect.java
+@@ -1,14 +1,13 @@
+ package net.minecraft.entity.effect;
+ 
  import net.minecraft.entity.Entity;
  import net.minecraft.world.World;
  
@@ -15,5 +17,4 @@
 +    public EntityWeatherEffect(World worldIn) {
          super(worldIn);
      }
--}
-+}
+ }

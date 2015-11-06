@@ -1,6 +1,6 @@
----a/net/minecraft/entity/passive/EntityHorse.java
-+++b/net/minecraft/entity/passive/EntityHorse.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\entity\passive\EntityHorse.java
++++ src\main\java\net\minecraft\entity\passive\EntityHorse.java
+@@ -1,10 +1,10 @@
  package net.minecraft.entity.passive;
  
 -import com.google.common.base.Predicate;
@@ -10,7 +10,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.material.Material;
  import net.minecraft.entity.Entity;
-@@ -36,43 +36,43 @@
+ import net.minecraft.entity.EntityAgeable;
+ import net.minecraft.entity.EntityLivingBase;
+@@ -34,47 +34,48 @@
+ import net.minecraft.pathfinding.PathNavigateGround;
+ import net.minecraft.potion.Potion;
  import net.minecraft.server.management.PreYggdrasilConverter;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.DamageSource;
@@ -77,7 +81,11 @@
      private boolean hasReproduced;
      protected int temper;
      protected float jumpPower;
-@@ -87,14 +87,15 @@
+     private boolean field_110294_bI;
+     private float headLean;
+@@ -85,19 +86,19 @@
+     private float prevMouthOpenness;
+     private int gallopTime;
      private String texturePrefix;
      private String[] field_110280_bR = new String[3];
      private boolean field_175508_bO = false;
@@ -96,7 +104,11 @@
          this.tasks.addTask(0, new EntityAISwimming(this));
          this.tasks.addTask(1, new EntityAIPanic(this, 1.2D));
          this.tasks.addTask(1, new EntityAIRunAroundLikeCrazy(this, 1.2D));
-@@ -107,50 +107,40 @@
+         this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
+         this.tasks.addTask(4, new EntityAIFollowParent(this, 1.0D));
+@@ -105,54 +106,44 @@
+         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+         this.tasks.addTask(8, new EntityAILookIdle(this));
          this.func_110226_cD();
      }
  
@@ -158,7 +170,11 @@
                  case 0:
                  default:
                      return StatCollector.translateToLocal("entity.horse.name");
-@@ -166,276 +166,219 @@
+                 case 1:
+                     return StatCollector.translateToLocal("entity.donkey.name");
+@@ -164,1188 +155,891 @@
+                     return StatCollector.translateToLocal("entity.skeletonhorse.name");
+             }
          }
      }
  
@@ -495,7 +511,9 @@
                      this.horseChest.setInventorySlotContents(j, itemstack.copy());
                  }
              }
-@@ -445,98 +445,79 @@
+         }
+ 
+         this.horseChest.func_110134_a(this);
          this.func_110232_cE();
      }
  
@@ -611,7 +629,7 @@
              this.makeHorseRear();
          }
  
-@@ -542,17 +542,14 @@
+         int i = this.getHorseType();
          return i == 3 ? "mob.horse.zombie.hit" : (i == 4 ? "mob.horse.skeleton.hit" : (i != 1 && i != 2 ? "mob.horse.hit" : "mob.horse.donkey.hit"));
      }
  
@@ -632,7 +650,7 @@
              this.makeHorseRear();
          }
  
-@@ -560,232 +560,105 @@
+         int i = this.getHorseType();
          return i == 3 ? "mob.horse.zombie.idle" : (i == 4 ? "mob.horse.skeleton.idle" : (i != 1 && i != 2 ? "mob.horse.idle" : "mob.horse.donkey.idle"));
      }
  
@@ -899,7 +917,9 @@
                              this.makeHorseRearWithSound();
                              return true;
                          }
-@@ -797,86 +797,67 @@
+ 
+                         this.openGUI(player);
+                         return true;
                      }
                  }
  
@@ -1004,7 +1024,7 @@
                          return true;
                      }
  
-@@ -886,372 +886,312 @@
+                     this.makeHorseRearWithSound();
                      return true;
                  }
  
@@ -1474,7 +1494,9 @@
                      this.playSound("mob.horse.jump", 0.4F, 1.0F);
                  }
  
-@@ -1265,15 +1265,13 @@
+                 this.jumpPower = 0.0F;
+             }
+ 
              this.stepHeight = 1.0F;
              this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
  
@@ -1492,7 +1514,9 @@
                  this.jumpPower = 0.0F;
                  this.setHorseJumping(false);
              }
-@@ -1282,24 +1282,20 @@
+ 
+             this.prevLimbSwingAmount = this.limbSwingAmount;
+             double d1 = this.posX - this.prevPosX;
              double d0 = this.posZ - this.prevPosZ;
              float f4 = MathHelper.sqrt_double(d1 * d1 + d0 * d0) * 4.0F;
  
@@ -1520,7 +1544,10 @@
          super.writeEntityToNBT(tagCompound);
          tagCompound.setBoolean("EatingHaystack", this.isEatingHaystack());
          tagCompound.setBoolean("ChestedHorse", this.isChested());
-@@ -1310,18 +1310,17 @@
+         tagCompound.setBoolean("HasReproduced", this.getHasReproduced());
+         tagCompound.setBoolean("Bred", this.func_110205_ce());
+         tagCompound.setInteger("Type", this.getHorseType());
+         tagCompound.setInteger("Variant", this.getHorseVariant());
          tagCompound.setInteger("Temper", this.getTemper());
          tagCompound.setBoolean("Tame", this.isTame());
          tagCompound.setString("OwnerUUID", this.func_152119_ch());
@@ -1545,7 +1572,8 @@
                      itemstack.writeToNBT(nbttagcompound1);
                      nbttaglist.appendTag(nbttagcompound1);
                  }
-@@ -1331,19 +1331,16 @@
+             }
+ 
              tagCompound.setTag("Items", nbttaglist);
          }
  
@@ -1568,7 +1596,11 @@
          super.readEntityFromNBT(tagCompund);
          this.setEatingHaystack(tagCompund.getBoolean("EatingHaystack"));
          this.func_110242_l(tagCompund.getBoolean("Bred"));
-@@ -1355,40 +1355,48 @@
+         this.setChested(tagCompund.getBoolean("ChestedHorse"));
+         this.setHasReproduced(tagCompund.getBoolean("HasReproduced"));
+@@ -1353,188 +1047,159 @@
+         this.setHorseVariant(tagCompund.getInteger("Variant"));
+         this.setTemper(tagCompund.getInteger("Temper"));
          this.setHorseTamed(tagCompund.getBoolean("Tame"));
          String s = "";
  
@@ -1632,7 +1664,7 @@
                      this.horseChest.setInventorySlotContents(j, ItemStack.loadItemStackFromNBT(nbttagcompound1));
                  }
              }
-@@ -1396,106 +1396,77 @@
+         }
  
          ItemStack itemstack;
  
@@ -1763,7 +1795,7 @@
                  l |= this.rand.nextInt(5) << 8 & 65280;
              }
  
-@@ -1504,7 +1504,7 @@
+             entityhorse1.setHorseVariant(l);
          }
  
          entityhorse1.setHorseType(k);
@@ -1772,7 +1804,8 @@
          entityhorse1.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(d1 / 3.0D);
          double d2 = this.getEntityAttribute(horseJumpStrength).getBaseValue() + ageable.getEntityAttribute(horseJumpStrength).getBaseValue() + this.func_110245_cM();
          entityhorse1.getEntityAttribute(horseJumpStrength).setBaseValue(d2 / 3.0D);
-@@ -1513,25 +1513,19 @@
+         double d0 = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue() + ageable.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue() + this.func_110203_cN();
+         entityhorse1.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(d0 / 3.0D);
          return entityhorse1;
      }
  
@@ -1806,7 +1839,11 @@
                  int j = this.rand.nextInt(7);
                  int k = this.rand.nextInt(5);
                  l = 0;
-@@ -1545,179 +1545,107 @@
+                 i = j | k << 8;
+             }
+@@ -1543,232 +1208,148 @@
+         }
+ 
          this.setHorseType(l);
          this.setHorseVariant(i);
  
@@ -2029,7 +2066,8 @@
                  this.setChested(true);
                  this.func_110226_cD();
                  return true;
-@@ -1726,52 +1726,37 @@
+             }
+         }
  
          int j = p_174820_1_ - 400;
  
@@ -2093,6 +2131,5 @@
 +            this.field_111107_a = p_i1684_1_;
 +            this.field_111106_b = p_i1684_2_;
          }
--}
 +    }
-+}
+ }

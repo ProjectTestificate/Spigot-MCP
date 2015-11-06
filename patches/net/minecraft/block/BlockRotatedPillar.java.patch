@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockRotatedPillar.java
-+++b/net/minecraft/block/BlockRotatedPillar.java
-@@ -4,14 +4,13 @@
+--- decompiled\net\minecraft\block\BlockRotatedPillar.java
++++ src\main\java\net\minecraft\block\BlockRotatedPillar.java
+@@ -2,15 +2,14 @@
+ 
+ import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.PropertyEnum;
  import net.minecraft.util.EnumFacing;
  
@@ -16,5 +18,4 @@
 +    protected BlockRotatedPillar(Material materialIn) {
          super(materialIn);
      }
--}
-+}
+ }

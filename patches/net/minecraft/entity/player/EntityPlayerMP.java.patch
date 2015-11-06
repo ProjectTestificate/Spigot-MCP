@@ -1,6 +1,6 @@
----a/net/minecraft/entity/player/EntityPlayerMP.java
-+++b/net/minecraft/entity/player/EntityPlayerMP.java
-@@ -1,19 +1,10 @@
+--- decompiled\net\minecraft\entity\player\EntityPlayerMP.java
++++ src\main\java\net\minecraft\entity\player\EntityPlayerMP.java
+@@ -1,17 +1,13 @@
  package net.minecraft.entity.player;
  
 -import com.google.common.collect.Lists;
@@ -17,7 +17,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockFence;
  import net.minecraft.block.BlockFenceGate;
-@@ -70,10 +70,8 @@
+ import net.minecraft.block.BlockWall;
+ import net.minecraft.block.material.Material;
+@@ -68,86 +64,127 @@
+ import net.minecraft.network.play.server.S48PacketResourcePackSend;
+ import net.minecraft.potion.PotionEffect;
  import net.minecraft.scoreboard.IScoreObjectiveCriteria;
  import net.minecraft.scoreboard.Score;
  import net.minecraft.scoreboard.ScoreObjective;
@@ -28,7 +32,8 @@
  import net.minecraft.stats.AchievementList;
  import net.minecraft.stats.StatBase;
  import net.minecraft.stats.StatList;
-@@ -82,8 +82,10 @@
+ import net.minecraft.stats.StatisticsFile;
+ import net.minecraft.tileentity.TileEntity;
  import net.minecraft.tileentity.TileEntitySign;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.ChatComponentTranslation;
@@ -39,7 +44,8 @@
  import net.minecraft.util.IChatComponent;
  import net.minecraft.util.JsonSerializableSet;
  import net.minecraft.util.MathHelper;
-@@ -92,58 +92,101 @@
+ import net.minecraft.util.ReportedException;
+ import net.minecraft.village.MerchantRecipeList;
  import net.minecraft.world.ChunkCoordIntPair;
  import net.minecraft.world.IInteractionObject;
  import net.minecraft.world.ILockableContainer;
@@ -157,7 +163,11 @@
                  i = 1;
              }
  
-@@ -157,152 +157,160 @@
+             blockpos = worldIn.getTopSolidOrLiquidBlock(blockpos.add(this.rand.nextInt(i * 2) - i, 0, this.rand.nextInt(i * 2) - i));
+         }
+@@ -155,337 +192,354 @@
+         this.mcServer = server;
+         this.statsFile = server.getConfigurationManager().getPlayerStatsFile(this);
          this.stepHeight = 0.0F;
          this.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
  
@@ -381,7 +391,7 @@
                      this.getServerForPlayer().getEntityTracker().func_85172_a(this, chunk);
                  }
              }
-@@ -311,81 +311,64 @@
+         }
  
          Entity entity = this.getSpectatingEntity();
  
@@ -497,7 +507,7 @@
              CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Ticking player");
              CrashReportCategory crashreportcategory = crashreport.makeCategory("Player being ticked");
              this.addEntityCrashInfo(crashreportcategory);
-@@ -392,98 +392,113 @@
+             throw new ReportedException(crashreport);
          }
      }
  
@@ -661,7 +671,11 @@
                  this.triggerAchievement(entityegginfo.field_151513_e);
              }
  
-@@ -495,39 +495,27 @@
+             entitylivingbase.addToPlayerScore(this, this.scoreValue);
+         }
+@@ -493,497 +547,476 @@
+         this.triggerAchievement(StatList.deathsStat);
+         this.func_175145_a(StatList.timeSinceDeathStat);
          this.getCombatTracker().func_94549_h();
      }
  
@@ -709,7 +723,10 @@
                              return false;
                          }
                      }
-@@ -536,32 +536,25 @@
+                 }
+ 
+                 return super.attackEntityFrom(source, amount);
+             }
          }
      }
  
@@ -750,7 +767,8 @@
                  BlockPos blockpos = this.mcServer.worldServerForDimension(dimensionId).func_180504_m();
  
                  if (blockpos != null)
-@@ -568,50 +568,47 @@
+                 {
+                     this.playerNetServerHandler.setPlayerLocation((double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ(), 0.0F, 0.0F);
                  }
  
                  dimensionId = 1;
@@ -814,7 +832,9 @@
              S0APacketUseBed s0apacketusebed = new S0APacketUseBed(this, bedLocation);
              this.getServerForPlayer().getEntityTracker().sendToAllTrackingEntity(this, s0apacketusebed);
              this.playerNetServerHandler.setPlayerLocation(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-@@ -620,51 +620,47 @@
+             this.playerNetServerHandler.sendPacket(s0apacketusebed);
+         }
+ 
          return enumstatus;
      }
  
@@ -876,7 +896,8 @@
                  blockpos = blockpos.down();
                  block = this.worldObj.getBlockState(blockpos).getBlock();
              }
-@@ -671,19 +671,17 @@
+         }
+ 
          super.func_180433_a(p_71122_1_, p_71122_3_, block, blockpos);
      }
  
@@ -906,7 +927,7 @@
          this.getNextWindowId();
          this.playerNetServerHandler.sendPacket(new S2DPacketOpenWindow(this.currentWindowId, guiOwner.getGuiID(), guiOwner.getDisplayName()));
          this.openContainer = guiOwner.createContainer(this.inventory, this);
-@@ -691,57 +691,96 @@
+         this.openContainer.windowId = this.currentWindowId;
          this.openContainer.addCraftingToCrafters(this);
      }
  
@@ -1005,7 +1026,7 @@
              PacketBuffer packetbuffer = new PacketBuffer(Unpooled.buffer());
              packetbuffer.writeInt(this.currentWindowId);
              merchantrecipelist.writeToBuf(packetbuffer);
-@@ -747,10 +747,15 @@
+             this.playerNetServerHandler.sendPacket(new S3FPacketCustomPayload("MC|TrList", packetbuffer));
          }
      }
  
@@ -1025,7 +1046,10 @@
              this.closeScreen();
          }
  
-@@ -761,82 +761,70 @@
+         this.getNextWindowId();
+         this.playerNetServerHandler.sendPacket(new S2DPacketOpenWindow(this.currentWindowId, "EntityHorse", horseInventory.getDisplayName(), horseInventory.getSizeInventory(), horse.getEntityId()));
+         this.openContainer = new ContainerHorseInventory(this.inventory, horseInventory, horse, this);
+         this.openContainer.windowId = this.currentWindowId;
          this.openContainer.addCraftingToCrafters(this);
      }
  
@@ -1132,7 +1156,8 @@
                  this.moveForward = p_110430_2_;
              }
  
-@@ -845,145 +845,126 @@
+             this.isJumping = p_110430_3_;
+             this.setSneaking(p_110430_4_);
          }
      }
  
@@ -1321,7 +1346,11 @@
          this.theItemInWorldManager.setGameType(gameType);
          this.playerNetServerHandler.sendPacket(new S2BPacketChangeGameState(3, (float)gameType.getID()));
  
-@@ -996,18 +996,18 @@
+         if (gameType == WorldSettings.GameType.SPECTATOR)
+         {
+@@ -994,24 +1027,23 @@
+             this.setSpectatingEntity(this);
+         }
  
          this.sendPlayerAbilities();
          this.func_175136_bO();
@@ -1347,7 +1376,11 @@
          if ("seed".equals(commandName) && !this.mcServer.isDedicatedServer())
          {
              return true;
-@@ -1030,111 +1030,93 @@
+         }
+         else if (!"tell".equals(commandName) && !"help".equals(commandName) && !"me".equals(commandName) && !"trigger".equals(commandName))
+@@ -1028,114 +1060,216 @@
+         }
+         else
          {
              return true;
          }
@@ -1488,7 +1521,6 @@
 +    public IChatComponent getTabListDisplayName() {
 +        return listName; // CraftBukkit
      }
--}
 +
 +    // CraftBukkit start - Add per-player time and weather.
 +    public long timeOffset = 0;
@@ -1612,4 +1644,4 @@
 +        return (CraftPlayer) super.getBukkitEntity();
 +    }
 +    // CraftBukkit end
-+}
+ }

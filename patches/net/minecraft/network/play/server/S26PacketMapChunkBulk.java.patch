@@ -1,6 +1,7 @@
----a/net/minecraft/network/play/server/S26PacketMapChunkBulk.java
-+++b/net/minecraft/network/play/server/S26PacketMapChunkBulk.java
-@@ -2,42 +2,46 @@
+--- decompiled\net\minecraft\network\play\server\S26PacketMapChunkBulk.java
++++ src\main\java\net\minecraft\network\play\server\S26PacketMapChunkBulk.java
+@@ -1,123 +1,90 @@
+ package net.minecraft.network.play.server;
  
  import java.io.IOException;
  import java.util.List;
@@ -60,7 +61,7 @@
          this.field_149267_h = buf.readBoolean();
          int i = buf.readVarIntFromBuffer();
          this.field_149266_a = new int[i];
-@@ -47,8 +47,7 @@
+         this.field_149264_b = new int[i];
          this.field_179755_c = new S21PacketChunkData.Extracted[i];
          int j;
  
@@ -70,7 +71,7 @@
              this.field_149266_a[j] = buf.readInt();
              this.field_149264_b[j] = buf.readInt();
              this.field_179755_c[j] = new S21PacketChunkData.Extracted();
-@@ -56,41 +56,34 @@
+             this.field_179755_c[j].dataSize = buf.readShort() & 65535;
              this.field_179755_c[j].data = new byte[S21PacketChunkData.func_180737_a(Integer.bitCount(this.field_179755_c[j].dataSize), this.field_149267_h, true)];
          }
  
@@ -147,5 +148,4 @@
 -    {
 -        return this.field_179755_c[p_179754_1_].dataSize;
 -    }
--}
-+}
+ }

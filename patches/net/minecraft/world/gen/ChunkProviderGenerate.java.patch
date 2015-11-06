@@ -1,6 +1,7 @@
----a/net/minecraft/world/gen/ChunkProviderGenerate.java
-+++b/net/minecraft/world/gen/ChunkProviderGenerate.java
-@@ -2,6 +2,7 @@
+--- decompiled\net\minecraft\world\gen\ChunkProviderGenerate.java
++++ src\main\java\net\minecraft\world\gen\ChunkProviderGenerate.java
+@@ -1,9 +1,10 @@
+ package net.minecraft.world.gen;
  
  import java.util.List;
  import java.util.Random;
@@ -8,7 +9,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockFalling;
  import net.minecraft.entity.EnumCreatureType;
-@@ -25,8 +25,8 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.util.BlockPos;
+@@ -23,12 +24,12 @@
+ import net.minecraft.world.gen.structure.MapGenScatteredFeature;
+ import net.minecraft.world.gen.structure.MapGenStronghold;
  import net.minecraft.world.gen.structure.MapGenVillage;
  import net.minecraft.world.gen.structure.StructureOceanMonument;
  
@@ -19,7 +24,11 @@
      private Random rand;
      private NoiseGeneratorOctaves field_147431_j;
      private NoiseGeneratorOctaves field_147432_k;
-@@ -57,8 +57,7 @@
+     private NoiseGeneratorOctaves field_147429_l;
+     private NoiseGeneratorPerlin field_147430_m;
+@@ -55,12 +56,11 @@
+     double[] field_147428_e;
+     double[] field_147425_f;
      double[] field_147426_g;
      private static final String __OBFID = "CL_00000396";
  
@@ -29,7 +38,11 @@
          this.field_177476_s = Blocks.water;
          this.stoneNoise = new double[256];
          this.caveGenerator = new MapGenCaves();
-@@ -82,44 +82,36 @@
+         this.strongholdGenerator = new MapGenStronghold();
+         this.villageGenerator = new MapGenVillage();
+@@ -80,77 +80,64 @@
+         this.noiseGen6 = new NoiseGeneratorOctaves(this.rand, 16);
+         this.mobSpawnerNoise = new NoiseGeneratorOctaves(this.rand, 8);
          this.field_147434_q = new double[825];
          this.parabolicField = new float[25];
  
@@ -79,7 +92,10 @@
                      double d0 = 0.125D;
                      double d1 = this.field_147434_q[k1 + k2];
                      double d2 = this.field_147434_q[l1 + k2];
-@@ -127,27 +127,22 @@
+                     double d3 = this.field_147434_q[i2 + k2];
+                     double d4 = this.field_147434_q[j2 + k2];
+                     double d5 = (this.field_147434_q[k1 + k2 + 1] - d1) * d0;
+                     double d6 = (this.field_147434_q[l1 + k2 + 1] - d2) * d0;
                      double d7 = (this.field_147434_q[i2 + k2 + 1] - d3) * d0;
                      double d8 = (this.field_147434_q[j2 + k2 + 1] - d4) * d0;
  
@@ -113,7 +129,11 @@
                                      p_180518_3_.setBlockState(k * 4 + i3, k2 * 8 + l2, j1 * 4 + j3, this.field_177476_s.getDefaultState());
                                  }
                              }
-@@ -167,117 +167,98 @@
+ 
+                             d10 += d12;
+@@ -165,121 +152,102 @@
+                 }
+             }
          }
      }
  
@@ -257,7 +277,11 @@
                              f7 /= 2.0F;
                          }
  
-@@ -293,26 +293,22 @@
+                         f2 += f6 * f7;
+                         f3 += f5 * f7;
+@@ -291,145 +259,124 @@
+                 f3 /= f4;
+                 f2 = f2 * 0.9F + 0.1F;
                  f3 = (f3 * 4.0F - 1.0F) / 8.0F;
                  double d7 = this.field_147426_g[i1] / 8000.0D;
  
@@ -292,7 +316,7 @@
                          d7 = 1.0D;
                      }
  
-@@ -323,28 +323,26 @@
+                     d7 /= 8.0D;
                  }
  
                  ++i1;
@@ -333,7 +357,10 @@
                          d5 = d5 * (1.0D - d6) + -10.0D * d6;
                      }
  
-@@ -356,13 +356,11 @@
+                     this.field_147434_q[l] = d5;
+                     ++l;
+                 }
+             }
          }
      }
  
@@ -349,7 +376,8 @@
          BlockFalling.fallInstantly = true;
          int k = p_73153_2_ * 16;
          int l = p_73153_3_ * 16;
-@@ -371,31 +371,27 @@
+         BlockPos blockpos = new BlockPos(k, 0, l);
+         BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(blockpos.add(16, 0, 16));
          this.rand.setSeed(this.worldObj.getSeed());
          long i1 = this.rand.nextLong() / 2L * 2L + 1L;
          long j1 = this.rand.nextLong() / 2L * 2L + 1L;
@@ -388,7 +416,7 @@
              this.oceanMonumentGenerator.func_175794_a(this.worldObj, this.rand, chunkcoordintpair);
          }
  
-@@ -404,28 +404,24 @@
+         int k1;
          int l1;
          int i2;
  
@@ -424,7 +452,11 @@
                  l1 = this.rand.nextInt(16) + 8;
                  i2 = this.rand.nextInt(256);
                  int j2 = this.rand.nextInt(16) + 8;
-@@ -439,22 +439,17 @@
+                 (new WorldGenDungeons()).generate(this.worldObj, this.rand, blockpos.add(l1, i2, j2));
+             }
+@@ -437,124 +384,102 @@
+ 
+         biomegenbase.decorate(this.worldObj, this.rand, new BlockPos(k, 0, l));
          SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, k + 8, l + 8, 16, 16, this.rand);
          blockpos = blockpos.add(8, 0, 8);
  
@@ -449,7 +481,8 @@
                      this.worldObj.setBlockState(blockpos1, Blocks.snow_layer.getDefaultState(), 2);
                  }
              }
-@@ -461,53 +461,44 @@
+         }
+ 
          BlockFalling.fallInstantly = false;
      }
  
@@ -515,7 +548,7 @@
                  return this.oceanMonumentGenerator.func_175799_b();
              }
          }
-@@ -515,47 +515,37 @@
+ 
          return biomegenbase.getSpawnableList(p_177458_1_);
      }
  
@@ -575,5 +608,4 @@
 +    public Chunk provideChunk(BlockPos blockPosIn) {
          return this.provideChunk(blockPosIn.getX() >> 4, blockPosIn.getZ() >> 4);
      }
--}
-+}
+ }

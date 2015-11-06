@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/structure/MapGenStronghold.java
-+++b/net/minecraft/world/gen/structure/MapGenStronghold.java
-@@ -1,28 +1,29 @@
+--- decompiled\net\minecraft\world\gen\structure\MapGenStronghold.java
++++ src\main\java\net\minecraft\world\gen\structure\MapGenStronghold.java
+@@ -1,105 +1,91 @@
  package net.minecraft.world.gen.structure;
  
 -import com.google.common.collect.Lists;
@@ -38,7 +38,7 @@
          this.structureCoords = new ChunkCoordIntPair[3];
          this.field_82671_h = 32.0D;
          this.field_82672_i = 3;
-@@ -31,73 +31,58 @@
+         this.field_151546_e = Lists.newArrayList();
          BiomeGenBase[] abiomegenbase = BiomeGenBase.getBiomeGenArray();
          int i = abiomegenbase.length;
  
@@ -133,7 +133,11 @@
                      l += 2 + random.nextInt(5);
                      this.field_82672_i += 1 + random.nextInt(2);
                  }
-@@ -109,12 +109,10 @@
+             }
+ 
+@@ -107,76 +93,68 @@
+         }
+ 
          ChunkCoordIntPair[] achunkcoordintpair = this.structureCoords;
          int l1 = achunkcoordintpair.length;
  
@@ -148,7 +152,7 @@
                  return true;
              }
          }
-@@ -122,18 +122,15 @@
+ 
          return false;
      }
  
@@ -170,7 +174,7 @@
                  arraylist.add(chunkcoordintpair.getCenterBlock(64));
              }
          }
-@@ -141,43 +141,38 @@
+ 
          return arraylist;
      }
  
@@ -232,6 +236,5 @@
 +            this.updateBoundingBox();
 +            this.markAvailableHeight(worldIn, p_i2067_2_, 10);
          }
--}
 +    }
-+}
+ }

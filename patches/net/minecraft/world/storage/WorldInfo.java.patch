@@ -1,6 +1,6 @@
----a/net/minecraft/world/storage/WorldInfo.java
-+++b/net/minecraft/world/storage/WorldInfo.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\storage\WorldInfo.java
++++ src\main\java\net\minecraft\world\storage\WorldInfo.java
+@@ -1,21 +1,25 @@
  package net.minecraft.world.storage;
  
  import java.util.concurrent.Callable;
@@ -8,7 +8,8 @@
  import net.minecraft.crash.CrashReportCategory;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.server.MinecraftServer;
-@@ -9,11 +9,7 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.world.EnumDifficulty;
  import net.minecraft.world.GameRules;
  import net.minecraft.world.WorldSettings;
  import net.minecraft.world.WorldType;
@@ -27,7 +28,11 @@
      public static final EnumDifficulty DEFAULT_DIFFICULTY = EnumDifficulty.NORMAL;
      private long randomSeed;
      private WorldType terrainType;
-@@ -53,8 +53,7 @@
+     private String generatorOptions;
+     private int spawnX;
+@@ -51,12 +55,11 @@
+     private int borderWarningDistance;
+     private int borderWarningTime;
      private GameRules theGameRules;
      private static final String __OBFID = "CL_00000587";
  
@@ -37,7 +42,11 @@
          this.terrainType = WorldType.DEFAULT;
          this.generatorOptions = "";
          this.borderCenterX = 0.0D;
-@@ -69,8 +69,7 @@
+         this.borderCenterZ = 0.0D;
+         this.borderSize = 6.0E7D;
+@@ -67,12 +70,11 @@
+         this.borderWarningDistance = 5;
+         this.borderWarningTime = 15;
          this.theGameRules = new GameRules();
      }
  
@@ -47,7 +56,11 @@
          this.terrainType = WorldType.DEFAULT;
          this.generatorOptions = "";
          this.borderCenterX = 0.0D;
-@@ -85,40 +85,32 @@
+         this.borderCenterZ = 0.0D;
+         this.borderSize = 6.0E7D;
+@@ -83,59 +85,47 @@
+         this.borderWarningDistance = 5;
+         this.borderWarningTime = 15;
          this.theGameRules = new GameRules();
          this.randomSeed = nbt.getLong("RandomSeed");
  
@@ -96,7 +109,8 @@
              this.mapFeaturesEnabled = true;
          }
  
-@@ -128,11 +128,9 @@
+         this.spawnX = nbt.getInteger("SpawnX");
+         this.spawnY = nbt.getInteger("SpawnY");
          this.spawnZ = nbt.getInteger("SpawnZ");
          this.totalTime = nbt.getLong("Time");
  
@@ -111,7 +125,11 @@
              this.worldTime = this.totalTime;
          }
  
-@@ -148,93 +148,73 @@
+         this.lastTimePlayed = nbt.getLong("LastPlayed");
+         this.sizeOnDisk = nbt.getLong("SizeOnDisk");
+@@ -146,97 +136,77 @@
+         this.raining = nbt.getBoolean("raining");
+         this.thunderTime = nbt.getInteger("thunderTime");
          this.thundering = nbt.getBoolean("thundering");
          this.hardcore = nbt.getBoolean("hardcore");
  
@@ -223,7 +241,11 @@
          this.terrainType = WorldType.DEFAULT;
          this.generatorOptions = "";
          this.borderCenterX = 0.0D;
-@@ -253,8 +253,7 @@
+         this.borderCenterZ = 0.0D;
+         this.borderSize = 6.0E7D;
+@@ -251,23 +221,21 @@
+         this.levelName = name;
+         this.difficulty = DEFAULT_DIFFICULTY;
          this.initialized = false;
      }
  
@@ -233,7 +255,9 @@
          this.randomSeed = settings.getSeed();
          this.theGameType = settings.getGameType();
          this.mapFeaturesEnabled = settings.isMapFeaturesEnabled();
-@@ -264,8 +264,7 @@
+         this.hardcore = settings.getHardcoreEnabled();
+         this.terrainType = settings.getTerrainType();
+         this.generatorOptions = settings.getWorldName();
          this.allowCommands = settings.areCommandsAllowed();
      }
  
@@ -243,7 +267,11 @@
          this.terrainType = WorldType.DEFAULT;
          this.generatorOptions = "";
          this.borderCenterX = 0.0D;
-@@ -315,22 +315,19 @@
+         this.borderCenterZ = 0.0D;
+         this.borderSize = 6.0E7D;
+@@ -313,26 +281,23 @@
+         this.borderDamagePerBlock = worldInformation.borderDamagePerBlock;
+         this.borderWarningTime = worldInformation.borderWarningTime;
          this.borderWarningDistance = worldInformation.borderWarningDistance;
      }
  
@@ -269,7 +297,11 @@
          nbt.setLong("RandomSeed", this.randomSeed);
          nbt.setString("generatorName", this.terrainType.getWorldTypeName());
          nbt.setInteger("generatorVersion", this.terrainType.getGeneratorVersion());
-@@ -361,447 +361,374 @@
+         nbt.setString("generatorOptions", this.generatorOptions);
+         nbt.setInteger("GameType", this.theGameType.getID());
+@@ -359,448 +324,383 @@
+         nbt.setDouble("BorderSize", this.borderSize);
+         nbt.setLong("BorderSizeLerpTime", this.borderSizeLerpTime);
          nbt.setDouble("BorderSafeZone", this.borderSafeZone);
          nbt.setDouble("BorderDamagePerBlock", this.borderDamagePerBlock);
          nbt.setDouble("BorderSizeLerpTarget", this.borderSizeLerpTarget);
@@ -850,7 +882,6 @@
              }
          });
      }
--}
 +
 +    // CraftBukkit start - Check if the name stored in NBT is the correct one
 +    public void checkName(String name) {
@@ -859,4 +890,4 @@
 +        }
 +    }
 +    // CraftBukkit end
-+}
+ }

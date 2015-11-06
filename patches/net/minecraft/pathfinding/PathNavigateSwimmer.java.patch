@@ -1,6 +1,8 @@
----a/net/minecraft/pathfinding/PathNavigateSwimmer.java
-+++b/net/minecraft/pathfinding/PathNavigateSwimmer.java
-@@ -6,47 +6,40 @@
+--- decompiled\net\minecraft\pathfinding\PathNavigateSwimmer.java
++++ src\main\java\net\minecraft\pathfinding\PathNavigateSwimmer.java
+@@ -4,65 +4,55 @@
+ import net.minecraft.util.MovingObjectPosition;
+ import net.minecraft.util.Vec3;
  import net.minecraft.world.World;
  import net.minecraft.world.pathfinder.SwimNodeProcessor;
  
@@ -59,7 +61,8 @@
                  this.currentPath.setCurrentPathIndex(i);
                  break;
              }
-@@ -55,15 +55,12 @@
+         }
+ 
          this.func_179677_a(vec3);
      }
  
@@ -76,5 +79,4 @@
 +        MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(p_75493_1_, new Vec3(p_75493_2_.xCoord, p_75493_2_.yCoord + (double) this.theEntity.height * 0.5D, p_75493_2_.zCoord), false, true, false);
          return movingobjectposition == null || movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.MISS;
      }
--}
-+}
+ }

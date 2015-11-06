@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S39PacketPlayerAbilities.java
-+++b/net/minecraft/network/play/server/S39PacketPlayerAbilities.java
-@@ -1,14 +1,14 @@
+--- decompiled\net\minecraft\network\play\server\S39PacketPlayerAbilities.java
++++ src\main\java\net\minecraft\network\play\server\S39PacketPlayerAbilities.java
+@@ -1,145 +1,115 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -21,7 +21,8 @@
      private boolean invulnerable;
      private boolean flying;
      private boolean allowFlying;
-@@ -19,9 +19,11 @@
+     private boolean creativeMode;
+     private float flySpeed;
      private float walkSpeed;
      private static final String __OBFID = "CL_00001317";
  
@@ -35,7 +36,8 @@
          this.setInvulnerable(capabilities.disableDamage);
          this.setFlying(capabilities.isFlying);
          this.setAllowFlying(capabilities.allowFlying);
-@@ -31,8 +31,7 @@
+         this.setCreativeMode(capabilities.isCreativeMode);
+         this.setFlySpeed(capabilities.getFlySpeed());
          this.setWalkSpeed(capabilities.getWalkSpeed());
      }
  
@@ -45,7 +47,9 @@
          byte b0 = buf.readByte();
          this.setInvulnerable((b0 & 1) > 0);
          this.setFlying((b0 & 2) > 0);
-@@ -42,27 +42,22 @@
+         this.setAllowFlying((b0 & 4) > 0);
+         this.setCreativeMode((b0 & 8) > 0);
+         this.setFlySpeed(buf.readFloat());
          this.setWalkSpeed(buf.readFloat());
      }
  
@@ -83,7 +87,7 @@
          }
  
          buf.writeByte(b0);
-@@ -71,76 +71,51 @@
+         buf.writeFloat(this.flySpeed);
          buf.writeFloat(this.walkSpeed);
      }
  
@@ -171,5 +175,4 @@
 +    public void processPacket(INetHandler handler) {
 +        this.func_180742_a((INetHandlerPlayClient) handler);
      }
--}
-+}
+ }

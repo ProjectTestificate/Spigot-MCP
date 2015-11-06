@@ -1,6 +1,7 @@
----a/net/minecraft/command/CommandGameRule.java
-+++b/net/minecraft/command/CommandGameRule.java
-@@ -2,6 +2,7 @@
+--- decompiled\net\minecraft\command\CommandGameRule.java
++++ src\main\java\net\minecraft\command\CommandGameRule.java
+@@ -1,105 +1,97 @@
+ package net.minecraft.command;
  
  import java.util.Iterator;
  import java.util.List;
@@ -8,7 +9,7 @@
  import net.minecraft.entity.player.EntityPlayerMP;
  import net.minecraft.network.play.server.S19PacketEntityStatus;
  import net.minecraft.server.MinecraftServer;
-@@ -9,39 +9,35 @@
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.ChatComponentText;
  import net.minecraft.world.GameRules;
  
@@ -59,7 +60,7 @@
                  }
  
                  String s2 = gamerules.getGameRuleStringValue(s);
-@@ -50,9 +50,8 @@
+                 sender.addChatMessage((new ChatComponentText(s)).appendText(" = ").appendText(s2));
                  sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, gamerules.getInt(s));
                  break;
              default:
@@ -71,7 +72,8 @@
                  }
  
                  gamerules.setOrCreateGameRule(s, s1);
-@@ -61,37 +61,27 @@
+                 func_175773_a(gamerules, s);
+                 notifyOperators(sender, this, "commands.gamerule.success", new Object[0]);
          }
      }
  
@@ -119,7 +121,7 @@
                  }
              }
  
-@@ -98,9 +98,7 @@
+             return null;
          }
      }
  
@@ -128,7 +130,6 @@
 +    private GameRules getGameRules() {
          return MinecraftServer.getServer().worldServerForDimension(0).getGameRules();
      }
--}
 +
 +    // CraftBukkit start - fix decompile error
 +    @Override
@@ -136,4 +137,4 @@
 +        return compareTo((ICommand) o);
 +    }
 +    // CraftBukkit end
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemSaddle.java
-+++b/net/minecraft/item/ItemSaddle.java
-@@ -5,41 +5,34 @@
+--- decompiled\net\minecraft\item\ItemSaddle.java
++++ src\main\java\net\minecraft\item\ItemSaddle.java
+@@ -3,42 +3,35 @@
+ import net.minecraft.creativetab.CreativeTabs;
+ import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.passive.EntityPig;
  import net.minecraft.entity.player.EntityPlayer;
  
@@ -50,5 +52,4 @@
 +        this.itemInteractionForEntity(stack, (EntityPlayer) null, target);
          return true;
      }
--}
-+}
+ }

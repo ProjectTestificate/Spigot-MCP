@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S28PacketEffect.java
-+++b/net/minecraft/network/play/server/S28PacketEffect.java
-@@ -1,56 +1,52 @@
+--- decompiled\net\minecraft\network\play\server\S28PacketEffect.java
++++ src\main\java\net\minecraft\network\play\server\S28PacketEffect.java
+@@ -1,79 +1,52 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -91,5 +91,4 @@
 -    {
 -        return this.field_179747_b;
 -    }
--}
-+}
+ }

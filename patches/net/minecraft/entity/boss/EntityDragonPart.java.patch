@@ -1,6 +1,8 @@
----a/net/minecraft/entity/boss/EntityDragonPart.java
-+++b/net/minecraft/entity/boss/EntityDragonPart.java
-@@ -5,39 +5,38 @@
+--- decompiled\net\minecraft\entity\boss\EntityDragonPart.java
++++ src\main\java\net\minecraft\entity\boss\EntityDragonPart.java
+@@ -3,40 +3,39 @@
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.IEntityMultiPart;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.util.DamageSource;
  
@@ -50,5 +52,4 @@
 +    public boolean isEntityEqual(Entity entityIn) {
          return this == entityIn || this.entityDragonObj == entityIn;
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/tileentity/TileEntityDropper.java
-+++b/net/minecraft/tileentity/TileEntityDropper.java
-@@ -1,17 +1,15 @@
+--- decompiled\net\minecraft\tileentity\TileEntityDropper.java
++++ src\main\java\net\minecraft\tileentity\TileEntityDropper.java
+@@ -1,16 +1,14 @@
  package net.minecraft.tileentity;
  
 -public class TileEntityDropper extends TileEntityDispenser
@@ -20,5 +20,4 @@
 +    public String getGuiID() {
          return "minecraft:dropper";
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/util/EntityDamageSource.java
-+++b/net/minecraft/util/EntityDamageSource.java
-@@ -5,45 +5,39 @@
+--- decompiled\net\minecraft\util\EntityDamageSource.java
++++ src\main\java\net\minecraft\util\EntityDamageSource.java
+@@ -3,46 +3,40 @@
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.item.ItemStack;
  
@@ -54,5 +56,4 @@
 +    public boolean isDifficultyScaled() {
          return this.damageSourceEntity != null && this.damageSourceEntity instanceof EntityLivingBase && !(this.damageSourceEntity instanceof EntityPlayer);
      }
--}
-+}
+ }

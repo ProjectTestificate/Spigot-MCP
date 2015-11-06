@@ -1,6 +1,6 @@
----a/net/minecraft/nbt/NBTException.java
-+++b/net/minecraft/nbt/NBTException.java
-@@ -1,12 +1,11 @@
+--- decompiled\net\minecraft\nbt\NBTException.java
++++ src\main\java\net\minecraft\nbt\NBTException.java
+@@ -1,11 +1,10 @@
  package net.minecraft.nbt;
  
 -public class NBTException extends Exception
@@ -14,5 +14,4 @@
 +    public NBTException(String p_i45136_1_) {
          super(p_i45136_1_);
      }
--}
-+}
+ }

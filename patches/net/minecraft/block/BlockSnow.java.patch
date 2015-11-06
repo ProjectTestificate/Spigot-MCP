@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockSnow.java
-+++b/net/minecraft/block/BlockSnow.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockSnow.java
++++ src\main\java\net\minecraft\block\BlockSnow.java
+@@ -1,8 +1,9 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -8,7 +8,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyInteger;
-@@ -16,19 +16,16 @@
+ import net.minecraft.block.state.BlockState;
+ import net.minecraft.block.state.IBlockState;
+@@ -14,143 +15,117 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.stats.StatList;
  import net.minecraft.tileentity.TileEntity;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
@@ -33,7 +37,8 @@
          super(Material.snow);
          this.setDefaultState(this.blockState.getBaseState().withProperty(LAYERS, Integer.valueOf(1)));
          this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
-@@ -38,121 +38,97 @@
+         this.setTickRandomly(true);
+         this.setCreativeTab(CreativeTabs.tabDecorations);
          this.setBlockBoundsForItemRender();
      }
  
@@ -188,5 +193,4 @@
 +    protected BlockState createBlockState() {
 +        return new BlockState(this, new IProperty[]{LAYERS});
      }
--}
-+}
+ }

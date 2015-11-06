@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/NoiseGeneratorOctaves.java
-+++b/net/minecraft/world/gen/NoiseGeneratorOctaves.java
-@@ -1,52 +1,46 @@
+--- decompiled\net\minecraft\world\gen\NoiseGeneratorOctaves.java
++++ src\main\java\net\minecraft\world\gen\NoiseGeneratorOctaves.java
+@@ -1,63 +1,55 @@
  package net.minecraft.world.gen;
  
  import java.util.Random;
@@ -72,7 +72,7 @@
              this.generatorCollection[l1].populateNoiseArray(p_76304_1_, d3, d4, d5, p_76304_5_, p_76304_6_, p_76304_7_, p_76304_8_ * d6, p_76304_10_ * d6, p_76304_12_ * d6, d6);
              d6 /= 2.0D;
          }
-@@ -56,9 +56,7 @@
+ 
          return p_76304_1_;
      }
  
@@ -81,5 +81,4 @@
 +    public double[] generateNoiseOctaves(double[] p_76305_1_, int p_76305_2_, int p_76305_3_, int p_76305_4_, int p_76305_5_, double p_76305_6_, double p_76305_8_, double p_76305_10_) {
          return this.generateNoiseOctaves(p_76305_1_, p_76305_2_, 10, p_76305_3_, p_76305_4_, 1, p_76305_5_, p_76305_6_, 1.0D, p_76305_8_);
      }
--}
-+}
+ }

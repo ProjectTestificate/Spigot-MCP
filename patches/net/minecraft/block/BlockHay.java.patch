@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockHay.java
-+++b/net/minecraft/block/BlockHay.java
-@@ -12,64 +12,52 @@
+--- decompiled\net\minecraft\block\BlockHay.java
++++ src\main\java\net\minecraft\block\BlockHay.java
+@@ -10,65 +10,53 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -77,5 +79,4 @@
 +    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
          return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(AXIS, facing.getAxis());
      }
--}
-+}
+ }

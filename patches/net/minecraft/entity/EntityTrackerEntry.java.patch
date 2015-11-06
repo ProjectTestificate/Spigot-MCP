@@ -1,6 +1,6 @@
----a/net/minecraft/entity/EntityTrackerEntry.java
-+++b/net/minecraft/entity/EntityTrackerEntry.java
-@@ -1,11 +1,11 @@
+--- decompiled\net\minecraft\entity\EntityTrackerEntry.java
++++ src\main\java\net\minecraft\entity\EntityTrackerEntry.java
+@@ -1,12 +1,13 @@
  package net.minecraft.entity;
  
 -import com.google.common.collect.Sets;
@@ -13,7 +13,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.entity.ai.attributes.ServersideAttributeMap;
  import net.minecraft.entity.item.EntityArmorStand;
-@@ -57,9 +57,13 @@
+ import net.minecraft.entity.item.EntityBoat;
+ import net.minecraft.entity.item.EntityEnderCrystal;
+@@ -55,15 +56,20 @@
+ import net.minecraft.network.play.server.S49PacketUpdateEntityNBT;
+ import net.minecraft.potion.PotionEffect;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.storage.MapData;
@@ -32,7 +36,11 @@
      private static final Logger logger = LogManager.getLogger();
      public Entity trackedEntity;
      public int trackingDistanceThreshold;
-@@ -89,8 +89,7 @@
+     public int updateFrequency;
+     public int encodedPosX;
+@@ -87,12 +93,11 @@
+     private boolean field_180234_y;
+     public boolean playerEntitiesUpdated;
      public Set trackingPlayers = Sets.newHashSet();
      private static final String __OBFID = "CL_00001443";
  
@@ -42,7 +50,11 @@
          this.trackedEntity = p_i1525_1_;
          this.trackingDistanceThreshold = p_i1525_2_;
          this.updateFrequency = p_i1525_3_;
-@@ -104,23 +104,19 @@
+         this.sendVelocityUpdates = p_i1525_4_;
+         this.encodedPosX = MathHelper.floor_double(p_i1525_1_.posX * 32.0D);
+@@ -102,74 +107,64 @@
+         this.encodedRotationPitch = MathHelper.floor_float(p_i1525_1_.rotationPitch * 256.0F / 360.0F);
+         this.lastHeadMotion = MathHelper.floor_float(p_i1525_1_.getRotationYawHead() * 256.0F / 360.0F);
          this.field_180234_y = p_i1525_1_.onGround;
      }
  
@@ -70,7 +82,8 @@
              this.lastTrackedEntityPosX = this.trackedEntity.posX;
              this.lastTrackedEntityPosY = this.trackedEntity.posY;
              this.lastTrackedEntityPosZ = this.trackedEntity.posZ;
-@@ -128,31 +128,27 @@
+             this.firstUpdateDone = true;
+             this.playerEntitiesUpdated = true;
              this.updatePlayerEntities(p_73122_1_);
          }
  
@@ -111,7 +124,8 @@
                          entityplayermp.playerNetServerHandler.sendPacket(packet);
                      }
                  }
-@@ -161,13 +161,11 @@
+             }
+ 
              this.sendMetadataToAllAssociatedPlayers();
          }
  
@@ -127,7 +141,11 @@
                  ++this.ticksSinceLastForcedTeleport;
                  j = MathHelper.floor_double(this.trackedEntity.posX * 32.0D);
                  k = MathHelper.floor_double(this.trackedEntity.posY * 32.0D);
-@@ -181,46 +181,68 @@
+                 int l = MathHelper.floor_double(this.trackedEntity.posZ * 32.0D);
+                 int i1 = MathHelper.floor_float(this.trackedEntity.rotationYaw * 256.0F / 360.0F);
+@@ -179,59 +174,65 @@
+                 int i = l - this.encodedPosZ;
+                 Object object = null;
                  boolean flag = Math.abs(k1) >= 4 || Math.abs(l1) >= 4 || Math.abs(i) >= 4 || this.updateCounter % 60 == 0;
                  boolean flag1 = Math.abs(i1 - this.encodedRotationYaw) >= 4 || Math.abs(j1 - this.encodedRotationPitch) >= 4;
  
@@ -199,7 +217,7 @@
                          this.lastTrackedEntityMotionX = this.trackedEntity.motionX;
                          this.lastTrackedEntityMotionY = this.trackedEntity.motionY;
                          this.motionZ = this.trackedEntity.motionZ;
-@@ -223,15 +223,13 @@
+                         this.func_151259_a(new S12PacketEntityVelocity(this.trackedEntity.getEntityId(), this.lastTrackedEntityMotionX, this.lastTrackedEntityMotionY, this.motionZ));
                      }
                  }
  
@@ -216,7 +234,11 @@
                  if (flag)
                  {
                      this.encodedPosX = j;
-@@ -242,15 +242,15 @@
+                     this.encodedPosY = k;
+                     this.encodedPosZ = l;
+@@ -240,22 +241,20 @@
+                 if (flag1)
+                 {
                      this.encodedRotationYaw = i1;
                      this.encodedRotationPitch = j1;
                  }
@@ -239,7 +261,11 @@
                      this.encodedRotationYaw = j;
                      this.encodedRotationPitch = k;
                  }
-@@ -267,9 +267,8 @@
+ 
+                 this.encodedPosX = MathHelper.floor_double(this.trackedEntity.posX * 32.0D);
+@@ -265,371 +264,327 @@
+                 this.ridingEntity = true;
+             }
  
              j = MathHelper.floor_float(this.trackedEntity.getRotationYawHead() * 256.0F / 360.0F);
  
@@ -251,7 +277,8 @@
                  this.lastHeadMotion = j;
              }
  
-@@ -278,30 +278,65 @@
+             this.trackedEntity.isAirBorne = false;
+         }
  
          ++this.updateCounter;
  
@@ -313,7 +340,7 @@
                  this.func_151261_b(new S20PacketEntityProperties(this.trackedEntity.getEntityId(), set));
              }
  
-@@ -308,78 +308,72 @@
+             set.clear();
          }
      }
  
@@ -430,7 +457,8 @@
                              p_73117_1_.playerNetServerHandler.sendPacket(new S20PacketEntityProperties(this.trackedEntity.getEntityId(), collection));
                          }
                      }
-@@ -388,249 +388,184 @@
+ 
+                     this.lastTrackedEntityMotionX = this.trackedEntity.motionX;
                      this.lastTrackedEntityMotionY = this.trackedEntity.motionY;
                      this.motionZ = this.trackedEntity.motionZ;
  
@@ -770,5 +798,4 @@
              p_73123_1_.func_152339_d(this.trackedEntity);
          }
      }
--}
-+}
+ }

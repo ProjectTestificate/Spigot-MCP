@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S3EPacketTeams.java
-+++b/net/minecraft/network/play/server/S3EPacketTeams.java
-@@ -1,19 +1,16 @@
+--- decompiled\net\minecraft\network\play\server\S3EPacketTeams.java
++++ src\main\java\net\minecraft\network\play\server\S3EPacketTeams.java
+@@ -1,22 +1,22 @@
  package net.minecraft.network.play.server;
  
 -import com.google.common.collect.Lists;
@@ -26,7 +26,11 @@
      private String field_149320_a = "";
      private String field_149318_b = "";
      private String field_149319_c = "";
-@@ -26,23 +26,20 @@
+     private String field_149316_d = "";
+     private String field_179816_e;
+@@ -24,176 +24,102 @@
+     private Collection field_149317_e;
+     private int field_149314_f;
      private int field_149315_g;
      private static final String __OBFID = "CL_00001334";
  
@@ -53,7 +57,8 @@
              this.field_149318_b = p_i45225_1_.func_96669_c();
              this.field_149319_c = p_i45225_1_.getColorPrefix();
              this.field_149316_d = p_i45225_1_.getColorSuffix();
-@@ -51,41 +51,32 @@
+             this.field_149315_g = p_i45225_1_.func_98299_i();
+             this.field_179816_e = p_i45225_1_.func_178770_i().field_178830_e;
              this.field_179815_f = p_i45225_1_.func_178775_l().getColorIndex();
          }
  
@@ -102,7 +107,8 @@
              this.field_149318_b = buf.readStringFromBuffer(32);
              this.field_149319_c = buf.readStringFromBuffer(16);
              this.field_149316_d = buf.readStringFromBuffer(16);
-@@ -94,24 +94,20 @@
+             this.field_149315_g = buf.readByte();
+             this.field_179816_e = buf.readStringFromBuffer(32);
              this.field_179815_f = buf.readByte();
          }
  
@@ -131,7 +137,8 @@
              buf.writeString(this.field_149318_b);
              buf.writeString(this.field_149319_c);
              buf.writeString(this.field_149316_d);
-@@ -120,28 +120,22 @@
+             buf.writeByte(this.field_149315_g);
+             buf.writeString(this.field_179816_e);
              buf.writeByte(this.field_179815_f);
          }
  
@@ -217,5 +224,4 @@
 -    {
 -        return this.field_179816_e;
 -    }
--}
-+}
+ }

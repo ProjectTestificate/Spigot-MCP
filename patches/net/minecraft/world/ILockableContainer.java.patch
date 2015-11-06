@@ -1,6 +1,7 @@
----a/net/minecraft/world/ILockableContainer.java
-+++b/net/minecraft/world/ILockableContainer.java
-@@ -2,12 +2,12 @@
+--- decompiled\net\minecraft\world\ILockableContainer.java
++++ src\main\java\net\minecraft\world\ILockableContainer.java
+@@ -1,11 +1,11 @@
+ package net.minecraft.world;
  
  import net.minecraft.inventory.IInventory;
  
@@ -13,5 +14,3 @@
      void setLockCode(LockCode code);
  
      LockCode getLockCode();
--}
-+}

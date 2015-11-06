@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandExecuteAt.java
-+++b/net/minecraft/command/CommandExecuteAt.java
-@@ -1,39 +1,43 @@
+--- decompiled\net\minecraft\command\CommandExecuteAt.java
++++ src\main\java\net\minecraft\command\CommandExecuteAt.java
+@@ -1,139 +1,159 @@
  package net.minecraft.command;
  
  import java.util.List;
@@ -58,7 +58,7 @@
              final Entity entity = func_175759_a(sender, args[0], Entity.class);
              final double d0 = func_175761_b(entity.posX, args[1], false);
              final double d1 = func_175761_b(entity.posY, args[2], false);
-@@ -44,8 +44,7 @@
+             final double d2 = func_175761_b(entity.posZ, args[3], false);
              final BlockPos blockpos = new BlockPos(d0, d1, d2);
              byte b0 = 4;
  
@@ -68,7 +68,9 @@
                  World world = sender.getEntityWorld();
                  double d3 = func_175761_b(d0, args[5], false);
                  double d4 = func_175761_b(d1, args[6], false);
-@@ -55,87 +55,99 @@
+                 double d5 = func_175761_b(d2, args[7], false);
+                 Block block = getBlockByText(sender, args[8]);
+                 int j = parseInt(args[9], -1, 15);
                  BlockPos blockpos1 = new BlockPos(d3, d4, d5);
                  IBlockState iblockstate = world.getBlockState(blockpos1);
  
@@ -206,7 +208,6 @@
 +    public boolean isUsernameIndex(String[] args, int index) {
          return index == 0;
      }
--}
 +
 +    // CraftBukkit start - fix decompiler error
 +    @Override
@@ -214,4 +215,4 @@
 +        return compareTo((ICommand) o);
 +    }
 +    // CraftBukkit end
-+}
+ }

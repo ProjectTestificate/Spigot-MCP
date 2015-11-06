@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S23PacketBlockChange.java
-+++b/net/minecraft/network/play/server/S23PacketBlockChange.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\network\play\server\S23PacketBlockChange.java
++++ src\main\java\net\minecraft\network\play\server\S23PacketBlockChange.java
+@@ -1,62 +1,47 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -8,7 +8,8 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.network.INetHandler;
-@@ -9,45 +9,37 @@
+ import net.minecraft.network.Packet;
+ import net.minecraft.network.PacketBuffer;
  import net.minecraft.network.play.INetHandlerPlayClient;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
@@ -75,5 +76,4 @@
 -    {
 -        return this.field_179828_a;
 -    }
--}
-+}
+ }

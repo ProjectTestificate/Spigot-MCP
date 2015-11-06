@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockRedstoneComparator.java
-+++b/net/minecraft/block/BlockRedstoneComparator.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\block\BlockRedstoneComparator.java
++++ src\main\java\net\minecraft\block\BlockRedstoneComparator.java
+@@ -1,10 +1,10 @@
  package net.minecraft.block;
  
 -import com.google.common.base.Predicate;
@@ -10,7 +10,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyBool;
-@@ -24,115 +24,86 @@
+ import net.minecraft.block.properties.PropertyEnum;
+ import net.minecraft.block.state.BlockState;
+@@ -22,300 +22,239 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.IStringSerializable;
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.World;
@@ -157,7 +161,8 @@
                      i = entityitemframe.func_174866_q();
                  }
              }
-@@ -141,86 +141,70 @@
+         }
+ 
          return i;
      }
  
@@ -268,7 +273,7 @@
                  worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(true)), 2);
              }
  
-@@ -227,98 +227,80 @@
+             this.notifyNeighbors(worldIn, pos, state);
          }
      }
  
@@ -381,5 +386,4 @@
              return this.name;
          }
      }
--}
-+}
+ }

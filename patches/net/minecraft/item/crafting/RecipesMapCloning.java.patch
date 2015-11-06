@@ -1,6 +1,8 @@
----a/net/minecraft/item/crafting/RecipesMapCloning.java
-+++b/net/minecraft/item/crafting/RecipesMapCloning.java
-@@ -5,31 +5,32 @@
+--- decompiled\net\minecraft\item\crafting\RecipesMapCloning.java
++++ src\main\java\net\minecraft\item\crafting\RecipesMapCloning.java
+@@ -3,38 +3,36 @@
+ import net.minecraft.init.Items;
+ import net.minecraft.inventory.InventoryCrafting;
  import net.minecraft.item.ItemStack;
  import net.minecraft.world.World;
  
@@ -50,7 +52,11 @@
                          return false;
                      }
  
-@@ -44,27 +44,21 @@
+                     ++i;
+                 }
+@@ -42,79 +40,62 @@
+         }
+ 
          return itemstack != null && i > 0;
      }
  
@@ -88,7 +94,8 @@
                          return null;
                      }
  
-@@ -76,48 +76,38 @@
+                     ++i;
+                 }
              }
          }
  
@@ -142,6 +149,3 @@
          }
  
          return aitemstack;
-     }
--}
-+}

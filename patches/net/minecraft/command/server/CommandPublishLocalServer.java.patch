@@ -1,6 +1,8 @@
----a/net/minecraft/command/server/CommandPublishLocalServer.java
-+++b/net/minecraft/command/server/CommandPublishLocalServer.java
-@@ -6,32 +6,26 @@
+--- decompiled\net\minecraft\command\server\CommandPublishLocalServer.java
++++ src\main\java\net\minecraft\command\server\CommandPublishLocalServer.java
+@@ -4,33 +4,27 @@
+ import net.minecraft.command.CommandException;
+ import net.minecraft.command.ICommandSender;
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.world.WorldSettings;
  
@@ -39,5 +41,4 @@
              notifyOperators(sender, this, "commands.publish.failed", new Object[0]);
          }
      }
--}
-+}
+ }

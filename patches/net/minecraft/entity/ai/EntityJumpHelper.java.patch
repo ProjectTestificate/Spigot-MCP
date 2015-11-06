@@ -1,6 +1,7 @@
----a/net/minecraft/entity/ai/EntityJumpHelper.java
-+++b/net/minecraft/entity/ai/EntityJumpHelper.java
-@@ -2,26 +2,23 @@
+--- decompiled\net\minecraft\entity\ai\EntityJumpHelper.java
++++ src\main\java\net\minecraft\entity\ai\EntityJumpHelper.java
+@@ -1,26 +1,23 @@
+ package net.minecraft.entity.ai;
  
  import net.minecraft.entity.EntityLiving;
  
@@ -30,5 +31,4 @@
          this.entity.setJumping(this.isJumping);
          this.isJumping = false;
      }
--}
-+}
+ }

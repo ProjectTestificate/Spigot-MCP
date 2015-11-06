@@ -1,6 +1,7 @@
----a/net/minecraft/util/RegistryNamespacedDefaultedByKey.java
-+++b/net/minecraft/util/RegistryNamespacedDefaultedByKey.java
-@@ -2,42 +2,36 @@
+--- decompiled\net\minecraft\util\RegistryNamespacedDefaultedByKey.java
++++ src\main\java\net\minecraft\util\RegistryNamespacedDefaultedByKey.java
+@@ -1,42 +1,36 @@
+ package net.minecraft.util;
  
  import org.apache.commons.lang3.Validate;
  
@@ -49,5 +50,4 @@
          Object object = super.getObjectById(p_148754_1_);
          return object == null ? this.field_148761_e : object;
      }
--}
-+}
+ }

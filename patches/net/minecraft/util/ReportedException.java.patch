@@ -1,6 +1,7 @@
----a/net/minecraft/util/ReportedException.java
-+++b/net/minecraft/util/ReportedException.java
-@@ -2,29 +2,25 @@
+--- decompiled\net\minecraft\util\ReportedException.java
++++ src\main\java\net\minecraft\util\ReportedException.java
+@@ -1,29 +1,25 @@
+ package net.minecraft.util;
  
  import net.minecraft.crash.CrashReport;
  
@@ -34,5 +35,4 @@
 +    public String getMessage() {
          return this.theReportedExceptionCrashReport.getDescription();
      }
--}
-+}
+ }

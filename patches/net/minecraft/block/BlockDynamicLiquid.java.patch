@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockDynamicLiquid.java
-+++b/net/minecraft/block/BlockDynamicLiquid.java
-@@ -4,6 +4,7 @@
+--- decompiled\net\minecraft\block\BlockDynamicLiquid.java
++++ src\main\java\net\minecraft\block\BlockDynamicLiquid.java
+@@ -2,304 +2,266 @@
+ 
+ import java.util.EnumSet;
  import java.util.Iterator;
  import java.util.Random;
  import java.util.Set;
@@ -8,7 +10,7 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.init.Blocks;
-@@ -11,167 +11,158 @@
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -246,7 +248,8 @@
                      state.getBlock().dropBlockAsItem(worldIn, pos, state, 0);
                  }
              }
-@@ -181,33 +181,26 @@
+ 
+             worldIn.setBlockState(pos, this.getDefaultState().withProperty(LEVEL, Integer.valueOf(level)), 3);
          }
      }
  
@@ -288,7 +291,10 @@
                              j = k;
                          }
                      }
-@@ -218,38 +218,30 @@
+                 }
+             }
+         }
+ 
          return j;
      }
  
@@ -335,7 +341,9 @@
                      enumset.add(enumfacing);
                      i = j;
                  }
-@@ -259,29 +259,22 @@
+             }
+         }
+ 
          return enumset;
      }
  
@@ -371,7 +379,7 @@
                  j = 0;
              }
  
-@@ -289,18 +289,14 @@
+             return currentMinLevel >= 0 && j >= currentMinLevel ? currentMinLevel : j;
          }
      }
  
@@ -391,5 +399,4 @@
              worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
          }
      }
--}
-+}
+ }

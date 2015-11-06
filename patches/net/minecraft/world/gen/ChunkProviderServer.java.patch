@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/ChunkProviderServer.java
-+++b/net/minecraft/world/gen/ChunkProviderServer.java
-@@ -1,255 +1,342 @@
+--- decompiled\net\minecraft\world\gen\ChunkProviderServer.java
++++ src\main\java\net\minecraft\world\gen\ChunkProviderServer.java
+@@ -1,332 +1,430 @@
  package net.minecraft.world.gen;
  
 -import com.google.common.collect.Lists;
@@ -474,7 +474,8 @@
                      return false;
                  }
              }
-@@ -257,42 +257,54 @@
+         }
+ 
          return true;
      }
  
@@ -553,7 +554,7 @@
                  this.chunkLoader.chunkTick();
              }
          }
-@@ -298,36 +298,32 @@
+ 
          return this.serverChunkGenerator.unloadQueuedChunks();
      }
  
@@ -600,5 +601,4 @@
 +    public Chunk provideChunk(BlockPos blockPosIn) {
          return this.provideChunk(blockPosIn.getX() >> 4, blockPosIn.getZ() >> 4);
      }
--}
-+}
+ }

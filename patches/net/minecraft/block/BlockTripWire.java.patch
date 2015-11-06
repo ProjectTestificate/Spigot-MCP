@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockTripWire.java
-+++b/net/minecraft/block/BlockTripWire.java
-@@ -3,6 +3,7 @@
+--- decompiled\net\minecraft\block\BlockTripWire.java
++++ src\main\java\net\minecraft\block\BlockTripWire.java
+@@ -1,10 +1,11 @@
+ package net.minecraft.block;
+ 
  import java.util.Iterator;
  import java.util.List;
  import java.util.Random;
@@ -8,7 +10,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyBool;
-@@ -16,13 +16,9 @@
+ import net.minecraft.block.state.BlockState;
+ import net.minecraft.block.state.IBlockState;
+@@ -14,155 +15,115 @@
+ import net.minecraft.init.Items;
+ import net.minecraft.item.Item;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -27,7 +33,10 @@
      public static final PropertyBool POWERED = PropertyBool.create("powered");
      public static final PropertyBool SUSPENDED = PropertyBool.create("suspended");
      public static final PropertyBool ATTACHED = PropertyBool.create("attached");
-@@ -34,132 +34,94 @@
+     public static final PropertyBool DISARMED = PropertyBool.create("disarmed");
+     public static final PropertyBool NORTH = PropertyBool.create("north");
+     public static final PropertyBool EAST = PropertyBool.create("east");
+     public static final PropertyBool SOUTH = PropertyBool.create("south");
      public static final PropertyBool WEST = PropertyBool.create("west");
      private static final String __OBFID = "CL_00000328";
  
@@ -189,7 +198,11 @@
                          ++k;
                          continue;
                      }
-@@ -172,128 +172,135 @@
+                 }
+ 
+@@ -170,125 +131,135 @@
+                 break;
+             }
          }
      }
  
@@ -377,5 +390,4 @@
 +    protected BlockState createBlockState() {
 +        return new BlockState(this, new IProperty[]{POWERED, SUSPENDED, ATTACHED, DISARMED, NORTH, EAST, WEST, SOUTH});
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandHandler.java
-+++b/net/minecraft/command/CommandHandler.java
-@@ -1,85 +1,74 @@
+--- decompiled\net\minecraft\command\CommandHandler.java
++++ src\main\java\net\minecraft\command\CommandHandler.java
+@@ -1,228 +1,188 @@
  package net.minecraft.command;
  
 -import com.google.common.collect.Lists;
@@ -107,7 +107,9 @@
              chatcomponenttranslation = new ChatComponentTranslation("commands.generic.permission", new Object[0]);
              chatcomponenttranslation.getChatStyle().setColor(EnumChatFormatting.RED);
              sender.addChatMessage(chatcomponenttranslation);
-@@ -89,28 +89,21 @@
+         }
+ 
+         sender.setCommandStat(CommandResultStats.Type.SUCCESS_COUNT, j);
          return j;
      }
  
@@ -143,7 +145,9 @@
              chatcomponenttranslation = new ChatComponentTranslation("commands.generic.exception", new Object[0]);
              chatcomponenttranslation.getChatStyle().setColor(EnumChatFormatting.RED);
              sender.addChatMessage(chatcomponenttranslation);
-@@ -121,19 +121,16 @@
+             logger.error("Couldn\'t process command: \'" + input + "\'", throwable);
+         }
+ 
          return false;
      }
  
@@ -168,7 +172,7 @@
                  this.commandMap.put(s, command);
              }
          }
-@@ -141,43 +141,34 @@
+ 
          return command;
      }
  
@@ -222,7 +226,8 @@
                      return icommand.addTabCompletionOptions(sender, dropFirstString(astring), pos);
                  }
              }
-@@ -186,17 +186,14 @@
+ 
+             return null;
          }
      }
  
@@ -244,7 +249,7 @@
                  arraylist.add(icommand);
              }
          }
-@@ -204,18 +204,14 @@
+ 
          return arraylist;
      }
  
@@ -274,9 +279,5 @@
                      return i;
                  }
              }
-@@ -228,4 +228,4 @@
+ 
              return -1;
-         }
-     }
--}
-+}

@@ -1,6 +1,6 @@
----a/net/minecraft/util/HttpUtil.java
-+++b/net/minecraft/util/HttpUtil.java
-@@ -1,77 +1,57 @@
+--- decompiled\net\minecraft\util\HttpUtil.java
++++ src\main\java\net\minecraft\util\HttpUtil.java
+@@ -1,103 +1,81 @@
  package net.minecraft.util;
  
 -import com.google.common.util.concurrent.ListenableFuture;
@@ -95,7 +95,8 @@
                      unsupportedencodingexception.printStackTrace();
                  }
              }
-@@ -79,24 +79,19 @@
+         }
+ 
          return stringbuilder.toString();
      }
  
@@ -124,7 +125,11 @@
              httpurlconnection.setRequestMethod("POST");
              httpurlconnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
              httpurlconnection.setRequestProperty("Content-Length", "" + content.getBytes().length);
-@@ -111,24 +111,19 @@
+             httpurlconnection.setRequestProperty("Content-Language", "en-US");
+             httpurlconnection.setUseCaches(false);
+@@ -109,202 +87,21 @@
+             dataoutputstream.close();
+             BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(httpurlconnection.getInputStream()));
              StringBuffer stringbuffer = new StringBuffer();
              String s1;
  
@@ -327,5 +332,4 @@
 -        bufferedreader.close();
 -        return stringbuilder.toString();
 -    }
--}
-+}
+ }

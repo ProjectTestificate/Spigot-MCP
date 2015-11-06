@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/structure/StructureBoundingBox.java
-+++b/net/minecraft/world/gen/structure/StructureBoundingBox.java
-@@ -1,12 +1,10 @@
+--- decompiled\net\minecraft\world\gen\structure\StructureBoundingBox.java
++++ src\main\java\net\minecraft\world\gen\structure\StructureBoundingBox.java
+@@ -1,47 +1,44 @@
  package net.minecraft.world.gen.structure;
  
 -import com.google.common.base.Objects;
@@ -18,7 +18,8 @@
      public int minX;
      public int minY;
      public int minZ;
-@@ -16,9 +16,11 @@
+     public int maxX;
+     public int maxY;
      public int maxZ;
      private static final String __OBFID = "CL_00000442";
  
@@ -35,7 +36,9 @@
              this.minX = p_i43000_1_[0];
              this.minY = p_i43000_1_[1];
              this.minZ = p_i43000_1_[2];
-@@ -31,13 +31,11 @@
+             this.maxX = p_i43000_1_[3];
+             this.maxY = p_i43000_1_[4];
+             this.maxZ = p_i43000_1_[5];
          }
      }
  
@@ -54,7 +57,11 @@
              case 1:
                  return new StructureBoundingBox(p_175897_0_ + p_175897_3_, p_175897_1_ + p_175897_4_, p_175897_2_ - p_175897_8_ + 1 + p_175897_5_, p_175897_0_ + p_175897_6_ - 1 + p_175897_3_, p_175897_1_ + p_175897_7_ - 1 + p_175897_4_, p_175897_2_ + p_175897_5_);
              case 2:
-@@ -53,13 +53,11 @@
+                 return new StructureBoundingBox(p_175897_0_ + p_175897_3_, p_175897_1_ + p_175897_4_, p_175897_2_ + p_175897_5_, p_175897_0_ + p_175897_6_ - 1 + p_175897_3_, p_175897_1_ + p_175897_7_ - 1 + p_175897_4_, p_175897_2_ + p_175897_8_ - 1 + p_175897_5_);
+             case 3:
+@@ -51,165 +48,135 @@
+             default:
+                 return new StructureBoundingBox(p_175897_0_ + p_175897_3_, p_175897_1_ + p_175897_4_, p_175897_2_ + p_175897_5_, p_175897_0_ + p_175897_6_ - 1 + p_175897_3_, p_175897_1_ + p_175897_7_ - 1 + p_175897_4_, p_175897_2_ + p_175897_8_ - 1 + p_175897_5_);
          }
      }
  
@@ -70,7 +77,8 @@
          this.minX = p_i2031_1_.minX;
          this.minY = p_i2031_1_.minY;
          this.minZ = p_i2031_1_.minZ;
-@@ -68,8 +68,7 @@
+         this.maxX = p_i2031_1_.maxX;
+         this.maxY = p_i2031_1_.maxY;
          this.maxZ = p_i2031_1_.maxZ;
      }
  
@@ -80,7 +88,8 @@
          this.minX = p_i2032_1_;
          this.minY = p_i2032_2_;
          this.minZ = p_i2032_3_;
-@@ -78,8 +78,7 @@
+         this.maxX = p_i2032_4_;
+         this.maxY = p_i2032_5_;
          this.maxZ = p_i2032_6_;
      }
  
@@ -90,7 +99,8 @@
          this.minX = Math.min(p_i45626_1_.getX(), p_i45626_2_.getX());
          this.minY = Math.min(p_i45626_1_.getY(), p_i45626_2_.getY());
          this.minZ = Math.min(p_i45626_1_.getZ(), p_i45626_2_.getZ());
-@@ -88,8 +88,7 @@
+         this.maxX = Math.max(p_i45626_1_.getX(), p_i45626_2_.getX());
+         this.maxY = Math.max(p_i45626_1_.getY(), p_i45626_2_.getY());
          this.maxZ = Math.max(p_i45626_1_.getZ(), p_i45626_2_.getZ());
      }
  
@@ -100,7 +110,8 @@
          this.minX = p_i2033_1_;
          this.minZ = p_i2033_2_;
          this.maxX = p_i2033_3_;
-@@ -98,18 +98,15 @@
+         this.maxZ = p_i2033_4_;
+         this.minY = 1;
          this.maxY = 512;
      }
  
@@ -122,7 +133,8 @@
          this.minX = Math.min(this.minX, p_78888_1_.minX);
          this.minY = Math.min(this.minY, p_78888_1_.minY);
          this.minZ = Math.min(this.minZ, p_78888_1_.minZ);
-@@ -118,8 +118,7 @@
+         this.maxX = Math.max(this.maxX, p_78888_1_.maxX);
+         this.maxY = Math.max(this.maxY, p_78888_1_.maxY);
          this.maxZ = Math.max(this.maxZ, p_78888_1_.maxZ);
      }
  
@@ -132,7 +144,8 @@
          this.minX += p_78886_1_;
          this.minY += p_78886_2_;
          this.minZ += p_78886_3_;
-@@ -128,89 +128,66 @@
+         this.maxX += p_78886_1_;
+         this.maxY += p_78886_2_;
          this.maxZ += p_78886_3_;
      }
  
@@ -253,6 +266,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

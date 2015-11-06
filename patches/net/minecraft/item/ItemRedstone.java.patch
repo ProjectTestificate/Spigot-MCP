@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemRedstone.java
-+++b/net/minecraft/item/ItemRedstone.java
-@@ -9,43 +9,33 @@
+--- decompiled\net\minecraft\item\ItemRedstone.java
++++ src\main\java\net\minecraft\item\ItemRedstone.java
+@@ -7,44 +7,34 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -51,5 +53,4 @@
              }
          }
      }
--}
-+}
+ }

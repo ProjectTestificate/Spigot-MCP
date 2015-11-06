@@ -1,6 +1,6 @@
----a/net/minecraft/util/LongHashMap.java
-+++b/net/minecraft/util/LongHashMap.java
-@@ -1,7 +1,7 @@
+--- decompiled\net\minecraft\util\LongHashMap.java
++++ src\main\java\net\minecraft\util\LongHashMap.java
+@@ -1,171 +1,140 @@
  package net.minecraft.util;
  
 -public class LongHashMap
@@ -10,7 +10,8 @@
      private transient LongHashMap.Entry[] hashArray = new LongHashMap.Entry[4096];
      private transient int numHashElements;
      private int mask;
-@@ -10,38 +10,31 @@
+     private int capacity = 3072;
+     private final float percentUseable = 0.75F;
      private transient volatile int modCount;
      private static final String __OBFID = "CL_00001492";
  
@@ -60,7 +61,7 @@
                  return entry.value;
              }
          }
-@@ -51,17 +51,14 @@
+ 
          return null;
      }
  
@@ -84,7 +85,7 @@
                  return entry;
              }
          }
-@@ -71,13 +71,11 @@
+ 
          return null;
      }
  
@@ -103,7 +104,9 @@
                  entry.value = p_76163_3_;
                  return;
              }
-@@ -89,80 +89,65 @@
+         }
+ 
+         ++this.modCount;
          this.createKey(j, p_76163_1_, p_76163_3_, k);
      }
  
@@ -200,7 +203,11 @@
                      entry.nextEntry = entry2;
                  }
  
-@@ -176,79 +176,60 @@
+                 return entry1;
+             }
+@@ -174,80 +143,67 @@
+         }
+ 
          return entry1;
      }
  
@@ -315,10 +322,9 @@
 +        public final int hashCode() {
 +            return LongHashMap.getHashedKey(this.key);
          }
--}
 +
 +        public final String toString() {
 +            return this.getKey() + "=" + this.getValue();
 +        }
 +    }
-+}
+ }

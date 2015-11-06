@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockEnchantmentTable.java
-+++b/net/minecraft/block/BlockEnchantmentTable.java
-@@ -1,120 +1,67 @@
+--- decompiled\net\minecraft\block\BlockEnchantmentTable.java
++++ src\main\java\net\minecraft\block\BlockEnchantmentTable.java
+@@ -1,120 +1,68 @@
  package net.minecraft.block;
  
 -import java.util.Random;
@@ -137,5 +137,4 @@
              }
          }
      }
--}
-+}
+ }

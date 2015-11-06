@@ -1,6 +1,6 @@
----a/net/minecraft/entity/item/EntityMinecartContainer.java
-+++b/net/minecraft/entity/item/EntityMinecartContainer.java
-@@ -1,5 +1,8 @@
+--- decompiled\net\minecraft\entity\item\EntityMinecartContainer.java
++++ src\main\java\net\minecraft\entity\item\EntityMinecartContainer.java
+@@ -1,7 +1,10 @@
  package net.minecraft.entity.item;
  
 +import java.util.ArrayList;
@@ -9,7 +9,11 @@
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.inventory.Container;
  import net.minecraft.inventory.InventoryHelper;
-@@ -11,142 +11,155 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.nbt.NBTTagCompound;
+@@ -9,216 +12,216 @@
+ import net.minecraft.util.DamageSource;
+ import net.minecraft.world.ILockableContainer;
  import net.minecraft.world.LockCode;
  import net.minecraft.world.World;
  
@@ -221,7 +225,8 @@
                  this.minecartContainerItems[i].writeToNBT(nbttagcompound1);
                  nbttaglist.appendTag(nbttagcompound1);
              }
-@@ -153,73 +153,62 @@
+         }
+ 
          tagCompound.setTag("Items", nbttaglist);
      }
  
@@ -312,5 +317,4 @@
              this.minecartContainerItems[i] = null;
          }
      }
--}
-+}
+ }

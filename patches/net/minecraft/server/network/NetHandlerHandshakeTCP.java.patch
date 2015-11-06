@@ -1,6 +1,6 @@
----a/net/minecraft/server/network/NetHandlerHandshakeTCP.java
-+++b/net/minecraft/server/network/NetHandlerHandshakeTCP.java
-@@ -1,5 +1,9 @@
+--- decompiled\net\minecraft\server\network\NetHandlerHandshakeTCP.java
++++ src\main\java\net\minecraft\server\network\NetHandlerHandshakeTCP.java
+@@ -1,51 +1,112 @@
  package net.minecraft.server.network;
  
 +import java.net.InetAddress;
@@ -10,7 +10,9 @@
  import net.minecraft.network.EnumConnectionState;
  import net.minecraft.network.NetworkManager;
  import net.minecraft.network.handshake.INetHandlerHandshakeServer;
-@@ -9,43 +9,92 @@
+ import net.minecraft.network.handshake.client.C00Handshake;
+ import net.minecraft.network.login.server.S00PacketDisconnect;
+ import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.ChatComponentText;
  import net.minecraft.util.IChatComponent;
  
@@ -127,7 +129,11 @@
                  }
  
                  break;
-@@ -56,32 +56,26 @@
+             case 2:
+                 this.networkManager.setConnectionState(EnumConnectionState.STATUS);
+@@ -54,34 +115,28 @@
+             default:
+                 throw new UnsupportedOperationException("Invalid intention " + packetIn.getRequestedState());
          }
      }
  
@@ -175,6 +181,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/village/MerchantRecipeList.java
-+++b/net/minecraft/village/MerchantRecipeList.java
-@@ -1,39 +1,32 @@
+--- decompiled\net\minecraft\village\MerchantRecipeList.java
++++ src\main\java\net\minecraft\village\MerchantRecipeList.java
+@@ -1,127 +1,80 @@
  package net.minecraft.village;
  
 -import java.io.IOException;
@@ -55,7 +55,8 @@
                      return merchantrecipe;
                  }
              }
-@@ -43,21 +43,18 @@
+ 
+             return null;
          }
      }
  
@@ -81,7 +82,9 @@
                  p_151391_1_.writeItemStackToBuffer(itemstack);
              }
  
-@@ -66,30 +66,25 @@
+             p_151391_1_.writeBoolean(merchantrecipe.isRecipeDisabled());
+             p_151391_1_.writeInt(merchantrecipe.getToolUses());
+             p_151391_1_.writeInt(merchantrecipe.getMaxTradeUses());
          }
      }
  
@@ -148,5 +151,4 @@
 -
 -        return merchantrecipelist;
 -    }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/pathfinding/Path.java
-+++b/net/minecraft/pathfinding/Path.java
-@@ -1,19 +1,17 @@
+--- decompiled\net\minecraft\pathfinding\Path.java
++++ src\main\java\net\minecraft\pathfinding\Path.java
+@@ -1,23 +1,18 @@
  package net.minecraft.pathfinding;
  
 -public class Path
@@ -29,7 +29,11 @@
                  PathPoint[] apathpoint = new PathPoint[this.count << 1];
                  System.arraycopy(this.pathPoints, 0, apathpoint, 0, this.count);
                  this.pathPoints = apathpoint;
-@@ -28,19 +28,16 @@
+             }
+ 
+@@ -26,57 +21,47 @@
+             this.sortBack(this.count++);
+             return point;
          }
      }
  
@@ -52,7 +56,7 @@
              this.sortForward(0);
          }
  
-@@ -48,33 +48,26 @@
+         pathpoint.index = -1;
          return pathpoint;
      }
  
@@ -92,7 +96,11 @@
                  break;
              }
  
-@@ -86,18 +86,15 @@
+             this.pathPoints[p_75847_1_] = pathpoint1;
+             pathpoint1.index = p_75847_1_;
+@@ -84,56 +69,45 @@
+ 
+         this.pathPoints[p_75847_1_] = pathpoint;
          pathpoint.index = p_75847_1_;
      }
  
@@ -114,7 +122,8 @@
                  break;
              }
  
-@@ -106,29 +106,23 @@
+             PathPoint pathpoint1 = this.pathPoints[j];
+             float f1 = pathpoint1.distanceToTarget;
              PathPoint pathpoint2;
              float f2;
  
@@ -153,7 +162,11 @@
                      break;
                  }
  
-@@ -145,9 +145,7 @@
+                 this.pathPoints[p_75846_1_] = pathpoint2;
+                 pathpoint2.index = p_75846_1_;
+@@ -143,10 +117,9 @@
+ 
+         this.pathPoints[p_75846_1_] = pathpoint;
          pathpoint.index = p_75846_1_;
      }
  
@@ -162,5 +175,4 @@
 +    public boolean isPathEmpty() {
          return this.count == 0;
      }
--}
-+}
+ }

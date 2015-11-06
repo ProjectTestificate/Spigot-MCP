@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandXP.java
-+++b/net/minecraft/command/CommandXP.java
-@@ -1,96 +1,79 @@
+--- decompiled\net\minecraft\command\CommandXP.java
++++ src\main\java\net\minecraft\command\CommandXP.java
+@@ -1,97 +1,79 @@
  package net.minecraft.command;
  
  import java.util.List;
@@ -119,5 +119,4 @@
 +    public boolean isUsernameIndex(String[] args, int index) {
          return index == 1;
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemLeaves.java
-+++b/net/minecraft/item/ItemLeaves.java
-@@ -1,36 +1,24 @@
+--- decompiled\net\minecraft\item\ItemLeaves.java
++++ src\main\java\net\minecraft\item\ItemLeaves.java
+@@ -1,35 +1,25 @@
  package net.minecraft.item;
  
  import net.minecraft.block.BlockLeaves;
@@ -41,5 +41,4 @@
 +    public String getUnlocalizedName(ItemStack stack) {
          return super.getUnlocalizedName() + "." + this.leaves.getWoodType(stack.getMetadata()).getUnlocalizedName();
      }
--}
-+}
+ }

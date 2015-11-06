@@ -1,6 +1,7 @@
----a/net/minecraft/util/ChatComponentText.java
-+++b/net/minecraft/util/ChatComponentText.java
-@@ -2,61 +2,49 @@
+--- decompiled\net\minecraft\util\ChatComponentText.java
++++ src\main\java\net\minecraft\util\ChatComponentText.java
+@@ -1,61 +1,49 @@
+ package net.minecraft.util;
  
  import java.util.Iterator;
  
@@ -74,5 +75,4 @@
 +    public String toString() {
          return "TextComponent{text=\'" + this.text + '\'' + ", siblings=" + this.siblings + ", style=" + this.getChatStyle() + '}';
      }
--}
-+}
+ }

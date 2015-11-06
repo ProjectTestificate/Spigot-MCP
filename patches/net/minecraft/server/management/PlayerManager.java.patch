@@ -1,6 +1,6 @@
----a/net/minecraft/server/management/PlayerManager.java
-+++b/net/minecraft/server/management/PlayerManager.java
-@@ -1,10 +1,11 @@
+--- decompiled\net\minecraft\server\management\PlayerManager.java
++++ src\main\java\net\minecraft\server\management\PlayerManager.java
+@@ -1,11 +1,16 @@
  package net.minecraft.server.management;
  
 -import com.google.common.collect.Lists;
@@ -16,7 +16,11 @@
  import net.minecraft.entity.player.EntityPlayerMP;
  import net.minecraft.network.Packet;
  import net.minecraft.network.play.server.S21PacketChunkData;
-@@ -17,83 +17,89 @@
+ import net.minecraft.network.play.server.S22PacketMultiBlockChange;
+ import net.minecraft.network.play.server.S23PacketBlockChange;
+@@ -15,303 +20,299 @@
+ import net.minecraft.util.MathHelper;
+ import net.minecraft.world.ChunkCoordIntPair;
  import net.minecraft.world.WorldProvider;
  import net.minecraft.world.WorldServer;
  import net.minecraft.world.chunk.Chunk;
@@ -143,7 +147,8 @@
              playerinstance = new PlayerManager.PlayerInstance(p_72690_1_, p_72690_2_);
              this.playerInstances.add(k, playerinstance);
              this.playerInstanceList.add(playerinstance);
-@@ -104,70 +104,88 @@
+         }
+ 
          return playerinstance;
      }
  
@@ -249,7 +254,8 @@
                          p_72691_1_.loadedChunks.add(chunkcoordintpair);
                      }
                  }
-@@ -176,32 +176,26 @@
+             }
+         }
  
          i %= 4;
  
@@ -290,7 +296,8 @@
                      playerinstance.removePlayer(p_72695_1_);
                  }
              }
-@@ -210,46 +210,38 @@
+         }
+ 
          this.players.remove(p_72695_1_);
      }
  
@@ -352,7 +359,9 @@
                                  playerinstance.removePlayer(p_72685_1_);
                              }
                          }
-@@ -259,48 +259,62 @@
+                     }
+                 }
+ 
                  this.filterChunkLoadQueue(p_72685_1_);
                  p_72685_1_.managedPosX = p_72685_1_.posX;
                  p_72685_1_.managedPosZ = p_72685_1_.posZ;
@@ -436,7 +445,11 @@
                                  this.getPlayerInstance(i1, j1, true).removePlayer(entityplayermp);
                              }
                          }
-@@ -321,13 +321,11 @@
+                     }
+                 }
+@@ -319,187 +320,196 @@
+ 
+             this.playerViewRadius = p_152622_1_;
          }
      }
  
@@ -453,7 +466,8 @@
          private final List playersWatchingChunk = Lists.newArrayList();
          private final ChunkCoordIntPair chunkCoords;
          private short[] locationOfBlockChange = new short[64];
-@@ -336,53 +336,98 @@
+         private int numBlocksToUpdate;
+         private int flagsYAreasToUpdate;
          private long previousWorldTime;
          private static final String __OBFID = "CL_00001435";
  
@@ -565,7 +579,8 @@
                          PlayerManager.this.playerInstancesToUpdate.remove(this);
                      }
  
-@@ -391,32 +391,26 @@
+                     PlayerManager.this.getMinecraftServer().theChunkProviderServer.dropChunk(this.chunkCoords.chunkXPos, this.chunkCoords.chunkZPos);
+                 }
              }
          }
  
@@ -608,7 +623,8 @@
                          return;
                      }
                  }
-@@ -427,80 +427,62 @@
+ 
+                 this.locationOfBlockChange[this.numBlocksToUpdate++] = short1;
              }
          }
  
@@ -703,7 +719,11 @@
                                  this.sendTileToAllPlayersWatchingChunk(PlayerManager.this.theWorldServer.getTileEntity(blockpos1));
                              }
                          }
-@@ -509,20 +509,15 @@
+                     }
+                 }
+@@ -507,19 +517,60 @@
+                 this.numBlocksToUpdate = 0;
+                 this.flagsYAreasToUpdate = 0;
              }
          }
  
@@ -723,7 +743,6 @@
              }
          }
      }
--}
 +
 +    // CraftBukkit start - Sorter to load nearby chunks first
 +    private static class ChunkCoordComparator implements java.util.Comparator<ChunkCoordIntPair> {
@@ -768,4 +787,4 @@
 +        }
 +    }
 +    // CraftBukkit End
-+}
+ }

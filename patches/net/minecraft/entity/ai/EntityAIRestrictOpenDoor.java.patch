@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIRestrictOpenDoor.java
-+++b/net/minecraft/entity/ai/EntityAIRestrictOpenDoor.java
-@@ -6,66 +6,53 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIRestrictOpenDoor.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIRestrictOpenDoor.java
+@@ -4,67 +4,54 @@
+ import net.minecraft.pathfinding.PathNavigateGround;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.village.Village;
  import net.minecraft.village.VillageDoorInfo;
  
@@ -83,5 +85,4 @@
 +    public void updateTask() {
          this.frontDoor.incrementDoorOpeningRestrictionCounter();
      }
--}
-+}
+ }

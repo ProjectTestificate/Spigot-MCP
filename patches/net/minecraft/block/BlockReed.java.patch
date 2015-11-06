@@ -1,6 +1,7 @@
----a/net/minecraft/block/BlockReed.java
-+++b/net/minecraft/block/BlockReed.java
-@@ -2,6 +2,7 @@
+--- decompiled\net\minecraft\block\BlockReed.java
++++ src\main\java\net\minecraft\block\BlockReed.java
+@@ -1,9 +1,10 @@
+ package net.minecraft.block;
  
  import java.util.Iterator;
  import java.util.Random;
@@ -8,7 +9,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyInteger;
-@@ -13,19 +13,14 @@
+ import net.minecraft.block.state.BlockState;
+ import net.minecraft.block.state.IBlockState;
+@@ -11,165 +12,118 @@
+ import net.minecraft.init.Items;
+ import net.minecraft.item.Item;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -32,7 +37,7 @@
          super(Material.plants);
          this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)));
          float f = 0.375F;
-@@ -33,29 +33,21 @@
+         this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
          this.setTickRandomly(true);
      }
  
@@ -78,7 +83,7 @@
                          worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(j + 1)), 4);
                      }
                  }
-@@ -64,108 +64,72 @@
+             }
          }
      }
  
@@ -212,5 +217,4 @@
 -    {
 -        return new BlockState(this, new IProperty[] {AGE});
 -    }
--}
-+}
+ }

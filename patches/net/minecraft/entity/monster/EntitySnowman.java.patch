@@ -1,6 +1,8 @@
----a/net/minecraft/entity/monster/EntitySnowman.java
-+++b/net/minecraft/entity/monster/EntitySnowman.java
-@@ -21,16 +21,23 @@
+--- decompiled\net\minecraft\entity\monster\EntitySnowman.java
++++ src\main\java\net\minecraft\entity\monster\EntitySnowman.java
+@@ -19,95 +19,96 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.DamageSource;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  
@@ -24,7 +26,7 @@
          this.tasks.addTask(1, new EntityAIArrowAttack(this, 1.25D, 20, 10.0F));
          this.tasks.addTask(2, new EntityAIWander(this, 1.0D));
          this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-@@ -37,78 +37,75 @@
+         this.tasks.addTask(4, new EntityAILookIdle(this));
          this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityLiving.class, 10, true, false, IMob.mobSelector));
      }
  
@@ -129,5 +131,4 @@
 +    public float getEyeHeight() {
          return 1.7F;
      }
--}
-+}
+ }

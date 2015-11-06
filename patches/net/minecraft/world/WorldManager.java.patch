@@ -1,6 +1,6 @@
----a/net/minecraft/world/WorldManager.java
-+++b/net/minecraft/world/WorldManager.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\WorldManager.java
++++ src\main\java\net\minecraft\world\WorldManager.java
+@@ -1,88 +1,84 @@
  package net.minecraft.world;
  
  import java.util.Iterator;
@@ -8,7 +8,9 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.entity.player.EntityPlayerMP;
-@@ -10,81 +10,76 @@
+ import net.minecraft.network.play.server.S25PacketBlockBreakAnim;
+ import net.minecraft.network.play.server.S28PacketEffect;
+ import net.minecraft.network.play.server.S29PacketSoundEffect;
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.BlockPos;
  
@@ -120,5 +122,3 @@
              }
          }
      }
--}
-+}

@@ -1,6 +1,8 @@
----a/net/minecraft/world/storage/DerivedWorldInfo.java
-+++b/net/minecraft/world/storage/DerivedWorldInfo.java
-@@ -6,185 +6,149 @@
+--- decompiled\net\minecraft\world\storage\DerivedWorldInfo.java
++++ src\main\java\net\minecraft\world\storage\DerivedWorldInfo.java
+@@ -4,187 +4,154 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.world.EnumDifficulty;
  import net.minecraft.world.GameRules;
  import net.minecraft.world.WorldSettings;
  import net.minecraft.world.WorldType;
@@ -239,7 +241,6 @@
      }
  
 -    public void setDifficultyLocked(boolean locked) {}
--}
 +    public void setDifficultyLocked(boolean locked) {
 +    }
-+}
+ }

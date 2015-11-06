@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockStem.java
-+++b/net/minecraft/block/BlockStem.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\block\BlockStem.java
++++ src\main\java\net\minecraft\block\BlockStem.java
+@@ -1,10 +1,10 @@
  package net.minecraft.block;
  
 -import com.google.common.base.Predicate;
@@ -10,7 +10,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyDirection;
-@@ -19,48 +19,45 @@
+ import net.minecraft.block.properties.PropertyInteger;
+ import net.minecraft.block.state.BlockState;
+@@ -17,215 +17,160 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.World;
@@ -78,7 +82,8 @@
                  state = state.withProperty(FACING, enumfacing);
                  break;
              }
-@@ -69,38 +69,30 @@
+         }
+ 
          return state;
      }
  
@@ -129,7 +134,7 @@
                              return;
                          }
                      }
-@@ -108,72 +108,44 @@
+ 
                      pos = pos.offset(EnumFacing.Plane.HORIZONTAL.random(rand));
                      Block block = worldIn.getBlockState(pos.down()).getBlock();
  
@@ -220,7 +225,7 @@
                          spawnAsEntity(worldIn, pos, new ItemStack(item));
                      }
                  }
-@@ -182,51 +182,35 @@
+             }
          }
      }
  
@@ -281,5 +286,4 @@
 +    protected BlockState createBlockState() {
 +        return new BlockState(this, new IProperty[]{AGE, FACING});
      }
--}
-+}
+ }

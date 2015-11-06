@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIMoveToBlock.java
-+++b/net/minecraft/entity/ai/EntityAIMoveToBlock.java
-@@ -4,8 +4,8 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIMoveToBlock.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIMoveToBlock.java
+@@ -2,101 +2,83 @@
+ 
+ import net.minecraft.entity.EntityCreature;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -11,7 +13,10 @@
      private final EntityCreature field_179495_c;
      private final double field_179492_d;
      protected int field_179496_a;
-@@ -16,8 +16,7 @@
+     private int field_179493_e;
+     private int field_179490_f;
+     protected BlockPos destinationBlock;
+     private boolean field_179491_g;
      private int field_179497_h;
      private static final String __OBFID = "CL_00002252";
  
@@ -21,7 +26,7 @@
          this.destinationBlock = BlockPos.ORIGIN;
          this.field_179495_c = p_i45888_1_;
          this.field_179492_d = p_i45888_2_;
-@@ -25,78 +25,60 @@
+         this.field_179497_h = p_i45888_4_;
          this.setMutexBits(5);
      }
  
@@ -118,9 +123,5 @@
                              this.destinationBlock = blockpos1;
                              return true;
                          }
-@@ -107,4 +107,4 @@
-     }
- 
-     protected abstract boolean func_179488_a(World worldIn, BlockPos p_179488_2_);
--}
-+}
+                     }
+                 }

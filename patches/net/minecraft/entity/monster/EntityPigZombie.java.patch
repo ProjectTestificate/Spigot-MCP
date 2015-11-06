@@ -1,6 +1,6 @@
----a/net/minecraft/entity/monster/EntityPigZombie.java
-+++b/net/minecraft/entity/monster/EntityPigZombie.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\entity\monster\EntityPigZombie.java
++++ src\main\java\net\minecraft\entity\monster\EntityPigZombie.java
+@@ -1,8 +1,9 @@
  package net.minecraft.entity.monster;
  
  import java.util.UUID;
@@ -8,7 +8,11 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityCreature;
  import net.minecraft.entity.EntityLivingBase;
-@@ -19,75 +19,63 @@
+ import net.minecraft.entity.IEntityLivingData;
+ import net.minecraft.entity.SharedMonsterAttributes;
+@@ -17,253 +18,208 @@
+ import net.minecraft.util.DamageSource;
+ import net.minecraft.world.DifficultyInstance;
  import net.minecraft.world.EnumDifficulty;
  import net.minecraft.world.World;
  
@@ -99,7 +103,9 @@
              EntityPlayer entityplayer = this.worldObj.getPlayerEntityByUUID(this.field_175459_bn);
              this.setRevengeTarget(entityplayer);
              this.attackingPlayer = entityplayer;
-@@ -97,63 +97,49 @@
+             this.recentlyHit = this.getRevengeTimer();
+         }
+ 
          super.updateAITasks();
      }
  
@@ -176,7 +182,7 @@
                  this.becomeAngryAt(entity);
              }
  
-@@ -161,110 +161,91 @@
+             return super.attackEntityFrom(source, amount);
          }
      }
  
@@ -310,5 +316,4 @@
 +            return ((EntityPigZombie) this.taskOwner).isAngry() && super.shouldExecute();
          }
      }
--}
-+}
+ }

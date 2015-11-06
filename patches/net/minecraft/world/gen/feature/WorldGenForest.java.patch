@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenForest.java
-+++b/net/minecraft/world/gen/feature/WorldGenForest.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenForest.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenForest.java
+@@ -1,134 +1,107 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -8,7 +8,7 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockPlanks;
  import net.minecraft.block.material.Material;
-@@ -8,99 +8,78 @@
+ import net.minecraft.init.Blocks;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -130,7 +130,7 @@
                                          this.func_175905_a(worldIn, blockpos1, Blocks.leaves, BlockPlanks.EnumType.BIRCH.getMetadata());
                                      }
                                  }
-@@ -108,28 +108,21 @@
+                             }
                          }
                      }
  
@@ -161,5 +161,4 @@
              return false;
          }
      }
--}
-+}
+ }

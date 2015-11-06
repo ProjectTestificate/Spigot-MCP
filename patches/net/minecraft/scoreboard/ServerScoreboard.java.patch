@@ -1,6 +1,6 @@
----a/net/minecraft/scoreboard/ServerScoreboard.java
-+++b/net/minecraft/scoreboard/ServerScoreboard.java
-@@ -1,14 +1,10 @@
+--- decompiled\net\minecraft\scoreboard\ServerScoreboard.java
++++ src\main\java\net\minecraft\scoreboard\ServerScoreboard.java
+@@ -1,268 +1,236 @@
  package net.minecraft.scoreboard;
  
 -import com.google.common.collect.Lists;
@@ -14,7 +14,8 @@
  import net.minecraft.entity.player.EntityPlayerMP;
  import net.minecraft.network.Packet;
  import net.minecraft.network.play.server.S3BPacketScoreboardObjective;
-@@ -15,63 +15,59 @@
+ import net.minecraft.network.play.server.S3CPacketUpdateScore;
+ import net.minecraft.network.play.server.S3DPacketDisplayScoreboard;
  import net.minecraft.network.play.server.S3EPacketTeams;
  import net.minecraft.server.MinecraftServer;
  
@@ -106,7 +107,7 @@
                  this.func_96549_e(p_96530_2_);
              }
          }
-@@ -85,130 +85,107 @@
+ 
          this.func_96551_b();
      }
  
@@ -268,7 +269,7 @@
                  entityplayermp.playerNetServerHandler.sendPacket(packet);
              }
          }
-@@ -215,13 +215,11 @@
+ 
          this.field_96553_b.add(p_96549_1_);
      }
  
@@ -287,7 +288,7 @@
                  arraylist.add(new S3DPacketDisplayScoreboard(i, p_96548_1_));
              }
          }
-@@ -231,18 +231,16 @@
+ 
          return arraylist;
      }
  
@@ -313,7 +314,7 @@
                  entityplayermp.playerNetServerHandler.sendPacket(packet);
              }
          }
-@@ -251,19 +251,15 @@
+ 
          this.field_96553_b.remove(p_96546_1_);
      }
  
@@ -334,7 +335,6 @@
  
          return i;
      }
--}
 +
 +    // CraftBukkit start - Send to players
 +    private void sendAll(Packet packet) {
@@ -345,4 +345,4 @@
 +        }
 +    }
 +    // CraftBukkit end
-+}
+ }

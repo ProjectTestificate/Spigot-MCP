@@ -1,6 +1,6 @@
----a/net/minecraft/entity/item/EntityMinecartHopper.java
-+++b/net/minecraft/entity/item/EntityMinecartHopper.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\entity\item\EntityMinecartHopper.java
++++ src\main\java\net\minecraft\entity\item\EntityMinecartHopper.java
+@@ -1,8 +1,9 @@
  package net.minecraft.entity.item;
  
  import java.util.List;
@@ -8,7 +8,11 @@
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.command.IEntitySelector;
  import net.minecraft.entity.player.EntityPlayer;
-@@ -16,118 +16,96 @@
+ import net.minecraft.entity.player.InventoryPlayer;
+ import net.minecraft.init.Blocks;
+@@ -14,181 +15,146 @@
+ import net.minecraft.tileentity.TileEntityHopper;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.DamageSource;
  import net.minecraft.world.World;
  
@@ -151,7 +155,7 @@
                      this.setTransferTicker(4);
                      this.markDirty();
                  }
-@@ -135,63 +135,49 @@
+             }
          }
      }
  
@@ -223,5 +227,4 @@
 +    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
          return new ContainerHopper(playerInventory, this, playerIn);
      }
--}
-+}
+ }

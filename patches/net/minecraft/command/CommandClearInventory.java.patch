@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandClearInventory.java
-+++b/net/minecraft/command/CommandClearInventory.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\command\CommandClearInventory.java
++++ src\main\java\net\minecraft\command\CommandClearInventory.java
+@@ -1,100 +1,80 @@
  package net.minecraft.command;
  
  import java.util.List;
@@ -8,7 +8,9 @@
  import net.minecraft.entity.player.EntityPlayerMP;
  import net.minecraft.item.Item;
  import net.minecraft.nbt.JsonToNBT;
-@@ -10,92 +10,71 @@
+ import net.minecraft.nbt.NBTException;
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.ChatComponentTranslation;
  
@@ -123,5 +125,4 @@
 +    public boolean isUsernameIndex(String[] args, int index) {
          return index == 0;
      }
--}
-+}
+ }

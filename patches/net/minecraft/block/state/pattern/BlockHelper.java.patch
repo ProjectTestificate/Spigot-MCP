@@ -1,6 +1,6 @@
----a/net/minecraft/block/state/pattern/BlockHelper.java
-+++b/net/minecraft/block/state/pattern/BlockHelper.java
-@@ -1,31 +1,27 @@
+--- decompiled\net\minecraft\block\state\pattern\BlockHelper.java
++++ src\main\java\net\minecraft\block\state\pattern\BlockHelper.java
+@@ -1,31 +1,28 @@
  package net.minecraft.block.state.pattern;
  
 -import com.google.common.base.Predicate;
@@ -40,5 +40,4 @@
 +    public boolean apply(Object p_apply_1_) {
 +        return this.isBlockEqualTo((IBlockState) p_apply_1_);
      }
--}
-+}
+ }

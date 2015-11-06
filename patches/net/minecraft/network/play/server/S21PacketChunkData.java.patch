@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S21PacketChunkData.java
-+++b/net/minecraft/network/play/server/S21PacketChunkData.java
-@@ -1,37 +1,36 @@
+--- decompiled\net\minecraft\network\play\server\S21PacketChunkData.java
++++ src\main\java\net\minecraft\network\play\server\S21PacketChunkData.java
+@@ -1,173 +1,128 @@
  package net.minecraft.network.play.server;
  
 -import com.google.common.collect.Lists;
@@ -48,7 +48,8 @@
          this.chunkX = buf.readInt();
          this.chunkZ = buf.readInt();
          this.field_149279_g = buf.readBoolean();
-@@ -41,22 +41,19 @@
+         this.field_179758_c = new S21PacketChunkData.Extracted();
+         this.field_179758_c.dataSize = buf.readShort();
          this.field_179758_c.data = buf.readByteArray();
      }
  
@@ -81,7 +82,7 @@
          int j = p_180737_0_ * 2 * 16 * 16 * 16;
          int k = p_180737_0_ * 16 * 16 * 16 / 2;
          int l = p_180737_1_ ? p_180737_0_ * 16 * 16 * 16 / 2 : 0;
-@@ -70,19 +70,16 @@
+         int i1 = p_180737_2_ ? 256 : 0;
          return j + k + l + i1;
      }
  
@@ -104,7 +105,10 @@
                  extracted.dataSize |= 1 << j;
                  arraylist.add(extendedblockstorage);
              }
-@@ -93,64 +93,50 @@
+         }
+ 
+         extracted.data = new byte[func_180737_a(Integer.bitCount(extracted.dataSize), p_179756_2_, p_179756_1_)];
+         j = 0;
          Iterator iterator = arraylist.iterator();
          ExtendedBlockStorage extendedblockstorage1;
  
@@ -203,5 +207,4 @@
 -            public int dataSize;
 -            private static final String __OBFID = "CL_00001305";
 -        }
--}
-+}
+ }

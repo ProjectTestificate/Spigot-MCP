@@ -1,6 +1,6 @@
----a/net/minecraft/stats/AchievementList.java
-+++b/net/minecraft/stats/AchievementList.java
-@@ -1,20 +1,21 @@
+--- decompiled\net\minecraft\stats\AchievementList.java
++++ src\main\java\net\minecraft\stats\AchievementList.java
+@@ -1,22 +1,24 @@
  package net.minecraft.stats;
  
 -import com.google.common.collect.Lists;
@@ -27,12 +27,15 @@
      public static Achievement mineWood = (new Achievement("achievement.mineWood", "mineWood", 2, 1, Blocks.log, openInventory)).func_180788_c();
      public static Achievement buildWorkBench = (new Achievement("achievement.buildWorkBench", "buildWorkBench", 4, -1, Blocks.crafting_table, mineWood)).func_180788_c();
      public static Achievement buildPickaxe = (new Achievement("achievement.buildPickaxe", "buildPickaxe", 4, 2, Items.wooden_pickaxe, buildWorkBench)).func_180788_c();
-@@ -50,5 +50,6 @@
+     public static Achievement buildFurnace = (new Achievement("achievement.buildFurnace", "buildFurnace", 3, 4, Blocks.furnace, buildPickaxe)).func_180788_c();
+     public static Achievement acquireIron = (new Achievement("achievement.acquireIron", "acquireIron", 1, 4, Items.iron_ingot, buildFurnace)).func_180788_c();
+@@ -48,7 +50,8 @@
+     public static Achievement fullBeacon = (new Achievement("achievement.fullBeacon", "fullBeacon", 7, 8, Blocks.beacon, killWither)).setSpecial().func_180788_c();
+     public static Achievement exploreAllBiomes = (new Achievement("achievement.exploreAllBiomes", "exploreAllBiomes", 4, 8, Items.diamond_boots, theEnd)).func_180787_a(JsonSerializableSet.class).setSpecial().func_180788_c();
      public static Achievement overpowered = (new Achievement("achievement.overpowered", "overpowered", 6, 4, Items.golden_apple, buildBetterPickaxe)).setSpecial().func_180788_c();
      private static final String __OBFID = "CL_00001467";
  
 -    public static void init() {}
--}
 +    public static void init() {
 +    }
-+}
+ }

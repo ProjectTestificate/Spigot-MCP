@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockFalling.java
-+++b/net/minecraft/block/BlockFalling.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockFalling.java
++++ src\main\java\net\minecraft\block\BlockFalling.java
+@@ -1,94 +1,81 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -8,7 +8,8 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.creativetab.CreativeTabs;
-@@ -9,86 +9,71 @@
+ import net.minecraft.entity.item.EntityFallingBlock;
+ import net.minecraft.init.Blocks;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -114,7 +115,6 @@
      }
  
 -    public void onEndFalling(World worldIn, BlockPos pos) {}
--}
 +    public void onEndFalling(World worldIn, BlockPos pos) {
 +    }
-+}
+ }

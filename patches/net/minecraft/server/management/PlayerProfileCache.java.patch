@@ -1,6 +1,6 @@
----a/net/minecraft/server/management/PlayerProfileCache.java
-+++b/net/minecraft/server/management/PlayerProfileCache.java
-@@ -1,21 +1,5 @@
+--- decompiled\net\minecraft\server\management\PlayerProfileCache.java
++++ src\main\java\net\minecraft\server\management\PlayerProfileCache.java
+@@ -1,23 +1,7 @@
  package net.minecraft.server.management;
  
 -import com.google.common.base.Charsets;
@@ -22,7 +22,11 @@
  import java.io.BufferedReader;
  import java.io.BufferedWriter;
  import java.io.File;
-@@ -34,10 +34,14 @@
+ import java.io.FileNotFoundException;
+ import java.io.IOException;
+@@ -32,379 +16,353 @@
+ import java.util.LinkedList;
+ import java.util.List;
  import java.util.Locale;
  import java.util.Map;
  import java.util.UUID;
@@ -58,7 +62,7 @@
      public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
      private final Map field_152661_c = Maps.newHashMap();
      private final Map field_152662_d = Maps.newHashMap();
-@@ -47,26 +47,26 @@
+     private final LinkedList field_152663_e = Lists.newLinkedList();
      private final MinecraftServer mcServer;
      protected final Gson gson;
      private final File usercacheFile;
@@ -95,7 +99,8 @@
          this.mcServer = server;
          this.usercacheFile = cacheFile;
          GsonBuilder gsonbuilder = new GsonBuilder();
-@@ -75,25 +75,56 @@
+         gsonbuilder.registerTypeHierarchyAdapter(PlayerProfileCache.ProfileEntry.class, new PlayerProfileCache.Serializer(null));
+         this.gson = gsonbuilder.create();
          this.func_152657_b();
      }
  
@@ -149,7 +154,7 @@
              GameProfile gameprofile = new GameProfile(uuid, p_152650_1_);
              profilelookupcallback.onProfileLookupSucceeded(gameprofile);
          }
-@@ -102,18 +102,15 @@
+ 
          return agameprofile[0];
      }
  
@@ -171,7 +176,9 @@
              Calendar calendar = Calendar.getInstance();
              calendar.setTime(new Date());
              calendar.add(2, 1);
-@@ -122,15 +122,13 @@
+             p_152651_2_ = calendar.getTime();
+         }
+ 
          String s = p_152651_1_.getName().toLowerCase(Locale.ROOT);
          PlayerProfileCache.ProfileEntry profileentry = new PlayerProfileCache.ProfileEntry(p_152651_1_, p_152651_2_, null);
  
@@ -190,7 +197,7 @@
              this.field_152662_d.put(uuid, profileentry);
              this.field_152661_c.put(s, profileentry);
          }
-@@ -138,13 +138,11 @@
+ 
          this.field_152663_e.addFirst(p_152651_1_);
      }
  
@@ -207,7 +214,8 @@
              this.field_152662_d.remove(profileentry.func_152668_a().getId());
              this.field_152661_c.remove(profileentry.func_152668_a().getName().toLowerCase(Locale.ROOT));
              this.field_152663_e.remove(profileentry.func_152668_a());
-@@ -153,45 +153,37 @@
+             profileentry = null;
+         }
  
          GameProfile gameprofile;
  
@@ -266,7 +274,8 @@
              GameProfile gameprofile = profileentry.func_152668_a();
              this.field_152663_e.remove(gameprofile);
              this.field_152663_e.addFirst(gameprofile);
-@@ -200,88 +200,73 @@
+         }
+ 
          return profileentry;
      }
  
@@ -378,7 +387,7 @@
                  arraylist.add(profileentry);
              }
          }
-@@ -289,42 +289,39 @@
+ 
          return arraylist;
      }
  
@@ -432,7 +441,8 @@
              JsonObject jsonobject = new JsonObject();
              jsonobject.addProperty("name", p_152676_1_.func_152668_a().getName());
              UUID uuid = p_152676_1_.func_152668_a().getId();
-@@ -333,81 +333,59 @@
+             jsonobject.addProperty("uuid", uuid == null ? "" : uuid.toString());
+             jsonobject.addProperty("expiresOn", PlayerProfileCache.dateFormat.format(p_152676_1_.func_152670_b()));
              return jsonobject;
          }
  
@@ -526,5 +536,4 @@
              this();
          }
      }
--}
-+}
+ }

@@ -1,6 +1,7 @@
----a/net/minecraft/world/IWorldNameable.java
-+++b/net/minecraft/world/IWorldNameable.java
-@@ -2,12 +2,12 @@
+--- decompiled\net\minecraft\world\IWorldNameable.java
++++ src\main\java\net\minecraft\world\IWorldNameable.java
+@@ -1,11 +1,11 @@
+ package net.minecraft.world;
  
  import net.minecraft.util.IChatComponent;
  
@@ -13,5 +14,3 @@
      boolean hasCustomName();
  
      IChatComponent getDisplayName();
--}
-+}

@@ -1,6 +1,6 @@
----a/net/minecraft/entity/ai/EntityAIFleeSun.java
-+++b/net/minecraft/entity/ai/EntityAIFleeSun.java
-@@ -1,11 +1,13 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIFleeSun.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIFleeSun.java
+@@ -1,85 +1,69 @@
  package net.minecraft.entity.ai;
  
  import java.util.Random;
@@ -17,7 +17,8 @@
      private EntityCreature theCreature;
      private double shelterX;
      private double shelterY;
-@@ -16,37 +16,26 @@
+     private double shelterZ;
+     private double movementSpeed;
      private World theWorld;
      private static final String __OBFID = "CL_00001583";
  
@@ -64,7 +65,8 @@
                  this.shelterX = vec3.xCoord;
                  this.shelterY = vec3.yCoord;
                  this.shelterZ = vec3.zCoord;
-@@ -56,32 +56,26 @@
+                 return true;
+             }
          }
      }
  
@@ -101,5 +103,3 @@
  
          return null;
      }
--}
-+}

@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandCompare.java
-+++b/net/minecraft/command/CommandCompare.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\command\CommandCompare.java
++++ src\main\java\net\minecraft\command\CommandCompare.java
+@@ -1,91 +1,74 @@
  package net.minecraft.command;
  
  import java.util.List;
@@ -8,7 +8,8 @@
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.init.Blocks;
  import net.minecraft.nbt.NBTTagCompound;
-@@ -9,32 +9,27 @@
+ import net.minecraft.tileentity.TileEntity;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  import net.minecraft.world.gen.structure.StructureBoundingBox;
  
@@ -50,7 +51,8 @@
              sender.setCommandStat(CommandResultStats.Type.AFFECTED_BLOCKS, 0);
              BlockPos blockpos = func_175757_a(sender, args, 0, false);
              BlockPos blockpos1 = func_175757_a(sender, args, 3, false);
-@@ -44,50 +44,37 @@
+             BlockPos blockpos2 = func_175757_a(sender, args, 6, false);
+             StructureBoundingBox structureboundingbox = new StructureBoundingBox(blockpos, blockpos1);
              StructureBoundingBox structureboundingbox1 = new StructureBoundingBox(blockpos2, blockpos2.add(structureboundingbox.func_175896_b()));
              int i = structureboundingbox.getXSize() * structureboundingbox.getYSize() * structureboundingbox.getZSize();
  
@@ -108,7 +110,11 @@
                                              NBTTagCompound nbttagcompound = new NBTTagCompound();
                                              tileentity.writeToNBT(nbttagcompound);
                                              nbttagcompound.removeTag("x");
-@@ -95,25 +95,19 @@
+                                             nbttagcompound.removeTag("y");
+                                             nbttagcompound.removeTag("z");
+@@ -93,51 +76,40 @@
+                                             tileentity1.writeToNBT(nbttagcompound1);
+                                             nbttagcompound1.removeTag("x");
                                              nbttagcompound1.removeTag("y");
                                              nbttagcompound1.removeTag("z");
  
@@ -138,7 +144,8 @@
                                          throw new CommandException("commands.compare.failed", new Object[0]);
                                      }
                                  }
-@@ -122,25 +122,18 @@
+                             }
+                         }
                      }
  
                      sender.setCommandStat(CommandResultStats.Type.AFFECTED_BLOCKS, i);
@@ -165,5 +172,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 +        return args.length > 0 && args.length <= 3 ? func_175771_a(args, 0, pos) : (args.length > 3 && args.length <= 6 ? func_175771_a(args, 3, pos) : (args.length > 6 && args.length <= 9 ? func_175771_a(args, 6, pos) : (args.length == 10 ? getListOfStringsMatchingLastWord(args, new String[]{"masked", "all"}) : null)));
      }
--}
-+}
+ }

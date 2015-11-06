@@ -1,6 +1,6 @@
----a/net/minecraft/entity/passive/EntityTameable.java
-+++b/net/minecraft/entity/passive/EntityTameable.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\entity\passive\EntityTameable.java
++++ src\main\java\net\minecraft\entity\passive\EntityTameable.java
+@@ -1,8 +1,9 @@
  package net.minecraft.entity.passive;
  
  import java.util.UUID;
@@ -8,7 +8,11 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.IEntityOwnable;
-@@ -12,60 +12,47 @@
+ import net.minecraft.entity.ai.EntityAISit;
+ import net.minecraft.entity.player.EntityPlayerMP;
+@@ -10,232 +11,172 @@
+ import net.minecraft.scoreboard.Team;
+ import net.minecraft.server.management.PreYggdrasilConverter;
  import net.minecraft.util.DamageSource;
  import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.world.World;
@@ -82,7 +86,8 @@
              this.setOwnerId(s);
              this.setTamed(true);
          }
-@@ -74,129 +74,88 @@
+ 
+         this.aiSit.setSitting(tagCompund.getBoolean("Sitting"));
          this.setSitting(tagCompund.getBoolean("Sitting"));
      }
  
@@ -241,7 +246,7 @@
                  return entitylivingbase.getTeam();
              }
          }
-@@ -204,21 +204,16 @@
+ 
          return super.getTeam();
      }
  
@@ -265,7 +270,7 @@
                  return entitylivingbase1.isOnSameTeam(otherEntity);
              }
          }
-@@ -224,22 +224,17 @@
+ 
          return super.isOnSameTeam(otherEntity);
      }
  
@@ -287,5 +292,4 @@
 +    public Entity getOwner() {
          return this.getOwnerEntity();
      }
--}
-+}
+ }

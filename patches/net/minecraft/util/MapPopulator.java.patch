@@ -1,6 +1,6 @@
----a/net/minecraft/util/MapPopulator.java
-+++b/net/minecraft/util/MapPopulator.java
-@@ -1,37 +1,31 @@
+--- decompiled\net\minecraft\util\MapPopulator.java
++++ src\main\java\net\minecraft\util\MapPopulator.java
+@@ -1,37 +1,32 @@
  package net.minecraft.util;
  
 -import com.google.common.collect.Maps;
@@ -46,5 +46,4 @@
              return map;
          }
      }
--}
-+}
+ }

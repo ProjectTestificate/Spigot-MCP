@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemGlassBottle.java
-+++b/net/minecraft/item/ItemGlassBottle.java
-@@ -9,51 +9,41 @@
+--- decompiled\net\minecraft\item\ItemGlassBottle.java
++++ src\main\java\net\minecraft\item\ItemGlassBottle.java
+@@ -7,55 +7,44 @@
+ import net.minecraft.stats.StatList;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.MovingObjectPosition;
  import net.minecraft.world.World;
  
@@ -64,9 +66,5 @@
                          playerIn.dropPlayerItemWithRandomChoice(new ItemStack(Items.potionitem, 1, 0), false);
                      }
                  }
-@@ -62,4 +62,4 @@
-             return itemStackIn;
-         }
-     }
--}
-+}
+             }
+ 

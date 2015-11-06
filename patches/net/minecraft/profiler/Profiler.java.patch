@@ -1,6 +1,6 @@
----a/net/minecraft/profiler/Profiler.java
-+++b/net/minecraft/profiler/Profiler.java
-@@ -1,197 +1,50 @@
+--- decompiled\net\minecraft\profiler\Profiler.java
++++ src\main\java\net\minecraft\profiler\Profiler.java
+@@ -1,193 +1,53 @@
  package net.minecraft.profiler;
  
 -import com.google.common.collect.Lists;
@@ -220,7 +220,6 @@
 +        public int compareTo(Object p_compareTo_1_) {
 +            return this.compareTo((Profiler.Result) p_compareTo_1_);
          }
--}
 +    }
-+}
+ }
 +// CraftBukkit end

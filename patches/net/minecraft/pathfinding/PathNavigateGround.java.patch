@@ -1,6 +1,6 @@
----a/net/minecraft/pathfinding/PathNavigateGround.java
-+++b/net/minecraft/pathfinding/PathNavigateGround.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\pathfinding\PathNavigateGround.java
++++ src\main\java\net\minecraft\pathfinding\PathNavigateGround.java
+@@ -1,8 +1,9 @@
  package net.minecraft.pathfinding;
  
  import java.util.Iterator;
@@ -8,7 +8,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.material.Material;
  import net.minecraft.entity.EntityLiving;
-@@ -13,80 +13,65 @@
+ import net.minecraft.entity.monster.EntityZombie;
+ import net.minecraft.entity.passive.EntityChicken;
+@@ -11,131 +12,106 @@
+ import net.minecraft.util.MathHelper;
+ import net.minecraft.util.Vec3;
  import net.minecraft.world.World;
  import net.minecraft.world.pathfinder.WalkNodeProcessor;
  
@@ -110,7 +114,7 @@
                      this.currentPath.setCurrentPathLength(i - 1);
                      return;
                  }
-@@ -94,46 +94,37 @@
+             }
          }
      }
  
@@ -166,7 +170,11 @@
                      ++d7;
                  }
  
-@@ -146,70 +146,53 @@
+                 d6 /= d0;
+                 d7 /= d1;
+@@ -144,141 +120,113 @@
+                 int l1 = MathHelper.floor_double(p_75493_2_.xCoord);
+                 int i2 = MathHelper.floor_double(p_75493_2_.zCoord);
                  int j2 = l1 - l;
                  int k2 = i2 - i1;
  
@@ -251,7 +259,10 @@
                              return false;
                          }
                      }
-@@ -218,22 +218,18 @@
+                 }
+             }
+ 
+             return true;
          }
      }
  
@@ -281,7 +292,8 @@
                      return false;
                  }
              }
-@@ -242,44 +242,35 @@
+         }
+ 
          return true;
      }
  
@@ -332,5 +344,4 @@
 +    public void func_179685_e(boolean p_179685_1_) {
          this.field_179694_f = p_179685_1_;
      }
--}
-+}
+ }

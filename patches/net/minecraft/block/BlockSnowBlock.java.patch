@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockSnowBlock.java
-+++b/net/minecraft/block/BlockSnowBlock.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockSnowBlock.java
++++ src\main\java\net\minecraft\block\BlockSnowBlock.java
+@@ -1,42 +1,38 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -8,7 +8,9 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.creativetab.CreativeTabs;
-@@ -10,34 +10,29 @@
+ import net.minecraft.init.Items;
+ import net.minecraft.item.Item;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.world.EnumSkyBlock;
  import net.minecraft.world.World;
  
@@ -48,5 +50,4 @@
              worldIn.setBlockToAir(pos);
          }
      }
--}
-+}
+ }

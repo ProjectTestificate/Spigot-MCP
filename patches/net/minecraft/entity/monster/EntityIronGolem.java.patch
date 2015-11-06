@@ -1,13 +1,17 @@
----a/net/minecraft/entity/monster/EntityIronGolem.java
-+++b/net/minecraft/entity/monster/EntityIronGolem.java
-@@ -1,6 +1,5 @@
+--- decompiled\net\minecraft\entity\monster\EntityIronGolem.java
++++ src\main\java\net\minecraft\entity\monster\EntityIronGolem.java
+@@ -1,8 +1,7 @@
  package net.minecraft.entity.monster;
  
 -import com.google.common.base.Predicate;
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockFlower;
  import net.minecraft.block.material.Material;
-@@ -33,23 +33,20 @@
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.entity.Entity;
+@@ -31,26 +30,25 @@
+ import net.minecraft.util.DamageSource;
+ import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.util.MathHelper;
  import net.minecraft.village.Village;
  import net.minecraft.world.World;
@@ -36,7 +40,11 @@
          this.tasks.addTask(1, new EntityAIAttackOnCollide(this, 1.0D, true));
          this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, 0.9D, 32.0F));
          this.tasks.addTask(3, new EntityAIMoveThroughVillage(this, 0.6D, true));
-@@ -62,109 +62,89 @@
+         this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, 1.0D));
+         this.tasks.addTask(5, new EntityAILookAtVillager(this));
+@@ -60,278 +58,207 @@
+         this.targetTasks.addTask(1, new EntityAIDefendVillage(this));
+         this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false, new Class[0]));
          this.targetTasks.addTask(3, new EntityIronGolem.AINearestAttackableTargetNonCreeper(this, EntityLiving.class, 10, false, true, IMob.field_175450_e));
      }
  
@@ -171,7 +179,8 @@
              p_70652_1_.motionY += 0.4000000059604645D;
              this.func_174815_a(this, p_70652_1_);
          }
-@@ -173,184 +173,113 @@
+ 
+         this.playSound("mob.irongolem.throw", 1.0F, 1.0F);
          return flag;
      }
  
@@ -390,6 +399,5 @@
 +                }
 +            };
          }
--}
 +    }
-+}
+ }

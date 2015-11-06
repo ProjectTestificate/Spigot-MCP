@@ -1,6 +1,8 @@
----a/net/minecraft/network/play/server/S0CPacketSpawnPlayer.java
-+++b/net/minecraft/network/play/server/S0CPacketSpawnPlayer.java
-@@ -3,6 +3,7 @@
+--- decompiled\net\minecraft\network\play\server\S0CPacketSpawnPlayer.java
++++ src\main\java\net\minecraft\network\play\server\S0CPacketSpawnPlayer.java
+@@ -1,24 +1,24 @@
+ package net.minecraft.network.play.server;
+ 
  import java.io.IOException;
  import java.util.List;
  import java.util.UUID;
@@ -8,7 +10,9 @@
  import net.minecraft.entity.DataWatcher;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.item.Item;
-@@ -12,11 +12,7 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.network.INetHandler;
+ import net.minecraft.network.Packet;
  import net.minecraft.network.PacketBuffer;
  import net.minecraft.network.play.INetHandlerPlayClient;
  import net.minecraft.util.MathHelper;
@@ -23,7 +27,11 @@
      private int field_148957_a;
      private UUID field_179820_b;
      private int field_148956_c;
-@@ -29,23 +29,24 @@
+     private int field_148953_d;
+     private int field_148954_e;
+@@ -27,28 +27,27 @@
+     private int field_148959_h;
+     private DataWatcher field_148960_i;
      private List field_148958_j;
      private static final String __OBFID = "CL_00001281";
  
@@ -54,7 +62,11 @@
          this.field_148957_a = buf.readVarIntFromBuffer();
          this.field_179820_b = buf.readUuid();
          this.field_148956_c = buf.readInt();
-@@ -58,8 +58,7 @@
+         this.field_148953_d = buf.readInt();
+         this.field_148954_e = buf.readInt();
+@@ -56,12 +55,11 @@
+         this.field_148952_g = buf.readByte();
+         this.field_148959_h = buf.readShort();
          this.field_148958_j = DataWatcher.readWatchedListFromPacketBuffer(buf);
      }
  
@@ -64,7 +76,11 @@
          buf.writeVarIntToBuffer(this.field_148957_a);
          buf.writeUuid(this.field_179820_b);
          buf.writeInt(this.field_148956_c);
-@@ -71,20 +71,11 @@
+         buf.writeInt(this.field_148953_d);
+         buf.writeInt(this.field_148954_e);
+@@ -69,74 +67,13 @@
+         buf.writeByte(this.field_148952_g);
+         buf.writeShort(this.field_148959_h);
          this.field_148960_i.writeTo(buf);
      }
  
@@ -139,5 +155,4 @@
 -    {
 -        return this.field_148959_h;
 -    }
--}
-+}
+ }

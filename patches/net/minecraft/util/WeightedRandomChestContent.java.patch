@@ -1,6 +1,6 @@
----a/net/minecraft/util/WeightedRandomChestContent.java
-+++b/net/minecraft/util/WeightedRandomChestContent.java
-@@ -1,51 +1,47 @@
+--- decompiled\net\minecraft\util\WeightedRandomChestContent.java
++++ src\main\java\net\minecraft\util\WeightedRandomChestContent.java
+@@ -1,92 +1,79 @@
  package net.minecraft.util;
  
 -import com.google.common.collect.Lists;
@@ -72,7 +72,8 @@
                      ItemStack itemstack1 = weightedrandomchestcontent.theItemId.copy();
                      itemstack1.stackSize = 1;
                      p_177630_2_.setInventorySlotContents(random.nextInt(p_177630_2_.getSizeInventory()), itemstack1);
-@@ -58,23 +58,18 @@
+                 }
+             }
          }
      }
  
@@ -102,7 +103,8 @@
                      ItemStack itemstack1 = weightedrandomchestcontent.theItemId.copy();
                      itemstack1.stackSize = 1;
                      dispenser.setInventorySlotContents(random.nextInt(dispenser.getSizeInventory()), itemstack1);
-@@ -83,11 +83,9 @@
+                 }
+             }
          }
      }
  
@@ -113,5 +115,4 @@
          Collections.addAll(arraylist, p_177629_1_);
          return arraylist;
      }
--}
-+}
+ }

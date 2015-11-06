@@ -1,6 +1,8 @@
----a/net/minecraft/item/crafting/RecipesArmor.java
-+++b/net/minecraft/item/crafting/RecipesArmor.java
-@@ -4,30 +4,26 @@
+--- decompiled\net\minecraft\item\crafting\RecipesArmor.java
++++ src\main\java\net\minecraft\item\crafting\RecipesArmor.java
+@@ -2,30 +2,26 @@
+ 
+ import net.minecraft.init.Items;
  import net.minecraft.item.Item;
  import net.minecraft.item.ItemStack;
  
@@ -37,5 +39,4 @@
              }
          }
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S45PacketTitle.java
-+++b/net/minecraft/network/play/server/S45PacketTitle.java
-@@ -1,14 +1,14 @@
+--- decompiled\net\minecraft\network\play\server\S45PacketTitle.java
++++ src\main\java\net\minecraft\network\play\server\S45PacketTitle.java
+@@ -1,157 +1,111 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -21,7 +21,7 @@
      private S45PacketTitle.Type type;
      private IChatComponent message;
      private int fadeInTime;
-@@ -18,19 +18,19 @@
+     private int displayTime;
      private int fadeOutTime;
      private static final String __OBFID = "CL_00002287";
  
@@ -48,7 +48,7 @@
          this.type = type;
          this.message = message;
          this.fadeInTime = fadeInTime;
-@@ -39,54 +39,44 @@
+         this.displayTime = displayTime;
          this.fadeOutTime = fadeOutTime;
      }
  
@@ -142,7 +142,8 @@
          TITLE,
          SUBTITLE,
          TIMES,
-@@ -123,17 +123,14 @@
+         CLEAR,
+         RESET;
  
          private static final String __OBFID = "CL_00002286";
  
@@ -163,7 +164,7 @@
                      return type;
                  }
              }
-@@ -141,15 +141,13 @@
+ 
              return TITLE;
          }
  
@@ -181,9 +182,5 @@
                  S45PacketTitle.Type type = atype[k];
                  astring[i++] = type.name().toLowerCase();
              }
-@@ -157,4 +157,4 @@
+ 
              return astring;
-         }
-     }
--}
-+}

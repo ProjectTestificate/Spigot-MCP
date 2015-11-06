@@ -1,6 +1,6 @@
----a/net/minecraft/entity/monster/EntityGhast.java
-+++b/net/minecraft/entity/monster/EntityGhast.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\entity\monster\EntityGhast.java
++++ src\main\java\net\minecraft\entity\monster\EntityGhast.java
+@@ -1,8 +1,9 @@
  package net.minecraft.entity.monster;
  
  import java.util.Random;
@@ -8,7 +8,11 @@
  import net.minecraft.entity.EntityFlying;
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.SharedMonsterAttributes;
-@@ -20,16 +20,13 @@
+ import net.minecraft.entity.ai.EntityAIBase;
+ import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
+@@ -18,20 +19,18 @@
+ import net.minecraft.util.DamageSource;
+ import net.minecraft.util.MathHelper;
  import net.minecraft.util.Vec3;
  import net.minecraft.world.EnumDifficulty;
  import net.minecraft.world.World;
@@ -29,7 +33,11 @@
          super(worldIn);
          this.setSize(4.0F, 4.0F);
          this.isImmuneToFire = true;
-@@ -41,193 +41,154 @@
+         this.experienceValue = 5;
+         this.moveHelper = new EntityGhast.GhastMoveHelper();
+@@ -39,334 +38,271 @@
+         this.tasks.addTask(7, new EntityGhast.AILookAround());
+         this.tasks.addTask(7, new EntityGhast.AIFireballAttack());
          this.targetTasks.addTask(1, new EntityAIFindEntityNearestPlayer(this));
      }
  
@@ -266,7 +274,7 @@
                  --this.field_179471_a;
              }
  
-@@ -234,61 +234,51 @@
+             this.field_179470_b.func_175454_a(this.field_179471_a > 10);
          }
      }
  
@@ -345,7 +353,8 @@
                  double d0 = entitymovehelper.func_179917_d() - this.field_179454_a.posX;
                  double d1 = entitymovehelper.func_179919_e() - this.field_179454_a.posY;
                  double d2 = entitymovehelper.func_179918_f() - this.field_179454_a.posZ;
-@@ -298,73 +298,61 @@
+                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+                 return d3 < 1.0D || d3 > 3600.0D;
              }
          }
  
@@ -436,9 +445,5 @@
                      return false;
                  }
              }
-@@ -372,4 +372,4 @@
+ 
              return true;
-         }
-     }
--}
-+}

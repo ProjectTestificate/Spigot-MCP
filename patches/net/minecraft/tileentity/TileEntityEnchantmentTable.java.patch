@@ -1,6 +1,6 @@
----a/net/minecraft/tileentity/TileEntityEnchantmentTable.java
-+++b/net/minecraft/tileentity/TileEntityEnchantmentTable.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\tileentity\TileEntityEnchantmentTable.java
++++ src\main\java\net\minecraft\tileentity\TileEntityEnchantmentTable.java
+@@ -1,8 +1,9 @@
  package net.minecraft.tileentity;
  
  import java.util.Random;
@@ -8,7 +8,11 @@
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.entity.player.InventoryPlayer;
  import net.minecraft.inventory.Container;
-@@ -13,8 +13,8 @@
+ import net.minecraft.inventory.ContainerEnchantment;
+ import net.minecraft.nbt.NBTTagCompound;
+@@ -11,12 +12,12 @@
+ import net.minecraft.util.ChatComponentTranslation;
+ import net.minecraft.util.IChatComponent;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.IInteractionObject;
  
@@ -19,7 +23,11 @@
      public int tickCount;
      public float pageFlip;
      public float pageFlipPrev;
-@@ -29,85 +29,68 @@
+     public float field_145932_k;
+     public float field_145929_l;
+@@ -27,90 +28,73 @@
+     public float field_145924_q;
+     private static Random field_145923_r = new Random();
      private String customName;
      private static final String __OBFID = "CL_00000354";
  
@@ -132,7 +140,11 @@
          }
  
          this.bookRotation += f2 * 0.4F;
-@@ -122,34 +122,27 @@
+         this.bookSpread = MathHelper.clamp_float(this.bookSpread, 0.0F, 1.0F);
+         ++this.tickCount;
+@@ -120,35 +104,29 @@
+         f = MathHelper.clamp_float(f, -f3, f3);
+         this.field_145929_l += (f - this.field_145929_l) * 0.9F;
          this.pageFlip += this.field_145929_l;
      }
  
@@ -172,5 +184,4 @@
 +    public String getGuiID() {
          return "minecraft:enchanting_table";
      }
--}
-+}
+ }

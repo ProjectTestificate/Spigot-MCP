@@ -1,6 +1,8 @@
----a/net/minecraft/server/dedicated/ServerHangWatchdog.java
-+++b/net/minecraft/server/dedicated/ServerHangWatchdog.java
-@@ -8,36 +8,33 @@
+--- decompiled\net\minecraft\server\dedicated\ServerHangWatchdog.java
++++ src\main\java\net\minecraft\server\dedicated\ServerHangWatchdog.java
+@@ -6,57 +6,50 @@
+ import java.lang.management.ThreadMXBean;
+ import java.text.SimpleDateFormat;
  import java.util.Date;
  import java.util.Timer;
  import java.util.TimerTask;
@@ -49,7 +51,8 @@
                  LOGGER.fatal("Considering it to be crashed, server will forcibly shutdown.");
                  ThreadMXBean threadmxbean = ManagementFactory.getThreadMXBean();
                  ThreadInfo[] athreadinfo = threadmxbean.dumpAllThreads(true, true);
-@@ -49,12 +49,10 @@
+                 StringBuilder stringbuilder = new StringBuilder();
+                 Error error = new Error();
                  ThreadInfo[] athreadinfo1 = athreadinfo;
                  int l = athreadinfo.length;
  
@@ -64,7 +67,11 @@
                          error.setStackTrace(threadinfo.getStackTrace());
                      }
  
-@@ -68,48 +68,37 @@
+                     stringbuilder.append(threadinfo);
+                     stringbuilder.append("\n");
+@@ -66,49 +59,39 @@
+                 this.server.addServerInfoToCrashReport(crashreport);
+                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Thread Dump");
                  crashreportcategory.addCrashSection("Threads", stringbuilder);
                  File file1 = new File(new File(this.server.getDataDirectory(), "crash-reports"), "crash-" + (new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss")).format(new Date()) + "-server.txt");
  
@@ -122,5 +129,4 @@
              Runtime.getRuntime().halt(1);
          }
      }
--}
-+}
+ }

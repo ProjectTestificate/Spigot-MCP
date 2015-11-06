@@ -1,6 +1,6 @@
----a/net/minecraft/util/ChatComponentScore.java
-+++b/net/minecraft/util/ChatComponentScore.java
-@@ -1,51 +1,46 @@
+--- decompiled\net\minecraft\util\ChatComponentScore.java
++++ src\main\java\net\minecraft\util\ChatComponentScore.java
+@@ -1,102 +1,84 @@
  package net.minecraft.util;
  
  import java.util.Iterator;
@@ -68,7 +68,7 @@
                  this.field_179998_d = "";
              }
          }
-@@ -57,47 +57,36 @@
+ 
          return this.field_179998_d;
      }
  
@@ -124,5 +124,4 @@
 +    public IChatComponent createCopy() {
          return this.func_179996_i();
      }
--}
-+}
+ }

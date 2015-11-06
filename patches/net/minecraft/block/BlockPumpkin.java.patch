@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockPumpkin.java
-+++b/net/minecraft/block/BlockPumpkin.java
-@@ -18,64 +18,74 @@
+--- decompiled\net\minecraft\block\BlockPumpkin.java
++++ src\main\java\net\minecraft\block\BlockPumpkin.java
+@@ -16,159 +16,159 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.world.World;
  
@@ -105,7 +107,7 @@
                      worldIn.setBlockState(patternhelper.translateOffset(i, k, 0).getPos(), Blocks.air.getDefaultState(), 2);
                  }
              }
-@@ -88,15 +88,14 @@
+ 
              BlockPos blockpos1 = patternhelper.translateOffset(1, 2, 0).getPos();
              EntityIronGolem entityirongolem = new EntityIronGolem(worldIn);
              entityirongolem.setPlayerCreated(true);
@@ -129,7 +131,7 @@
                      BlockWorldState blockworldstate2 = patternhelper.translateOffset(j, l, 0);
                      worldIn.notifyNeighborsRespectDebug(blockworldstate2.getPos(), Blocks.air);
                  }
-@@ -107,69 +107,81 @@
+             }
          }
      }
  
@@ -229,5 +231,4 @@
  
          return this.golemPattern;
      }
--}
-+}
+ }

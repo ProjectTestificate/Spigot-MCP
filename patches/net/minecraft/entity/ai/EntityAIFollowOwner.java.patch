@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIFollowOwner.java
-+++b/net/minecraft/entity/ai/EntityAIFollowOwner.java
-@@ -8,8 +8,8 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIFollowOwner.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIFollowOwner.java
+@@ -6,12 +6,12 @@
+ import net.minecraft.pathfinding.PathNavigateGround;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  
@@ -11,7 +13,11 @@
      private EntityTameable thePet;
      private EntityLivingBase theOwner;
      World theWorld;
-@@ -21,8 +21,7 @@
+     private double field_75336_f;
+     private PathNavigate petPathfinder;
+@@ -19,95 +19,73 @@
+     float maxDist;
+     float minDist;
      private boolean field_75344_i;
      private static final String __OBFID = "CL_00001585";
  
@@ -21,7 +27,8 @@
          this.thePet = p_i1625_1_;
          this.theWorld = p_i1625_1_.worldObj;
          this.field_75336_f = p_i1625_2_;
-@@ -31,76 +31,57 @@
+         this.petPathfinder = p_i1625_1_.getNavigator();
+         this.minDist = p_i1625_4_;
          this.maxDist = p_i1625_5_;
          this.setMutexBits(3);
  
@@ -127,9 +134,5 @@
                                          this.petPathfinder.clearPathEntity();
                                          return;
                                      }
-@@ -117,4 +117,4 @@
-             }
-         }
-     }
--}
-+}
+                                 }
+                             }

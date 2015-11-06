@@ -1,6 +1,6 @@
----a/net/minecraft/util/StringTranslate.java
-+++b/net/minecraft/util/StringTranslate.java
-@@ -1,22 +1,15 @@
+--- decompiled\net\minecraft\util\StringTranslate.java
++++ src\main\java\net\minecraft\util\StringTranslate.java
+@@ -1,106 +1,82 @@
  package net.minecraft.util;
  
 -import com.google.common.base.Splitter;
@@ -29,7 +29,7 @@
      private static final Pattern numericVariablePattern = Pattern.compile("%(\\d+\\$)?[\\d\\.]*[df]");
      private static final Splitter equalSignSplitter = Splitter.on('=').limit(2);
      private static StringTranslate instance = new StringTranslate();
-@@ -23,25 +23,20 @@
+     private final Map languageList = Maps.newHashMap();
      private long lastUpdateTimeInMilliseconds;
      private static final String __OBFID = "CL_00001212";
  
@@ -61,7 +61,8 @@
                          String s1 = astring[0];
                          String s2 = numericVariablePattern.matcher(astring[1]).replaceAll("%$1s");
                          this.languageList.put(s1, s2);
-@@ -48,61 +48,39 @@
+                     }
+                 }
              }
  
              this.lastUpdateTimeInMilliseconds = System.currentTimeMillis();
@@ -130,5 +131,4 @@
 +    public long getLastUpdateTimeInMilliseconds() {
          return this.lastUpdateTimeInMilliseconds;
      }
--}
-+}
+ }

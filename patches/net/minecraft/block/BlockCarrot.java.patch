@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockCarrot.java
-+++b/net/minecraft/block/BlockCarrot.java
-@@ -3,18 +3,16 @@
+--- decompiled\net\minecraft\block\BlockCarrot.java
++++ src\main\java\net\minecraft\block\BlockCarrot.java
+@@ -1,19 +1,17 @@
+ package net.minecraft.block;
+ 
  import net.minecraft.init.Items;
  import net.minecraft.item.Item;
  
@@ -21,5 +23,4 @@
 +    protected Item getCrop() {
          return Items.carrot;
      }
--}
-+}
+ }

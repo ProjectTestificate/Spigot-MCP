@@ -1,6 +1,6 @@
----a/net/minecraft/network/rcon/RConUtils.java
-+++b/net/minecraft/network/rcon/RConUtils.java
-@@ -1,44 +1,37 @@
+--- decompiled\net\minecraft\network\rcon\RConUtils.java
++++ src\main\java\net\minecraft\network\rcon\RConUtils.java
+@@ -1,45 +1,37 @@
  package net.minecraft.network.rcon;
  
 +
@@ -55,5 +55,4 @@
 +    public static String getByteAsHexString(byte input) {
          return "" + hexDigits[(input & 240) >>> 4] + hexDigits[input & 15];
      }
--}
-+}
+ }

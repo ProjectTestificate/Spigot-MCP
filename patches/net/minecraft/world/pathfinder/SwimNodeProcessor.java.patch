@@ -1,6 +1,8 @@
----a/net/minecraft/world/pathfinder/SwimNodeProcessor.java
-+++b/net/minecraft/world/pathfinder/SwimNodeProcessor.java
-@@ -9,43 +9,37 @@
+--- decompiled\net\minecraft\world\pathfinder\SwimNodeProcessor.java
++++ src\main\java\net\minecraft\world\pathfinder\SwimNodeProcessor.java
+@@ -7,73 +7,60 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.IBlockAccess;
  
@@ -54,7 +56,7 @@
                  p_176164_1_[i++] = pathpoint2;
              }
          }
-@@ -53,25 +53,19 @@
+ 
          return i;
      }
  
@@ -86,9 +88,5 @@
                          return 0;
                      }
                  }
-@@ -80,4 +80,4 @@
- 
-         return -1;
-     }
--}
-+}
+             }
+         }

@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenClay.java
-+++b/net/minecraft/world/gen/feature/WorldGenClay.java
-@@ -1,49 +1,42 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenClay.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenClay.java
+@@ -1,53 +1,44 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -64,9 +64,5 @@
                                  worldIn.setBlockState(blockpos1, this.field_150546_a.getDefaultState(), 2);
                              }
                          }
-@@ -56,4 +56,4 @@
-             return true;
-         }
-     }
--}
-+}
+                     }
+                 }

@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAICreeperSwell.java
-+++b/net/minecraft/entity/ai/EntityAICreeperSwell.java
-@@ -3,53 +3,44 @@
+--- decompiled\net\minecraft\entity\ai\EntityAICreeperSwell.java
++++ src\main\java\net\minecraft\entity\ai\EntityAICreeperSwell.java
+@@ -1,54 +1,45 @@
+ package net.minecraft.entity.ai;
+ 
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.monster.EntityCreeper;
  
@@ -69,5 +71,4 @@
          }
 +        // Spigot end
      }
--}
-+}
+ }

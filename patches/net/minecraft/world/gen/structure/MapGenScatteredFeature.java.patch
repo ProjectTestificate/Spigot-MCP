@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/structure/MapGenScatteredFeature.java
-+++b/net/minecraft/world/gen/structure/MapGenScatteredFeature.java
-@@ -1,94 +1,84 @@
+--- decompiled\net\minecraft\world\gen\structure\MapGenScatteredFeature.java
++++ src\main\java\net\minecraft\world\gen\structure\MapGenScatteredFeature.java
+@@ -1,159 +1,137 @@
  package net.minecraft.world.gen.structure;
  
 -import com.google.common.collect.Lists;
@@ -119,7 +119,8 @@
                      return true;
                  }
              }
-@@ -98,63 +98,49 @@
+         }
+ 
          return false;
      }
  
@@ -207,6 +208,5 @@
 +
 +            this.updateBoundingBox();
          }
--}
 +    }
-+}
+ }

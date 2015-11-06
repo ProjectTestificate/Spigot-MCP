@@ -1,6 +1,8 @@
----a/net/minecraft/command/server/CommandStop.java
-+++b/net/minecraft/command/server/CommandStop.java
-@@ -5,28 +5,24 @@
+--- decompiled\net\minecraft\command\server\CommandStop.java
++++ src\main\java\net\minecraft\command\server\CommandStop.java
+@@ -3,28 +3,24 @@
+ import net.minecraft.command.CommandBase;
+ import net.minecraft.command.CommandException;
  import net.minecraft.command.ICommandSender;
  import net.minecraft.server.MinecraftServer;
  
@@ -33,5 +35,3 @@
  
          MinecraftServer.getServer().initiateShutdown();
      }
--}
-+}

@@ -1,6 +1,6 @@
----a/net/minecraft/entity/item/EntityMinecart.java
-+++b/net/minecraft/entity/item/EntityMinecart.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\entity\item\EntityMinecart.java
++++ src\main\java\net\minecraft\entity\item\EntityMinecart.java
+@@ -1,10 +1,10 @@
  package net.minecraft.entity.item;
  
 -import com.google.common.collect.Maps;
@@ -10,7 +10,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockRailBase;
  import net.minecraft.block.BlockRailPowered;
-@@ -18,6 +18,8 @@
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.entity.Entity;
+@@ -16,10 +16,12 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.init.Items;
  import net.minecraft.item.ItemStack;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.server.MinecraftServer;
@@ -19,7 +23,11 @@
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.ChatComponentText;
-@@ -30,37 +30,51 @@
+ import net.minecraft.util.ChatComponentTranslation;
+ import net.minecraft.util.DamageSource;
+@@ -28,43 +30,57 @@
+ import net.minecraft.util.ResourceLocation;
+ import net.minecraft.util.Vec3;
  import net.minecraft.world.IWorldNameable;
  import net.minecraft.world.World;
  import net.minecraft.world.WorldServer;
@@ -90,7 +98,11 @@
              case 1:
                  return new EntityMinecartChest(worldIn, p_180458_1_, p_180458_3_, p_180458_5_);
              case 2:
-@@ -80,38 +80,32 @@
+                 return new EntityMinecartFurnace(worldIn, p_180458_1_, p_180458_3_, p_180458_5_);
+             case 3:
+@@ -78,353 +94,355 @@
+             default:
+                 return new EntityMinecartEmpty(worldIn, p_180458_1_, p_180458_3_, p_180458_5_);
          }
      }
  
@@ -136,7 +148,8 @@
          this(worldIn);
          this.setPosition(p_i1713_2_, p_i1713_4_, p_i1713_6_);
          this.motionX = 0.0D;
-@@ -120,124 +120,126 @@
+         this.motionY = 0.0D;
+         this.motionZ = 0.0D;
          this.prevPosX = p_i1713_2_;
          this.prevPosY = p_i1713_4_;
          this.prevPosZ = p_i1713_6_;
@@ -325,7 +338,8 @@
                              b0 = -1;
                          }
  
-@@ -249,52 +249,40 @@
+                         this.travelToDimension(b0);
+                     }
  
                      this.inPortal = false;
                  }
@@ -390,7 +404,8 @@
              this.prevPosX = this.posX;
              this.prevPosY = this.posY;
              this.prevPosZ = this.posZ;
-@@ -301,24 +301,20 @@
+             this.motionY -= 0.03999999910593033D;
+             int j = MathHelper.floor_double(this.posX);
              i = MathHelper.floor_double(this.posY);
              int k = MathHelper.floor_double(this.posZ);
  
@@ -421,7 +436,8 @@
                  this.moveDerailedMinecart();
              }
  
-@@ -328,102 +328,128 @@
+             this.doBlockCollisions();
+             this.rotationPitch = 0.0F;
              double d0 = this.prevPosX - this.posX;
              double d2 = this.prevPosZ - this.posZ;
  
@@ -592,7 +608,11 @@
              case 1:
                  this.motionX -= 0.0078125D;
                  ++this.posY;
-@@ -441,21 +441,20 @@
+                 break;
+             case 2:
+@@ -439,94 +457,80 @@
+                 this.motionZ -= 0.0078125D;
+                 ++this.posY;
          }
  
          int[][] aint = matrix[enumraildirection.getMetadata()];
@@ -618,7 +638,10 @@
              d5 = 2.0D;
          }
  
-@@ -466,19 +466,16 @@
+         this.motionX = d5 * d1 / d3;
+         this.motionZ = d5 * d2 / d3;
+         double d6;
+         double d7;
          double d8;
          double d9;
  
@@ -643,7 +666,7 @@
                      this.motionX += d7 * 0.1D;
                      this.motionZ += d8 * 0.1D;
                      flag1 = false;
-@@ -485,17 +485,14 @@
+                 }
              }
          }
  
@@ -665,7 +688,7 @@
                  this.motionX *= 0.5D;
                  this.motionY *= 0.0D;
                  this.motionZ *= 0.5D;
-@@ -504,19 +504,19 @@
+             }
          }
  
          d6 = 0.0D;
@@ -704,7 +727,11 @@
              d11 = this.posX - d7;
              d12 = this.posZ - d8;
              d6 = (d11 * d1 + d12 * d2) * 2.0D;
-@@ -536,8 +536,7 @@
+         }
+ 
+@@ -534,525 +538,380 @@
+         this.posZ = d8 + d2 * d6;
+         this.setPosition(this.posX, this.posY, this.posZ);
          d11 = this.motionX;
          d12 = this.motionZ;
  
@@ -714,7 +741,9 @@
              d11 *= 0.75D;
              d12 *= 0.75D;
          }
-@@ -547,26 +547,23 @@
+ 
+         double d13 = this.func_174898_m();
+         d11 = MathHelper.clamp_double(d11, -d13, d13);
          d12 = MathHelper.clamp_double(d12, -d13, d13);
          this.moveEntity(d11, 0.0D, d12);
  
@@ -746,7 +775,10 @@
                  this.motionX = this.motionX / d5 * (d5 + d14);
                  this.motionZ = this.motionZ / d5 * (d5 + d14);
              }
-@@ -576,154 +576,83 @@
+ 
+             this.setPosition(this.posX, vec31.yCoord, this.posZ);
+         }
+ 
          int j = MathHelper.floor_double(this.posX);
          int i = MathHelper.floor_double(this.posZ);
  
@@ -944,7 +976,9 @@
                  double d13 = p_70489_1_ - d4;
                  double d14 = p_70489_5_ - d6;
                  d3 = (d13 * d10 + d14 * d12) * 2.0D;
-@@ -743,53 +743,39 @@
+             }
+ 
+             p_70489_1_ = d4 + d10 * d3;
              p_70489_3_ = d5 + d11 * d3;
              p_70489_5_ = d6 + d12 * d3;
  
@@ -1010,7 +1044,7 @@
                      this.func_174899_a(block.getStateFromMeta(i));
                  }
              }
-@@ -798,32 +798,27 @@
+ 
              this.setDisplayTileOffset(tagCompund.getInteger("DisplayOffset"));
          }
  
@@ -1072,7 +1106,7 @@
                          entityIn.mountEntity(this);
                      }
  
-@@ -839,14 +839,14 @@
+                     double d0 = entityIn.posX - this.posX;
                      double d1 = entityIn.posZ - this.posZ;
                      double d2 = d0 * d0 + d1 * d1;
  
@@ -1091,7 +1125,7 @@
                              d3 = 1.0D;
                          }
  
-@@ -855,44 +855,39 @@
+                         d0 *= d3;
                          d1 *= d3;
                          d0 *= 0.10000000149011612D;
                          d1 *= 0.10000000149011612D;
@@ -1145,7 +1179,9 @@
                                  d7 /= 2.0D;
                                  d8 /= 2.0D;
                                  this.motionX *= 0.20000000298023224D;
-@@ -903,9 +903,7 @@
+                                 this.motionZ *= 0.20000000298023224D;
+                                 this.addVelocity(d7 - d0, 0.0D, d8 - d1);
+                                 entityIn.motionX *= 0.20000000298023224D;
                                  entityIn.motionZ *= 0.20000000298023224D;
                                  entityIn.addVelocity(d7 + d0, 0.0D, d8 + d1);
                              }
@@ -1156,7 +1192,9 @@
                              this.addVelocity(-d0, 0.0D, -d1);
                              entityIn.addVelocity(d0 / 4.0D, 0.0D, d1 / 4.0D);
                          }
-@@ -915,143 +915,93 @@
+                     }
+                 }
+             }
          }
      }
  
@@ -1314,7 +1352,7 @@
              ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation(this.getName(), new Object[0]);
              chatcomponenttranslation.getChatStyle().setChatHoverEvent(this.func_174823_aP());
              chatcomponenttranslation.getChatStyle().setInsertion(this.getUniqueID().toString());
-@@ -1049,8 +1049,7 @@
+             return chatcomponenttranslation;
          }
      }
  
@@ -1324,7 +1362,11 @@
          RIDEABLE(0, "MinecartRideable"),
          CHEST(1, "MinecartChest"),
          FURNACE(2, "MinecartFurnace"),
-@@ -1064,142 +1064,103 @@
+         TNT(3, "MinecartTNT"),
+         SPAWNER(4, "MinecartSpawner"),
+@@ -1062,143 +921,128 @@
+         private final int networkID;
+         private final String name;
  
          private static final String __OBFID = "CL_00002226";
  
@@ -1528,7 +1570,6 @@
 +                ;
 +            }
          }
--}
 +    }
 +
 +    // CraftBukkit start - Methods for getting and setting flying and derailed velocity modifiers
@@ -1552,4 +1593,4 @@
 +        derailedZ = derailed.getZ();
 +    }
 +    // CraftBukkit end
-+}
+ }

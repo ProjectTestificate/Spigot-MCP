@@ -1,6 +1,7 @@
----a/net/minecraft/pathfinding/PathPoint.java
-+++b/net/minecraft/pathfinding/PathPoint.java
-@@ -2,8 +2,8 @@
+--- decompiled\net\minecraft\pathfinding\PathPoint.java
++++ src\main\java\net\minecraft\pathfinding\PathPoint.java
+@@ -1,11 +1,11 @@
+ package net.minecraft.pathfinding;
  
  import net.minecraft.util.MathHelper;
  
@@ -11,7 +12,11 @@
      public final int xCoord;
      public final int yCoord;
      public final int zCoord;
-@@ -16,61 +16,49 @@
+     private final int hash;
+     int index = -1;
+@@ -14,62 +14,51 @@
+     float distanceToTarget;
+     PathPoint previous;
      public boolean visited;
      private static final String __OBFID = "CL_00000574";
  
@@ -88,5 +93,4 @@
 +    public String toString() {
          return this.xCoord + ", " + this.yCoord + ", " + this.zCoord;
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/client/C12PacketUpdateSign.java
-+++b/net/minecraft/network/play/client/C12PacketUpdateSign.java
-@@ -1,67 +1,54 @@
+--- decompiled\net\minecraft\network\play\client\C12PacketUpdateSign.java
++++ src\main\java\net\minecraft\network\play\client\C12PacketUpdateSign.java
+@@ -1,68 +1,54 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -82,5 +82,4 @@
 +    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
--}
-+}
+ }

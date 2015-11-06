@@ -1,6 +1,6 @@
----a/net/minecraft/tileentity/TileEntityPiston.java
-+++b/net/minecraft/tileentity/TileEntityPiston.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\tileentity\TileEntityPiston.java
++++ src\main\java\net\minecraft\tileentity\TileEntityPiston.java
+@@ -1,245 +1,183 @@
  package net.minecraft.tileentity;
  
 -import com.google.common.collect.Lists;
@@ -10,7 +10,8 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.entity.Entity;
-@@ -11,11 +11,7 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.server.gui.IUpdatePlayerListBox;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.EnumFacing;
@@ -26,7 +27,9 @@
      private IBlockState pistonState;
      private EnumFacing pistonFacing;
      private boolean extending;
-@@ -25,93 +25,75 @@
+     private boolean shouldHeadBeRendered;
+     private float progress;
+     private float lastProgress;
      private List field_174933_k = Lists.newArrayList();
      private static final String __OBFID = "CL_00000369";
  
@@ -147,7 +150,7 @@
                  }
  
                  this.field_174933_k.clear();
-@@ -122,94 +122,47 @@
+             }
          }
      }
  
@@ -233,7 +236,7 @@
          super.readFromNBT(compound);
          this.pistonState = Block.getBlockById(compound.getInteger("blockId")).getStateFromMeta(compound.getInteger("blockData"));
          this.pistonFacing = EnumFacing.getFront(compound.getInteger("facing"));
-@@ -197,8 +197,7 @@
+         this.lastProgress = this.progress = compound.getFloat("progress");
          this.extending = compound.getBoolean("extending");
      }
  
@@ -243,7 +246,8 @@
          super.writeToNBT(compound);
          compound.setInteger("blockId", Block.getIdFromBlock(this.pistonState.getBlock()));
          compound.setInteger("blockData", this.pistonState.getBlock().getMetaFromState(this.pistonState));
-@@ -207,42 +207,28 @@
+         compound.setInteger("facing", this.pistonFacing.getIndex());
+         compound.setFloat("progress", this.lastProgress);
          compound.setBoolean("extending", this.extending);
      }
  
@@ -301,6 +305,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

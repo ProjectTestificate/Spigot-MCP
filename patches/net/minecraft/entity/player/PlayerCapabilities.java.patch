@@ -1,6 +1,6 @@
----a/net/minecraft/entity/player/PlayerCapabilities.java
-+++b/net/minecraft/entity/player/PlayerCapabilities.java
-@@ -1,22 +1,19 @@
+--- decompiled\net\minecraft\entity\player\PlayerCapabilities.java
++++ src\main\java\net\minecraft\entity\player\PlayerCapabilities.java
+@@ -1,24 +1,22 @@
  package net.minecraft.entity.player;
  
  import net.minecraft.nbt.NBTTagCompound;
@@ -29,7 +29,11 @@
          NBTTagCompound nbttagcompound1 = new NBTTagCompound();
          nbttagcompound1.setBoolean("invulnerable", this.disableDamage);
          nbttagcompound1.setBoolean("flying", this.isFlying);
-@@ -28,46 +28,32 @@
+         nbttagcompound1.setBoolean("mayfly", this.allowFlying);
+         nbttagcompound1.setBoolean("instabuild", this.isCreativeMode);
+@@ -26,50 +24,33 @@
+         nbttagcompound1.setFloat("flySpeed", this.flySpeed);
+         nbttagcompound1.setFloat("walkSpeed", this.walkSpeed);
          p_75091_1_.setTag("abilities", nbttagcompound1);
      }
  
@@ -83,5 +87,4 @@
 -    {
 -        this.walkSpeed = speed;
 -    }
--}
-+}
+ }

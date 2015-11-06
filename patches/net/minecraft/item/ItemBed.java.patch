@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemBed.java
-+++b/net/minecraft/item/ItemBed.java
-@@ -11,69 +11,54 @@
+--- decompiled\net\minecraft\item\ItemBed.java
++++ src\main\java\net\minecraft\item\ItemBed.java
+@@ -9,70 +9,55 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  
@@ -83,5 +85,4 @@
              }
          }
      }
--}
-+}
+ }

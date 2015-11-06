@@ -1,6 +1,6 @@
----a/net/minecraft/server/gui/PlayerListComponent.java
-+++b/net/minecraft/server/gui/PlayerListComponent.java
-@@ -1,37 +1,35 @@
+--- decompiled\net\minecraft\server\gui\PlayerListComponent.java
++++ src\main\java\net\minecraft\server\gui\PlayerListComponent.java
+@@ -1,36 +1,32 @@
  package net.minecraft.server.gui;
  
  import java.util.Vector;
@@ -48,5 +48,3 @@
              this.setListData(vector);
          }
      }
--}
-+}

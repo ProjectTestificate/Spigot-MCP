@@ -1,6 +1,8 @@
----a/net/minecraft/entity/item/EntityExpBottle.java
-+++b/net/minecraft/entity/item/EntityExpBottle.java
-@@ -6,49 +6,42 @@
+--- decompiled\net\minecraft\entity\item\EntityExpBottle.java
++++ src\main\java\net\minecraft\entity\item\EntityExpBottle.java
+@@ -4,53 +4,53 @@
+ import net.minecraft.entity.projectile.EntityThrowable;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.MovingObjectPosition;
  import net.minecraft.world.World;
  
@@ -71,9 +73,5 @@
                  int j = EntityXPOrb.getXPSplit(i);
                  i -= j;
                  this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
-@@ -57,4 +57,4 @@
-             this.setDead();
-         }
-     }
--}
-+}
+             }
+ 

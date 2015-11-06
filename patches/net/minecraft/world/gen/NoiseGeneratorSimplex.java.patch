@@ -1,6 +1,7 @@
----a/net/minecraft/world/gen/NoiseGeneratorSimplex.java
-+++b/net/minecraft/world/gen/NoiseGeneratorSimplex.java
-@@ -2,9 +2,9 @@
+--- decompiled\net\minecraft\world\gen\NoiseGeneratorSimplex.java
++++ src\main\java\net\minecraft\world\gen\NoiseGeneratorSimplex.java
+@@ -1,213 +1,179 @@
+ package net.minecraft.world.gen;
  
  import java.util.Random;
  
@@ -13,7 +14,9 @@
      public static final double field_151614_a = Math.sqrt(3.0D);
      private int[] field_151608_f;
      public double field_151612_b;
-@@ -14,26 +14,22 @@
+     public double field_151613_c;
+     public double field_151610_d;
+     private static final double field_151609_g = 0.5D * (field_151614_a - 1.0D);
      private static final double field_151615_h = (3.0D - field_151614_a) / 6.0D;
      private static final String __OBFID = "CL_00000537";
  
@@ -44,7 +47,8 @@
              int j = p_i45471_1_.nextInt(256 - i) + i;
              int k = this.field_151608_f[i];
              this.field_151608_f[i] = this.field_151608_f[j];
-@@ -42,45 +42,38 @@
+             this.field_151608_f[j] = k;
+             this.field_151608_f[i + 256] = this.field_151608_f[i];
          }
      }
  
@@ -101,7 +105,10 @@
          double d15 = d11 - 1.0D + 2.0D * d7;
          double d16 = d12 - 1.0D + 2.0D * d7;
          int k = i & 255;
-@@ -90,11 +90,9 @@
+         int l = j & 255;
+         int i1 = this.field_151608_f[k + this.field_151608_f[l]] % 12;
+         int j1 = this.field_151608_f[k + b0 + this.field_151608_f[l + b1]] % 12;
+         int k1 = this.field_151608_f[k + 1 + this.field_151608_f[l + 1]] % 12;
          double d17 = 0.5D - d11 * d11 - d12 * d12;
          double d2;
  
@@ -116,7 +123,7 @@
              d17 *= d17;
              d2 = d17 * d17 * func_151604_a(field_151611_e[i1], d11, d12);
          }
-@@ -103,11 +103,9 @@
+ 
          double d18 = 0.5D - d13 * d13 - d14 * d14;
          double d3;
  
@@ -131,7 +138,7 @@
              d18 *= d18;
              d3 = d18 * d18 * func_151604_a(field_151611_e[j1], d13, d14);
          }
-@@ -116,11 +116,9 @@
+ 
          double d19 = 0.5D - d15 * d15 - d16 * d16;
          double d4;
  
@@ -146,7 +153,7 @@
              d19 *= d19;
              d4 = d19 * d19 * func_151604_a(field_151611_e[k1], d15, d16);
          }
-@@ -129,41 +129,34 @@
+ 
          return 70.0D * (d2 + d3 + d4);
      }
  
@@ -200,7 +207,10 @@
                  double d18 = d14 - 1.0D + 2.0D * field_151615_h;
                  double d19 = d15 - 1.0D + 2.0D * field_151615_h;
                  int l1 = j1 & 255;
-@@ -174,11 +174,9 @@
+                 int i2 = k1 & 255;
+                 int j2 = this.field_151608_f[l1 + this.field_151608_f[i2]] % 12;
+                 int k2 = this.field_151608_f[l1 + b0 + this.field_151608_f[i2 + b1]] % 12;
+                 int l2 = this.field_151608_f[l1 + 1 + this.field_151608_f[i2 + 1]] % 12;
                  double d20 = 0.5D - d14 * d14 - d15 * d15;
                  double d7;
  
@@ -215,7 +225,7 @@
                      d20 *= d20;
                      d7 = d20 * d20 * func_151604_a(field_151611_e[j2], d14, d15);
                  }
-@@ -187,11 +187,9 @@
+ 
                  double d21 = 0.5D - d16 * d16 - d17 * d17;
                  double d8;
  
@@ -230,7 +240,7 @@
                      d21 *= d21;
                      d8 = d21 * d21 * func_151604_a(field_151611_e[k2], d16, d17);
                  }
-@@ -200,11 +200,9 @@
+ 
                  double d22 = 0.5D - d18 * d18 - d19 * d19;
                  double d9;
  
@@ -245,9 +255,5 @@
                      d22 *= d22;
                      d9 = d22 * d22 * func_151604_a(field_151611_e[l2], d18, d19);
                  }
-@@ -215,4 +215,4 @@
-             }
-         }
-     }
--}
-+}
+ 
+                 int i3 = k++;

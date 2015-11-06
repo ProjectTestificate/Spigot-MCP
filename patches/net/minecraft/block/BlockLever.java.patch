@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockLever.java
-+++b/net/minecraft/block/BlockLever.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockLever.java
++++ src\main\java\net\minecraft\block\BlockLever.java
+@@ -1,8 +1,9 @@
  package net.minecraft.block;
  
  import java.util.Iterator;
@@ -8,7 +8,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyBool;
-@@ -17,84 +17,73 @@
+ import net.minecraft.block.properties.PropertyEnum;
+ import net.minecraft.block.state.BlockState;
+@@ -15,90 +16,75 @@
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.util.IStringSerializable;
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.World;
  
@@ -116,7 +120,11 @@
              case 1:
                  return 0;
              case 2:
-@@ -114,37 +114,28 @@
+                 return 5;
+             case 3:
+@@ -112,39 +98,31 @@
+             default:
+                 return -1;
          }
      }
  
@@ -159,7 +167,11 @@
              case 1:
                  this.setBlockBounds(0.0F, 0.2F, 0.5F - f, f * 2.0F, 0.8F, 0.5F + f);
                  break;
-@@ -167,78 +167,77 @@
+             case 2:
+                 this.setBlockBounds(1.0F - f * 2.0F, 0.2F, 0.5F - f, 1.0F, 0.8F, 0.5F + f);
+@@ -165,80 +143,80 @@
+                 f = 0.25F;
+                 this.setBlockBounds(0.5F - f, 0.4F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
          }
      }
  
@@ -270,7 +282,11 @@
          DOWN_X(0, "down_x", EnumFacing.DOWN),
          EAST(1, "east", EnumFacing.EAST),
          WEST(2, "west", EnumFacing.WEST),
-@@ -252,45 +252,36 @@
+         SOUTH(3, "south", EnumFacing.SOUTH),
+         NORTH(4, "north", EnumFacing.NORTH),
+@@ -250,59 +228,49 @@
+         private final String name;
+         private final EnumFacing facing;
  
          private static final String __OBFID = "CL_00002102";
  
@@ -325,7 +341,8 @@
                          case 1:
                              return DOWN_X;
                          case 2:
-@@ -299,8 +299,7 @@
+                             return DOWN_Z;
+                         default:
                              throw new IllegalArgumentException("Invalid entityFacing " + entityFacing + " for facing " + clickedSide);
                      }
                  case 2:
@@ -335,7 +352,11 @@
                          case 1:
                              return UP_X;
                          case 2:
-@@ -321,183 +321,129 @@
+                             return UP_Z;
+                         default:
+@@ -319,184 +287,132 @@
+                 default:
+                     throw new IllegalArgumentException("Invalid facing: " + clickedSide);
              }
          }
  
@@ -608,6 +629,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

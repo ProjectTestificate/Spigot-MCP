@@ -1,6 +1,6 @@
----a/net/minecraft/world/biome/BiomeDecorator.java
-+++b/net/minecraft/world/biome/BiomeDecorator.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\biome\BiomeDecorator.java
++++ src\main\java\net\minecraft\world\biome\BiomeDecorator.java
+@@ -1,8 +1,9 @@
  package net.minecraft.world.biome;
  
  import java.util.Random;
@@ -8,7 +8,11 @@
  import net.minecraft.block.BlockFlower;
  import net.minecraft.block.BlockStone;
  import net.minecraft.block.material.Material;
-@@ -23,87 +23,87 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.util.BlockPos;
+@@ -21,54 +22,53 @@
+ import net.minecraft.world.gen.feature.WorldGenReed;
+ import net.minecraft.world.gen.feature.WorldGenSand;
  import net.minecraft.world.gen.feature.WorldGenWaterlily;
  import net.minecraft.world.gen.feature.WorldGenerator;
  
@@ -99,7 +103,11 @@
          this.sandGen = new WorldGenSand(Blocks.sand, 7);
          this.gravelAsSandGen = new WorldGenSand(Blocks.gravel, 6);
          this.yellowFlowerGen = new WorldGenFlowers(Blocks.yellow_flower, BlockFlower.EnumFlowerType.DANDELION);
-@@ -84,24 +84,17 @@
+         this.mushroomBrownGen = new GeneratorBushFeature(Blocks.brown_mushroom);
+         this.mushroomRedGen = new GeneratorBushFeature(Blocks.red_mushroom);
+@@ -82,27 +82,20 @@
+         this.sandPerChunk2 = 3;
+         this.clayPerChunk = 1;
          this.generateLakes = true;
      }
  
@@ -128,7 +136,11 @@
                  this.chunkProviderSettings = ChunkProviderSettings.Factory.func_177865_a("").func_177864_b();
              }
  
-@@ -123,29 +123,25 @@
+             this.randomGenerator = p_180292_2_;
+             this.field_180294_c = p_180292_4_;
+@@ -121,120 +114,104 @@
+             this.currentWorld = null;
+             this.randomGenerator = null;
          }
      }
  
@@ -162,7 +174,7 @@
              j = this.randomGenerator.nextInt(16) + 8;
              k = this.randomGenerator.nextInt(16) + 8;
              this.gravelAsSandGen.generate(this.currentWorld, this.randomGenerator, this.currentWorld.getTopSolidOrLiquidBlock(this.field_180294_c.add(j, 0, k)));
-@@ -153,86 +153,74 @@
+         }
  
          i = this.treesPerChunk;
  
@@ -267,7 +279,11 @@
                          blockpos = blockpos3;
                          continue;
                      }
-@@ -244,134 +244,121 @@
+                 }
+ 
+@@ -242,136 +219,124 @@
+                 ++j;
+                 break;
              }
          }
  
@@ -440,9 +456,5 @@
          this.genStandardOre1(this.chunkProviderSettings.dirtCount, this.dirtGen, this.chunkProviderSettings.dirtMinHeight, this.chunkProviderSettings.dirtMaxHeight);
          this.genStandardOre1(this.chunkProviderSettings.gravelCount, this.gravelGen, this.chunkProviderSettings.gravelMinHeight, this.chunkProviderSettings.gravelMaxHeight);
          this.genStandardOre1(this.chunkProviderSettings.dioriteCount, this.dioriteGen, this.chunkProviderSettings.dioriteMinHeight, this.chunkProviderSettings.dioriteMaxHeight);
-@@ -382,4 +382,4 @@
-         this.genStandardOre1(this.chunkProviderSettings.diamondCount, this.diamondGen, this.chunkProviderSettings.diamondMinHeight, this.chunkProviderSettings.diamondMaxHeight);
-         this.genStandardOre2(this.chunkProviderSettings.lapisCount, this.lapisGen, this.chunkProviderSettings.lapisCenterHeight, this.chunkProviderSettings.lapisSpread);
-     }
--}
-+}
+         this.genStandardOre1(this.chunkProviderSettings.graniteCount, this.graniteGen, this.chunkProviderSettings.graniteMinHeight, this.chunkProviderSettings.graniteMaxHeight);
+         this.genStandardOre1(this.chunkProviderSettings.andesiteCount, this.andesiteGen, this.chunkProviderSettings.andesiteMinHeight, this.chunkProviderSettings.andesiteMaxHeight);

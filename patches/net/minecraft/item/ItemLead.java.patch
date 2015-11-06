@@ -1,6 +1,7 @@
----a/net/minecraft/item/ItemLead.java
-+++b/net/minecraft/item/ItemLead.java
-@@ -2,6 +2,7 @@
+--- decompiled\net\minecraft\item\ItemLead.java
++++ src\main\java\net\minecraft\item\ItemLead.java
+@@ -1,9 +1,10 @@
+ package net.minecraft.item;
  
  import java.util.Iterator;
  import java.util.List;
@@ -8,7 +9,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockFence;
  import net.minecraft.creativetab.CreativeTabs;
-@@ -13,61 +13,63 @@
+ import net.minecraft.entity.EntityLeashKnot;
+ import net.minecraft.entity.EntityLiving;
+@@ -11,63 +12,69 @@
+ import net.minecraft.util.AxisAlignedBB;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -100,9 +105,5 @@
                  entityliving.setLeashedToEntity(entityleashknot, true);
                  flag = true;
              }
-@@ -73,4 +73,4 @@
+         }
  
-         return flag;
-     }
--}
-+}

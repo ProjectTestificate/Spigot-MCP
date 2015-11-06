@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockHopper.java
-+++b/net/minecraft/block/BlockHopper.java
-@@ -1,8 +1,6 @@
+--- decompiled\net\minecraft\block\BlockHopper.java
++++ src\main\java\net\minecraft\block\BlockHopper.java
+@@ -1,9 +1,10 @@
  package net.minecraft.block;
  
 -import com.google.common.base.Predicate;
@@ -10,7 +10,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyBool;
-@@ -20,43 +20,39 @@
+ import net.minecraft.block.properties.PropertyDirection;
+ import net.minecraft.block.state.BlockState;
+@@ -18,48 +19,44 @@
+ import net.minecraft.tileentity.TileEntity;
+ import net.minecraft.tileentity.TileEntityHopper;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -69,7 +73,11 @@
          this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.625F, 1.0F);
          super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
          float f = 0.125F;
-@@ -72,158 +72,128 @@
+         this.setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
+         super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
+@@ -70,159 +67,144 @@
+         this.setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
+         super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
          this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
      }
  
@@ -269,7 +277,6 @@
 +    protected BlockState createBlockState() {
 +        return new BlockState(this, new IProperty[]{FACING, ENABLED});
      }
--}
 +
 +
 +    // Spigot start - Use random block updates to make hoppers active.
@@ -284,4 +291,4 @@
 +        }
 +    }
 +    // Spigot end
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/server/management/UserListOpsEntry.java
-+++b/net/minecraft/server/management/UserListOpsEntry.java
-@@ -1,62 +1,53 @@
+--- decompiled\net\minecraft\server\management\UserListOpsEntry.java
++++ src\main\java\net\minecraft\server\management\UserListOpsEntry.java
+@@ -1,63 +1,52 @@
  package net.minecraft.server.management;
  
 +import java.util.UUID;
@@ -79,5 +79,4 @@
              return null;
          }
      }
--}
-+}
+ }

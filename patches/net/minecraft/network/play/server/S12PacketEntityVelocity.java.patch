@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S12PacketEntityVelocity.java
-+++b/net/minecraft/network/play/server/S12PacketEntityVelocity.java
-@@ -1,92 +1,81 @@
+--- decompiled\net\minecraft\network\play\server\S12PacketEntityVelocity.java
++++ src\main\java\net\minecraft\network\play\server\S12PacketEntityVelocity.java
+@@ -1,116 +1,81 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -138,5 +138,4 @@
 -    {
 -        return this.field_149414_d;
 -    }
--}
-+}
+ }

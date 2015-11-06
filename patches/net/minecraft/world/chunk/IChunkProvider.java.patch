@@ -1,6 +1,6 @@
----a/net/minecraft/world/chunk/IChunkProvider.java
-+++b/net/minecraft/world/chunk/IChunkProvider.java
-@@ -1,11 +1,13 @@
+--- decompiled\net\minecraft\world\chunk\IChunkProvider.java
++++ src\main\java\net\minecraft\world\chunk\IChunkProvider.java
+@@ -1,15 +1,16 @@
  package net.minecraft.world.chunk;
  
  import java.util.List;
@@ -17,9 +17,5 @@
      boolean chunkExists(int x, int z);
  
      Chunk provideChunk(int x, int z);
-@@ -35,4 +35,4 @@
-     void recreateStructures(Chunk p_180514_1_, int p_180514_2_, int p_180514_3_);
  
-     void saveExtraData();
--}
-+}
+     Chunk provideChunk(BlockPos blockPosIn);

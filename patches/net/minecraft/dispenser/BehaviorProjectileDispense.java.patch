@@ -1,6 +1,8 @@
----a/net/minecraft/dispenser/BehaviorProjectileDispense.java
-+++b/net/minecraft/dispenser/BehaviorProjectileDispense.java
-@@ -4,38 +4,70 @@
+--- decompiled\net\minecraft\dispenser\BehaviorProjectileDispense.java
++++ src\main\java\net\minecraft\dispenser\BehaviorProjectileDispense.java
+@@ -2,41 +2,72 @@
+ 
+ import net.minecraft.block.BlockDispenser;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.IProjectile;
  import net.minecraft.item.ItemStack;
@@ -83,5 +85,4 @@
 +    protected float func_82500_b() {
          return 1.1F;
      }
--}
-+}
+ }

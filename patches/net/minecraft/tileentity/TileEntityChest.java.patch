@@ -1,6 +1,6 @@
----a/net/minecraft/tileentity/TileEntityChest.java
-+++b/net/minecraft/tileentity/TileEntityChest.java
-@@ -1,11 +1,14 @@
+--- decompiled\net\minecraft\tileentity\TileEntityChest.java
++++ src\main\java\net\minecraft\tileentity\TileEntityChest.java
+@@ -1,13 +1,16 @@
  package net.minecraft.tileentity;
  
 +import java.util.ArrayList;
@@ -15,7 +15,11 @@
  import net.minecraft.inventory.Container;
  import net.minecraft.inventory.ContainerChest;
  import net.minecraft.inventory.IInventory;
-@@ -17,11 +17,7 @@
+ import net.minecraft.inventory.InventoryLargeChest;
+ import net.minecraft.item.ItemStack;
+@@ -15,15 +18,17 @@
+ import net.minecraft.nbt.NBTTagList;
+ import net.minecraft.server.gui.IUpdatePlayerListBox;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -33,7 +37,11 @@
      private ItemStack[] chestContents = new ItemStack[27];
      public boolean adjacentChestChecked;
      public TileEntityChest adjacentChestZNeg;
-@@ -36,135 +36,126 @@
+     public TileEntityChest adjacentChestXPos;
+     public TileEntityChest adjacentChestXNeg;
+@@ -34,487 +39,434 @@
+     private int ticksSinceSync;
+     private int cachedChestType;
      private String customName;
      private static final String __OBFID = "CL_00000346";
  
@@ -216,7 +224,7 @@
                  this.chestContents[i].writeToNBT(nbttagcompound1);
                  nbttaglist.appendTag(nbttagcompound1);
              }
-@@ -171,70 +171,57 @@
+         }
  
          compound.setTag("Items", nbttaglist);
  
@@ -306,7 +314,8 @@
              this.adjacentChestChecked = true;
              this.adjacentChestXNeg = this.func_174911_a(EnumFacing.WEST);
              this.adjacentChestXPos = this.func_174911_a(EnumFacing.EAST);
-@@ -245,16 +245,13 @@
+             this.adjacentChestZNeg = this.func_174911_a(EnumFacing.NORTH);
+             this.adjacentChestZPos = this.func_174911_a(EnumFacing.SOUTH);
          }
      }
  
@@ -328,7 +337,8 @@
                  tileentitychest.func_174910_a(this, p_174911_1_.getOpposite());
                  return tileentitychest;
              }
-@@ -264,23 +264,17 @@
+         }
+ 
          return null;
      }
  
@@ -355,7 +365,7 @@
          this.checkForAdjacentChests();
          int i = this.pos.getX();
          int j = this.pos.getY();
-@@ -286,23 +286,19 @@
+         int k = this.pos.getZ();
          ++this.ticksSinceSync;
          float f;
  
@@ -386,7 +396,10 @@
                          ++this.numPlayersUsing;
                      }
                  }
-@@ -313,211 +313,190 @@
+             }
+         }
+ 
+         this.prevLidAngle = this.lidAngle;
          f = 0.1F;
          double d2;
  
@@ -682,6 +695,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityLookHelper.java
-+++b/net/minecraft/entity/ai/EntityLookHelper.java
-@@ -5,8 +5,10 @@
+--- decompiled\net\minecraft\entity\ai\EntityLookHelper.java
++++ src\main\java\net\minecraft\entity\ai\EntityLookHelper.java
+@@ -3,124 +3,108 @@
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.EntityLiving;
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.util.MathHelper;
  
@@ -13,7 +15,9 @@
      private EntityLiving entity;
      private float deltaLookYaw;
      private float deltaLookPitch;
-@@ -16,17 +16,14 @@
+     private boolean isLooking;
+     private double posX;
+     private double posY;
      private double posZ;
      private static final String __OBFID = "CL_00001572";
  
@@ -40,7 +44,9 @@
              this.posY = (p_75651_1_.getEntityBoundingBox().minY + p_75651_1_.getEntityBoundingBox().maxY) / 2.0D;
          }
  
-@@ -40,8 +40,7 @@
+         this.posZ = p_75651_1_.posZ;
+         this.deltaLookYaw = p_75651_2_;
+         this.deltaLookPitch = p_75651_3_;
          this.isLooking = true;
      }
  
@@ -50,7 +56,8 @@
          this.posX = p_75650_1_;
          this.posY = p_75650_3_;
          this.posZ = p_75650_5_;
-@@ -50,78 +50,65 @@
+         this.deltaLookYaw = p_75650_7_;
+         this.deltaLookPitch = p_75650_8_;
          this.isLooking = true;
      }
  
@@ -146,5 +153,4 @@
 +    public double func_180421_g() {
          return this.posZ;
      }
--}
-+}
+ }

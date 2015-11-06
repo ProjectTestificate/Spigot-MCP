@@ -1,6 +1,6 @@
----a/net/minecraft/init/Bootstrap.java
-+++b/net/minecraft/init/Bootstrap.java
-@@ -1,10 +1,8 @@
+--- decompiled\net\minecraft\init\Bootstrap.java
++++ src\main\java\net\minecraft\init\Bootstrap.java
+@@ -1,11 +1,11 @@
  package net.minecraft.init;
  
 -import com.mojang.authlib.GameProfile;
@@ -11,7 +11,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockCommandBlock;
  import net.minecraft.block.BlockDispenser;
-@@ -21,7 +21,6 @@
+ import net.minecraft.block.BlockFire;
+ import net.minecraft.block.BlockLiquid;
+@@ -19,11 +19,10 @@
+ import net.minecraft.dispenser.IBehaviorDispenseItem;
+ import net.minecraft.dispenser.IBlockSource;
  import net.minecraft.dispenser.IPosition;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityLiving;
@@ -19,7 +23,11 @@
  import net.minecraft.entity.IProjectile;
  import net.minecraft.entity.item.EntityBoat;
  import net.minecraft.entity.item.EntityExpBottle;
-@@ -50,222 +50,374 @@
+ import net.minecraft.entity.item.EntityFireworkRocket;
+ import net.minecraft.entity.item.EntityTNTPrimed;
+@@ -48,481 +47,688 @@
+ import net.minecraft.tileentity.TileEntitySkull;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.util.LoggingPrintStream;
  import net.minecraft.world.World;
@@ -508,7 +516,7 @@
                  World world = source.getWorld();
                  BlockPos blockpos = source.getBlockPos().offset(BlockDispenser.getFacing(source.getBlockMetadata()));
                  IBlockState iblockstate = world.getBlockState(blockpos);
-@@ -273,254 +273,308 @@
+                 Block block = iblockstate.getBlock();
                  Material material = block.getMaterial();
                  Item item;
  
@@ -943,7 +951,11 @@
                          IBlockState iblockstate = Blocks.command_block.getDefaultState().withProperty(BlockCommandBlock.TRIGGERED, Boolean.valueOf(false));
                          world.setBlockState(blockpos, iblockstate, 3);
                          ItemBlock.setTileEntityNBT(world, blockpos, stack);
-@@ -532,19 +532,25 @@
+                         world.notifyNeighborsOfStateChange(source.getBlockPos(), source.getBlock());
+                     }
+@@ -530,23 +736,24 @@
+                     --stack.stackSize;
+                 }
  
                  return stack;
              }
@@ -972,7 +984,11 @@
                  redirectOutputToLog();
              }
  
-@@ -556,10 +556,8 @@
+             Block.registerBlocks();
+             BlockFire.init();
+@@ -554,17 +761,10 @@
+             StatList.func_151178_a();
+             registerDispenserBehaviors();
          }
      }
  
@@ -988,5 +1004,4 @@
 -    {
 -        SYSOUT.println(p_179870_0_);
 -    }
--}
-+}
+ }

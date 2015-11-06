@@ -1,6 +1,8 @@
----a/net/minecraft/world/pathfinder/WalkNodeProcessor.java
-+++b/net/minecraft/world/pathfinder/WalkNodeProcessor.java
-@@ -14,8 +14,8 @@
+--- decompiled\net\minecraft\world\pathfinder\WalkNodeProcessor.java
++++ src\main\java\net\minecraft\world\pathfinder\WalkNodeProcessor.java
+@@ -12,234 +12,185 @@
+ import net.minecraft.pathfinding.PathPoint;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.IBlockAccess;
  
@@ -11,7 +13,7 @@
      private boolean field_176180_f;
      private boolean field_176181_g;
      private boolean field_176183_h;
-@@ -23,53 +23,43 @@
+     private boolean field_176184_i;
      private boolean field_176182_j;
      private static final String __OBFID = "CL_00001965";
  
@@ -76,7 +78,8 @@
              b0 = 1;
          }
  
-@@ -78,85 +78,68 @@
+         PathPoint pathpoint2 = this.func_176171_a(p_176164_2_, p_176164_3_.xCoord, p_176164_3_.yCoord, p_176164_3_.zCoord + 1, b0);
+         PathPoint pathpoint3 = this.func_176171_a(p_176164_2_, p_176164_3_.xCoord - 1, p_176164_3_.yCoord, p_176164_3_.zCoord, b0);
          PathPoint pathpoint4 = this.func_176171_a(p_176164_2_, p_176164_3_.xCoord + 1, p_176164_3_.yCoord, p_176164_3_.zCoord, b0);
          PathPoint pathpoint5 = this.func_176171_a(p_176164_2_, p_176164_3_.xCoord, p_176164_3_.yCoord, p_176164_3_.zCoord - 1, b0);
  
@@ -178,7 +181,8 @@
                      return null;
                  }
              }
-@@ -165,79 +165,57 @@
+ 
+             return pathpoint;
          }
      }
  
@@ -277,7 +281,11 @@
                                  return -2;
                              }
                          }
-@@ -249,39 +249,31 @@
+                     }
+                 }
+@@ -247,40 +198,33 @@
+         }
+ 
          return flag3 ? 2 : 1;
      }
  
@@ -322,5 +330,4 @@
 +    public boolean func_176173_e() {
          return this.field_176183_h;
      }
--}
-+}
+ }

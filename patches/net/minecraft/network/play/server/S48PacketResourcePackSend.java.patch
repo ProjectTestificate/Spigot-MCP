@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S48PacketResourcePackSend.java
-+++b/net/minecraft/network/play/server/S48PacketResourcePackSend.java
-@@ -1,51 +1,46 @@
+--- decompiled\net\minecraft\network\play\server\S48PacketResourcePackSend.java
++++ src\main\java\net\minecraft\network\play\server\S48PacketResourcePackSend.java
+@@ -1,63 +1,46 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -76,5 +76,4 @@
 -    {
 -        return this.hash;
 -    }
--}
-+}
+ }

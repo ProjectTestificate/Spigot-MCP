@@ -1,6 +1,6 @@
----a/net/minecraft/dispenser/PositionImpl.java
-+++b/net/minecraft/dispenser/PositionImpl.java
-@@ -1,32 +1,28 @@
+--- decompiled\net\minecraft\dispenser\PositionImpl.java
++++ src\main\java\net\minecraft\dispenser\PositionImpl.java
+@@ -1,31 +1,27 @@
  package net.minecraft.dispenser;
  
 -public class PositionImpl implements IPosition
@@ -37,5 +37,4 @@
 +    public double getZ() {
          return this.z;
      }
--}
-+}
+ }

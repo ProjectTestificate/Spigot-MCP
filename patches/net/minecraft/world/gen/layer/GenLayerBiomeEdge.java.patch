@@ -1,6 +1,7 @@
----a/net/minecraft/world/gen/layer/GenLayerBiomeEdge.java
-+++b/net/minecraft/world/gen/layer/GenLayerBiomeEdge.java
-@@ -2,75 +2,59 @@
+--- decompiled\net\minecraft\world\gen\layer\GenLayerBiomeEdge.java
++++ src\main\java\net\minecraft\world\gen\layer\GenLayerBiomeEdge.java
+@@ -1,159 +1,120 @@
+ package net.minecraft.world.gen.layer;
  
  import net.minecraft.world.biome.BiomeGenBase;
  
@@ -95,7 +96,9 @@
                          aint1[j1 + i1 * areaWidth] = k1;
                      }
                  }
-@@ -81,26 +81,19 @@
+             }
+         }
+ 
          return aint1;
      }
  
@@ -126,7 +129,7 @@
                  p_151636_2_[p_151636_3_ + p_151636_4_ * p_151636_5_] = p_151636_8_;
              }
  
-@@ -107,26 +107,19 @@
+             return true;
          }
      }
  
@@ -157,7 +160,7 @@
                  p_151635_2_[p_151635_3_ + p_151635_4_ * p_151635_5_] = p_151635_8_;
              }
  
-@@ -133,30 +133,21 @@
+             return true;
          }
      }
  
@@ -189,5 +192,4 @@
              }
          }
      }
--}
-+}
+ }

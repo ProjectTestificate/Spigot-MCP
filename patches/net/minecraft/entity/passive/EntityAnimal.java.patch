@@ -1,6 +1,8 @@
----a/net/minecraft/entity/passive/EntityAnimal.java
-+++b/net/minecraft/entity/passive/EntityAnimal.java
-@@ -8,59 +8,49 @@
+--- decompiled\net\minecraft\entity\passive\EntityAnimal.java
++++ src\main\java\net\minecraft\entity\passive\EntityAnimal.java
+@@ -6,200 +6,156 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.init.Items;
  import net.minecraft.item.ItemStack;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.util.BlockPos;
@@ -74,7 +76,8 @@
      public boolean attackEntityFrom(DamageSource source, float amount)
      {
          if (this.isEntityInvulnerable(source))
-@@ -69,29 +69,29 @@
+         {
+             return false;
          }
          else
          {
@@ -112,7 +115,7 @@
          int i = MathHelper.floor_double(this.posX);
          int j = MathHelper.floor_double(this.getEntityBoundingBox().minY);
          int k = MathHelper.floor_double(this.posZ);
-@@ -100,44 +100,35 @@
+         BlockPos blockpos = new BlockPos(i, j, k);
          return this.worldObj.getBlockState(blockpos.down()).getBlock() == this.field_175506_bl && this.worldObj.getLight(blockpos) > 8 && super.getCanSpawnHere();
      }
  
@@ -165,7 +168,7 @@
                  return true;
              }
          }
-@@ -144,46 +144,36 @@
+ 
          return super.interact(player);
      }
  
@@ -237,5 +240,4 @@
 -            super.handleHealthUpdate(p_70103_1_);
 -        }
 -    }
--}
-+}
+ }

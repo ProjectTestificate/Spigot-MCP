@@ -1,6 +1,7 @@
----a/net/minecraft/entity/ai/EntityAIOpenDoor.java
-+++b/net/minecraft/entity/ai/EntityAIOpenDoor.java
-@@ -2,42 +2,36 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIOpenDoor.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIOpenDoor.java
+@@ -1,42 +1,36 @@
+ package net.minecraft.entity.ai;
  
  import net.minecraft.entity.EntityLiving;
  
@@ -49,5 +50,4 @@
          --this.closeDoorTemporisation;
          super.updateTask();
      }
--}
-+}
+ }

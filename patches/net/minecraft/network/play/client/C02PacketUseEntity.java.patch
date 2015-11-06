@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/client/C02PacketUseEntity.java
-+++b/net/minecraft/network/play/client/C02PacketUseEntity.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\network\play\client\C02PacketUseEntity.java
++++ src\main\java\net\minecraft\network\play\client\C02PacketUseEntity.java
+@@ -1,92 +1,69 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -8,7 +8,7 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.network.INetHandler;
  import net.minecraft.network.Packet;
-@@ -8,88 +8,62 @@
+ import net.minecraft.network.PacketBuffer;
  import net.minecraft.network.play.INetHandlerPlayServer;
  import net.minecraft.util.Vec3;
  import net.minecraft.world.World;
@@ -114,6 +114,3 @@
          INTERACT_AT;
  
          private static final String __OBFID = "CL_00001358";
-     }
--}
-+}

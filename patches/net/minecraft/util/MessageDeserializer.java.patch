@@ -1,6 +1,6 @@
----a/net/minecraft/util/MessageDeserializer.java
-+++b/net/minecraft/util/MessageDeserializer.java
-@@ -1,64 +1,54 @@
+--- decompiled\net\minecraft\util\MessageDeserializer.java
++++ src\main\java\net\minecraft\util\MessageDeserializer.java
+@@ -1,61 +1,54 @@
  package net.minecraft.util;
  
 -import io.netty.buffer.ByteBuf;
@@ -81,5 +81,3 @@
              }
          }
      }
--}
-+}

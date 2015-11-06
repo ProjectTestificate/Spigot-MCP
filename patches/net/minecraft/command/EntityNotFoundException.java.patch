@@ -1,6 +1,6 @@
----a/net/minecraft/command/EntityNotFoundException.java
-+++b/net/minecraft/command/EntityNotFoundException.java
-@@ -1,17 +1,15 @@
+--- decompiled\net\minecraft\command\EntityNotFoundException.java
++++ src\main\java\net\minecraft\command\EntityNotFoundException.java
+@@ -1,16 +1,14 @@
  package net.minecraft.command;
  
 -public class EntityNotFoundException extends CommandException
@@ -20,5 +20,4 @@
 +    public EntityNotFoundException(String p_i46035_1_, Object... p_i46035_2_) {
          super(p_i46035_1_, p_i46035_2_);
      }
--}
-+}
+ }

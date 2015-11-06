@@ -1,6 +1,8 @@
----a/net/minecraft/world/demo/DemoWorldServer.java
-+++b/net/minecraft/world/demo/DemoWorldServer.java
-@@ -8,17 +8,24 @@
+--- decompiled\net\minecraft\world\demo\DemoWorldServer.java
++++ src\main\java\net\minecraft\world\demo\DemoWorldServer.java
+@@ -6,17 +6,21 @@
+ import net.minecraft.world.WorldSettings;
+ import net.minecraft.world.WorldType;
  import net.minecraft.world.storage.ISaveHandler;
  import net.minecraft.world.storage.WorldInfo;
  
@@ -25,5 +27,4 @@
 +        // SpigotMCP End
          this.worldInfo.populateFromWorldSettings(demoWorldSettings);
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemEnderPearl.java
-+++b/net/minecraft/item/ItemEnderPearl.java
-@@ -6,29 +6,24 @@
+--- decompiled\net\minecraft\item\ItemEnderPearl.java
++++ src\main\java\net\minecraft\item\ItemEnderPearl.java
+@@ -4,33 +4,27 @@
+ import net.minecraft.entity.item.EntityEnderPearl;
+ import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.stats.StatList;
  import net.minecraft.world.World;
  
@@ -37,9 +39,5 @@
                  worldIn.spawnEntityInWorld(new EntityEnderPearl(worldIn, playerIn));
              }
  
-@@ -36,4 +36,4 @@
+             playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
              return itemStackIn;
-         }
-     }
--}
-+}

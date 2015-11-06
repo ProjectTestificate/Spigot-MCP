@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemFireball.java
-+++b/net/minecraft/item/ItemFireball.java
-@@ -8,39 +8,38 @@
+--- decompiled\net\minecraft\item\ItemFireball.java
++++ src\main\java\net\minecraft\item\ItemFireball.java
+@@ -6,43 +6,41 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -59,9 +61,5 @@
                      --stack.stackSize;
                  }
  
-@@ -48,4 +48,4 @@
+                 return true;
              }
-         }
-     }
--}
-+}

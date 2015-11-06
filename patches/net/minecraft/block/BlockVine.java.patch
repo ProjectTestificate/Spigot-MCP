@@ -1,6 +1,7 @@
----a/net/minecraft/block/BlockVine.java
-+++b/net/minecraft/block/BlockVine.java
-@@ -2,6 +2,7 @@
+--- decompiled\net\minecraft\block\BlockVine.java
++++ src\main\java\net\minecraft\block\BlockVine.java
+@@ -1,9 +1,10 @@
+ package net.minecraft.block;
  
  import java.util.Iterator;
  import java.util.Random;
@@ -8,7 +9,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyBool;
-@@ -19,62 +19,52 @@
+ import net.minecraft.block.state.BlockState;
+ import net.minecraft.block.state.IBlockState;
+@@ -17,121 +18,107 @@
+ import net.minecraft.stats.StatList;
+ import net.minecraft.tileentity.TileEntity;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -83,7 +88,9 @@
          float f = 0.0625F;
          float f1 = 1.0F;
          float f2 = 1.0F;
-@@ -84,8 +84,7 @@
+         float f3 = 1.0F;
+         float f4 = 0.0F;
+         float f5 = 0.0F;
          float f6 = 0.0F;
          boolean flag = false;
  
@@ -93,7 +100,9 @@
              f4 = Math.max(f4, 0.0625F);
              f1 = 0.0F;
              f2 = 0.0F;
-@@ -95,8 +95,7 @@
+             f5 = 1.0F;
+             f3 = 0.0F;
+             f6 = 1.0F;
              flag = true;
          }
  
@@ -103,7 +112,9 @@
              f1 = Math.min(f1, 0.9375F);
              f4 = 1.0F;
              f2 = 0.0F;
-@@ -106,8 +106,7 @@
+             f5 = 1.0F;
+             f3 = 0.0F;
+             f6 = 1.0F;
              flag = true;
          }
  
@@ -113,7 +124,9 @@
              f6 = Math.max(f6, 0.0625F);
              f3 = 0.0F;
              f1 = 0.0F;
-@@ -117,8 +117,7 @@
+             f4 = 1.0F;
+             f2 = 0.0F;
+             f5 = 1.0F;
              flag = true;
          }
  
@@ -123,7 +136,9 @@
              f3 = Math.min(f3, 0.9375F);
              f6 = 1.0F;
              f1 = 0.0F;
-@@ -128,8 +128,7 @@
+             f4 = 1.0F;
+             f2 = 0.0F;
+             f5 = 1.0F;
              flag = true;
          }
  
@@ -133,7 +148,11 @@
              f2 = Math.min(f2, 0.9375F);
              f5 = 1.0F;
              f1 = 0.0F;
-@@ -141,13 +141,11 @@
+             f4 = 1.0F;
+             f3 = 0.0F;
+@@ -139,19 +126,16 @@
+         }
+ 
          this.setBlockBounds(f1, f2, f3, f4, f5, f6);
      }
  
@@ -152,7 +171,11 @@
              case 1:
                  return this.canPlaceOn(worldIn.getBlockState(pos.up()).getBlock());
              case 2:
-@@ -162,37 +162,30 @@
+             case 3:
+             case 4:
+@@ -160,101 +144,64 @@
+             default:
+                 return false;
          }
      }
  
@@ -202,7 +225,7 @@
                  worldIn.setBlockState(pos, state, 2);
              }
  
-@@ -203,76 +203,29 @@
+             return true;
          }
      }
  
@@ -269,7 +292,11 @@
                                      flag = true;
                                      break label189;
                                  }
-@@ -264,79 +264,75 @@
+                             }
+                         }
+@@ -262,220 +209,189 @@
+                 }
+ 
                  EnumFacing enumfacing1 = EnumFacing.random(rand);
                  EnumFacing enumfacing2;
  
@@ -394,7 +421,7 @@
                              blockpos2 = pos.down();
                              IBlockState iblockstate3 = worldIn.getBlockState(blockpos2);
                              Block block = iblockstate3.getBlock();
-@@ -345,44 +345,35 @@
+                             IBlockState iblockstate1;
                              Iterator iterator;
                              EnumFacing enumfacing;
  
@@ -457,7 +484,9 @@
                                  }
                              }
                          }
-@@ -393,85 +393,63 @@
+                     }
+                 }
+             }
          }
      }
  
@@ -562,7 +591,11 @@
              case 1:
                  return UP;
              case 2:
-@@ -489,18 +489,15 @@
+                 return NORTH;
+             case 3:
+@@ -487,78 +403,59 @@
+             default:
+                 throw new IllegalArgumentException(side + " is an invalid choice");
          }
      }
  
@@ -584,7 +617,7 @@
                  ++i;
              }
          }
-@@ -508,60 +508,40 @@
+ 
          return i;
      }
  
@@ -670,6 +703,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

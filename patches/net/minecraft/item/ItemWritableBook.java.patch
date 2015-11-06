@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemWritableBook.java
-+++b/net/minecraft/item/ItemWritableBook.java
-@@ -6,47 +6,37 @@
+--- decompiled\net\minecraft\item\ItemWritableBook.java
++++ src\main\java\net\minecraft\item\ItemWritableBook.java
+@@ -4,51 +4,40 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.nbt.NBTTagList;
  import net.minecraft.stats.StatList;
  import net.minecraft.world.World;
  
@@ -59,9 +61,5 @@
                      return false;
                  }
              }
-@@ -54,4 +54,4 @@
+ 
              return true;
-         }
-     }
--}
-+}

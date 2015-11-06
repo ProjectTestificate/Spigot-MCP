@@ -1,6 +1,7 @@
----a/net/minecraft/world/gen/layer/GenLayerRiverMix.java
-+++b/net/minecraft/world/gen/layer/GenLayerRiverMix.java
-@@ -2,63 +2,48 @@
+--- decompiled\net\minecraft\world\gen\layer\GenLayerRiverMix.java
++++ src\main\java\net\minecraft\world\gen\layer\GenLayerRiverMix.java
+@@ -1,61 +1,46 @@
+ package net.minecraft.world.gen.layer;
  
  import net.minecraft.world.biome.BiomeGenBase;
  
@@ -74,6 +75,3 @@
          }
  
          return aint2;
-     }
--}
-+}

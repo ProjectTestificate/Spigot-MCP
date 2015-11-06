@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemSoup.java
-+++b/net/minecraft/item/ItemSoup.java
-@@ -4,20 +4,18 @@
+--- decompiled\net\minecraft\item\ItemSoup.java
++++ src\main\java\net\minecraft\item\ItemSoup.java
+@@ -2,21 +2,19 @@
+ 
+ import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.init.Items;
  import net.minecraft.world.World;
  
@@ -23,5 +25,4 @@
          super.onItemUseFinish(stack, worldIn, playerIn);
          return new ItemStack(Items.bowl);
      }
--}
-+}
+ }

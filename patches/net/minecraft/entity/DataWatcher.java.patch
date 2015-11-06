@@ -1,6 +1,6 @@
----a/net/minecraft/entity/DataWatcher.java
-+++b/net/minecraft/entity/DataWatcher.java
-@@ -1,7 +1,5 @@
+--- decompiled\net\minecraft\entity\DataWatcher.java
++++ src\main\java\net\minecraft\entity\DataWatcher.java
+@@ -1,195 +1,179 @@
  package net.minecraft.entity;
  
 -import com.google.common.collect.Lists;
@@ -8,7 +8,7 @@
  import java.io.IOException;
  import java.util.ArrayList;
  import java.util.Iterator;
-@@ -9,6 +9,7 @@
+ import java.util.List;
  import java.util.Map;
  import java.util.concurrent.locks.ReadWriteLock;
  import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -16,7 +16,7 @@
  import net.minecraft.crash.CrashReport;
  import net.minecraft.crash.CrashReportCategory;
  import net.minecraft.item.ItemStack;
-@@ -16,97 +16,91 @@
+ import net.minecraft.network.PacketBuffer;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.ReportedException;
  import net.minecraft.util.Rotations;
@@ -163,7 +163,10 @@
              CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Getting synched entity data");
              CrashReportCategory crashreportcategory = crashreport.makeCategory("Synched entity data");
              crashreportcategory.addCrashSection("Data ID", Integer.valueOf(id));
-@@ -121,18 +121,15 @@
+             throw new ReportedException(crashreport);
+         }
+ 
+         this.lock.readLock().unlock();
          return watchableobject;
      }
  
@@ -185,7 +188,7 @@
              watchableobject.setObject(newData);
              this.owner.func_145781_i(id);
              watchableobject.setWatched(true);
-@@ -139,25 +139,20 @@
+             this.objectChanged = true;
          }
      }
  
@@ -218,7 +221,7 @@
                  writeWatchableObjectToPacketBuffer(buffer, watchableobject);
              }
          }
-@@ -166,30 +166,24 @@
+ 
          buffer.writeByte(127);
      }
  
@@ -260,7 +263,11 @@
                      arraylist.add(watchableobject);
                  }
              }
-@@ -199,13 +199,11 @@
+ 
+             this.lock.readLock().unlock();
+@@ -197,102 +181,93 @@
+ 
+         this.objectChanged = false;
          return arraylist;
      }
  
@@ -279,7 +286,7 @@
              writeWatchableObjectToPacketBuffer(buffer, watchableobject);
          }
  
-@@ -214,73 +214,68 @@
+         this.lock.readLock().unlock();
          buffer.writeByte(127);
      }
  
@@ -377,7 +384,7 @@
                  arraylist = Lists.newArrayList();
              }
  
-@@ -289,8 +289,7 @@
+             int i = (b0 & 224) >> 5;
              int j = b0 & 31;
              DataWatcher.WatchableObject watchableobject = null;
  
@@ -387,7 +394,11 @@
                  case 0:
                      watchableobject = new DataWatcher.WatchableObject(i, j, Byte.valueOf(buffer.readByte()));
                      break;
-@@ -328,117 +328,59 @@
+                 case 1:
+                     watchableobject = new DataWatcher.WatchableObject(i, j, Short.valueOf(buffer.readShort()));
+@@ -326,96 +301,66 @@
+         }
+ 
          return arraylist;
      }
  
@@ -520,10 +531,9 @@
 +        public boolean isWatched() {
 +            return this.watched;
          }
--}
 +
 +        public void setWatched(boolean watched) {
 +            this.watched = watched;
 +        }
 +    }
-+}
+ }

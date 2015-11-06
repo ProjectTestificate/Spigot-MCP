@@ -1,11 +1,10 @@
----a/net/minecraft/dispenser/ILocatableSource.java
-+++b/net/minecraft/dispenser/ILocatableSource.java
+--- decompiled\net\minecraft\dispenser\ILocatableSource.java
++++ src\main\java\net\minecraft\dispenser\ILocatableSource.java
 @@ -1,5 +1,5 @@
  package net.minecraft.dispenser;
  
 -public interface ILocatableSource extends ILocation
 -{
--}
 +public interface ILocatableSource extends ILocation {
 +
-+}
+ }

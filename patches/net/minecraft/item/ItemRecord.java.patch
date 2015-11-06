@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemRecord.java
-+++b/net/minecraft/item/ItemRecord.java
-@@ -1,10 +1,6 @@
+--- decompiled\net\minecraft\item\ItemRecord.java
++++ src\main\java\net\minecraft\item\ItemRecord.java
+@@ -1,78 +1,50 @@
  package net.minecraft.item;
  
 -import com.google.common.collect.Maps;
@@ -10,7 +10,7 @@
  import net.minecraft.block.BlockJukebox;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.creativetab.CreativeTabs;
-@@ -10,64 +10,41 @@
+ import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.init.Blocks;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -92,5 +92,4 @@
 -    {
 -        return (ItemRecord)RECORDS.get(name);
 -    }
--}
-+}
+ }

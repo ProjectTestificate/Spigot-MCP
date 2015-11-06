@@ -1,6 +1,6 @@
----a/net/minecraft/network/rcon/IServer.java
-+++b/net/minecraft/network/rcon/IServer.java
-@@ -1,10 +1,6 @@
+--- decompiled\net\minecraft\network\rcon\IServer.java
++++ src\main\java\net\minecraft\network\rcon\IServer.java
+@@ -1,13 +1,10 @@
  package net.minecraft.network.rcon;
  
 -import net.minecraftforge.fml.relauncher.Side;
@@ -14,9 +14,5 @@
      int getIntProperty(String key, int defaultValue);
  
      String getStringProperty(String key, String defaultValue);
-@@ -45,4 +45,4 @@
-     void logSevere(String msg);
  
-     void logDebug(String msg);
--}
-+}
+     void setProperty(String key, Object value);

@@ -1,6 +1,6 @@
----a/net/minecraft/inventory/InventoryMerchant.java
-+++b/net/minecraft/inventory/InventoryMerchant.java
-@@ -1,6 +1,12 @@
+--- decompiled\net\minecraft\inventory\InventoryMerchant.java
++++ src\main\java\net\minecraft\inventory\InventoryMerchant.java
+@@ -1,240 +1,230 @@
  package net.minecraft.inventory;
  
 +import java.util.ArrayList;
@@ -11,7 +11,8 @@
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.item.ItemStack;
  import net.minecraft.util.ChatComponentText;
-@@ -9,8 +9,12 @@
+ import net.minecraft.util.ChatComponentTranslation;
+ import net.minecraft.util.IChatComponent;
  import net.minecraft.village.MerchantRecipe;
  import net.minecraft.village.MerchantRecipeList;
  
@@ -26,7 +27,7 @@
      private final IMerchant theMerchant;
      private ItemStack[] theInventory = new ItemStack[3];
      private final EntityPlayer thePlayer;
-@@ -18,224 +18,234 @@
+     private MerchantRecipe currentRecipe;
      private int currentRecipeIndex;
      private static final String __OBFID = "CL_00001756";
  
@@ -331,5 +332,4 @@
              this.theInventory[i] = null;
          }
      }
--}
-+}
+ }

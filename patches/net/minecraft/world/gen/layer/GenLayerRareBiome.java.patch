@@ -1,6 +1,7 @@
----a/net/minecraft/world/gen/layer/GenLayerRareBiome.java
-+++b/net/minecraft/world/gen/layer/GenLayerRareBiome.java
-@@ -2,40 +2,32 @@
+--- decompiled\net\minecraft\world\gen\layer\GenLayerRareBiome.java
++++ src\main\java\net\minecraft\world\gen\layer\GenLayerRareBiome.java
+@@ -1,44 +1,34 @@
+ package net.minecraft.world.gen.layer;
  
  import net.minecraft.world.biome.BiomeGenBase;
  
@@ -53,9 +54,5 @@
                      aint1[j1 + i1 * areaWidth] = k1;
                  }
              }
-@@ -44,4 +44,4 @@
+         }
  
-         return aint1;
-     }
--}
-+}

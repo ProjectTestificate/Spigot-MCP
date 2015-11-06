@@ -1,6 +1,7 @@
----a/net/minecraft/dispenser/IBehaviorDispenseItem.java
-+++b/net/minecraft/dispenser/IBehaviorDispenseItem.java
-@@ -2,19 +2,19 @@
+--- decompiled\net\minecraft\dispenser\IBehaviorDispenseItem.java
++++ src\main\java\net\minecraft\dispenser\IBehaviorDispenseItem.java
+@@ -1,16 +1,16 @@
+ package net.minecraft.dispenser;
  
  import net.minecraft.item.ItemStack;
  
@@ -22,5 +23,3 @@
      };
  
      ItemStack dispense(IBlockSource source, ItemStack stack);
--}
-+}

@@ -1,6 +1,8 @@
----a/net/minecraft/tileentity/TileEntityFlowerPot.java
-+++b/net/minecraft/tileentity/TileEntityFlowerPot.java
-@@ -6,46 +6,41 @@
+--- decompiled\net\minecraft\tileentity\TileEntityFlowerPot.java
++++ src\main\java\net\minecraft\tileentity\TileEntityFlowerPot.java
+@@ -4,68 +4,59 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.network.Packet;
  import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
  import net.minecraft.util.ResourceLocation;
  
@@ -58,7 +60,7 @@
          NBTTagCompound nbttagcompound = new NBTTagCompound();
          this.writeToNBT(nbttagcompound);
          nbttagcompound.removeTag("Item");
-@@ -53,20 +53,16 @@
+         nbttagcompound.setInteger("Item", Item.getIdFromItem(this.flowerPotItem));
          return new S35PacketUpdateTileEntity(this.pos, 5, nbttagcompound);
      }
  
@@ -80,5 +82,4 @@
 +    public int getFlowerPotData() {
          return this.flowerPotData;
      }
--}
-+}
+ }

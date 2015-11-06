@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIVillagerMate.java
-+++b/net/minecraft/entity/ai/EntityAIVillagerMate.java
-@@ -6,8 +6,8 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIVillagerMate.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIVillagerMate.java
+@@ -4,124 +4,96 @@
+ import net.minecraft.entity.passive.EntityVillager;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.village.Village;
  import net.minecraft.world.World;
  
@@ -11,7 +13,7 @@
      private EntityVillager villagerObj;
      private EntityVillager mate;
      private World worldObj;
-@@ -15,105 +15,77 @@
+     private int matingTimeout;
      Village villageObj;
      private static final String __OBFID = "CL_00001594";
  
@@ -141,7 +143,7 @@
          EntityVillager entityvillager = this.villagerObj.func_180488_b(this.mate);
          this.mate.setGrowingAge(6000);
          this.villagerObj.setGrowingAge(6000);
-@@ -121,8 +121,8 @@
+         this.mate.func_175549_o(false);
          this.villagerObj.func_175549_o(false);
          entityvillager.setGrowingAge(-24000);
          entityvillager.setLocationAndAngles(this.villagerObj.posX, this.villagerObj.posY, this.villagerObj.posZ, 0.0F, 0.0F);
@@ -150,5 +152,4 @@
 +        this.worldObj.addEntity(entityvillager, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.BREEDING); // CraftBukkit - added SpawnReason
 +        this.worldObj.setEntityState(entityvillager, (byte) 12);
      }
--}
-+}
+ }

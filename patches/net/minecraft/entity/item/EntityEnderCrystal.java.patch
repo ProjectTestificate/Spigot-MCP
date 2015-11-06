@@ -1,6 +1,8 @@
----a/net/minecraft/entity/item/EntityEnderCrystal.java
-+++b/net/minecraft/entity/item/EntityEnderCrystal.java
-@@ -8,17 +8,16 @@
+--- decompiled\net\minecraft\entity\item\EntityEnderCrystal.java
++++ src\main\java\net\minecraft\entity\item\EntityEnderCrystal.java
+@@ -6,90 +6,90 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.DamageSource;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  import net.minecraft.world.WorldProviderEnd;
@@ -24,7 +26,7 @@
          super(worldIn);
          this.preventEntitySpawning = true;
          this.setSize(2.0F, 2.0F);
-@@ -26,32 +26,15 @@
+         this.health = 5;
          this.innerRotation = this.rand.nextInt(100000);
      }
  
@@ -53,7 +55,9 @@
          this.prevPosX = this.posX;
          this.prevPosY = this.posY;
          this.prevPosZ = this.posZ;
-@@ -54,40 +54,46 @@
+         ++this.innerRotation;
+         this.dataWatcher.updateObject(8, Integer.valueOf(this.health));
+         int i = MathHelper.floor_double(this.posX);
          int j = MathHelper.floor_double(this.posY);
          int k = MathHelper.floor_double(this.posZ);
  
@@ -125,9 +129,5 @@
                      }
                  }
              }
-@@ -95,4 +95,4 @@
+ 
              return true;
-         }
-     }
--}
-+}

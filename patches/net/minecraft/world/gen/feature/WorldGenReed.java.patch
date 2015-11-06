@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenReed.java
-+++b/net/minecraft/world/gen/feature/WorldGenReed.java
-@@ -1,29 +1,27 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenReed.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenReed.java
+@@ -1,35 +1,30 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -43,9 +43,5 @@
                              worldIn.setBlockState(blockpos1.up(k), Blocks.reeds.getDefaultState(), 2);
                          }
                      }
-@@ -37,4 +37,4 @@
- 
-         return true;
-     }
--}
-+}
+                 }
+             }

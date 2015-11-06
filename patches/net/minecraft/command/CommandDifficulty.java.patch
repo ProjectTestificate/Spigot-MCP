@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandDifficulty.java
-+++b/net/minecraft/command/CommandDifficulty.java
-@@ -1,50 +1,43 @@
+--- decompiled\net\minecraft\command\CommandDifficulty.java
++++ src\main\java\net\minecraft\command\CommandDifficulty.java
+@@ -1,51 +1,43 @@
  package net.minecraft.command;
  
  import java.util.List;
@@ -64,5 +64,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 +        return args.length == 1 ? getListOfStringsMatchingLastWord(args, new String[]{"peaceful", "easy", "normal", "hard"}) : null;
      }
--}
-+}
+ }

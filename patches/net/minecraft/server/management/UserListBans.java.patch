@@ -1,6 +1,6 @@
----a/net/minecraft/server/management/UserListBans.java
-+++b/net/minecraft/server/management/UserListBans.java
-@@ -1,70 +1,58 @@
+--- decompiled\net\minecraft\server\management\UserListBans.java
++++ src\main\java\net\minecraft\server\management\UserListBans.java
+@@ -1,69 +1,59 @@
  package net.minecraft.server.management;
  
 -import com.google.gson.JsonObject;
@@ -89,5 +89,4 @@
 +    protected String getObjectKey(Object obj) {
 +        return this.getProfileId((GameProfile) obj);
      }
--}
-+}
+ }

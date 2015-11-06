@@ -1,6 +1,7 @@
----a/net/minecraft/world/WorldSavedData.java
-+++b/net/minecraft/world/WorldSavedData.java
-@@ -2,14 +2,14 @@
+--- decompiled\net\minecraft\world\WorldSavedData.java
++++ src\main\java\net\minecraft\world\WorldSavedData.java
+@@ -1,34 +1,30 @@
+ package net.minecraft.world;
  
  import net.minecraft.nbt.NBTTagCompound;
  
@@ -18,7 +19,7 @@
          this.mapName = name;
      }
  
-@@ -17,19 +17,15 @@
+     public abstract void readFromNBT(NBTTagCompound nbt);
  
      public abstract void writeToNBT(NBTTagCompound nbt);
  
@@ -39,5 +40,4 @@
 +    public boolean isDirty() {
          return this.dirty;
      }
--}
-+}
+ }

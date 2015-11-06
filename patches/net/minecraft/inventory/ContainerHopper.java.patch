@@ -1,6 +1,8 @@
----a/net/minecraft/inventory/ContainerHopper.java
-+++b/net/minecraft/inventory/ContainerHopper.java
-@@ -4,66 +4,78 @@
+--- decompiled\net\minecraft\inventory\ContainerHopper.java
++++ src\main\java\net\minecraft\inventory\ContainerHopper.java
+@@ -2,82 +2,87 @@
+ 
+ import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.entity.player.InventoryPlayer;
  import net.minecraft.item.ItemStack;
  
@@ -109,7 +111,7 @@
                  slot.onSlotChanged();
              }
          }
-@@ -75,10 +75,8 @@
+ 
          return itemstack;
      }
  
@@ -119,5 +121,4 @@
          super.onContainerClosed(playerIn);
          this.hopperInventory.closeInventory(playerIn);
      }
--}
-+}
+ }

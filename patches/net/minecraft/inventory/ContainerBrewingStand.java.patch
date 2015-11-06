@@ -1,6 +1,8 @@
----a/net/minecraft/inventory/ContainerBrewingStand.java
-+++b/net/minecraft/inventory/ContainerBrewingStand.java
-@@ -5,18 +5,22 @@
+--- decompiled\net\minecraft\inventory\ContainerBrewingStand.java
++++ src\main\java\net\minecraft\inventory\ContainerBrewingStand.java
+@@ -3,204 +3,178 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.entity.player.InventoryPlayer;
  import net.minecraft.init.Items;
  import net.minecraft.item.ItemStack;
  import net.minecraft.stats.AchievementList;
@@ -31,7 +33,7 @@
          this.tileBrewingStand = p_i45802_2_;
          this.addSlotToContainer(new ContainerBrewingStand.Potion(playerInventory.player, p_i45802_2_, 0, 56, 46));
          this.addSlotToContainer(new ContainerBrewingStand.Potion(playerInventory.player, p_i45802_2_, 1, 79, 53));
-@@ -24,38 +24,30 @@
+         this.addSlotToContainer(new ContainerBrewingStand.Potion(playerInventory.player, p_i45802_2_, 2, 102, 46));
          this.theSlot = this.addSlotToContainer(new ContainerBrewingStand.Ingredient(p_i45802_2_, 3, 79, 17));
          int i;
  
@@ -76,7 +78,7 @@
                  icrafting.sendProgressBarUpdate(this, 0, this.tileBrewingStand.getField(0));
              }
          }
-@@ -61,89 +61,55 @@
+ 
          this.brewTime = this.tileBrewingStand.getField(0);
      }
  
@@ -181,7 +183,9 @@
                  return null;
              }
  
-@@ -147,61 +147,73 @@
+             slot.onPickupFromSlot(playerIn, itemstack1);
+         }
+ 
          return itemstack;
      }
  
@@ -276,10 +280,9 @@
 -            }
 +            super.onPickupFromSlot(playerIn, stack);
          }
--}
 +
 +        public static boolean canHoldPotion(ItemStack p_75243_0_) {
 +            return p_75243_0_ != null && (p_75243_0_.getItem() == Items.potionitem || p_75243_0_.getItem() == Items.glass_bottle);
 +        }
 +    }
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/tileentity/TileEntityDispenser.java
-+++b/net/minecraft/tileentity/TileEntityDispenser.java
-@@ -1,6 +1,10 @@
+--- decompiled\net\minecraft\tileentity\TileEntityDispenser.java
++++ src\main\java\net\minecraft\tileentity\TileEntityDispenser.java
+@@ -1,228 +1,221 @@
  package net.minecraft.tileentity;
  
 +import java.util.ArrayList;
@@ -10,7 +10,9 @@
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.entity.player.InventoryPlayer;
  import net.minecraft.inventory.Container;
-@@ -10,76 +10,92 @@
+ import net.minecraft.inventory.ContainerDispenser;
+ import net.minecraft.inventory.IInventory;
+ import net.minecraft.item.ItemStack;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.nbt.NBTTagList;
  
@@ -134,7 +136,7 @@
                  i = k;
              }
          }
-@@ -89,20 +89,17 @@
+ 
          return i;
      }
  
@@ -164,7 +166,8 @@
                  this.setInventorySlotContents(i, stack);
                  return i;
              }
-@@ -115,56 +115,45 @@
+         }
+ 
          return -1;
      }
  
@@ -231,7 +234,7 @@
                  this.stacks[i].writeToNBT(nbttagcompound1);
                  nbttaglist.appendTag(nbttagcompound1);
              }
-@@ -171,59 +171,51 @@
+         }
  
          compound.setTag("Items", nbttaglist);
  
@@ -307,5 +310,4 @@
              this.stacks[i] = null;
          }
      }
--}
-+}
+ }

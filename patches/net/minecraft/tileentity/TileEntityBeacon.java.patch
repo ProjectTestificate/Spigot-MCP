@@ -1,6 +1,6 @@
----a/net/minecraft/tileentity/TileEntityBeacon.java
-+++b/net/minecraft/tileentity/TileEntityBeacon.java
-@@ -1,10 +1,10 @@
+--- decompiled\net\minecraft\tileentity\TileEntityBeacon.java
++++ src\main\java\net\minecraft\tileentity\TileEntityBeacon.java
+@@ -1,11 +1,12 @@
  package net.minecraft.tileentity;
  
 -import com.google.common.collect.Lists;
@@ -12,7 +12,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockStainedGlass;
  import net.minecraft.block.BlockStainedGlassPane;
-@@ -27,15 +27,15 @@
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.entity.passive.EntitySheep;
+@@ -25,84 +26,97 @@
+ import net.minecraft.potion.PotionEffect;
+ import net.minecraft.server.gui.IUpdatePlayerListBox;
  import net.minecraft.stats.AchievementList;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
@@ -37,7 +41,8 @@
      private boolean isComplete;
      private int levels = -1;
      private int primaryEffect;
-@@ -46,63 +46,102 @@
+     private int secondaryEffect;
+     private ItemStack payment;
      private String customName;
      private static final String __OBFID = "CL_00000339";
  
@@ -138,7 +143,11 @@
          int i = this.levels;
          int j = this.pos.getX();
          int k = this.pos.getY();
-@@ -113,14 +113,12 @@
+         int l = this.pos.getZ();
+         this.levels = 0;
+@@ -111,277 +125,186 @@
+         TileEntityBeacon.BeamSegment beamsegment = new TileEntityBeacon.BeamSegment(EntitySheep.func_175513_a(EnumDyeColor.WHITE));
+         this.field_174909_f.add(beamsegment);
          boolean flag = true;
          int i1;
  
@@ -167,7 +176,9 @@
                          this.isComplete = false;
                          this.field_174909_f.clear();
                          break;
-@@ -138,18 +138,16 @@
+                     }
+ 
+                     beamsegment.func_177262_a();
                      continue;
                  }
  
@@ -193,7 +204,7 @@
                  beamsegment = new TileEntityBeacon.BeamSegment(afloat);
                  this.field_174909_f.add(beamsegment);
              }
-@@ -159,227 +159,146 @@
+ 
              flag = false;
          }
  
@@ -466,7 +477,11 @@
              case 0:
                  return this.levels;
              case 1:
-@@ -391,73 +391,68 @@
+                 return this.primaryEffect;
+             case 2:
+@@ -389,72 +312,74 @@
+             default:
+                 return 0;
          }
      }
  
@@ -573,10 +588,9 @@
 +        protected void func_177262_a() {
 +            ++this.field_177265_b;
          }
--}
 +
 +        public float[] func_177263_b() {
 +            return this.field_177266_a;
 +        }
 +    }
-+}
+ }

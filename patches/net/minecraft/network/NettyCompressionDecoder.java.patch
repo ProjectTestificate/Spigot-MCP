@@ -1,6 +1,6 @@
----a/net/minecraft/network/NettyCompressionDecoder.java
-+++b/net/minecraft/network/NettyCompressionDecoder.java
-@@ -1,44 +1,42 @@
+--- decompiled\net\minecraft\network\NettyCompressionDecoder.java
++++ src\main\java\net\minecraft\network\NettyCompressionDecoder.java
+@@ -1,48 +1,41 @@
  package net.minecraft.network;
  
 +import java.util.List;
@@ -60,7 +60,11 @@
                      throw new DecoderException("Badly compressed packet - size of " + i + " is larger than protocol maximum of " + 2097152);
                  }
  
-@@ -55,9 +55,7 @@
+                 byte[] abyte = new byte[packetbuffer.readableBytes()];
+                 packetbuffer.readBytes(abyte);
+@@ -53,10 +46,9 @@
+                 this.inflater.reset();
+             }
          }
      }
  
@@ -69,5 +73,4 @@
 +    public void setCompressionTreshold(int treshold) {
          this.treshold = treshold;
      }
--}
-+}
+ }

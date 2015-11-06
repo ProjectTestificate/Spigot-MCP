@@ -1,6 +1,6 @@
----a/net/minecraft/nbt/NBTUtil.java
-+++b/net/minecraft/nbt/NBTUtil.java
-@@ -1,69 +1,56 @@
+--- decompiled\net\minecraft\nbt\NBTUtil.java
++++ src\main\java\net\minecraft\nbt\NBTUtil.java
+@@ -1,113 +1,93 @@
  package net.minecraft.nbt;
  
 -import com.mojang.authlib.GameProfile;
@@ -90,7 +90,10 @@
                              gameprofile.getProperties().put(s2, new Property(s2, s3));
                          }
                      }
-@@ -75,39 +75,31 @@
+                 }
+             }
+ 
+             return gameprofile;
          }
      }
  
@@ -137,9 +140,5 @@
                          nbttagcompound2.setString("Signature", property.getSignature());
                      }
                  }
-@@ -118,4 +118,4 @@
  
-         return tagCompound;
-     }
--}
-+}
+                 nbttagcompound1.setTag(s, nbttaglist);

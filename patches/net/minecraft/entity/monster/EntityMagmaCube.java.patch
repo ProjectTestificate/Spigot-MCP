@@ -1,6 +1,8 @@
----a/net/minecraft/entity/monster/EntityMagmaCube.java
-+++b/net/minecraft/entity/monster/EntityMagmaCube.java
-@@ -6,133 +6,103 @@
+--- decompiled\net\minecraft\entity\monster\EntityMagmaCube.java
++++ src\main\java\net\minecraft\entity\monster\EntityMagmaCube.java
+@@ -4,134 +4,106 @@
+ import net.minecraft.init.Items;
+ import net.minecraft.item.Item;
  import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.world.EnumDifficulty;
  import net.minecraft.world.World;
@@ -161,5 +163,4 @@
 +    protected boolean makesSoundOnLand() {
          return true;
      }
--}
-+}
+ }

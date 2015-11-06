@@ -1,6 +1,6 @@
----a/net/minecraft/command/PlayerNotFoundException.java
-+++b/net/minecraft/command/PlayerNotFoundException.java
-@@ -1,17 +1,15 @@
+--- decompiled\net\minecraft\command\PlayerNotFoundException.java
++++ src\main\java\net\minecraft\command\PlayerNotFoundException.java
+@@ -1,16 +1,14 @@
  package net.minecraft.command;
  
 -public class PlayerNotFoundException extends CommandException
@@ -20,5 +20,4 @@
 +    public PlayerNotFoundException(String message, Object... replacements) {
          super(message, replacements);
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/event/HoverEvent.java
-+++b/net/minecraft/event/HoverEvent.java
-@@ -1,81 +1,64 @@
+--- decompiled\net\minecraft\event\HoverEvent.java
++++ src\main\java\net\minecraft\event\HoverEvent.java
+@@ -1,122 +1,99 @@
  package net.minecraft.event;
  
 -import com.google.common.collect.Maps;
@@ -104,7 +104,10 @@
          SHOW_TEXT("show_text", true),
          SHOW_ACHIEVEMENT("show_achievement", true),
          SHOW_ITEM("show_item", true),
-@@ -87,38 +87,31 @@
+         SHOW_ENTITY("show_entity", true);
+         private static final Map nameMapping = Maps.newHashMap();
+         private final boolean allowedInChat;
+         private final String canonicalName;
  
          private static final String __OBFID = "CL_00001265";
  
@@ -148,5 +151,3 @@
              }
          }
      }
--}
-+}

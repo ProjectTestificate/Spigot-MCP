@@ -1,6 +1,7 @@
----a/net/minecraft/block/BlockEventData.java
-+++b/net/minecraft/block/BlockEventData.java
-@@ -2,58 +2,48 @@
+--- decompiled\net\minecraft\block\BlockEventData.java
++++ src\main\java\net\minecraft\block\BlockEventData.java
+@@ -1,58 +1,48 @@
+ package net.minecraft.block;
  
  import net.minecraft.util.BlockPos;
  
@@ -69,5 +70,4 @@
 +    public String toString() {
          return "TE(" + this.position + ")," + this.eventID + "," + this.eventParameter + "," + this.blockType;
      }
--}
-+}
+ }

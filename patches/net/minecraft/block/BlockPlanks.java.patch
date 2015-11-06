@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockPlanks.java
-+++b/net/minecraft/block/BlockPlanks.java
-@@ -1,64 +1,41 @@
+--- decompiled\net\minecraft\block\BlockPlanks.java
++++ src\main\java\net\minecraft\block\BlockPlanks.java
+@@ -1,67 +1,44 @@
  package net.minecraft.block;
  
 -import java.util.List;
@@ -78,7 +78,11 @@
          OAK(0, "oak"),
          SPRUCE(1, "spruce"),
          BIRCH(2, "birch"),
-@@ -73,59 +73,48 @@
+         JUNGLE(3, "jungle"),
+         ACACIA(4, "acacia"),
+@@ -71,59 +48,49 @@
+         private final String name;
+         private final String unlocalizedName;
  
          private static final String __OBFID = "CL_00002081";
  
@@ -146,5 +150,3 @@
              }
          }
      }
--}
-+}

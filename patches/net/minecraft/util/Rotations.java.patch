@@ -1,6 +1,8 @@
----a/net/minecraft/util/Rotations.java
-+++b/net/minecraft/util/Rotations.java
-@@ -3,29 +3,27 @@
+--- decompiled\net\minecraft\util\Rotations.java
++++ src\main\java\net\minecraft\util\Rotations.java
+@@ -1,63 +1,53 @@
+ package net.minecraft.util;
+ 
  import net.minecraft.nbt.NBTTagFloat;
  import net.minecraft.nbt.NBTTagList;
  
@@ -35,7 +37,7 @@
          NBTTagList nbttaglist = new NBTTagList();
          nbttaglist.appendTag(new NBTTagFloat(this.x));
          nbttaglist.appendTag(new NBTTagFloat(this.y));
-@@ -33,34 +33,25 @@
+         nbttaglist.appendTag(new NBTTagFloat(this.z));
          return nbttaglist;
      }
  
@@ -73,5 +75,4 @@
 +    public float getZ() {
          return this.z;
      }
--}
-+}
+ }

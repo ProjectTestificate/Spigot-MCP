@@ -1,6 +1,7 @@
----a/net/minecraft/util/Vec3i.java
-+++b/net/minecraft/util/Vec3i.java
-@@ -2,102 +2,83 @@
+--- decompiled\net\minecraft\util\Vec3i.java
++++ src\main\java\net\minecraft\util\Vec3i.java
+@@ -1,102 +1,83 @@
+ package net.minecraft.util;
  
  import com.google.common.base.Objects;
  
@@ -129,5 +130,4 @@
 +    public int compareTo(Object p_compareTo_1_) {
 +        return this.compareTo((Vec3i) p_compareTo_1_);
      }
--}
-+}
+ }

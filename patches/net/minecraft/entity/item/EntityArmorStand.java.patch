@@ -1,6 +1,6 @@
----a/net/minecraft/entity/item/EntityArmorStand.java
-+++b/net/minecraft/entity/item/EntityArmorStand.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\entity\item\EntityArmorStand.java
++++ src\main\java\net\minecraft\entity\item\EntityArmorStand.java
+@@ -1,8 +1,9 @@
  package net.minecraft.entity.item;
  
  import java.util.List;
@@ -8,7 +8,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityLiving;
-@@ -22,11 +22,7 @@
+ import net.minecraft.entity.EntityLivingBase;
+ import net.minecraft.entity.player.EntityPlayer;
+@@ -20,35 +21,39 @@
+ import net.minecraft.util.EnumParticleTypes;
+ import net.minecraft.util.Rotations;
  import net.minecraft.util.Vec3;
  import net.minecraft.world.World;
  import net.minecraft.world.WorldServer;
@@ -29,7 +33,10 @@
      private static final Rotations DEFAULT_HEAD_ROTATION = new Rotations(0.0F, 0.0F, 0.0F);
      private static final Rotations DEFAULT_BODY_ROTATION = new Rotations(0.0F, 0.0F, 0.0F);
      private static final Rotations DEFAULT_LEFTARM_ROTATION = new Rotations(-10.0F, 0.0F, -10.0F);
-@@ -37,20 +37,20 @@
+     private static final Rotations DEFAULT_RIGHTARM_ROTATION = new Rotations(-15.0F, 0.0F, 10.0F);
+     private static final Rotations DEFAULT_LEFTLEG_ROTATION = new Rotations(-1.0F, 0.0F, -1.0F);
+     private static final Rotations DEFAULT_RIGHTLEG_ROTATION = new Rotations(1.0F, 0.0F, 1.0F);
+     private final ItemStack[] contents;
      private boolean canInteract;
      private long punchCooldown;
      private int disabledSlots;
@@ -53,7 +60,11 @@
          super(worldIn);
          this.contents = new ItemStack[5];
          this.headRotation = DEFAULT_HEAD_ROTATION;
-@@ -60,22 +60,18 @@
+         this.bodyRotation = DEFAULT_BODY_ROTATION;
+         this.leftArmRotation = DEFAULT_LEFTARM_ROTATION;
+@@ -58,109 +63,84 @@
+         this.setSilent(true);
+         this.noClip = this.hasNoGravity();
          this.setSize(0.5F, 1.975F);
      }
  
@@ -79,7 +90,8 @@
          this.dataWatcher.addObject(11, DEFAULT_HEAD_ROTATION);
          this.dataWatcher.addObject(12, DEFAULT_BODY_ROTATION);
          this.dataWatcher.addObject(13, DEFAULT_LEFTARM_ROTATION);
-@@ -83,72 +83,51 @@
+         this.dataWatcher.addObject(14, DEFAULT_RIGHTARM_ROTATION);
+         this.dataWatcher.addObject(15, DEFAULT_LEFTLEG_ROTATION);
          this.dataWatcher.addObject(16, DEFAULT_RIGHTLEG_ROTATION);
      }
  
@@ -165,7 +177,8 @@
                  this.contents[i].writeToNBT(nbttagcompound1);
              }
  
-@@ -157,8 +157,7 @@
+             nbttaglist.appendTag(nbttagcompound1);
+         }
  
          tagCompound.setTag("Equipment", nbttaglist);
  
@@ -175,7 +188,11 @@
              tagCompound.setBoolean("CustomNameVisible", this.getAlwaysRenderNameTag());
          }
  
-@@ -171,16 +171,13 @@
+         tagCompound.setBoolean("Invisible", this.isInvisible());
+         tagCompound.setBoolean("Small", this.isSmall());
+@@ -169,20 +149,17 @@
+         tagCompound.setBoolean("NoGravity", this.hasNoGravity());
+         tagCompound.setBoolean("NoBasePlate", this.hasNoBasePlate());
          tagCompound.setTag("Pose", this.readPoseFromNBT());
      }
  
@@ -195,7 +212,11 @@
                  this.contents[i] = ItemStack.loadItemStackFromNBT(nbttaglist.getCompoundTagAt(i));
              }
          }
-@@ -196,169 +196,128 @@
+ 
+         this.setInvisible(tagCompund.getBoolean("Invisible"));
+@@ -194,173 +171,132 @@
+         this.noClip = this.hasNoGravity();
+         NBTTagCompound nbttagcompound1 = tagCompund.getCompoundTag("Pose");
          this.writePoseToNBT(nbttagcompound1);
      }
  
@@ -402,7 +423,11 @@
                  b0 = 4;
              }
  
-@@ -370,31 +370,22 @@
+             double d4 = 0.1D;
+             double d0 = 0.9D;
+@@ -368,481 +304,369 @@
+             double d2 = 1.6D;
+             byte b1 = 0;
              boolean flag1 = this.isSmall();
              double d3 = flag1 ? p_174825_2_.yCoord * 2.0D : p_174825_2_.yCoord;
  
@@ -443,7 +468,7 @@
                          return true;
                      }
  
-@@ -404,59 +404,59 @@
+                     b1 = 0;
                  }
              }
  
@@ -532,7 +557,7 @@
                      this.setCurrentItemOrArmor(p_175422_2_, itemstack1);
                      p_175422_1_.inventory.setInventorySlotContents(j, itemstack);
                  }
-@@ -465,82 +465,63 @@
+             }
          }
      }
  
@@ -635,7 +660,9 @@
                              this.dropBlock();
                              this.playParticles();
                              this.setDead();
-@@ -547,46 +547,35 @@
+                         }
+ 
+                         return false;
                      }
                  }
              }
@@ -699,7 +726,8 @@
                      Block.spawnAsEntity(this.worldObj, (new BlockPos(this)).up(), this.contents[i]);
                  }
  
-@@ -600,227 +600,184 @@
+                 this.contents[i] = null;
+             }
          }
      }
  
@@ -994,5 +1022,4 @@
 -    {
 -        return this.rightLegRotation;
 -    }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/entity/item/EntityFireworkRocket.java
-+++b/net/minecraft/entity/item/EntityFireworkRocket.java
-@@ -6,48 +6,43 @@
+--- decompiled\net\minecraft\entity\item\EntityFireworkRocket.java
++++ src\main\java\net\minecraft\entity\item\EntityFireworkRocket.java
+@@ -4,193 +4,135 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
@@ -66,7 +68,10 @@
                  i += nbttagcompound1.getByte("Flight");
              }
          }
-@@ -58,23 +58,7 @@
+ 
+         this.motionX = this.rand.nextGaussian() * 0.001D;
+         this.motionZ = this.rand.nextGaussian() * 0.001D;
+         this.motionY = 0.05D;
          this.lifetime = 10 * i + this.rand.nextInt(6) + this.rand.nextInt(7);
      }
  
@@ -91,7 +96,9 @@
          this.lastTickPosX = this.posX;
          this.lastTickPosY = this.posY;
          this.lastTickPosZ = this.posZ;
-@@ -84,113 +84,75 @@
+         super.onUpdate();
+         this.motionX *= 1.15D;
+         this.motionZ *= 1.15D;
          this.motionY += 0.04D;
          this.moveEntity(this.motionX, this.motionY, this.motionZ);
          float f = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
@@ -220,5 +227,4 @@
 +    public boolean canAttackWithItem() {
          return false;
      }
--}
-+}
+ }

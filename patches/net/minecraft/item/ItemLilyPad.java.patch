@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemLilyPad.java
-+++b/net/minecraft/item/ItemLilyPad.java
-@@ -10,50 +10,40 @@
+--- decompiled\net\minecraft\item\ItemLilyPad.java
++++ src\main\java\net\minecraft\item\ItemLilyPad.java
+@@ -8,67 +8,57 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.stats.StatList;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.MovingObjectPosition;
  import net.minecraft.world.World;
@@ -72,7 +74,10 @@
                          --itemStackIn.stackSize;
                      }
  
-@@ -65,10 +65,4 @@
+                     playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+                 }
+             }
+ 
              return itemStackIn;
          }
      }
@@ -82,5 +87,4 @@
 -    {
 -        return Blocks.waterlily.getRenderColor(Blocks.waterlily.getStateFromMeta(stack.getMetadata()));
 -    }
--}
-+}
+ }

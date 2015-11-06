@@ -1,6 +1,7 @@
----a/net/minecraft/enchantment/EnchantmentArrowFire.java
-+++b/net/minecraft/enchantment/EnchantmentArrowFire.java
-@@ -2,29 +2,25 @@
+--- decompiled\net\minecraft\enchantment\EnchantmentArrowFire.java
++++ src\main\java\net\minecraft\enchantment\EnchantmentArrowFire.java
+@@ -1,29 +1,25 @@
+ package net.minecraft.enchantment;
  
  import net.minecraft.util.ResourceLocation;
  
@@ -34,5 +35,4 @@
 +    public int getMaxLevel() {
          return 1;
      }
--}
-+}
+ }

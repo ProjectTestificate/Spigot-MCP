@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/NoiseGenerator.java
-+++b/net/minecraft/world/gen/NoiseGenerator.java
-@@ -1,7 +1,7 @@
+--- decompiled\net\minecraft\world\gen\NoiseGenerator.java
++++ src\main\java\net\minecraft\world\gen\NoiseGenerator.java
+@@ -1,6 +1,6 @@
  package net.minecraft.world.gen;
  
 -public abstract class NoiseGenerator
@@ -8,5 +8,4 @@
 +public abstract class NoiseGenerator {
 +
      private static final String __OBFID = "CL_00000538";
--}
-+}
+ }

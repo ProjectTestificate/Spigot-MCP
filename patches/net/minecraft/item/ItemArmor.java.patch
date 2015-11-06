@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemArmor.java
-+++b/net/minecraft/item/ItemArmor.java
-@@ -1,8 +1,6 @@
+--- decompiled\net\minecraft\item\ItemArmor.java
++++ src\main\java\net\minecraft\item\ItemArmor.java
+@@ -1,9 +1,9 @@
  package net.minecraft.item;
  
 -import com.google.common.base.Predicates;
@@ -9,7 +9,11 @@
  import net.minecraft.block.BlockDispenser;
  import net.minecraft.command.IEntitySelector;
  import net.minecraft.creativetab.CreativeTabs;
-@@ -16,43 +16,71 @@
+ import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
+ import net.minecraft.dispenser.IBehaviorDispenseItem;
+@@ -14,195 +14,179 @@
+ import net.minecraft.init.Items;
+ import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
@@ -104,7 +108,10 @@
                  return super.dispenseStack(source, stack);
              }
          }
-@@ -64,8 +64,7 @@
+     };
+     public final int armorType;
+     public final int damageReduceAmount;
+     public final int renderIndex;
      private final ItemArmor.ArmorMaterial material;
      private static final String __OBFID = "CL_00001766";
  
@@ -114,7 +121,10 @@
          this.material = material;
          this.armorType = armorType;
          this.renderIndex = renderIndex;
-@@ -76,77 +76,28 @@
+         this.damageReduceAmount = material.getDamageReductionAmount(armorType);
+         this.setMaxDamage(material.getDurability(armorType));
+         this.maxStackSize = 1;
+         this.setCreativeTab(CreativeTabs.tabCombat);
          BlockDispenser.dispenseBehaviorRegistry.putObject(this, dispenserBehavior);
      }
  
@@ -180,7 +190,8 @@
                      return nbttagcompound1.getInteger("color");
                  }
              }
-@@ -135,46 +135,35 @@
+ 
+             return 10511680;
          }
      }
  
@@ -234,7 +245,7 @@
                  nbttagcompound.setTag("display", nbttagcompound1);
              }
  
-@@ -180,18 +180,15 @@
+             nbttagcompound1.setInteger("color", color);
          }
      }
  
@@ -256,7 +267,7 @@
              playerIn.setCurrentItemOrArmor(i, itemStackIn.copy());
              itemStackIn.stackSize = 0;
          }
-@@ -199,8 +199,7 @@
+ 
          return itemStackIn;
      }
  
@@ -266,7 +277,11 @@
          LEATHER("leather", 5, new int[]{1, 3, 2, 1}, 15),
          CHAIN("chainmail", 15, new int[]{2, 5, 4, 1}, 12),
          IRON("iron", 15, new int[]{2, 6, 5, 2}, 9),
-@@ -213,39 +213,27 @@
+         GOLD("gold", 7, new int[]{2, 5, 3, 1}, 25),
+         DIAMOND("diamond", 33, new int[]{3, 8, 6, 3}, 10);
+@@ -211,40 +195,29 @@
+         private final int[] damageReductionAmountArray;
+         private final int enchantability;
  
          private static final String __OBFID = "CL_00001768";
  
@@ -309,5 +324,4 @@
 -            return this.name;
 -        }
      }
--}
-+}
+ }

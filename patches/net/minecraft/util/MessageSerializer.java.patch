@@ -1,6 +1,6 @@
----a/net/minecraft/util/MessageSerializer.java
-+++b/net/minecraft/util/MessageSerializer.java
-@@ -1,70 +1,59 @@
+--- decompiled\net\minecraft\util\MessageSerializer.java
++++ src\main\java\net\minecraft\util\MessageSerializer.java
+@@ -1,68 +1,60 @@
  package net.minecraft.util;
  
 -import io.netty.buffer.ByteBuf;
@@ -88,5 +88,4 @@
 +    protected void encode(ChannelHandlerContext p_encode_1_, Object p_encode_2_, ByteBuf p_encode_3_) throws IOException {
 +        this.encode(p_encode_1_, (Packet) p_encode_2_, p_encode_3_);
      }
--}
-+}
+ }

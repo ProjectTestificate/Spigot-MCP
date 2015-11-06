@@ -1,6 +1,6 @@
----a/net/minecraft/world/WorldType.java
-+++b/net/minecraft/world/WorldType.java
-@@ -1,10 +1,6 @@
+--- decompiled\net\minecraft\world\WorldType.java
++++ src\main\java\net\minecraft\world\WorldType.java
+@@ -1,13 +1,11 @@
  package net.minecraft.world;
  
 -import net.minecraftforge.fml.relauncher.Side;
@@ -15,7 +15,11 @@
      public static final WorldType DEFAULT = (new WorldType(0, "default", 1)).setVersioned();
      public static final WorldType FLAT = new WorldType(1, "flat");
      public static final WorldType LARGE_BIOMES = new WorldType(2, "largeBiomes");
-@@ -21,13 +21,11 @@
+     public static final WorldType AMPLIFIED = (new WorldType(3, "amplified")).setNotificationData();
+     public static final WorldType CUSTOMIZED = new WorldType(4, "customized");
+@@ -19,99 +17,62 @@
+     private boolean canBeCreated;
+     private boolean isWorldTypeVersioned;
      private boolean hasNotificationData;
      private static final String __OBFID = "CL_00000150";
  
@@ -31,7 +35,7 @@
          this.worldType = name;
          this.generatorVersion = version;
          this.canBeCreated = true;
-@@ -35,58 +35,33 @@
+         this.worldTypeId = id;
          worldTypes[id] = this;
      }
  
@@ -103,7 +107,7 @@
                  return worldTypes[i];
              }
          }
-@@ -98,21 +98,12 @@
+ 
          return null;
      }
  
@@ -125,5 +129,4 @@
          this.hasNotificationData = true;
          return this;
      }
--}
-+}
+ }

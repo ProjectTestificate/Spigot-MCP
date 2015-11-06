@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockPressurePlateWeighted.java
-+++b/net/minecraft/block/BlockPressurePlateWeighted.java
-@@ -6,64 +6,80 @@
+--- decompiled\net\minecraft\block\BlockPressurePlateWeighted.java
++++ src\main\java\net\minecraft\block\BlockPressurePlateWeighted.java
+@@ -4,67 +4,82 @@
+ import net.minecraft.block.properties.IProperty;
+ import net.minecraft.block.properties.PropertyInteger;
  import net.minecraft.block.state.BlockState;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.entity.Entity;
@@ -108,5 +110,4 @@
 +    protected BlockState createBlockState() {
 +        return new BlockState(this, new IProperty[]{POWER});
      }
--}
-+}
+ }

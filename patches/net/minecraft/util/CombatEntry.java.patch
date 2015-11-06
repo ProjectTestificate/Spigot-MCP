@@ -1,6 +1,7 @@
----a/net/minecraft/util/CombatEntry.java
-+++b/net/minecraft/util/CombatEntry.java
-@@ -2,8 +2,8 @@
+--- decompiled\net\minecraft\util\CombatEntry.java
++++ src\main\java\net\minecraft\util\CombatEntry.java
+@@ -1,54 +1,47 @@
+ package net.minecraft.util;
  
  import net.minecraft.entity.EntityLivingBase;
  
@@ -11,7 +12,8 @@
      private final DamageSource damageSrc;
      private final int field_94567_b;
      private final float field_94568_c;
-@@ -12,8 +12,7 @@
+     private final float field_94565_d;
+     private final String field_94566_e;
      private final float field_94564_f;
      private static final String __OBFID = "CL_00001519";
  
@@ -21,7 +23,8 @@
          this.damageSrc = damageSrcIn;
          this.field_94567_b = p_i1564_2_;
          this.field_94568_c = p_i1564_4_;
-@@ -22,34 +22,27 @@
+         this.field_94565_d = p_i1564_3_;
+         this.field_94566_e = p_i1564_5_;
          this.field_94564_f = p_i1564_6_;
      }
  
@@ -60,5 +63,4 @@
 +    public float func_94561_i() {
          return this.damageSrc == DamageSource.outOfWorld ? Float.MAX_VALUE : this.field_94564_f;
      }
--}
-+}
+ }

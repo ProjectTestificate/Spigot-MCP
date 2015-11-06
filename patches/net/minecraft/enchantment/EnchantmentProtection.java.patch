@@ -1,6 +1,8 @@
----a/net/minecraft/enchantment/EnchantmentProtection.java
-+++b/net/minecraft/enchantment/EnchantmentProtection.java
-@@ -5,98 +5,80 @@
+--- decompiled\net\minecraft\enchantment\EnchantmentProtection.java
++++ src\main\java\net\minecraft\enchantment\EnchantmentProtection.java
+@@ -3,95 +3,77 @@
+ import net.minecraft.entity.Entity;
+ import net.minecraft.util.DamageSource;
  import net.minecraft.util.MathHelper;
  import net.minecraft.util.ResourceLocation;
  
@@ -119,5 +121,4 @@
  
          return p_92092_1_;
      }
--}
-+}
+ }

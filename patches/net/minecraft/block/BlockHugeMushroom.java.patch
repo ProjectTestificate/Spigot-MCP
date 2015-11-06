@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockHugeMushroom.java
-+++b/net/minecraft/block/BlockHugeMushroom.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockHugeMushroom.java
++++ src\main\java\net\minecraft\block\BlockHugeMushroom.java
+@@ -1,8 +1,9 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -8,7 +8,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyEnum;
-@@ -12,55 +12,44 @@
+ import net.minecraft.block.state.BlockState;
+ import net.minecraft.block.state.IBlockState;
+@@ -10,64 +11,49 @@
+ import net.minecraft.item.Item;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.util.IStringSerializable;
  import net.minecraft.world.World;
@@ -82,7 +86,11 @@
          NORTH_WEST(1, "north_west"),
          NORTH(2, "north"),
          NORTH_EAST(3, "north_east"),
-@@ -85,24 +85,20 @@
+         WEST(4, "west"),
+         CENTER(5, "center"),
+@@ -83,49 +69,41 @@
+         private final int meta;
+         private final String name;
  
          private static final String __OBFID = "CL_00002105";
  
@@ -114,7 +122,7 @@
                  meta = 0;
              }
  
-@@ -112,22 +112,18 @@
+             BlockHugeMushroom.EnumType enumtype = META_LOOKUP[meta];
              return enumtype == null ? META_LOOKUP[0] : enumtype;
          }
  
@@ -138,5 +146,3 @@
              }
          }
      }
--}
-+}

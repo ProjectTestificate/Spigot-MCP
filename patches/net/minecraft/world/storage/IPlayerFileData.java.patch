@@ -1,6 +1,8 @@
----a/net/minecraft/world/storage/IPlayerFileData.java
-+++b/net/minecraft/world/storage/IPlayerFileData.java
-@@ -3,12 +3,12 @@
+--- decompiled\net\minecraft\world\storage\IPlayerFileData.java
++++ src\main\java\net\minecraft\world\storage\IPlayerFileData.java
+@@ -1,12 +1,12 @@
+ package net.minecraft.world.storage;
+ 
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.nbt.NBTTagCompound;
  
@@ -13,5 +15,3 @@
      NBTTagCompound readPlayerData(EntityPlayer p_75752_1_);
  
      String[] getAvailablePlayerDat();
--}
-+}

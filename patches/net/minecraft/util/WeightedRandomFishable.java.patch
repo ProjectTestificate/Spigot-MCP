@@ -1,6 +1,6 @@
----a/net/minecraft/util/WeightedRandomFishable.java
-+++b/net/minecraft/util/WeightedRandomFishable.java
-@@ -1,60 +1,54 @@
+--- decompiled\net\minecraft\util\WeightedRandomFishable.java
++++ src\main\java\net\minecraft\util\WeightedRandomFishable.java
+@@ -1,61 +1,54 @@
  package net.minecraft.util;
  
  import java.util.Random;
@@ -73,5 +73,4 @@
          this.enchantable = true;
          return this;
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/layer/GenLayer.java
-+++b/net/minecraft/world/gen/layer/GenLayer.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\gen\layer\GenLayer.java
++++ src\main\java\net\minecraft\world\gen\layer\GenLayer.java
+@@ -1,25 +1,25 @@
  package net.minecraft.world.gen.layer;
  
  import java.util.concurrent.Callable;
@@ -8,7 +8,7 @@
  import net.minecraft.crash.CrashReport;
  import net.minecraft.crash.CrashReportCategory;
  import net.minecraft.util.ReportedException;
-@@ -8,16 +8,16 @@
+ import net.minecraft.world.WorldType;
  import net.minecraft.world.biome.BiomeGenBase;
  import net.minecraft.world.gen.ChunkProviderSettings;
  
@@ -28,7 +28,11 @@
          GenLayerIsland genlayerisland = new GenLayerIsland(1L);
          GenLayerFuzzyZoom genlayerfuzzyzoom = new GenLayerFuzzyZoom(2000L, genlayerisland);
          GenLayerAddIsland genlayeraddisland = new GenLayerAddIsland(1L, genlayerfuzzyzoom);
-@@ -41,15 +41,13 @@
+         GenLayerZoom genlayerzoom = new GenLayerZoom(2001L, genlayeraddisland);
+         genlayeraddisland = new GenLayerAddIsland(2L, genlayerzoom);
+@@ -39,19 +39,17 @@
+         GenLayer genlayer2 = GenLayerZoom.magnify(1000L, genlayerdeepocean, 0);
+         ChunkProviderSettings chunkprovidersettings = null;
          int j = 4;
          int k = j;
  
@@ -46,7 +50,11 @@
              j = 6;
          }
  
-@@ -66,32 +66,28 @@
+         GenLayer genlayer = GenLayerZoom.magnify(1000L, genlayer2, 0);
+         GenLayerRiverInit genlayerriverinit = new GenLayerRiverInit(100L, genlayer);
+@@ -64,50 +62,44 @@
+         genlayer = GenLayerZoom.magnify(1000L, genlayer, k);
+         GenLayerRiver genlayerriver = new GenLayerRiver(1L, genlayer);
          GenLayerSmooth genlayersmooth = new GenLayerSmooth(1000L, genlayerriver);
          Object object = new GenLayerRareBiome(1001L, genlayerhills);
  
@@ -87,7 +95,9 @@
          this.baseSeed = p_i2125_1_;
          this.baseSeed *= this.baseSeed * 6364136223846793005L + 1442695040888963407L;
          this.baseSeed += p_i2125_1_;
-@@ -100,12 +100,10 @@
+         this.baseSeed *= this.baseSeed * 6364136223846793005L + 1442695040888963407L;
+         this.baseSeed += p_i2125_1_;
+         this.baseSeed *= this.baseSeed * 6364136223846793005L + 1442695040888963407L;
          this.baseSeed += p_i2125_1_;
      }
  
@@ -102,7 +112,11 @@
              this.parent.initWorldGenSeed(p_75905_1_);
          }
  
-@@ -117,8 +117,7 @@
+         this.worldGenSeed *= this.worldGenSeed * 6364136223846793005L + 1442695040888963407L;
+         this.worldGenSeed += this.baseSeed;
+@@ -115,12 +107,11 @@
+         this.worldGenSeed += this.baseSeed;
+         this.worldGenSeed *= this.worldGenSeed * 6364136223846793005L + 1442695040888963407L;
          this.worldGenSeed += this.baseSeed;
      }
  
@@ -112,7 +126,11 @@
          this.chunkSeed = this.worldGenSeed;
          this.chunkSeed *= this.chunkSeed * 6364136223846793005L + 1442695040888963407L;
          this.chunkSeed += p_75903_1_;
-@@ -130,13 +130,11 @@
+         this.chunkSeed *= this.chunkSeed * 6364136223846793005L + 1442695040888963407L;
+         this.chunkSeed += p_75903_3_;
+@@ -128,82 +119,69 @@
+         this.chunkSeed += p_75903_1_;
+         this.chunkSeed *= this.chunkSeed * 6364136223846793005L + 1442695040888963407L;
          this.chunkSeed += p_75903_3_;
      }
  
@@ -128,7 +146,10 @@
              j += p_75902_1_;
          }
  
-@@ -146,67 +146,54 @@
+         this.chunkSeed *= this.chunkSeed * 6364136223846793005L + 1442695040888963407L;
+         this.chunkSeed += this.worldGenSeed;
+         return j;
+     }
  
      public abstract int[] getInts(int areaX, int areaY, int areaWidth, int areaHeight);
  
@@ -211,5 +232,4 @@
 +        return p_151617_2_ == p_151617_3_ && p_151617_3_ == p_151617_4_ ? p_151617_2_ : (p_151617_1_ == p_151617_2_ && p_151617_1_ == p_151617_3_ ? p_151617_1_ : (p_151617_1_ == p_151617_2_ && p_151617_1_ == p_151617_4_ ? p_151617_1_ : (p_151617_1_ == p_151617_3_ && p_151617_1_ == p_151617_4_ ? p_151617_1_ : (p_151617_1_ == p_151617_2_ && p_151617_3_ != p_151617_4_ ? p_151617_1_ : (p_151617_1_ == p_151617_3_ && p_151617_2_ != p_151617_4_ ? p_151617_1_ : (p_151617_1_ == p_151617_4_ && p_151617_2_ != p_151617_3_ ? p_151617_1_ : (p_151617_2_ == p_151617_3_ && p_151617_1_ != p_151617_4_ ? p_151617_2_ : (p_151617_2_ == p_151617_4_ && p_151617_1_ != p_151617_3_ ? p_151617_2_ : (p_151617_3_ == p_151617_4_ && p_151617_1_ != p_151617_2_ ? p_151617_3_ : this
 +                .selectRandom(new int[]{p_151617_1_, p_151617_2_, p_151617_3_, p_151617_4_}))))))))));
      }
--}
-+}
+ }

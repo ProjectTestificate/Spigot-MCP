@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemStack.java
-+++b/net/minecraft/item/ItemStack.java
-@@ -1,52 +1,60 @@
+--- decompiled\net\minecraft\item\ItemStack.java
++++ src\main\java\net\minecraft\item\ItemStack.java
+@@ -1,922 +1,739 @@
  package net.minecraft.item;
  
 -import com.google.common.collect.HashMultimap;
@@ -76,7 +76,7 @@
      private EntityItemFrame itemFrame;
      private Block canDestroyCacheBlock;
      private boolean canDestroyCacheResult;
-@@ -52,227 +52,322 @@
+     private Block canPlaceOnCacheBlock;
      private boolean canPlaceOnCacheResult;
      private static final String __OBFID = "CL_00000043";
  
@@ -509,7 +509,9 @@
                      return false;
                  }
              }
-@@ -282,212 +282,179 @@
+ 
+             this.itemDamage += amount;
+             return this.itemDamage > this.getMaxDamage();
          }
      }
  
@@ -776,7 +778,7 @@
                  s = nbttagcompound.getString("Name");
              }
          }
-@@ -489,17 +489,13 @@
+ 
          return s;
      }
  
@@ -795,7 +797,7 @@
              this.stackTagCompound.setTag("display", new NBTTagCompound());
          }
  
-@@ -505,391 +505,130 @@
+         this.stackTagCompound.getCompoundTag("display").setString("Name", displayName);
          return this;
      }
  
@@ -1219,7 +1221,9 @@
              NBTTagCompound nbttagcompound = new NBTTagCompound();
              this.writeToNBT(nbttagcompound);
              ichatcomponent.getChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ChatComponentText(nbttagcompound.toString())));
-@@ -895,28 +895,20 @@
+             ichatcomponent.getChatStyle().setColor(this.getRarity().rarityColor);
+         }
+ 
          return ichatcomponent;
      }
  
@@ -1252,7 +1256,11 @@
                          this.canDestroyCacheResult = true;
                          return true;
                      }
-@@ -926,28 +926,20 @@
+                 }
+             }
+@@ -924,30 +741,23 @@
+             this.canDestroyCacheResult = false;
+             return false;
          }
      }
  
@@ -1285,9 +1293,5 @@
                          this.canPlaceOnCacheResult = true;
                          return true;
                      }
-@@ -956,4 +956,4 @@
-             return false;
-         }
-     }
--}
-+}
+                 }
+             }

@@ -1,6 +1,6 @@
----a/net/minecraft/util/ObjectIntIdentityMap.java
-+++b/net/minecraft/util/ObjectIntIdentityMap.java
-@@ -1,45 +1,38 @@
+--- decompiled\net\minecraft\util\ObjectIntIdentityMap.java
++++ src\main\java\net\minecraft\util\ObjectIntIdentityMap.java
+@@ -1,43 +1,39 @@
  package net.minecraft.util;
  
 -import com.google.common.base.Predicates;
@@ -58,5 +58,4 @@
 +    public Iterator iterator() {
          return Iterators.filter(this.objectList.iterator(), Predicates.notNull());
      }
--}
-+}
+ }

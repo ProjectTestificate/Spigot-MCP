@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/layer/GenLayerVoronoiZoom.java
-+++b/net/minecraft/world/gen/layer/GenLayerVoronoiZoom.java
-@@ -1,17 +1,16 @@
+--- decompiled\net\minecraft\world\gen\layer\GenLayerVoronoiZoom.java
++++ src\main\java\net\minecraft\world\gen\layer\GenLayerVoronoiZoom.java
+@@ -1,19 +1,17 @@
  package net.minecraft.world.gen.layer;
  
 -public class GenLayerVoronoiZoom extends GenLayer
@@ -22,7 +22,11 @@
          areaX -= 2;
          areaY -= 2;
          int i1 = areaX >> 2;
-@@ -24,53 +24,43 @@
+         int j1 = areaY >> 2;
+         int k1 = (areaWidth >> 2) + 2;
+@@ -22,58 +20,47 @@
+         int i2 = k1 - 1 << 2;
+         int j2 = l1 - 1 << 2;
          int[] aint1 = IntCache.getIntCache(i2 * j2);
          int l2;
  
@@ -101,7 +105,11 @@
                              aint1[j4++] = l3;
                          }
                      }
-@@ -84,12 +84,10 @@
+                 }
+ 
+@@ -82,12 +69,11 @@
+             }
+         }
  
          int[] aint2 = IntCache.getIntCache(areaWidth * areaHeight);
  
@@ -113,5 +121,3 @@
  
          return aint2;
      }
--}
-+}

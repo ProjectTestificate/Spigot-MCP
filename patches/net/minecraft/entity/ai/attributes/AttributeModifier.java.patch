@@ -1,6 +1,6 @@
----a/net/minecraft/entity/ai/attributes/AttributeModifier.java
-+++b/net/minecraft/entity/ai/attributes/AttributeModifier.java
-@@ -1,11 +1,11 @@
+--- decompiled\net\minecraft\entity\ai\attributes\AttributeModifier.java
++++ src\main\java\net\minecraft\entity\ai\attributes\AttributeModifier.java
+@@ -1,103 +1,86 @@
  package net.minecraft.entity.ai.attributes;
  
 -import io.netty.util.internal.ThreadLocalRandom;
@@ -19,7 +19,7 @@
      private final double amount;
      private final int operation;
      private final String name;
-@@ -14,91 +14,70 @@
+     private final UUID id;
      private boolean isSaved;
      private static final String __OBFID = "CL_00001564";
  
@@ -128,5 +128,4 @@
 +    public String toString() {
          return "AttributeModifier{amount=" + this.amount + ", operation=" + this.operation + ", name=\'" + this.name + '\'' + ", id=" + this.id + ", serialize=" + this.isSaved + '}';
      }
--}
-+}
+ }

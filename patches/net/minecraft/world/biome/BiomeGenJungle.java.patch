@@ -1,6 +1,6 @@
----a/net/minecraft/world/biome/BiomeGenJungle.java
-+++b/net/minecraft/world/biome/BiomeGenJungle.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\biome\BiomeGenJungle.java
++++ src\main\java\net\minecraft\world\biome\BiomeGenJungle.java
+@@ -1,8 +1,9 @@
  package net.minecraft.world.biome;
  
  import java.util.Random;
@@ -8,7 +8,11 @@
  import net.minecraft.block.BlockPlanks;
  import net.minecraft.block.BlockTallGrass;
  import net.minecraft.entity.passive.EntityChicken;
-@@ -16,48 +16,42 @@
+ import net.minecraft.entity.passive.EntityOcelot;
+ import net.minecraft.util.BlockPos;
+@@ -14,61 +15,53 @@
+ import net.minecraft.world.gen.feature.WorldGenTallGrass;
+ import net.minecraft.world.gen.feature.WorldGenTrees;
  import net.minecraft.world.gen.feature.WorldGenVines;
  import net.minecraft.world.gen.feature.WorldGenerator;
  
@@ -68,7 +72,7 @@
          super.decorate(worldIn, p_180624_2_, p_180624_3_);
          int i = p_180624_2_.nextInt(16) + 8;
          int j = p_180624_2_.nextInt(16) + 8;
-@@ -65,13 +65,11 @@
+         int k = p_180624_2_.nextInt(worldIn.getHorizon(p_180624_3_.add(i, 0, j)).getY() * 2);
          (new WorldGenMelon()).generate(worldIn, p_180624_2_, p_180624_3_.add(i, k, j));
          WorldGenVines worldgenvines = new WorldGenVines();
  
@@ -80,6 +84,3 @@
              int l = p_180624_2_.nextInt(16) + 8;
              worldgenvines.generate(worldIn, p_180624_2_, p_180624_3_.add(k, 128, l));
          }
-     }
--}
-+}

@@ -1,6 +1,6 @@
----a/net/minecraft/world/storage/ThreadedFileIOBase.java
-+++b/net/minecraft/world/storage/ThreadedFileIOBase.java
-@@ -1,10 +1,8 @@
+--- decompiled\net\minecraft\world\storage\ThreadedFileIOBase.java
++++ src\main\java\net\minecraft\world\storage\ThreadedFileIOBase.java
+@@ -1,89 +1,72 @@
  package net.minecraft.world.storage;
  
 -import com.google.common.collect.Lists;
@@ -16,7 +16,7 @@
      private static final ThreadedFileIOBase threadedIOInstance = new ThreadedFileIOBase();
      private List threadedIOQueue = Collections.synchronizedList(Lists.newArrayList());
      private volatile long writeQueuedCounter;
-@@ -13,79 +13,60 @@
+     private volatile long savedIOCounter;
      private volatile boolean isThreadWaiting;
      private static final String __OBFID = "CL_00000605";
  
@@ -111,5 +111,3 @@
  
          this.isThreadWaiting = false;
      }
--}
-+}

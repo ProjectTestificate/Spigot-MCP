@@ -1,6 +1,6 @@
----a/net/minecraft/creativetab/CreativeTabs.java
-+++b/net/minecraft/creativetab/CreativeTabs.java
-@@ -1,133 +1,68 @@
+--- decompiled\net\minecraft\creativetab\CreativeTabs.java
++++ src\main\java\net\minecraft\creativetab\CreativeTabs.java
+@@ -1,323 +1,102 @@
  package net.minecraft.creativetab;
  
 -import java.util.Iterator;
@@ -176,7 +176,7 @@
      }).setBackgroundImageName("inventory.png").setNoScrollbar().setNoTitle();
      private final int tabIndex;
      private final String tabLabel;
-@@ -135,113 +135,31 @@
+     private String theTexture = "items.png";
      private boolean hasScrollbar = true;
      private boolean drawTitle = true;
      private EnumEnchantmentType[] enchantmentTypes;
@@ -370,5 +370,4 @@
 -            }
 -        }
 -    }
--}
-+}
+ }

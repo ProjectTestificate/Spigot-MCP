@@ -1,6 +1,6 @@
----a/net/minecraft/item/EnumAction.java
-+++b/net/minecraft/item/EnumAction.java
-@@ -1,7 +1,6 @@
+--- decompiled\net\minecraft\item\EnumAction.java
++++ src\main\java\net\minecraft\item\EnumAction.java
+@@ -1,9 +1,8 @@
  package net.minecraft.item;
  
 -public enum EnumAction
@@ -9,9 +9,5 @@
      NONE,
      EAT,
      DRINK,
-@@ -9,4 +9,4 @@
+     BLOCK,
      BOW;
- 
-     private static final String __OBFID = "CL_00000073";
--}
-+}

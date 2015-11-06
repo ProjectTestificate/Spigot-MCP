@@ -1,6 +1,6 @@
----a/net/minecraft/server/management/ServerConfigurationManager.java
-+++b/net/minecraft/server/management/ServerConfigurationManager.java
-@@ -1,10 +1,5 @@
+--- decompiled\net\minecraft\server\management\ServerConfigurationManager.java
++++ src\main\java\net\minecraft\server\management\ServerConfigurationManager.java
+@@ -1,22 +1,19 @@
  package net.minecraft.server.management;
  
 -import com.google.common.collect.Lists;
@@ -11,7 +11,10 @@
  import java.io.File;
  import java.net.SocketAddress;
  import java.text.SimpleDateFormat;
-@@ -15,6 +15,8 @@
+ import java.util.ArrayList;
+ import java.util.Collection;
+ import java.util.HashSet;
+ import java.util.Iterator;
  import java.util.List;
  import java.util.Map;
  import java.util.UUID;
@@ -20,7 +23,11 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityList;
  import net.minecraft.entity.player.EntityPlayer;
-@@ -45,26 +45,45 @@
+ import net.minecraft.entity.player.EntityPlayerMP;
+ import net.minecraft.nbt.NBTTagCompound;
+@@ -43,57 +40,89 @@
+ import net.minecraft.scoreboard.ScoreObjective;
+ import net.minecraft.scoreboard.ScorePlayerTeam;
  import net.minecraft.scoreboard.ServerScoreboard;
  import net.minecraft.scoreboard.Team;
  import net.minecraft.server.MinecraftServer;
@@ -81,7 +88,7 @@
      public static final File FILE_PLAYERBANS = new File("banned-players.json");
      public static final File FILE_IPBANS = new File("banned-ips.json");
      public static final File FILE_OPS = new File("ops.json");
-@@ -74,14 +74,14 @@
+     public static final File FILE_WHITELIST = new File("whitelist.json");
      private static final Logger logger = LogManager.getLogger();
      private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd \'at\' HH:mm:ss z");
      private final MinecraftServer mcServer;
@@ -98,7 +105,8 @@
      private boolean whiteListEnforced;
      protected int maxPlayers;
      private int viewDistance;
-@@ -90,8 +90,15 @@
+     private WorldSettings.GameType gameType;
+     private boolean commandsAllowedForAll;
      private int playerPingIndex;
      private static final String __OBFID = "CL_00001423";
  
@@ -116,7 +124,11 @@
          this.bannedPlayers = new UserListBans(FILE_PLAYERBANS);
          this.bannedIPs = new BanList(FILE_IPBANS);
          this.ops = new UserListOps(FILE_OPS);
-@@ -103,32 +103,49 @@
+         this.whiteListedPlayers = new UserListWhitelist(FILE_WHITELIST);
+         this.playerStatFiles = Maps.newHashMap();
+@@ -101,848 +130,1117 @@
+         this.bannedPlayers.setLanServer(false);
+         this.bannedIPs.setLanServer(false);
          this.maxPlayers = 8;
      }
  
@@ -173,7 +185,7 @@
          nethandlerplayserver.sendPacket(new S3FPacketCustomPayload("MC|Brand", (new PacketBuffer(Unpooled.buffer())).writeString(this.getServerInstance().getServerModName())));
          nethandlerplayserver.sendPacket(new S41PacketServerDifficulty(worldinfo.getDifficulty(), worldinfo.isDifficultyLocked()));
          nethandlerplayserver.sendPacket(new S05PacketSpawnPosition(blockpos));
-@@ -134,75 +134,72 @@
+         nethandlerplayserver.sendPacket(new S39PacketPlayerAbilities(playerIn.capabilities));
          nethandlerplayserver.sendPacket(new S09PacketHeldItemChange(playerIn.inventory.currentItem));
          playerIn.getStatFile().func_150877_d();
          playerIn.getStatFile().func_150884_b(playerIn);
@@ -280,7 +292,8 @@
                      playerIn.playerNetServerHandler.sendPacket(packet);
                  }
  
-@@ -213,114 +213,184 @@
+                 hashset.add(scoreobjective);
+             }
          }
      }
  
@@ -494,7 +507,9 @@
              worldserver.removePlayerEntityDangerously(playerIn.ridingEntity);
              logger.debug("removing player mount");
          }
-@@ -330,236 +330,421 @@
+ 
+         worldserver.removeEntity(playerIn);
+         worldserver.getPlayerManager().removePlayer(playerIn);
          this.playerEntityList.remove(playerIn);
          this.uuidToPlayerMap.remove(playerIn.getUniqueID());
          this.playerStatFiles.remove(playerIn.getUniqueID());
@@ -1023,7 +1038,7 @@
                  entityIn.setLocationAndAngles(d0, entityIn.posY, d1, entityIn.rotationYaw, entityIn.rotationPitch);
                  p_82448_4_.getDefaultTeleporter().placeInPortal(entityIn, f);
                  p_82448_4_.spawnEntityInWorld(entityIn);
-@@ -571,290 +571,361 @@
+                 p_82448_4_.updateEntityWithOptionalForce(entityIn, false);
              }
  
              p_82448_3_.theProfiler.endSection();
@@ -1518,7 +1533,7 @@
                  arraylist.add(entityplayermp);
              }
          }
-@@ -864,83 +864,66 @@
+ 
          return arraylist;
      }
  
@@ -1627,7 +1642,11 @@
                      file3.renameTo(file2);
                  }
              }
-@@ -953,36 +953,27 @@
+ 
+             statisticsfile = new StatisticsFile(this.mcServer, file2);
+@@ -951,37 +1249,29 @@
+         }
+ 
          return statisticsfile;
      }
  
@@ -1672,5 +1691,4 @@
 +    public boolean isWhiteListEnabled() {
          return this.whiteListEnforced;
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/world/IInteractionObject.java
-+++b/net/minecraft/world/IInteractionObject.java
-@@ -4,10 +4,10 @@
+--- decompiled\net\minecraft\world\IInteractionObject.java
++++ src\main\java\net\minecraft\world\IInteractionObject.java
+@@ -2,11 +2,11 @@
+ 
+ import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.entity.player.InventoryPlayer;
  import net.minecraft.inventory.Container;
  
@@ -11,5 +13,4 @@
      Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn);
  
      String getGuiID();
--}
-+}
+ }

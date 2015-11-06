@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockTNT.java
-+++b/net/minecraft/block/BlockTNT.java
-@@ -11,6 +11,7 @@
+--- decompiled\net\minecraft\block\BlockTNT.java
++++ src\main\java\net\minecraft\block\BlockTNT.java
+@@ -9,133 +9,115 @@
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.item.EntityTNTPrimed;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.entity.projectile.EntityArrow;
@@ -8,7 +10,7 @@
  import net.minecraft.init.Items;
  import net.minecraft.item.Item;
  import net.minecraft.util.BlockPos;
-@@ -18,82 +18,67 @@
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.world.Explosion;
  import net.minecraft.world.World;
  
@@ -113,7 +115,10 @@
                      --playerIn.getCurrentEquippedItem().stackSize;
                  }
  
-@@ -105,41 +105,37 @@
+                 return true;
+             }
+         }
+ 
          return super.onBlockActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ);
      }
  
@@ -166,5 +171,4 @@
 +    protected BlockState createBlockState() {
 +        return new BlockState(this, new IProperty[]{EXPLODE});
      }
--}
-+}
+ }

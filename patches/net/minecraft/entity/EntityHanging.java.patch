@@ -1,6 +1,7 @@
----a/net/minecraft/entity/EntityHanging.java
-+++b/net/minecraft/entity/EntityHanging.java
-@@ -2,129 +2,171 @@
+--- decompiled\net\minecraft\entity\EntityHanging.java
++++ src\main\java\net\minecraft\entity\EntityHanging.java
+@@ -1,234 +1,291 @@
+ package net.minecraft.entity;
  
  import java.util.Iterator;
  import java.util.List;
@@ -238,7 +239,9 @@
                          return false;
                      }
                  }
-@@ -136,45 +136,35 @@
+             }
+ 
+             List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
              Iterator iterator = list.iterator();
              Entity entity;
  
@@ -323,7 +326,9 @@
                  this.setDead();
                  this.setBeenAttacked();
                  this.onBroken(source.getEntity());
-@@ -185,49 +185,63 @@
+             }
+ 
+             return true;
          }
      }
  
@@ -396,7 +401,11 @@
              enumfacing = EnumFacing.getHorizontal(tagCompund.getByte("Dir"));
          }
  
-@@ -239,29 +239,24 @@
+         this.func_174859_a(enumfacing);
+     }
+@@ -237,30 +294,26 @@
+ 
+     public abstract int getHeightPixels();
  
      public abstract void onBroken(Entity p_110128_1_);
  
@@ -428,5 +437,4 @@
 +    public BlockPos func_174857_n() {
          return this.hangingPosition;
      }
--}
-+}
+ }

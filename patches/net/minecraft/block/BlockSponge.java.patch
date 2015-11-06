@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockSponge.java
-+++b/net/minecraft/block/BlockSponge.java
-@@ -1,10 +1,8 @@
+--- decompiled\net\minecraft\block\BlockSponge.java
++++ src\main\java\net\minecraft\block\BlockSponge.java
+@@ -1,191 +1,108 @@
  package net.minecraft.block;
  
 -import com.google.common.collect.Lists;
@@ -13,7 +13,7 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyBool;
-@@ -13,125 +13,97 @@
+ import net.minecraft.block.state.BlockState;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.creativetab.CreativeTabs;
  import net.minecraft.init.Blocks;
@@ -219,5 +219,4 @@
 -            }
 -        }
 -    }
--}
-+}
+ }

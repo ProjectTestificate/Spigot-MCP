@@ -1,6 +1,6 @@
----a/net/minecraft/util/RegistryNamespaced.java
-+++b/net/minecraft/util/RegistryNamespaced.java
-@@ -1,60 +1,50 @@
+--- decompiled\net\minecraft\util\RegistryNamespaced.java
++++ src\main\java\net\minecraft\util\RegistryNamespaced.java
+@@ -1,59 +1,51 @@
  package net.minecraft.util;
  
 -import com.google.common.collect.BiMap;
@@ -75,5 +75,4 @@
 +    public Iterator iterator() {
          return this.underlyingIntegerMap.iterator();
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockFenceGate.java
-+++b/net/minecraft/block/BlockFenceGate.java
-@@ -14,100 +14,77 @@
+--- decompiled\net\minecraft\block\BlockFenceGate.java
++++ src\main\java\net\minecraft\block\BlockFenceGate.java
+@@ -12,170 +12,129 @@
+ import net.minecraft.util.AxisAlignedBB;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.World;
@@ -128,7 +130,7 @@
                  state = state.withProperty(FACING, enumfacing1);
              }
  
-@@ -115,67 +115,48 @@
+             state = state.withProperty(OPEN, Boolean.valueOf(true));
              worldIn.setBlockState(pos, state, 2);
          }
  
@@ -211,5 +213,4 @@
 +    protected BlockState createBlockState() {
 +        return new BlockState(this, new IProperty[]{FACING, OPEN, POWERED, IN_WALL});
      }
--}
-+}
+ }

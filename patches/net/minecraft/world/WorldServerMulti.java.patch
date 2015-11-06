@@ -1,6 +1,8 @@
----a/net/minecraft/world/WorldServerMulti.java
-+++b/net/minecraft/world/WorldServerMulti.java
-@@ -3,76 +3,75 @@
+--- decompiled\net\minecraft\world\WorldServerMulti.java
++++ src\main\java\net\minecraft\world\WorldServerMulti.java
+@@ -1,74 +1,76 @@
+ package net.minecraft.world;
+ 
  import net.minecraft.profiler.Profiler;
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.village.VillageCollection;
@@ -109,6 +111,3 @@
          }
  
          return this;
-     }
--}
-+}

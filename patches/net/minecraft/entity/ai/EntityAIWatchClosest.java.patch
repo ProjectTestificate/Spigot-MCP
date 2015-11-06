@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIWatchClosest.java
-+++b/net/minecraft/entity/ai/EntityAIWatchClosest.java
-@@ -4,8 +4,8 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIWatchClosest.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIWatchClosest.java
+@@ -2,80 +2,66 @@
+ 
+ import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityLiving;
  import net.minecraft.entity.player.EntityPlayer;
  
@@ -11,7 +13,8 @@
      protected EntityLiving theWatcher;
      protected Entity closestEntity;
      protected float maxDistanceForPlayer;
-@@ -14,8 +14,7 @@
+     private int lookTime;
+     private float field_75331_e;
      protected Class watchedClass;
      private static final String __OBFID = "CL_00001592";
  
@@ -21,7 +24,7 @@
          this.theWatcher = p_i1631_1_;
          this.watchedClass = p_i1631_2_;
          this.maxDistanceForPlayer = p_i1631_3_;
-@@ -23,8 +23,7 @@
+         this.field_75331_e = 0.02F;
          this.setMutexBits(2);
      }
  
@@ -31,7 +34,7 @@
          this.theWatcher = p_i1632_1_;
          this.watchedClass = p_i1632_2_;
          this.maxDistanceForPlayer = p_i1632_3_;
-@@ -32,53 +32,39 @@
+         this.field_75331_e = p_i1632_4_;
          this.setMutexBits(2);
      }
  
@@ -95,5 +98,4 @@
 +        this.theWatcher.getLookHelper().setLookPosition(this.closestEntity.posX, this.closestEntity.posY + (double) this.closestEntity.getEyeHeight(), this.closestEntity.posZ, 10.0F, (float) this.theWatcher.getVerticalFaceSpeed());
          --this.lookTime;
      }
--}
-+}
+ }

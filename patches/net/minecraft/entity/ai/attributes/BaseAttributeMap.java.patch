@@ -1,6 +1,6 @@
----a/net/minecraft/entity/ai/attributes/BaseAttributeMap.java
-+++b/net/minecraft/entity/ai/attributes/BaseAttributeMap.java
-@@ -1,46 +1,39 @@
+--- decompiled\net\minecraft\entity\ai\attributes\BaseAttributeMap.java
++++ src\main\java\net\minecraft\entity\ai\attributes\BaseAttributeMap.java
+@@ -1,91 +1,80 @@
  package net.minecraft.entity.ai.attributes;
  
 -import com.google.common.collect.HashMultimap;
@@ -61,7 +61,9 @@
                  this.field_180377_c.put(iattribute1, p_111150_1_);
              }
  
-@@ -49,44 +49,37 @@
+             return iattributeinstance;
+         }
+     }
  
      protected abstract IAttributeInstance func_180376_c(IAttribute p_180376_1_);
  
@@ -120,5 +122,4 @@
              }
          }
      }
--}
-+}
+ }

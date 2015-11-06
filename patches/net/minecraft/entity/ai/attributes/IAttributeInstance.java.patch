@@ -1,6 +1,7 @@
----a/net/minecraft/entity/ai/attributes/IAttributeInstance.java
-+++b/net/minecraft/entity/ai/attributes/IAttributeInstance.java
-@@ -2,11 +2,7 @@
+--- decompiled\net\minecraft\entity\ai\attributes\IAttributeInstance.java
++++ src\main\java\net\minecraft\entity\ai\attributes\IAttributeInstance.java
+@@ -1,14 +1,13 @@
+ package net.minecraft.entity.ai.attributes;
  
  import java.util.Collection;
  import java.util.UUID;
@@ -15,7 +16,11 @@
      IAttribute getAttribute();
  
      double getBaseValue();
-@@ -25,10 +25,4 @@
+ 
+     void setBaseValue(double p_111128_1_);
+@@ -23,10 +22,7 @@
+ 
+     void applyModifier(AttributeModifier p_111121_1_);
  
      void removeModifier(AttributeModifier p_111124_1_);
  
@@ -23,5 +28,4 @@
 -    void removeAllModifiers();
 -
      double getAttributeValue();
--}
-+}
+ }

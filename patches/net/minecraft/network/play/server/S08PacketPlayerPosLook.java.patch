@@ -1,6 +1,8 @@
----a/net/minecraft/network/play/server/S08PacketPlayerPosLook.java
-+++b/net/minecraft/network/play/server/S08PacketPlayerPosLook.java
-@@ -4,13 +4,13 @@
+--- decompiled\net\minecraft\network\play\server\S08PacketPlayerPosLook.java
++++ src\main\java\net\minecraft\network\play\server\S08PacketPlayerPosLook.java
+@@ -2,158 +2,109 @@
+ 
+ import java.io.IOException;
  import java.util.EnumSet;
  import java.util.Iterator;
  import java.util.Set;
@@ -20,7 +22,8 @@
      private double field_148940_a;
      private double field_148938_b;
      private double field_148939_c;
-@@ -21,9 +21,11 @@
+     private float field_148936_d;
+     private float field_148937_e;
      private Set field_179835_f;
      private static final String __OBFID = "CL_00001273";
  
@@ -34,7 +37,8 @@
          this.field_148940_a = p_i45993_1_;
          this.field_148938_b = p_i45993_3_;
          this.field_148939_c = p_i45993_5_;
-@@ -33,8 +33,7 @@
+         this.field_148936_d = p_i45993_7_;
+         this.field_148937_e = p_i45993_8_;
          this.field_179835_f = p_i45993_9_;
      }
  
@@ -44,7 +48,8 @@
          this.field_148940_a = buf.readDouble();
          this.field_148938_b = buf.readDouble();
          this.field_148939_c = buf.readDouble();
-@@ -43,8 +43,7 @@
+         this.field_148936_d = buf.readFloat();
+         this.field_148937_e = buf.readFloat();
          this.field_179835_f = S08PacketPlayerPosLook.EnumFlags.func_180053_a(buf.readUnsignedByte());
      }
  
@@ -54,7 +59,8 @@
          buf.writeDouble(this.field_148940_a);
          buf.writeDouble(this.field_148938_b);
          buf.writeDouble(this.field_148939_c);
-@@ -53,19 +53,15 @@
+         buf.writeFloat(this.field_148936_d);
+         buf.writeFloat(this.field_148937_e);
          buf.writeByte(S08PacketPlayerPosLook.EnumFlags.func_180056_a(this.field_179835_f));
      }
  
@@ -113,7 +119,9 @@
          X(0),
          Y(1),
          Z(2),
-@@ -110,33 +110,27 @@
+         Y_ROT(3),
+         X_ROT(4);
+         private int field_180058_f;
  
          private static final String __OBFID = "CL_00002304";
  
@@ -153,7 +161,7 @@
                      enumset.add(enumflags);
                  }
              }
-@@ -144,18 +144,15 @@
+ 
              return enumset;
          }
  
@@ -173,5 +181,3 @@
              return i;
          }
      }
--}
-+}

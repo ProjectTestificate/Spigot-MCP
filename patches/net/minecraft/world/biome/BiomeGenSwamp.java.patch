@@ -1,6 +1,6 @@
----a/net/minecraft/world/biome/BiomeGenSwamp.java
-+++b/net/minecraft/world/biome/BiomeGenSwamp.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\biome\BiomeGenSwamp.java
++++ src\main\java\net\minecraft\world\biome\BiomeGenSwamp.java
+@@ -1,25 +1,24 @@
  package net.minecraft.world.biome;
  
  import java.util.Random;
@@ -8,7 +8,8 @@
  import net.minecraft.block.BlockFlower;
  import net.minecraft.block.material.Material;
  import net.minecraft.entity.monster.EntitySlime;
-@@ -9,15 +9,12 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  import net.minecraft.world.chunk.ChunkPrimer;
  import net.minecraft.world.gen.feature.WorldGenAbstractTree;
@@ -28,7 +29,11 @@
          super(p_i1988_1_);
          this.theBiomeDecorator.treesPerChunk = 2;
          this.theBiomeDecorator.flowersPerChunk = 1;
-@@ -33,35 +33,27 @@
+         this.theBiomeDecorator.deadBushPerChunk = 1;
+         this.theBiomeDecorator.mushroomsPerChunk = 8;
+@@ -31,39 +30,31 @@
+         this.theBiomeDecorator.grassPerChunk = 5;
+         this.waterColorMultiplier = 14745518;
          this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntitySlime.class, 1, 1, 1));
      }
  
@@ -73,7 +78,11 @@
                              p_180622_3_.setBlockState(l, i1 + 1, k, Blocks.waterlily.getDefaultState());
                          }
                      }
-@@ -73,17 +73,4 @@
+ 
+                     break;
+@@ -71,19 +62,6 @@
+             }
+         }
  
          this.generateBiomeTerrain(worldIn, p_180622_2_, p_180622_3_, p_180622_4_, p_180622_5_, p_180622_6_);
      }
@@ -90,5 +99,4 @@
 -    {
 -        return 6975545;
 -    }
--}
-+}
+ }

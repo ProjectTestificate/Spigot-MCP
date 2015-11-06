@@ -1,6 +1,7 @@
----a/net/minecraft/item/ItemArmorStand.java
-+++b/net/minecraft/item/ItemArmorStand.java
-@@ -2,6 +2,7 @@
+--- decompiled\net\minecraft\item\ItemArmorStand.java
++++ src\main\java\net\minecraft\item\ItemArmorStand.java
+@@ -1,9 +1,10 @@
+ package net.minecraft.item;
  
  import java.util.List;
  import java.util.Random;
@@ -8,7 +9,11 @@
  import net.minecraft.creativetab.CreativeTabs;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.item.EntityArmorStand;
-@@ -14,65 +14,50 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.nbt.NBTTagCompound;
+@@ -12,69 +13,53 @@
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.util.MathHelper;
  import net.minecraft.util.Rotations;
  import net.minecraft.world.World;
  
@@ -93,7 +98,11 @@
                                  NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                                  entityarmorstand.writeToNBTOptional(nbttagcompound1);
                                  nbttagcompound1.merge(nbttagcompound.getCompoundTag("EntityTag"));
-@@ -90,8 +90,7 @@
+                                 entityarmorstand.readFromNBT(nbttagcompound1);
+                             }
+@@ -88,12 +73,11 @@
+                 }
+             }
          }
      }
  
@@ -103,9 +112,5 @@
          Rotations rotations = armorStand.getHeadRotation();
          float f = rand.nextFloat() * 5.0F;
          float f1 = rand.nextFloat() * 20.0F - 10.0F;
-@@ -102,4 +102,4 @@
-         rotations1 = new Rotations(rotations.getX(), rotations.getY() + f, rotations.getZ());
-         armorStand.setBodyRotation(rotations1);
-     }
--}
-+}
+         Rotations rotations1 = new Rotations(rotations.getX() + f, rotations.getY() + f1, rotations.getZ());
+         armorStand.setHeadRotation(rotations1);

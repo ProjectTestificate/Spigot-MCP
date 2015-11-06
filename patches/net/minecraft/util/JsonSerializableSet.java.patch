@@ -1,6 +1,6 @@
----a/net/minecraft/util/JsonSerializableSet.java
-+++b/net/minecraft/util/JsonSerializableSet.java
-@@ -1,48 +1,45 @@
+--- decompiled\net\minecraft\util\JsonSerializableSet.java
++++ src\main\java\net\minecraft\util\JsonSerializableSet.java
+@@ -1,49 +1,43 @@
  package net.minecraft.util;
  
 +import java.util.Iterator;
@@ -62,5 +62,4 @@
 +    protected Set delegate() {
          return this.underlyingSet;
      }
--}
-+}
+ }

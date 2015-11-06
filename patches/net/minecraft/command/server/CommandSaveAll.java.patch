@@ -1,6 +1,8 @@
----a/net/minecraft/command/server/CommandSaveAll.java
-+++b/net/minecraft/command/server/CommandSaveAll.java
-@@ -9,54 +9,46 @@
+--- decompiled\net\minecraft\command\server\CommandSaveAll.java
++++ src\main\java\net\minecraft\command\server\CommandSaveAll.java
+@@ -7,74 +7,62 @@
+ import net.minecraft.util.ChatComponentTranslation;
+ import net.minecraft.util.IProgressUpdate;
  import net.minecraft.world.MinecraftException;
  import net.minecraft.world.WorldServer;
  
@@ -70,7 +72,10 @@
                          worldserver = minecraftserver.worldServers[i];
                          flag = worldserver.disableLevelSaving;
                          worldserver.disableLevelSaving = false;
-@@ -69,16 +69,12 @@
+                         worldserver.saveChunkData();
+                         worldserver.disableLevelSaving = flag;
+                     }
+                 }
  
                  sender.addChatMessage(new ChatComponentTranslation("commands.save.flushEnd", new Object[0]));
              }
@@ -85,5 +90,3 @@
  
          notifyOperators(sender, this, "commands.save.success", new Object[0]);
      }
--}
-+}

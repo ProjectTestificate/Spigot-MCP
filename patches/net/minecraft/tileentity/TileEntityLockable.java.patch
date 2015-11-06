@@ -1,6 +1,8 @@
----a/net/minecraft/tileentity/TileEntityLockable.java
-+++b/net/minecraft/tileentity/TileEntityLockable.java
-@@ -8,50 +8,42 @@
+--- decompiled\net\minecraft\tileentity\TileEntityLockable.java
++++ src\main\java\net\minecraft\tileentity\TileEntityLockable.java
+@@ -6,51 +6,43 @@
+ import net.minecraft.util.IChatComponent;
+ import net.minecraft.world.IInteractionObject;
  import net.minecraft.world.ILockableContainer;
  import net.minecraft.world.LockCode;
  
@@ -60,5 +62,4 @@
 +    public IChatComponent getDisplayName() {
 +        return (IChatComponent) (this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
      }
--}
-+}
+ }

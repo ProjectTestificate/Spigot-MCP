@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockLadder.java
-+++b/net/minecraft/block/BlockLadder.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockLadder.java
++++ src\main\java\net\minecraft\block\BlockLadder.java
+@@ -1,59 +1,46 @@
  package net.minecraft.block;
  
  import java.util.Iterator;
@@ -8,7 +8,10 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyDirection;
-@@ -11,46 +11,32 @@
+ import net.minecraft.block.state.BlockState;
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.creativetab.CreativeTabs;
+ import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -64,7 +67,11 @@
                  case 1:
                      this.setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
                      break;
-@@ -68,53 +68,41 @@
+                 case 2:
+                     this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
+@@ -66,137 +53,101 @@
+                     this.setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
+             }
          }
      }
  
@@ -131,7 +138,7 @@
              this.dropBlockAsItem(worldIn, pos, state, 0);
              worldIn.setBlockToAir(pos);
          }
-@@ -122,82 +122,56 @@
+ 
          super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
      }
  
@@ -243,6 +250,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

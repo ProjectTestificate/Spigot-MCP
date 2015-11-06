@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S29PacketSoundEffect.java
-+++b/net/minecraft/network/play/server/S29PacketSoundEffect.java
-@@ -1,15 +1,16 @@
+--- decompiled\net\minecraft\network\play\server\S29PacketSoundEffect.java
++++ src\main\java\net\minecraft\network\play\server\S29PacketSoundEffect.java
+@@ -1,102 +1,62 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -22,7 +22,8 @@
      private String field_149219_a;
      private int field_149217_b;
      private int field_149218_c = Integer.MAX_VALUE;
-@@ -20,21 +20,22 @@
+     private int field_149215_d;
+     private float field_149216_e;
      private int field_149214_f;
      private static final String __OBFID = "CL_00001309";
  
@@ -53,7 +54,8 @@
          this.field_149219_a = buf.readStringFromBuffer(256);
          this.field_149217_b = buf.readInt();
          this.field_149218_c = buf.readInt();
-@@ -44,8 +44,7 @@
+         this.field_149215_d = buf.readInt();
+         this.field_149216_e = buf.readFloat();
          this.field_149214_f = buf.readUnsignedByte();
      }
  
@@ -63,7 +65,8 @@
          buf.writeString(this.field_149219_a);
          buf.writeInt(this.field_149217_b);
          buf.writeInt(this.field_149218_c);
-@@ -54,26 +54,11 @@
+         buf.writeInt(this.field_149215_d);
+         buf.writeFloat(this.field_149216_e);
          buf.writeByte(this.field_149214_f);
      }
  
@@ -115,5 +118,4 @@
 -    {
 -        return (float)this.field_149214_f / 63.0F;
 -    }
--}
-+}
+ }

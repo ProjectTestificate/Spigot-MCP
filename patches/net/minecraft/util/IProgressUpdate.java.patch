@@ -1,6 +1,6 @@
----a/net/minecraft/util/IProgressUpdate.java
-+++b/net/minecraft/util/IProgressUpdate.java
-@@ -1,17 +1,10 @@
+--- decompiled\net\minecraft\util\IProgressUpdate.java
++++ src\main\java\net\minecraft\util\IProgressUpdate.java
+@@ -1,19 +1,11 @@
  package net.minecraft.util;
  
 -import net.minecraftforge.fml.relauncher.Side;
@@ -21,5 +21,4 @@
 -
 -    @SideOnly(Side.CLIENT)
 -    void setDoneWorking();
--}
-+}
+ }

@@ -1,6 +1,7 @@
----a/net/minecraft/command/server/CommandPardonIp.java
-+++b/net/minecraft/command/server/CommandPardonIp.java
-@@ -2,6 +2,7 @@
+--- decompiled\net\minecraft\command\server\CommandPardonIp.java
++++ src\main\java\net\minecraft\command\server\CommandPardonIp.java
+@@ -1,63 +1,52 @@
+ package net.minecraft.command.server;
  
  import java.util.List;
  import java.util.regex.Matcher;
@@ -8,7 +9,8 @@
  import net.minecraft.command.CommandBase;
  import net.minecraft.command.CommandException;
  import net.minecraft.command.ICommandSender;
-@@ -10,55 +10,43 @@
+ import net.minecraft.command.SyntaxErrorException;
+ import net.minecraft.command.WrongUsageException;
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.BlockPos;
  
@@ -75,5 +77,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
          return args.length == 1 ? getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getConfigurationManager().getBannedIPs().getKeys()) : null;
      }
--}
-+}
+ }

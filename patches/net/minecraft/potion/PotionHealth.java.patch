@@ -1,6 +1,7 @@
----a/net/minecraft/potion/PotionHealth.java
-+++b/net/minecraft/potion/PotionHealth.java
-@@ -2,23 +2,20 @@
+--- decompiled\net\minecraft\potion\PotionHealth.java
++++ src\main\java\net\minecraft\potion\PotionHealth.java
+@@ -1,23 +1,20 @@
+ package net.minecraft.potion;
  
  import net.minecraft.util.ResourceLocation;
  
@@ -27,5 +28,4 @@
 +    public boolean isReady(int p_76397_1_, int p_76397_2_) {
          return p_76397_1_ >= 1;
      }
--}
-+}
+ }

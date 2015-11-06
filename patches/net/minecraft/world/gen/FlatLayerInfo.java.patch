@@ -1,6 +1,8 @@
----a/net/minecraft/world/gen/FlatLayerInfo.java
-+++b/net/minecraft/world/gen/FlatLayerInfo.java
-@@ -4,95 +4,79 @@
+--- decompiled\net\minecraft\world\gen\FlatLayerInfo.java
++++ src\main\java\net\minecraft\world\gen\FlatLayerInfo.java
+@@ -2,95 +2,79 @@
+ 
+ import net.minecraft.block.Block;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.util.ResourceLocation;
  
@@ -112,5 +114,3 @@
  
          return s;
      }
--}
-+}

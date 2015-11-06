@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S00PacketKeepAlive.java
-+++b/net/minecraft/network/play/server/S00PacketKeepAlive.java
-@@ -1,42 +1,38 @@
+--- decompiled\net\minecraft\network\play\server\S00PacketKeepAlive.java
++++ src\main\java\net\minecraft\network\play\server\S00PacketKeepAlive.java
+@@ -1,48 +1,38 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -60,5 +60,4 @@
 -    {
 -        this.processPacket((INetHandlerPlayClient)handler);
 -    }
--}
-+}
+ }

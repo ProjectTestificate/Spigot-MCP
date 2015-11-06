@@ -1,6 +1,6 @@
----a/net/minecraft/entity/IProjectile.java
-+++b/net/minecraft/entity/IProjectile.java
-@@ -1,7 +1,7 @@
+--- decompiled\net\minecraft\entity\IProjectile.java
++++ src\main\java\net\minecraft\entity\IProjectile.java
+@@ -1,6 +1,6 @@
  package net.minecraft.entity;
  
 -public interface IProjectile
@@ -8,5 +8,4 @@
 +public interface IProjectile {
 +
      void setThrowableHeading(double x, double y, double z, float velocity, float inaccuracy);
--}
-+}
+ }

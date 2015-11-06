@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S1BPacketEntityAttach.java
-+++b/net/minecraft/network/play/server/S1BPacketEntityAttach.java
-@@ -1,51 +1,47 @@
+--- decompiled\net\minecraft\network\play\server\S1BPacketEntityAttach.java
++++ src\main\java\net\minecraft\network\play\server\S1BPacketEntityAttach.java
+@@ -1,69 +1,47 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -81,5 +81,4 @@
 -    {
 -        return this.field_149407_c;
 -    }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/village/MerchantRecipe.java
-+++b/net/minecraft/village/MerchantRecipe.java
-@@ -3,11 +3,7 @@
+--- decompiled\net\minecraft\village\MerchantRecipe.java
++++ src\main\java\net\minecraft\village\MerchantRecipe.java
+@@ -1,153 +1,120 @@
+ package net.minecraft.village;
+ 
  import net.minecraft.item.Item;
  import net.minecraft.item.ItemStack;
  import net.minecraft.nbt.NBTTagCompound;
@@ -15,7 +17,8 @@
      private ItemStack itemToBuy;
      private ItemStack secondItemToBuy;
      private ItemStack itemToSell;
-@@ -16,18 +16,15 @@
+     private int toolUses;
+     private int maxTradeUses;
      private boolean rewardsExp;
      private static final String __OBFID = "CL_00000126";
  
@@ -37,7 +40,8 @@
          this.itemToBuy = p_i45760_1_;
          this.secondItemToBuy = p_i45760_2_;
          this.itemToSell = p_i45760_3_;
-@@ -36,117 +36,88 @@
+         this.toolUses = p_i45760_4_;
+         this.maxTradeUses = p_i45760_5_;
          this.rewardsExp = true;
      }
  
@@ -176,9 +180,5 @@
              nbttagcompound.setTag("buyB", this.secondItemToBuy.writeToNBT(new NBTTagCompound()));
          }
  
-@@ -154,4 +154,4 @@
-         nbttagcompound.setBoolean("rewardExp", this.rewardsExp);
-         return nbttagcompound;
-     }
--}
-+}
+         nbttagcompound.setInteger("uses", this.toolUses);
+         nbttagcompound.setInteger("maxUses", this.maxTradeUses);

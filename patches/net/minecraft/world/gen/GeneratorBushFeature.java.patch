@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/GeneratorBushFeature.java
-+++b/net/minecraft/world/gen/GeneratorBushFeature.java
-@@ -1,32 +1,30 @@
+--- decompiled\net\minecraft\world\gen\GeneratorBushFeature.java
++++ src\main\java\net\minecraft\world\gen\GeneratorBushFeature.java
+@@ -1,31 +1,28 @@
  package net.minecraft.world.gen;
  
  import java.util.Random;
@@ -39,6 +39,3 @@
          }
  
          return true;
-     }
--}
-+}

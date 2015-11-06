@@ -1,6 +1,8 @@
----a/net/minecraft/util/DamageSource.java
-+++b/net/minecraft/util/DamageSource.java
-@@ -7,8 +7,8 @@
+--- decompiled\net\minecraft\util\DamageSource.java
++++ src\main\java\net\minecraft\util\DamageSource.java
+@@ -5,12 +5,12 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.entity.projectile.EntityArrow;
  import net.minecraft.entity.projectile.EntityFireball;
  import net.minecraft.world.Explosion;
  
@@ -11,7 +13,11 @@
      public static DamageSource inFire = (new DamageSource("inFire")).setFireDamage();
      public static DamageSource lightningBolt = new DamageSource("lightningBolt");
      public static DamageSource onFire = (new DamageSource("onFire")).setDamageBypassesArmor().setFireDamage();
-@@ -36,173 +36,141 @@
+     public static DamageSource lava = (new DamageSource("lava")).setFireDamage();
+     public static DamageSource inWall = (new DamageSource("inWall")).setDamageBypassesArmor();
+@@ -34,174 +34,143 @@
+     private boolean magicDamage;
+     private boolean explosion;
      public String damageType;
      private static final String __OBFID = "CL_00001521";
  
@@ -216,5 +222,4 @@
 -        return entity instanceof EntityPlayer && ((EntityPlayer)entity).capabilities.isCreativeMode;
 +        return entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode;
      }
--}
-+}
+ }

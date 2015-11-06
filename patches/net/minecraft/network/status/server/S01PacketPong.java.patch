@@ -1,6 +1,6 @@
----a/net/minecraft/network/status/server/S01PacketPong.java
-+++b/net/minecraft/network/status/server/S01PacketPong.java
-@@ -1,39 +1,37 @@
+--- decompiled\net\minecraft\network\status\server\S01PacketPong.java
++++ src\main\java\net\minecraft\network\status\server\S01PacketPong.java
+@@ -1,40 +1,37 @@
  package net.minecraft.network.status.server;
  
  import java.io.IOException;
@@ -51,5 +51,4 @@
 +    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerStatusClient) handler);
      }
--}
-+}
+ }

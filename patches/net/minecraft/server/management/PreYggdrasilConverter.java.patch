@@ -1,6 +1,6 @@
----a/net/minecraft/server/management/PreYggdrasilConverter.java
-+++b/net/minecraft/server/management/PreYggdrasilConverter.java
-@@ -1,26 +1,6 @@
+--- decompiled\net\minecraft\server\management\PreYggdrasilConverter.java
++++ src\main\java\net\minecraft\server\management\PreYggdrasilConverter.java
+@@ -1,19 +1,10 @@
  package net.minecraft.server.management;
  
 -import com.google.common.base.Charsets;
@@ -20,7 +20,11 @@
  import java.io.IOException;
  import java.text.ParseException;
  import java.util.ArrayList;
-@@ -23,16 +23,20 @@
+ import java.util.Collection;
+ import java.util.Date;
+@@ -21,650 +12,569 @@
+ import java.util.Iterator;
+ import java.util.List;
  import java.util.Locale;
  import java.util.Map;
  import java.util.UUID;
@@ -57,7 +61,7 @@
      private static final Logger LOGGER = LogManager.getLogger();
      public static final File OLD_IPBAN_FILE = new File("banned-ips.txt");
      public static final File OLD_PLAYERBAN_FILE = new File("banned-players.txt");
-@@ -42,96 +42,79 @@
+     public static final File OLD_OPS_FILE = new File("ops.txt");
      public static final File OLD_WHITELIST_FILE = new File("white-list.txt");
      private static final String __OBFID = "CL_00001882";
  
@@ -184,7 +188,8 @@
                  String[] astring = s.split("\\|");
                  read.put(astring[0].toLowerCase(Locale.ROOT), astring);
              }
-@@ -138,58 +138,49 @@
+         }
+ 
          return list;
      }
  
@@ -264,7 +269,8 @@
                              throw new PreYggdrasilConverter.ConversionError("Could not request user " + p_onProfileLookupFailed_1_.getName() + " from backend systems", p_onProfileLookupFailed_2_, null);
                          }
                      }
-@@ -197,58 +197,44 @@
+                 };
+                 lookupNames(server, hashmap.keySet(), profilelookupcallback);
                  userlistbans.writeChanges();
                  backupConverted(OLD_PLAYERBAN_FILE);
                  return true;
@@ -339,7 +345,7 @@
                      String s2 = astring.length > 4 ? astring[4] : null;
                      banlist.addEntry(new IPBanEntry(s, date, s1, date1, s2));
                  }
-@@ -254,56 +254,45 @@
+ 
                  banlist.writeChanges();
                  backupConverted(OLD_IPBAN_FILE);
                  return true;
@@ -414,7 +420,8 @@
                              throw new PreYggdrasilConverter.ConversionError("Could not request user " + p_onProfileLookupFailed_1_.getName() + " from backend systems", p_onProfileLookupFailed_2_, null);
                          }
                      }
-@@ -311,61 +311,48 @@
+                 };
+                 lookupNames(server, list, profilelookupcallback);
                  userlistops.writeChanges();
                  backupConverted(OLD_OPS_FILE);
                  return true;
@@ -495,7 +502,8 @@
                              throw new PreYggdrasilConverter.ConversionError("Could not request user " + p_onProfileLookupFailed_1_.getName() + " from backend systems", p_onProfileLookupFailed_2_, null);
                          }
                      }
-@@ -373,219 +373,197 @@
+                 };
+                 lookupNames(server, list, profilelookupcallback);
                  userlistwhitelist.writeChanges();
                  backupConverted(OLD_WHITELIST_FILE);
                  return true;
@@ -790,7 +798,7 @@
                  LOGGER.warn("* " + OLD_WHITELIST_FILE.getName());
              }
  
-@@ -592,81 +592,57 @@
+             return false;
          }
      }
  
@@ -890,7 +898,6 @@
 +        private ConversionError(String message) {
 +            super(message);
          }
--}
 +
 +        ConversionError(String p_i1208_1_, Object p_i1208_2_) {
 +            this(p_i1208_1_);
@@ -900,4 +907,4 @@
 +            this(p_i46367_1_, p_i46367_2_);
 +        }
 +    }
-+}
+ }

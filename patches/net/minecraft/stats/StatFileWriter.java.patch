@@ -1,6 +1,6 @@
----a/net/minecraft/stats/StatFileWriter.java
-+++b/net/minecraft/stats/StatFileWriter.java
-@@ -1,48 +1,44 @@
+--- decompiled\net\minecraft\stats\StatFileWriter.java
++++ src\main\java\net\minecraft\stats\StatFileWriter.java
+@@ -1,89 +1,68 @@
  package net.minecraft.stats;
  
 -import com.google.common.collect.Maps;
@@ -84,7 +84,7 @@
              tupleintjsonserializable = new TupleIntJsonSerializable();
              this.statsData.put(p_150873_2_, tupleintjsonserializable);
          }
-@@ -64,25 +64,21 @@
+ 
          tupleintjsonserializable.setIntegerValue(p_150873_3_);
      }
  
@@ -116,9 +116,5 @@
              tupleintjsonserializable = new TupleIntJsonSerializable();
              this.statsData.put(p_150872_1_, tupleintjsonserializable);
          }
-@@ -89,4 +89,4 @@
+ 
          tupleintjsonserializable.setJsonSerializableValue(p_150872_2_);
-         return p_150872_2_;
-     }
--}
-+}

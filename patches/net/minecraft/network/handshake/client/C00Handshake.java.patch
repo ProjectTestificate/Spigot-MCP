@@ -1,6 +1,6 @@
----a/net/minecraft/network/handshake/client/C00Handshake.java
-+++b/net/minecraft/network/handshake/client/C00Handshake.java
-@@ -1,65 +1,52 @@
+--- decompiled\net\minecraft\network\handshake\client\C00Handshake.java
++++ src\main\java\net\minecraft\network\handshake\client\C00Handshake.java
+@@ -1,66 +1,52 @@
  package net.minecraft.network.handshake.client;
  
  import java.io.IOException;
@@ -81,5 +81,4 @@
 +    public void processPacket(INetHandler handler) {
 +        this.handle((INetHandlerHandshakeServer) handler);
      }
--}
-+}
+ }

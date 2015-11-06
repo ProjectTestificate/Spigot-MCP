@@ -1,6 +1,7 @@
----a/net/minecraft/network/play/server/S0FPacketSpawnMob.java
-+++b/net/minecraft/network/play/server/S0FPacketSpawnMob.java
-@@ -2,6 +2,7 @@
+--- decompiled\net\minecraft\network\play\server\S0FPacketSpawnMob.java
++++ src\main\java\net\minecraft\network\play\server\S0FPacketSpawnMob.java
+@@ -1,22 +1,22 @@
+ package net.minecraft.network.play.server;
  
  import java.io.IOException;
  import java.util.List;
@@ -8,7 +9,8 @@
  import net.minecraft.entity.DataWatcher;
  import net.minecraft.entity.EntityList;
  import net.minecraft.entity.EntityLivingBase;
-@@ -10,11 +10,7 @@
+ import net.minecraft.network.INetHandler;
+ import net.minecraft.network.Packet;
  import net.minecraft.network.PacketBuffer;
  import net.minecraft.network.play.INetHandlerPlayClient;
  import net.minecraft.util.MathHelper;
@@ -23,7 +25,11 @@
      private int field_149042_a;
      private int field_149040_b;
      private int field_149041_c;
-@@ -30,60 +30,55 @@
+     private int field_149038_d;
+     private int field_149039_e;
+@@ -28,65 +28,58 @@
+     private byte field_149046_k;
+     private DataWatcher field_149043_l;
      private List field_149044_m;
      private static final String __OBFID = "CL_00001279";
  
@@ -102,7 +108,11 @@
          this.field_149042_a = buf.readVarIntFromBuffer();
          this.field_149040_b = buf.readByte() & 255;
          this.field_149041_c = buf.readInt();
-@@ -99,8 +99,7 @@
+         this.field_149038_d = buf.readInt();
+         this.field_149039_e = buf.readInt();
+@@ -97,12 +90,11 @@
+         this.field_149037_g = buf.readShort();
+         this.field_149047_h = buf.readShort();
          this.field_149044_m = DataWatcher.readWatchedListFromPacketBuffer(buf);
      }
  
@@ -112,7 +122,11 @@
          buf.writeVarIntToBuffer(this.field_149042_a);
          buf.writeByte(this.field_149040_b & 255);
          buf.writeInt(this.field_149041_c);
-@@ -115,20 +115,12 @@
+         buf.writeInt(this.field_149038_d);
+         buf.writeInt(this.field_149039_e);
+@@ -113,92 +105,14 @@
+         buf.writeShort(this.field_149037_g);
+         buf.writeShort(this.field_149047_h);
          this.field_149043_l.writeTo(buf);
      }
  
@@ -205,5 +219,4 @@
 -    {
 -        return this.field_149046_k;
 -    }
--}
-+}
+ }

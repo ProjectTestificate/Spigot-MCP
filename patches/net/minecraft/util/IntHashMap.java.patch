@@ -1,6 +1,6 @@
----a/net/minecraft/util/IntHashMap.java
-+++b/net/minecraft/util/IntHashMap.java
-@@ -1,30 +1,27 @@
+--- decompiled\net\minecraft\util\IntHashMap.java
++++ src\main\java\net\minecraft\util\IntHashMap.java
+@@ -1,151 +1,123 @@
  package net.minecraft.util;
  
 -public class IntHashMap
@@ -40,7 +40,7 @@
                  return entry.valueEntry;
              }
          }
-@@ -34,17 +34,14 @@
+ 
          return null;
      }
  
@@ -64,7 +64,7 @@
                  return entry;
              }
          }
-@@ -54,13 +54,11 @@
+ 
          return null;
      }
  
@@ -83,7 +83,8 @@
                  entry.valueEntry = p_76038_2_;
                  return;
              }
-@@ -71,78 +71,63 @@
+         }
+ 
          this.insert(j, p_76038_1_, p_76038_2_, k);
      }
  
@@ -178,7 +179,11 @@
                      entry.nextEntry = entry2;
                  }
  
-@@ -156,91 +156,70 @@
+                 return entry1;
+             }
+@@ -154,92 +126,77 @@
+         }
+ 
          return entry1;
      }
  
@@ -307,10 +312,9 @@
 +        public final int hashCode() {
 +            return IntHashMap.computeHash(this.hashEntry);
          }
--}
 +
 +        public final String toString() {
 +            return this.getHash() + "=" + this.getValue();
 +        }
 +    }
-+}
+ }

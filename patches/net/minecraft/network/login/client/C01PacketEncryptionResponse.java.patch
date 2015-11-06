@@ -1,6 +1,7 @@
----a/net/minecraft/network/login/client/C01PacketEncryptionResponse.java
-+++b/net/minecraft/network/login/client/C01PacketEncryptionResponse.java
-@@ -2,60 +2,48 @@
+--- decompiled\net\minecraft\network\login\client\C01PacketEncryptionResponse.java
++++ src\main\java\net\minecraft\network\login\client\C01PacketEncryptionResponse.java
+@@ -1,61 +1,49 @@
+ package net.minecraft.network.login.client;
  
  import java.io.IOException;
  import java.security.PrivateKey;
@@ -73,5 +74,4 @@
 +    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerLoginServer) handler);
      }
--}
-+}
+ }

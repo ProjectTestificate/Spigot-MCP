@@ -1,6 +1,6 @@
----a/net/minecraft/command/server/CommandEmote.java
-+++b/net/minecraft/command/server/CommandEmote.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\command\server\CommandEmote.java
++++ src\main\java\net\minecraft\command\server\CommandEmote.java
+@@ -1,50 +1,43 @@
  package net.minecraft.command.server;
  
  import java.util.List;
@@ -8,7 +8,10 @@
  import net.minecraft.command.CommandBase;
  import net.minecraft.command.CommandException;
  import net.minecraft.command.ICommandSender;
-@@ -11,41 +11,33 @@
+ import net.minecraft.command.WrongUsageException;
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.ChatComponentTranslation;
  import net.minecraft.util.IChatComponent;
  
@@ -58,5 +61,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
          return getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
      }
--}
-+}
+ }

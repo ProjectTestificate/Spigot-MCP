@@ -1,6 +1,6 @@
----a/net/minecraft/util/IRegistry.java
-+++b/net/minecraft/util/IRegistry.java
-@@ -1,12 +1,5 @@
+--- decompiled\net\minecraft\util\IRegistry.java
++++ src\main\java\net\minecraft\util\IRegistry.java
+@@ -1,13 +1,6 @@
  package net.minecraft.util;
  
 -import net.minecraftforge.fml.relauncher.Side;
@@ -14,5 +14,4 @@
  
 -    @SideOnly(Side.CLIENT)
 -    void putObject(Object p_82595_1_, Object p_82595_2_);
--}
-+}
+ }

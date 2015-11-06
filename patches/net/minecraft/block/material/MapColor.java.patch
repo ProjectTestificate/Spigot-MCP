@@ -1,6 +1,6 @@
----a/net/minecraft/block/material/MapColor.java
-+++b/net/minecraft/block/material/MapColor.java
-@@ -1,10 +1,6 @@
+--- decompiled\net\minecraft\block\material\MapColor.java
++++ src\main\java\net\minecraft\block\material\MapColor.java
+@@ -1,12 +1,10 @@
  package net.minecraft.block.material;
  
 -import net.minecraftforge.fml.relauncher.Side;
@@ -13,7 +13,11 @@
      public static final MapColor[] mapColorArray = new MapColor[64];
      public static final MapColor airColor = new MapColor(0, 0);
      public static final MapColor grassColor = new MapColor(1, 8368696);
-@@ -46,20 +46,14 @@
+     public static final MapColor sandColor = new MapColor(2, 16247203);
+     public static final MapColor clothColor = new MapColor(3, 10987431);
+@@ -44,50 +42,15 @@
+     public static final MapColor netherrackColor = new MapColor(35, 7340544);
+     public final int colorValue;
      public final int colorIndex;
      private static final String __OBFID = "CL_00000544";
  
@@ -64,5 +68,4 @@
 -        int l = (this.colorValue & 255) * short1 / 255;
 -        return -16777216 | j << 16 | k << 8 | l;
 -    }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/world/NextTickListEntry.java
-+++b/net/minecraft/world/NextTickListEntry.java
-@@ -3,8 +3,8 @@
+--- decompiled\net\minecraft\world\NextTickListEntry.java
++++ src\main\java\net\minecraft\world\NextTickListEntry.java
+@@ -1,71 +1,59 @@
+ package net.minecraft.world;
+ 
  import net.minecraft.block.Block;
  import net.minecraft.util.BlockPos;
  
@@ -11,7 +13,8 @@
      private static long nextTickEntryID;
      private final Block block;
      public final BlockPos position;
-@@ -13,61 +13,48 @@
+     public long scheduledTime;
+     public int priority;
      private long tickEntryID;
      private static final String __OBFID = "CL_00000156";
  
@@ -84,5 +87,4 @@
 +    public int compareTo(Object p_compareTo_1_) {
 +        return this.compareTo((NextTickListEntry) p_compareTo_1_);
      }
--}
-+}
+ }

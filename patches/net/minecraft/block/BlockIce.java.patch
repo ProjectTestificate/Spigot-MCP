@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockIce.java
-+++b/net/minecraft/block/BlockIce.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockIce.java
++++ src\main\java\net\minecraft\block\BlockIce.java
+@@ -1,96 +1,80 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -8,7 +8,10 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.creativetab.CreativeTabs;
-@@ -11,44 +11,31 @@
+ import net.minecraft.enchantment.EnchantmentHelper;
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.init.Blocks;
+ import net.minecraft.item.ItemStack;
  import net.minecraft.stats.StatList;
  import net.minecraft.tileentity.TileEntity;
  import net.minecraft.util.BlockPos;
@@ -66,7 +69,8 @@
                  worldIn.setBlockToAir(pos);
                  return;
              }
-@@ -61,37 +61,34 @@
+ 
+             int i = EnchantmentHelper.getFortuneModifier(player);
              this.dropBlockAsItem(worldIn, pos, state, i);
              Material material = worldIn.getBlockState(pos.down()).getBlock().getMaterial();
  
@@ -115,5 +119,4 @@
 +    public int getMobilityFlag() {
          return 0;
      }
--}
-+}
+ }

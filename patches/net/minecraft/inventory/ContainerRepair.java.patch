@@ -1,6 +1,6 @@
----a/net/minecraft/inventory/ContainerRepair.java
-+++b/net/minecraft/inventory/ContainerRepair.java
-@@ -1,7 +1,10 @@
+--- decompiled\net\minecraft\inventory\ContainerRepair.java
++++ src\main\java\net\minecraft\inventory\ContainerRepair.java
+@@ -1,9 +1,12 @@
  package net.minecraft.inventory;
  
 +import java.util.ArrayList;
@@ -11,7 +11,11 @@
  import net.minecraft.block.BlockAnvil;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.enchantment.Enchantment;
-@@ -13,140 +13,168 @@
+ import net.minecraft.enchantment.EnchantmentHelper;
+ import net.minecraft.entity.player.EntityPlayer;
+@@ -11,144 +14,172 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.init.Items;
  import net.minecraft.item.ItemStack;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
@@ -246,7 +250,11 @@
          boolean flag = false;
          boolean flag1 = true;
          boolean flag2 = true;
-@@ -160,13 +160,11 @@
+         boolean flag3 = true;
+         boolean flag4 = true;
+@@ -158,140 +189,116 @@
+         this.maximumCost = 1;
+         int i = 0;
          byte b0 = 0;
          byte b1 = 0;
  
@@ -263,7 +271,8 @@
              ItemStack itemstack1 = itemstack.copy();
              ItemStack itemstack2 = this.inputSlots.getStackInSlot(1);
              Map map = EnchantmentHelper.getEnchantments(itemstack1);
-@@ -175,25 +175,21 @@
+             boolean flag7 = false;
+             int i2 = b0 + itemstack.getRepairCost() + (itemstack2 == null ? 0 : itemstack2.getRepairCost());
              this.materialCost = 0;
              int j;
  
@@ -294,7 +303,7 @@
                          l = itemstack1.getItemDamage() - j;
                          itemstack1.setItemDamage(l);
                          ++i;
-@@ -201,37 +201,29 @@
+                         j = Math.min(itemstack1.getItemDamage(), itemstack1.getMaxDamage() / 4);
                      }
  
                      this.materialCost = k;
@@ -334,7 +343,8 @@
                              itemstack1.setItemDamage(j1);
                              i += 2;
                          }
-@@ -236,61 +236,50 @@
+                     }
+ 
                      Map map1 = EnchantmentHelper.getEnchantments(itemstack2);
                      Iterator iterator1 = map1.keySet().iterator();
  
@@ -409,7 +419,11 @@
                                      case 1:
                                          j2 = 8;
                                          break;
-@@ -310,8 +310,7 @@
+                                     case 2:
+                                         j2 = 4;
+@@ -308,61 +315,51 @@
+                                         break;
+                                     case 10:
                                          j2 = 1;
                                  }
  
@@ -419,7 +433,10 @@
                                      j2 = Math.max(1, j2 / 2);
                                  }
  
-@@ -322,18 +322,14 @@
+                                 i += j2 * k1;
+                             }
+                         }
+                     }
                  }
              }
  
@@ -440,7 +457,7 @@
                  b1 = 1;
                  i += b1;
                  itemstack1.setStackDisplayName(this.repairedItemName);
-@@ -340,27 +340,22 @@
+             }
  
              this.maximumCost = i2 + i;
  
@@ -473,7 +490,11 @@
                      j = itemstack2.getRepairCost();
                  }
  
-@@ -374,86 +374,59 @@
+                 j = j * 2 + 1;
+                 itemstack1.setRepairCost(j);
+@@ -372,115 +369,96 @@
+             this.outputSlot.setInventorySlotContents(0, itemstack1);
+             this.detectAndSendChanges();
          }
      }
  
@@ -580,7 +601,9 @@
                  return null;
              }
  
-@@ -463,25 +463,19 @@
+             slot.onPickupFromSlot(playerIn, itemstack1);
+         }
+ 
          return itemstack;
      }
  
@@ -608,7 +631,6 @@
  
          this.updateRepairOutput();
      }
--}
 +
 +    // CraftBukkit start
 +    @Override
@@ -622,4 +644,4 @@
 +        return bukkitEntity;
 +    }
 +    // CraftBukkit end
-+}
+ }

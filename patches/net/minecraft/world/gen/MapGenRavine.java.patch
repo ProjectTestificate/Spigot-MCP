@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/MapGenRavine.java
-+++b/net/minecraft/world/gen/MapGenRavine.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\gen\MapGenRavine.java
++++ src\main\java\net\minecraft\world\gen\MapGenRavine.java
+@@ -1,221 +1,185 @@
  package net.minecraft.world.gen;
  
  import java.util.Random;
@@ -8,7 +8,7 @@
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.init.Blocks;
  import net.minecraft.util.BlockPos;
-@@ -8,55 +8,49 @@
+ import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  import net.minecraft.world.chunk.ChunkPrimer;
  
@@ -81,7 +81,8 @@
              p_180707_14_ *= 0.7F;
              p_180707_14_ += f4 * 0.05F;
              p_180707_13_ += f3 * 0.05F;
-@@ -66,20 +66,17 @@
+             f4 *= 0.8F;
+             f3 *= 0.5F;
              f4 += (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 2.0F;
              f3 += (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 4.0F;
  
@@ -107,7 +108,7 @@
                      int k3 = MathHelper.floor_double(p_180707_6_ - d13) - p_180707_3_ * 16 - 1;
                      int l1 = MathHelper.floor_double(p_180707_6_ + d13) - p_180707_3_ * 16 + 1;
                      int l3 = MathHelper.floor_double(p_180707_8_ - d6) - 1;
-@@ -87,56 +87,44 @@
+                     int i2 = MathHelper.floor_double(p_180707_8_ + d6) + 1;
                      int i4 = MathHelper.floor_double(p_180707_10_ - d13) - p_180707_4_ * 16 - 1;
                      int j2 = MathHelper.floor_double(p_180707_10_ + d13) - p_180707_4_ * 16 + 1;
  
@@ -176,7 +177,7 @@
                                          i3 = l3;
                                      }
                                  }
-@@ -144,47 +144,34 @@
+                             }
                          }
                      }
  
@@ -235,7 +236,10 @@
                                                          p_180707_5_.setBlockState(k2, j3 - 1, j4, this.worldObj.getBiomeGenForCoords(new BlockPos(k2 + p_180707_3_ * 16, 0, j4 + p_180707_4_ * 16)).topBlock);
                                                      }
                                                  }
-@@ -192,8 +192,7 @@
+                                             }
+                                         }
+                                     }
+                                 }
                              }
                          }
  
@@ -245,7 +249,8 @@
                              break;
                          }
                      }
-@@ -202,28 +202,23 @@
+                 }
+             }
          }
      }
  
@@ -273,6 +278,3 @@
                  this.func_180707_a(this.rand.nextLong(), p_180701_4_, p_180701_5_, p_180701_6_, d0, d1, d2, f2, f, f1, 0, 0, 3.0D);
              }
          }
-     }
--}
-+}

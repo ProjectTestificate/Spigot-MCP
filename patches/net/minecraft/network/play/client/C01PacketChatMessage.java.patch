@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/client/C01PacketChatMessage.java
-+++b/net/minecraft/network/play/client/C01PacketChatMessage.java
-@@ -1,49 +1,65 @@
+--- decompiled\net\minecraft\network\play\client\C01PacketChatMessage.java
++++ src\main\java\net\minecraft\network\play\client\C01PacketChatMessage.java
+@@ -1,50 +1,63 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -81,5 +81,4 @@
 +        // Spigot End
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
--}
-+}
+ }

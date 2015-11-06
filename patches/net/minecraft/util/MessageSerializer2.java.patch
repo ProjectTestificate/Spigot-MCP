@@ -1,6 +1,6 @@
----a/net/minecraft/util/MessageSerializer2.java
-+++b/net/minecraft/util/MessageSerializer2.java
-@@ -1,22 +1,23 @@
+--- decompiled\net\minecraft\util\MessageSerializer2.java
++++ src\main\java\net\minecraft\util\MessageSerializer2.java
+@@ -1,34 +1,30 @@
  package net.minecraft.util;
  
 +import net.minecraft.network.PacketBuffer;
@@ -33,7 +33,7 @@
              PacketBuffer packetbuffer = new PacketBuffer(p_encode_3_);
              packetbuffer.ensureWritable(j + i);
              packetbuffer.writeVarIntToBuffer(i);
-@@ -27,10 +27,8 @@
+             packetbuffer.writeBytes(p_encode_2_, p_encode_2_.readerIndex(), i);
          }
      }
  
@@ -43,5 +43,4 @@
 +    protected void encode(ChannelHandlerContext p_encode_1_, Object p_encode_2_, ByteBuf p_encode_3_) {
 +        this.encode(p_encode_1_, (ByteBuf) p_encode_2_, p_encode_3_);
      }
--}
-+}
+ }

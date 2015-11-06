@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemDoublePlant.java
-+++b/net/minecraft/item/ItemDoublePlant.java
-@@ -1,18 +1,13 @@
+--- decompiled\net\minecraft\item\ItemDoublePlant.java
++++ src\main\java\net\minecraft\item\ItemDoublePlant.java
+@@ -1,25 +1,14 @@
  package net.minecraft.item;
  
 -import com.google.common.base.Function;
@@ -30,5 +30,4 @@
 -        BlockDoublePlant.EnumPlantType enumplanttype = BlockDoublePlant.EnumPlantType.byMetadata(stack.getMetadata());
 -        return enumplanttype != BlockDoublePlant.EnumPlantType.GRASS && enumplanttype != BlockDoublePlant.EnumPlantType.FERN ? super.getColorFromItemStack(stack, renderPass) : ColorizerGrass.getGrassColor(0.5D, 1.0D);
 -    }
--}
-+}
+ }

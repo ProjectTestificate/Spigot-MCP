@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockLeaves.java
-+++b/net/minecraft/block/BlockLeaves.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockLeaves.java
++++ src\main\java\net\minecraft\block\BlockLeaves.java
+@@ -1,184 +1,126 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -8,7 +8,8 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.PropertyBool;
  import net.minecraft.block.state.IBlockState;
-@@ -9,30 +9,17 @@
+ import net.minecraft.creativetab.CreativeTabs;
+ import net.minecraft.init.Blocks;
  import net.minecraft.item.Item;
  import net.minecraft.item.ItemStack;
  import net.minecraft.util.BlockPos;
@@ -42,7 +43,8 @@
          super(Material.leaves, false);
          this.setTickRandomly(true);
          this.setCreativeTab(CreativeTabs.tabDecorations);
-@@ -39,63 +39,21 @@
+         this.setHardness(0.2F);
+         this.setLightOpacity(1);
          this.setStepSound(soundTypeGrass);
      }
  
@@ -94,7 +96,8 @@
                              worldIn.setBlockState(blockpos1, iblockstate1.withProperty(CHECK_DECAY, Boolean.valueOf(true)), 4);
                          }
                      }
-@@ -86,12 +86,9 @@
+                 }
+             }
          }
      }
  
@@ -110,7 +113,9 @@
                  byte b0 = 4;
                  int i = b0 + 1;
                  int j = pos.getX();
-@@ -101,82 +101,60 @@
+                 int k = pos.getY();
+                 int l = pos.getZ();
+                 byte b1 = 32;
                  int i1 = b1 * b1;
                  int j1 = b1 / 2;
  
@@ -213,7 +218,11 @@
                                              this.surroundings[(l1 + j1) * i1 + (i2 + j1) * b1 + j2 + j1 + 1] = k1;
                                          }
                                      }
-@@ -188,76 +188,59 @@
+                                 }
+                             }
+@@ -186,116 +128,83 @@
+                     }
+                 }
  
                  k1 = this.surroundings[j1 * i1 + j1 * b1 + j1];
  
@@ -309,7 +318,8 @@
                      j = 40;
                  }
              }
-@@ -266,36 +266,21 @@
+ 
+             this.dropApple(worldIn, pos, state, j);
          }
      }
  
@@ -350,5 +360,4 @@
      }
  
      public abstract BlockPlanks.EnumType getWoodType(int meta);
--}
-+}
+ }

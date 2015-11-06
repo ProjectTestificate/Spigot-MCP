@@ -1,6 +1,6 @@
----a/net/minecraft/entity/EntityList.java
-+++b/net/minecraft/entity/EntityList.java
-@@ -1,14 +1,10 @@
+--- decompiled\net\minecraft\entity\EntityList.java
++++ src\main\java\net\minecraft\entity\EntityList.java
+@@ -1,14 +1,13 @@
  package net.minecraft.entity;
  
 -import com.google.common.collect.Lists;
@@ -14,7 +14,11 @@
  import net.minecraft.entity.ai.EntityMinecartMobSpawner;
  import net.minecraft.entity.boss.EntityDragon;
  import net.minecraft.entity.boss.EntityWither;
-@@ -72,41 +72,34 @@
+ import net.minecraft.entity.effect.EntityLightningBolt;
+ import net.minecraft.entity.item.EntityArmorStand;
+@@ -70,217 +69,169 @@
+ import net.minecraft.entity.projectile.EntityWitherSkull;
+ import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.stats.StatBase;
  import net.minecraft.stats.StatList;
  import net.minecraft.world.World;
@@ -72,7 +76,8 @@
              stringToClassMapping.put(p_75618_1_, p_75618_0_);
              classToStringMapping.put(p_75618_0_, p_75618_1_);
              idToClassMapping.put(Integer.valueOf(p_75618_2_), p_75618_0_);
-@@ -116,138 +116,104 @@
+             classToIDMapping.put(p_75618_0_, Integer.valueOf(p_75618_2_));
+             stringToIDMapping.put(p_75618_1_, Integer.valueOf(p_75618_2_));
          }
      }
  
@@ -246,7 +251,8 @@
                  arraylist.add(s);
              }
          }
-@@ -256,29 +256,23 @@
+ 
+         arraylist.add("LightningBolt");
          return arraylist;
      }
  
@@ -281,7 +287,11 @@
          addMapping(EntityItem.class, "Item", 1);
          addMapping(EntityXPOrb.class, "XPOrb", 2);
          addMapping(EntityLeashKnot.class, "LeashKnot", 8);
-@@ -342,29 +342,20 @@
+         addMapping(EntityPainting.class, "Painting", 9);
+         addMapping(EntityArrow.class, "Arrow", 10);
+@@ -340,24 +291,23 @@
+         addMapping(EntityRabbit.class, "Rabbit", 101, 10051392, 7555121);
+         addMapping(EntityVillager.class, "Villager", 120, 5651507, 12422002);
          addMapping(EntityEnderCrystal.class, "EnderCrystal", 200);
      }
  
@@ -317,6 +327,5 @@
 +            this.field_151512_d = StatList.getStatKillEntity(this);
 +            this.field_151513_e = StatList.getStatEntityKilledBy(this);
          }
--}
 +    }
-+}
+ }

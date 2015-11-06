@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemEnchantedBook.java
-+++b/net/minecraft/item/ItemEnchantedBook.java
-@@ -1,75 +1,39 @@
+--- decompiled\net\minecraft\item\ItemEnchantedBook.java
++++ src\main\java\net\minecraft\item\ItemEnchantedBook.java
+@@ -1,127 +1,76 @@
  package net.minecraft.item;
  
 -import java.util.List;
@@ -93,7 +93,7 @@
                  }
  
                  flag = false;
-@@ -81,48 +81,33 @@
+                 break;
              }
          }
  
@@ -147,5 +147,4 @@
          EnchantmentHelper.addRandomEnchantment(rand, itemstack, 30);
          return new WeightedRandomChestContent(itemstack, minChance, maxChance, weight);
      }
--}
-+}
+ }

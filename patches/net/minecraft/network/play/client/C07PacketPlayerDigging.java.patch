@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/client/C07PacketPlayerDigging.java
-+++b/net/minecraft/network/play/client/C07PacketPlayerDigging.java
-@@ -1,71 +1,58 @@
+--- decompiled\net\minecraft\network\play\client\C07PacketPlayerDigging.java
++++ src\main\java\net\minecraft\network\play\client\C07PacketPlayerDigging.java
+@@ -1,75 +1,60 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -89,9 +89,5 @@
          START_DESTROY_BLOCK,
          ABORT_DESTROY_BLOCK,
          STOP_DESTROY_BLOCK,
-@@ -77,4 +77,4 @@
- 
-         private static final String __OBFID = "CL_00002284";
-     }
--}
-+}
+         DROP_ALL_ITEMS,
+         DROP_ITEM,

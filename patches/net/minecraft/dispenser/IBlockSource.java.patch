@@ -1,6 +1,8 @@
----a/net/minecraft/dispenser/IBlockSource.java
-+++b/net/minecraft/dispenser/IBlockSource.java
-@@ -4,8 +4,8 @@
+--- decompiled\net\minecraft\dispenser\IBlockSource.java
++++ src\main\java\net\minecraft\dispenser\IBlockSource.java
+@@ -2,12 +2,12 @@
+ 
+ import net.minecraft.block.Block;
  import net.minecraft.tileentity.TileEntity;
  import net.minecraft.util.BlockPos;
  
@@ -11,9 +13,5 @@
      double getX();
  
      double getY();
-@@ -19,4 +19,4 @@
-     int getBlockMetadata();
  
-     TileEntity getBlockTileEntity();
--}
-+}
+     double getZ();

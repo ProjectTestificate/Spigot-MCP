@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces.java
-+++b/net/minecraft/world/gen/structure/ComponentScatteredFeaturePieces.java
-@@ -1,10 +1,8 @@
+--- decompiled\net\minecraft\world\gen\structure\ComponentScatteredFeaturePieces.java
++++ src\main\java\net\minecraft\world\gen\structure\ComponentScatteredFeaturePieces.java
+@@ -1,11 +1,11 @@
  package net.minecraft.world.gen.structure;
  
 -import com.google.common.collect.Lists;
@@ -11,7 +11,11 @@
  import net.minecraft.block.BlockFlowerPot;
  import net.minecraft.block.BlockLever;
  import net.minecraft.block.BlockPlanks;
-@@ -23,718 +23,685 @@
+ import net.minecraft.block.BlockSandStone;
+ import net.minecraft.block.BlockStoneBrick;
+@@ -21,719 +21,683 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.WeightedRandomChestContent;
  import net.minecraft.world.World;
  
@@ -1309,6 +1313,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

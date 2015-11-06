@@ -1,6 +1,6 @@
----a/net/minecraft/entity/player/EntityPlayer.java
-+++b/net/minecraft/entity/player/EntityPlayer.java
-@@ -1,15 +1,11 @@
+--- decompiled\net\minecraft\entity\player\EntityPlayer.java
++++ src\main\java\net\minecraft\entity\player\EntityPlayer.java
+@@ -1,14 +1,13 @@
  package net.minecraft.entity.player;
  
 -import com.google.common.base.Charsets;
@@ -15,7 +15,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockBed;
  import net.minecraft.block.BlockDirectional;
-@@ -48,6 +48,7 @@
+ import net.minecraft.block.material.Material;
+ import net.minecraft.block.state.IBlockState;
+@@ -46,10 +45,11 @@
+ import net.minecraft.item.ItemBlock;
+ import net.minecraft.item.ItemStack;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.nbt.NBTTagList;
  import net.minecraft.network.play.server.S12PacketEntityVelocity;
@@ -23,7 +27,11 @@
  import net.minecraft.potion.Potion;
  import net.minecraft.scoreboard.IScoreObjectiveCriteria;
  import net.minecraft.scoreboard.Score;
-@@ -75,17 +75,30 @@
+ import net.minecraft.scoreboard.ScoreObjective;
+ import net.minecraft.scoreboard.ScorePlayerTeam;
+@@ -73,41 +73,54 @@
+ import net.minecraft.world.EnumDifficulty;
+ import net.minecraft.world.IInteractionObject;
  import net.minecraft.world.LockCode;
  import net.minecraft.world.World;
  import net.minecraft.world.WorldSettings;
@@ -59,7 +67,10 @@
      protected int flyToggleTimer;
      public float prevCameraYaw;
      public float cameraYaw;
-@@ -95,18 +95,16 @@
+     public int xpCooldown;
+     public double field_71091_bM;
+     public double field_71096_bN;
+     public double field_71097_bO;
      public double field_71094_bP;
      public double field_71095_bQ;
      public double field_71085_bR;
@@ -80,7 +91,11 @@
      public int experienceLevel;
      public int experienceTotal;
      public float experience;
-@@ -118,161 +118,137 @@
+     private int xpSeed;
+     private ItemStack itemInUse;
+@@ -116,167 +129,131 @@
+     protected float speedInAir = 0.02F;
+     private int lastXPSound;
      private final GameProfile gameProfile;
      private boolean hasReducedDebug = false;
      public EntityFishHook fishEntity;
@@ -284,7 +299,11 @@
              this.extinguish();
          }
  
-@@ -286,33 +286,27 @@
+         this.field_71091_bM = this.field_71094_bP;
+         this.field_71096_bN = this.field_71095_bQ;
+@@ -284,533 +261,470 @@
+         double d5 = this.posX - this.field_71094_bP;
+         double d0 = this.posY - this.field_71095_bQ;
          double d1 = this.posZ - this.field_71085_bR;
          double d2 = 10.0D;
  
@@ -324,7 +343,7 @@
              this.field_71096_bN = this.field_71095_bQ = this.posY;
          }
  
-@@ -320,18 +320,15 @@
+         this.field_71094_bP += d5 * 0.25D;
          this.field_71085_bR += d1 * 0.25D;
          this.field_71095_bQ += d0 * 0.25D;
  
@@ -346,7 +365,8 @@
                  this.triggerAchievement(StatList.timeSinceDeathStat);
              }
          }
-@@ -340,85 +340,98 @@
+ 
+         int i = 29999999;
          double d3 = MathHelper.clamp_double(this.posX, -2.9999999E7D, 2.9999999E7D);
          double d4 = MathHelper.clamp_double(this.posZ, -2.9999999E7D, 2.9999999E7D);
  
@@ -489,7 +509,8 @@
                      this.inventory.mainInventory[this.inventory.currentItem] = null;
                  }
              }
-@@ -427,66 +427,19 @@
+ 
+             this.clearItemInUse();
          }
      }
  
@@ -542,7 +563,10 @@
              double d0 = this.posX;
              double d1 = this.posY;
              double d2 = this.posZ;
-@@ -477,47 +477,32 @@
+             float f = this.rotationYaw;
+             float f1 = this.rotationPitch;
+             super.updateRidden();
+             this.prevCameraYaw = this.cameraYaw;
              this.cameraYaw = 0.0F;
              this.addMountedMovementStat(this.posX - d0, this.posY - d1, this.posZ - d2);
  
@@ -600,7 +624,9 @@
                  this.foodStats.setFoodLevel(this.foodStats.getFoodLevel() + 1);
              }
          }
-@@ -527,108 +527,91 @@
+ 
+         this.inventory.decrementAnimations();
+         this.prevCameraYaw = this.cameraYaw;
          super.onLivingUpdate();
          IAttributeInstance iattributeinstance = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
  
@@ -743,7 +769,7 @@
              this.motionX = this.motionZ = 0.0D;
          }
  
-@@ -640,56 +640,47 @@
+         this.triggerAchievement(StatList.deathsStat);
          this.func_175145_a(StatList.timeSinceDeathStat);
      }
  
@@ -818,7 +844,8 @@
                      Score score = this.getWorldScoreboard().getValueFromObjective(p_175137_1_.getName(), scoreobjective);
                      score.func_96648_a();
                  }
-@@ -699,12 +699,10 @@
+             }
+         }
  
          ScorePlayerTeam scoreplayerteam1 = this.getWorldScoreboard().getPlayersTeam(p_175137_1_.getName());
  
@@ -833,7 +860,7 @@
                  return this.getWorldScoreboard().getObjectivesFromCriteria(IScoreObjectiveCriteria.field_178792_h[j]);
              }
          }
-@@ -712,65 +712,78 @@
+ 
          return Lists.newArrayList();
      }
  
@@ -945,7 +972,7 @@
                  this.triggerAchievement(StatList.dropStat);
              }
  
-@@ -778,37 +778,30 @@
+             return entityitem;
          }
      }
  
@@ -992,7 +1019,11 @@
                  case 0:
                      f1 = 0.3F;
                      break;
-@@ -826,26 +826,22 @@
+                 case 1:
+                     f1 = 0.09F;
+@@ -824,30 +738,26 @@
+             }
+ 
              f *= f1;
          }
  
@@ -1023,7 +1054,11 @@
          super.readEntityFromNBT(tagCompund);
          this.entityUniqueID = getUUID(this.gameProfile);
          NBTTagList nbttaglist = tagCompund.getTagList("Inventory", 10);
-@@ -858,21 +858,18 @@
+         this.inventory.readFromNBT(nbttaglist);
+         this.inventory.currentItem = tagCompund.getInteger("SelectedItemSlot");
+@@ -856,54 +766,56 @@
+         this.experience = tagCompund.getFloat("XpP");
+         this.experienceLevel = tagCompund.getInteger("XpLevel");
          this.experienceTotal = tagCompund.getInteger("XpTotal");
          this.xpSeed = tagCompund.getInteger("XpSeed");
  
@@ -1055,7 +1090,7 @@
              this.spawnChunk = new BlockPos(tagCompund.getInteger("SpawnX"), tagCompund.getInteger("SpawnY"), tagCompund.getInteger("SpawnZ"));
              this.spawnForced = tagCompund.getBoolean("SpawnForced");
          }
-@@ -880,28 +880,26 @@
+ 
          this.foodStats.readNBT(tagCompund);
          this.capabilities.readCapabilitiesFromNBT(tagCompund);
  
@@ -1089,7 +1124,11 @@
              tagCompound.setInteger("SpawnX", this.spawnChunk.getX());
              tagCompound.setInteger("SpawnY", this.spawnChunk.getY());
              tagCompound.setInteger("SpawnZ", this.spawnChunk.getZ());
-@@ -913,65 +913,48 @@
+             tagCompound.setBoolean("SpawnForced", this.spawnForced);
+         }
+@@ -911,449 +823,437 @@
+         this.foodStats.writeNBT(tagCompound);
+         this.capabilities.writeCapabilitiesToNBT(tagCompound);
          tagCompound.setTag("EnderItems", this.theInventoryEnderChest.saveInventoryToNBT());
          ItemStack itemstack = this.inventory.getCurrentItem();
  
@@ -1174,7 +1213,8 @@
                      }
  
                      return super.attackEntityFrom(source, amount);
-@@ -981,45 +981,61 @@
+                 }
+             }
          }
      }
  
@@ -1261,7 +1301,9 @@
                  damageAmount = (1.0F + damageAmount) * 0.5F;
              }
  
-@@ -1032,62 +1032,59 @@
+             damageAmount = this.applyArmorCalculations(damageSrc, damageAmount);
+             damageAmount = this.applyPotionDamageCalculations(damageSrc, damageAmount);
+             float f1 = damageAmount;
              damageAmount = Math.max(damageAmount - this.getAbsorptionAmount(), 0.0F);
              this.setAbsorptionAmount(this.getAbsorptionAmount() - (f1 - damageAmount));
  
@@ -1354,7 +1396,8 @@
                              this.destroyCurrentEquippedItem();
                          }
  
-@@ -1098,21 +1098,13 @@
+                         return true;
+                     }
                  }
  
                  return false;
@@ -1376,7 +1419,9 @@
                          itemstack.stackSize = itemstack1.stackSize;
                      }
                  }
-@@ -1118,53 +1118,41 @@
+ 
+                 return true;
+             }
          }
      }
  
@@ -1444,7 +1489,7 @@
                          f *= 1.5F;
                      }
  
-@@ -1172,10 +1172,16 @@
+                     f += f1;
                      boolean flag1 = false;
                      int i = EnchantmentHelper.getFireAspectModifier(this);
  
@@ -1465,7 +1510,7 @@
                      }
  
                      double d0 = targetEntity.motionX;
-@@ -1183,86 +1183,95 @@
+                     double d1 = targetEntity.motionY;
                      double d2 = targetEntity.motionZ;
                      boolean flag2 = targetEntity.attackEntityFrom(DamageSource.causePlayerDamage(this), f);
  
@@ -1602,7 +1647,7 @@
                          targetEntity.extinguish();
                      }
                  }
-@@ -1269,88 +1269,83 @@
+             }
          }
      }
  
@@ -1727,7 +1772,11 @@
                  case 1:
                      f1 = 0.9F;
                      break;
-@@ -1366,32 +1366,30 @@
+                 case 2:
+                     f1 = 0.1F;
+@@ -1364,37 +1264,32 @@
+                 case 4:
+                     f = 0.9F;
              }
  
              this.func_175139_a(enumfacing);
@@ -1767,7 +1816,11 @@
              case 1:
                  this.renderOffsetZ = -1.8F;
                  break;
-@@ -1407,374 +1407,287 @@
+             case 2:
+                 this.renderOffsetZ = 1.8F;
+@@ -1405,512 +1300,390 @@
+             case 4:
+                 this.renderOffsetX = -1.8F;
          }
      }
  
@@ -2250,7 +2303,8 @@
              this.experienceLevel = 0;
              this.experience = 0.0F;
              this.experienceTotal = 0;
-@@ -1783,113 +1783,87 @@
+         }
+ 
          this.xpSeed = this.rand.nextInt();
      }
  
@@ -2397,7 +2451,8 @@
              this.inventory.copyInventory(oldPlayer.inventory);
              this.setHealth(oldPlayer.getHealth());
              this.foodStats = oldPlayer.foodStats;
-@@ -1906,9 +1906,7 @@
+             this.experienceLevel = oldPlayer.experienceLevel;
+             this.experienceTotal = oldPlayer.experienceTotal;
              this.experience = oldPlayer.experience;
              this.setScore(oldPlayer.getScore());
              this.teleportDirection = oldPlayer.teleportDirection;
@@ -2408,7 +2463,11 @@
              this.inventory.copyInventory(oldPlayer.inventory);
              this.experienceLevel = oldPlayer.experienceLevel;
              this.experienceTotal = oldPlayer.experienceTotal;
-@@ -1920,82 +1920,55 @@
+             this.experience = oldPlayer.experience;
+             this.setScore(oldPlayer.getScore());
+@@ -1918,327 +1691,228 @@
+ 
+         this.theInventoryEnderChest = oldPlayer.theInventoryEnderChest;
          this.getDataWatcher().updateObject(10, Byte.valueOf(oldPlayer.getDataWatcher().getWatchableObjectByte(10)));
      }
  
@@ -2507,7 +2566,7 @@
          ChatComponentText chatcomponenttext = new ChatComponentText(ScorePlayerTeam.formatPlayerName(this.getTeam(), this.getName()));
          chatcomponenttext.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/msg " + this.getName() + " "));
          chatcomponenttext.getChatStyle().setChatHoverEvent(this.func_174823_aP());
-@@ -2003,132 +2003,96 @@
+         chatcomponenttext.getChatStyle().setInsertion(this.getName());
          return chatcomponenttext;
      }
  
@@ -2677,7 +2736,9 @@
          FULL(0, "options.chat.visibility.full"),
          SYSTEM(1, "options.chat.visibility.system"),
          HIDDEN(2, "options.chat.visibility.hidden");
-@@ -2150,43 +2150,31 @@
+         private static final EntityPlayer.EnumChatVisibility[] ID_LOOKUP = new EntityPlayer.EnumChatVisibility[values().length];
+         private final int chatVisibility;
+         private final String resourceKey;
  
          private static final String __OBFID = "CL_00001714";
  
@@ -2727,7 +2788,10 @@
          OK,
          NOT_POSSIBLE_HERE,
          NOT_POSSIBLE_NOW,
-@@ -2197,51 +2197,34 @@
+         TOO_FAR_AWAY,
+         OTHER_PROBLEM,
+         NOT_SAFE;
+ 
          private static final String __OBFID = "CL_00001712";
      }
  
@@ -2799,6 +2863,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

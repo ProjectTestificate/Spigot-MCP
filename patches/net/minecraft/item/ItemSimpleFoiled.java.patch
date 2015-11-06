@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemSimpleFoiled.java
-+++b/net/minecraft/item/ItemSimpleFoiled.java
-@@ -1,11 +1,7 @@
+--- decompiled\net\minecraft\item\ItemSimpleFoiled.java
++++ src\main\java\net\minecraft\item\ItemSimpleFoiled.java
+@@ -1,15 +1,8 @@
  package net.minecraft.item;
  
 -import net.minecraftforge.fml.relauncher.Side;
@@ -17,5 +17,4 @@
 -    {
 -        return true;
 -    }
--}
-+}
+ }

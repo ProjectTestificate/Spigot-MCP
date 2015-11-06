@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockSkull.java
-+++b/net/minecraft/block/BlockSkull.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\block\BlockSkull.java
++++ src\main\java\net\minecraft\block\BlockSkull.java
+@@ -1,10 +1,10 @@
  package net.minecraft.block;
  
 -import com.google.common.base.Predicate;
@@ -10,7 +10,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyBool;
-@@ -23,6 +23,7 @@
+ import net.minecraft.block.properties.PropertyDirection;
+ import net.minecraft.block.state.BlockState;
+@@ -21,63 +21,62 @@
+ import net.minecraft.item.Item;
+ import net.minecraft.item.ItemStack;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.nbt.NBTUtil;
  import net.minecraft.stats.AchievementList;
@@ -18,7 +22,9 @@
  import net.minecraft.tileentity.TileEntity;
  import net.minecraft.tileentity.TileEntitySkull;
  import net.minecraft.util.AxisAlignedBB;
-@@ -32,48 +32,46 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.world.EnumDifficulty;
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.World;
@@ -89,7 +95,11 @@
              case 1:
              default:
                  this.setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
-@@ -94,38 +94,31 @@
+                 break;
+             case 2:
+@@ -92,66 +91,70 @@
+             case 5:
+                 this.setBlockBounds(0.0F, 0.25F, 0.25F, 0.5F, 0.75F, 0.75F);
          }
      }
  
@@ -156,7 +166,7 @@
              state = state.withProperty(NODROP, Boolean.valueOf(true));
              worldIn.setBlockState(pos, state, 4);
          }
-@@ -135,25 +135,24 @@
+ 
          super.onBlockHarvested(worldIn, pos, state, player);
      }
  
@@ -187,7 +197,11 @@
                          itemstack.setTagCompound(new NBTTagCompound());
                          NBTTagCompound nbttagcompound = new NBTTagCompound();
                          NBTUtil.writeGameProfile(nbttagcompound, tileentityskull.getPlayerProfile());
-@@ -164,171 +164,151 @@
+                         itemstack.getTagCompound().setTag("SkullOwner", nbttagcompound);
+                     }
+@@ -162,172 +165,154 @@
+ 
+             super.breakBlock(worldIn, pos, state);
          }
      }
  
@@ -440,6 +454,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandServerKick.java
-+++b/net/minecraft/command/CommandServerKick.java
-@@ -1,68 +1,55 @@
+--- decompiled\net\minecraft\command\CommandServerKick.java
++++ src\main\java\net\minecraft\command\CommandServerKick.java
+@@ -1,69 +1,55 @@
  package net.minecraft.command;
  
  import java.util.List;
@@ -86,5 +86,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
          return args.length >= 1 ? getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames()) : null;
      }
--}
-+}
+ }

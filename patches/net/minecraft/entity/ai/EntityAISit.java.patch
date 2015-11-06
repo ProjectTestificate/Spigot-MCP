@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAISit.java
-+++b/net/minecraft/entity/ai/EntityAISit.java
-@@ -3,53 +3,41 @@
+--- decompiled\net\minecraft\entity\ai\EntityAISit.java
++++ src\main\java\net\minecraft\entity\ai\EntityAISit.java
+@@ -1,54 +1,42 @@
+ package net.minecraft.entity.ai;
+ 
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.passive.EntityTameable;
  
@@ -64,5 +66,4 @@
 +    public void setSitting(boolean sitting) {
          this.isSitting = sitting;
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/command/server/CommandSaveOff.java
-+++b/net/minecraft/command/server/CommandSaveOff.java
-@@ -6,47 +6,38 @@
+--- decompiled\net\minecraft\command\server\CommandSaveOff.java
++++ src\main\java\net\minecraft\command\server\CommandSaveOff.java
+@@ -4,48 +4,39 @@
+ import net.minecraft.command.CommandException;
+ import net.minecraft.command.ICommandSender;
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.world.WorldServer;
  
@@ -56,5 +58,4 @@
              throw new CommandException("commands.save-off.alreadyOff", new Object[0]);
          }
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/entity/ai/EntityAIFindEntityNearest.java
-+++b/net/minecraft/entity/ai/EntityAIFindEntityNearest.java
-@@ -1,18 +1,18 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIFindEntityNearest.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIFindEntityNearest.java
+@@ -1,110 +1,97 @@
  package net.minecraft.entity.ai;
  
 -import com.google.common.base.Predicate;
@@ -26,7 +26,8 @@
      private static final Logger field_179444_a = LogManager.getLogger();
      private EntityLiving field_179442_b;
      private final Predicate field_179443_c;
-@@ -22,90 +22,73 @@
+     private final EntityAINearestAttackableTarget.Sorter field_179440_d;
+     private EntityLivingBase field_179441_e;
      private Class field_179439_f;
      private static final String __OBFID = "CL_00002250";
  
@@ -140,5 +141,4 @@
          IAttributeInstance iattributeinstance = this.field_179442_b.getEntityAttribute(SharedMonsterAttributes.followRange);
          return iattributeinstance == null ? 16.0D : iattributeinstance.getAttributeValue();
      }
--}
-+}
+ }

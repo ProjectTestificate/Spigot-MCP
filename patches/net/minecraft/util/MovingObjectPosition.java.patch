@@ -1,6 +1,7 @@
----a/net/minecraft/util/MovingObjectPosition.java
-+++b/net/minecraft/util/MovingObjectPosition.java
-@@ -2,8 +2,8 @@
+--- decompiled\net\minecraft\util\MovingObjectPosition.java
++++ src\main\java\net\minecraft\util\MovingObjectPosition.java
+@@ -1,60 +1,52 @@
+ package net.minecraft.util;
  
  import net.minecraft.entity.Entity;
  
@@ -11,7 +12,7 @@
      private BlockPos blockPos;
      public MovingObjectPosition.MovingObjectType typeOfHit;
      public EnumFacing sideHit;
-@@ -11,53 +11,44 @@
+     public Vec3 hitVec;
      public Entity entityHit;
      private static final String __OBFID = "CL_00000610";
  
@@ -70,6 +71,3 @@
          ENTITY;
  
          private static final String __OBFID = "CL_00000611";
-     }
--}
-+}

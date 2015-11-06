@@ -1,6 +1,8 @@
----a/net/minecraft/network/play/INetHandlerPlayClient.java
-+++b/net/minecraft/network/play/INetHandlerPlayClient.java
-@@ -73,8 +73,8 @@
+--- decompiled\net\minecraft\network\play\INetHandlerPlayClient.java
++++ src\main\java\net\minecraft\network\play\INetHandlerPlayClient.java
+@@ -71,12 +71,12 @@
+ import net.minecraft.network.play.server.S46PacketSetCompressionLevel;
+ import net.minecraft.network.play.server.S47PacketPlayerListHeaderFooter;
  import net.minecraft.network.play.server.S48PacketResourcePackSend;
  import net.minecraft.network.play.server.S49PacketUpdateEntityNBT;
  
@@ -11,9 +13,5 @@
      void handleSpawnObject(S0EPacketSpawnObject packetIn);
  
      void handleSpawnExperienceOrb(S11PacketSpawnExperienceOrb packetIn);
-@@ -216,4 +216,4 @@
-     void handleResourcePack(S48PacketResourcePackSend packetIn);
  
-     void handleEntityNBT(S49PacketUpdateEntityNBT packetIn);
--}
-+}
+     void handleSpawnGlobalEntity(S2CPacketSpawnGlobalEntity packetIn);

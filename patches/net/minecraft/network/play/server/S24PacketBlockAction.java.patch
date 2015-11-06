@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S24PacketBlockAction.java
-+++b/net/minecraft/network/play/server/S24PacketBlockAction.java
-@@ -1,57 +1,53 @@
+--- decompiled\net\minecraft\network\play\server\S24PacketBlockAction.java
++++ src\main\java\net\minecraft\network\play\server\S24PacketBlockAction.java
+@@ -1,80 +1,53 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -92,5 +92,4 @@
 -    {
 -        return this.field_148871_f;
 -    }
--}
-+}
+ }

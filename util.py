@@ -7,6 +7,7 @@ import sys
 from io import BytesIO
 from urllib import request
 from zipfile import ZipFile
+import subprocess
 
 def mkdirs(dir):
     if os.path.exists(dir): return
@@ -37,67 +38,20 @@ class BuildInfo:
             newLines.append(line)
         return newLines
 
-def include_diffutils():
-    try:
-        import diffutils
-        print("Found diffutils on the path")
+JDIFF_URL = 'https://github.com/Techcable/JDiff/releases/download/v1.0.0/JDiff.jar'
+JDIFF_VERSION = "1.0.0"
+
+def get_jdiff():
+    version_file = "jdiff-version.txt"
+    if os.path.exists(version_file) and open(version_file).read() == JDIFF_VERSION:
         return
-    except ImportError:
-        # Not found on the path, download
-        pass
-    output_dir = "DiffUtils"
+    print("Downloading jdiff")
+    open("JDiff.jar", "wb+").write(request.urlopen(JDIFF_URL).read())
+    open(version_file, "w+").write(JDIFF_VERSION)
 
-    download_diffutils(output_dir)
-
-    for file_name in os.listdir(output_dir):
-        # Remove all python files in the base dir (setup.py, test.py)
-        if file_name.endswith(".py"):
-            os.remove(os.path.join(output_dir, file_name))
-
-    sys.path.append(os.path.abspath(output_dir))
-
-DIFFUTILS_URL_PATTERN = "https://github.com/Techcable/DiffUtils/archive/v${version}.zip"
-DIFFUTILS_VERSION = "1.0.0"
-
-
-def download_diffutils(output_dir):
-    version_file = os.path.join(output_dir, "version")
-
-    if os.path.exists(version_file) and open(version_file, "r").readline() == DIFFUTILS_VERSION:
-        return
-
-    if os.path.exists(output_dir):
-        shutil.rmtree(output_dir)  # Remove existing files
-    mkdirs(output_dir)
-
-    print("Downloading DiffUtils", DIFFUTILS_VERSION)
-    url = DIFFUTILS_URL_PATTERN.replace("${version}", DIFFUTILS_VERSION)
-    zip_file = ZipFile(BytesIO(request.urlopen(url).read()))  # Python IO
-
-    zip_base_dir = os.path.commonprefix(zip_file.namelist())  # GitHub puts the sources in a directory inside the zip
-    if zip_base_dir is '':
-        raise ValueError("Invalid zipfile")
-    zip_file.extractall(output_dir)
-
-    for file_name in os.listdir(os.path.join(output_dir, zip_base_dir)):
-        file = os.path.join(os.path.join(output_dir, zip_base_dir), file_name)
-        shutil.move(file, os.path.join(output_dir, file_name))
-
-    os.rmdir(os.path.join(output_dir, zip_base_dir))
-    open(version_file, "w+").write(DIFFUTILS_VERSION)
-
-
-def fix_endings(text):
-    if isinstance(text, str):
-        return fix_endings([text])[0]
-
-    old_index = 0
-    old_size = len(text)
-    for original_line in text[:]:
-        for line in original_line.splitlines(False):
-            line += '\n'
-            if old_index < old_size:
-                text[old_index] = line
-            else:
-                text.append(line)
-            old_index += 1
+def run_jdiff(*args):
+    if not shutil.which("java"):
+        echo("Java not installed")
+        exit(1)
+    get_jdiff()
+    subprocess.check_call(["java", "-jar", "JDiff.jar"] + list(args), stdout=sys.stdout, stderr=sys.stderr)

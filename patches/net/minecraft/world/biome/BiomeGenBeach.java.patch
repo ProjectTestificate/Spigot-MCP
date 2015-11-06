@@ -1,6 +1,7 @@
----a/net/minecraft/world/biome/BiomeGenBeach.java
-+++b/net/minecraft/world/biome/BiomeGenBeach.java
-@@ -2,12 +2,12 @@
+--- decompiled\net\minecraft\world\biome\BiomeGenBeach.java
++++ src\main\java\net\minecraft\world\biome\BiomeGenBeach.java
+@@ -1,15 +1,14 @@
+ package net.minecraft.world.biome;
  
  import net.minecraft.init.Blocks;
  
@@ -16,9 +17,5 @@
          super(p_i1969_1_);
          this.spawnableCreatureList.clear();
          this.topBlock = Blocks.sand.getDefaultState();
-@@ -17,4 +17,4 @@
-         this.theBiomeDecorator.reedsPerChunk = 0;
-         this.theBiomeDecorator.cactiPerChunk = 0;
-     }
--}
-+}
+         this.fillerBlock = Blocks.sand.getDefaultState();
+         this.theBiomeDecorator.treesPerChunk = -999;

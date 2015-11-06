@@ -1,11 +1,10 @@
----a/net/minecraft/entity/passive/IAnimals.java
-+++b/net/minecraft/entity/passive/IAnimals.java
+--- decompiled\net\minecraft\entity\passive\IAnimals.java
++++ src\main\java\net\minecraft\entity\passive\IAnimals.java
 @@ -1,5 +1,5 @@
  package net.minecraft.entity.passive;
  
 -public interface IAnimals
 -{
--}
 +public interface IAnimals {
 +
-+}
+ }

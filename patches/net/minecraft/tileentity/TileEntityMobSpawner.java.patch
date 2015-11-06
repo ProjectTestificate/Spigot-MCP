@@ -1,6 +1,8 @@
----a/net/minecraft/tileentity/TileEntityMobSpawner.java
-+++b/net/minecraft/tileentity/TileEntityMobSpawner.java
-@@ -8,70 +8,63 @@
+--- decompiled\net\minecraft\tileentity\TileEntityMobSpawner.java
++++ src\main\java\net\minecraft\tileentity\TileEntityMobSpawner.java
+@@ -6,69 +6,62 @@
+ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+ import net.minecraft.server.gui.IUpdatePlayerListBox;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -86,5 +88,4 @@
 +    public MobSpawnerBaseLogic getSpawnerBaseLogic() {
          return this.spawnerLogic;
      }
--}
-+}
+ }

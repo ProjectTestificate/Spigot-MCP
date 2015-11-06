@@ -1,6 +1,7 @@
----a/net/minecraft/entity/ai/EntityAIWatchClosest2.java
-+++b/net/minecraft/entity/ai/EntityAIWatchClosest2.java
-@@ -2,14 +2,13 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIWatchClosest2.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIWatchClosest2.java
+@@ -1,14 +1,13 @@
+ package net.minecraft.entity.ai;
  
  import net.minecraft.entity.EntityLiving;
  
@@ -16,5 +17,4 @@
          super(p_i1629_1_, p_i1629_2_, p_i1629_3_, p_i1629_4_);
          this.setMutexBits(3);
      }
--}
-+}
+ }

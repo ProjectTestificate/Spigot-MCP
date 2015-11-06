@@ -1,6 +1,8 @@
----a/net/minecraft/pathfinding/PathNavigate.java
-+++b/net/minecraft/pathfinding/PathNavigate.java
-@@ -10,8 +10,8 @@
+--- decompiled\net\minecraft\pathfinding\PathNavigate.java
++++ src\main\java\net\minecraft\pathfinding\PathNavigate.java
+@@ -8,12 +8,12 @@
+ import net.minecraft.util.MathHelper;
+ import net.minecraft.util.Vec3;
  import net.minecraft.world.ChunkCache;
  import net.minecraft.world.World;
  
@@ -11,7 +13,11 @@
      protected EntityLiving theEntity;
      protected World worldObj;
      protected PathEntity currentPath;
-@@ -24,8 +24,7 @@
+     protected double speed;
+     private final IAttributeInstance pathSearchRange;
+@@ -22,236 +22,192 @@
+     private Vec3 lastPosCheck = new Vec3(0.0D, 0.0D, 0.0D);
+     private float field_179682_i = 1.0F;
      private final PathFinder field_179681_j;
      private static final String __OBFID = "CL_00001627";
  
@@ -21,7 +27,8 @@
          this.theEntity = p_i1671_1_;
          this.worldObj = worldIn;
          this.pathSearchRange = p_i1671_1_.getEntityAttribute(SharedMonsterAttributes.followRange);
-@@ -34,34 +34,26 @@
+         this.field_179681_j = this.func_179679_a();
+     }
  
      protected abstract PathFinder func_179679_a();
  
@@ -64,7 +71,7 @@
              ChunkCache chunkcache = new ChunkCache(this.worldObj, blockpos1.add(-i, -i, -i), blockpos1.add(i, i, i), 0);
              PathEntity pathentity = this.field_179681_j.func_180782_a(chunkcache, this.theEntity, p_179680_1_, f);
              this.worldObj.theProfiler.endSection();
-@@ -68,31 +68,24 @@
+             return pathentity;
          }
      }
  
@@ -101,7 +108,7 @@
              ChunkCache chunkcache = new ChunkCache(this.worldObj, blockpos.add(-i, -i, -i), blockpos.add(i, i, i), 0);
              PathEntity pathentity = this.field_179681_j.func_176188_a(chunkcache, this.theEntity, p_75494_1_, f);
              this.worldObj.theProfiler.endSection();
-@@ -98,33 +98,25 @@
+             return pathentity;
          }
      }
  
@@ -143,7 +150,9 @@
                  this.speed = p_75484_2_;
                  Vec3 vec3 = this.getEntityPosition();
                  this.ticksAtLastPos = this.totalTicks;
-@@ -135,53 +135,42 @@
+                 this.lastPosCheck = vec3;
+                 return true;
+             }
          }
      }
  
@@ -210,7 +219,8 @@
                  i = j;
                  break;
              }
-@@ -192,22 +192,19 @@
+         }
+ 
          float f = this.theEntity.width * this.theEntity.width * this.field_179682_i;
          int k;
  
@@ -240,7 +250,8 @@
                  this.currentPath.setCurrentPathIndex(i1);
                  break;
              }
-@@ -218,12 +218,9 @@
+         }
+ 
          this.func_179677_a(vec3);
      }
  
@@ -256,7 +267,8 @@
                  this.clearPathEntity();
              }
  
-@@ -232,13 +232,11 @@
+             this.ticksAtLastPos = this.totalTicks;
+             this.lastPosCheck = p_179677_1_;
          }
      }
  
@@ -272,7 +284,7 @@
          this.currentPath = null;
      }
  
-@@ -246,13 +246,12 @@
+     protected abstract Vec3 getEntityPosition();
  
      protected abstract boolean canNavigate();
  
@@ -287,5 +299,4 @@
 +    }
  
      protected abstract boolean isDirectPathBetweenPoints(Vec3 p_75493_1_, Vec3 p_75493_2_, int p_75493_3_, int p_75493_4_, int p_75493_5_);
--}
-+}
+ }

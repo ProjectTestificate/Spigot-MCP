@@ -1,6 +1,6 @@
----a/net/minecraft/entity/ai/EntitySenses.java
-+++b/net/minecraft/entity/ai/EntitySenses.java
-@@ -1,54 +1,44 @@
+--- decompiled\net\minecraft\entity\ai\EntitySenses.java
++++ src\main\java\net\minecraft\entity\ai\EntitySenses.java
+@@ -1,52 +1,43 @@
  package net.minecraft.entity.ai;
  
 -import com.google.common.collect.Lists;
@@ -66,6 +66,3 @@
  
              return flag;
          }
-     }
--}
-+}

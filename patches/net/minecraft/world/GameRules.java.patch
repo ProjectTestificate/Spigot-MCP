@@ -1,6 +1,8 @@
----a/net/minecraft/world/GameRules.java
-+++b/net/minecraft/world/GameRules.java
-@@ -3,13 +3,15 @@
+--- decompiled\net\minecraft\world\GameRules.java
++++ src\main\java\net\minecraft\world\GameRules.java
+@@ -1,19 +1,19 @@
+ package net.minecraft.world;
+ 
  import java.util.Iterator;
  import java.util.Set;
  import java.util.TreeMap;
@@ -20,7 +22,11 @@
          this.addGameRule("doFireTick", "true", GameRules.ValueType.BOOLEAN_VALUE);
          this.addGameRule("mobGriefing", "true", GameRules.ValueType.BOOLEAN_VALUE);
          this.addGameRule("keepInventory", "false", GameRules.ValueType.BOOLEAN_VALUE);
-@@ -28,155 +28,126 @@
+         this.addGameRule("doMobSpawning", "true", GameRules.ValueType.BOOLEAN_VALUE);
+         this.addGameRule("doMobLoot", "true", GameRules.ValueType.BOOLEAN_VALUE);
+@@ -26,154 +26,126 @@
+         this.addGameRule("randomTickSpeed", "3", GameRules.ValueType.NUMERICAL_VALUE);
+         this.addGameRule("sendCommandFeedback", "true", GameRules.ValueType.BOOLEAN_VALUE);
          this.addGameRule("reducedDebugInfo", "false", GameRules.ValueType.BOOLEAN_VALUE);
      }
  
@@ -234,6 +240,3 @@
          NUMERICAL_VALUE;
  
          private static final String __OBFID = "CL_00002151";
-     }
--}
-+}

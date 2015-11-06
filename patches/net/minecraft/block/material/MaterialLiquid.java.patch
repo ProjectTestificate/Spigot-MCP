@@ -1,6 +1,6 @@
----a/net/minecraft/block/material/MaterialLiquid.java
-+++b/net/minecraft/block/material/MaterialLiquid.java
-@@ -1,29 +1,25 @@
+--- decompiled\net\minecraft\block\material\MaterialLiquid.java
++++ src\main\java\net\minecraft\block\material\MaterialLiquid.java
+@@ -1,28 +1,24 @@
  package net.minecraft.block.material;
  
 -public class MaterialLiquid extends Material
@@ -34,5 +34,4 @@
 +    public boolean isSolid() {
          return false;
      }
--}
-+}
+ }

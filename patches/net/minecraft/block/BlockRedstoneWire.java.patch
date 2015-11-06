@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockRedstoneWire.java
-+++b/net/minecraft/block/BlockRedstoneWire.java
-@@ -1,14 +1,10 @@
+--- decompiled\net\minecraft\block\BlockRedstoneWire.java
++++ src\main\java\net\minecraft\block\BlockRedstoneWire.java
+@@ -1,14 +1,13 @@
  package net.minecraft.block;
  
 -import com.google.common.collect.Lists;
@@ -14,7 +14,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyEnum;
-@@ -19,17 +19,10 @@
+ import net.minecraft.block.properties.PropertyInteger;
+ import net.minecraft.block.state.BlockState;
+@@ -17,516 +16,366 @@
+ import net.minecraft.init.Items;
+ import net.minecraft.item.Item;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -39,7 +43,9 @@
      public static final PropertyEnum NORTH = PropertyEnum.create("north", BlockRedstoneWire.EnumAttachPosition.class);
      public static final PropertyEnum EAST = PropertyEnum.create("east", BlockRedstoneWire.EnumAttachPosition.class);
      public static final PropertyEnum SOUTH = PropertyEnum.create("south", BlockRedstoneWire.EnumAttachPosition.class);
-@@ -39,15 +39,13 @@
+     public static final PropertyEnum WEST = PropertyEnum.create("west", BlockRedstoneWire.EnumAttachPosition.class);
+     public static final PropertyInteger POWER = PropertyInteger.create("power", 0, 15);
+     private boolean canProvidePower = true;
      private final Set blocksNeedingUpdate = Sets.newHashSet();
      private static final String __OBFID = "CL_00000295";
  
@@ -57,7 +63,7 @@
          state = state.withProperty(WEST, this.getAttachPosition(worldIn, pos, EnumFacing.WEST));
          state = state.withProperty(EAST, this.getAttachPosition(worldIn, pos, EnumFacing.EAST));
          state = state.withProperty(NORTH, this.getAttachPosition(worldIn, pos, EnumFacing.NORTH));
-@@ -55,131 +55,107 @@
+         state = state.withProperty(SOUTH, this.getAttachPosition(worldIn, pos, EnumFacing.SOUTH));
          return state;
      }
  
@@ -223,7 +229,7 @@
                  worldIn.setBlockState(pos1, state, 2);
              }
  
-@@ -187,8 +187,7 @@
+             this.blocksNeedingUpdate.add(pos1);
              EnumFacing[] aenumfacing = EnumFacing.values();
              int i1 = aenumfacing.length;
  
@@ -233,7 +239,8 @@
                  EnumFacing enumfacing1 = aenumfacing[j1];
                  this.blocksNeedingUpdate.add(pos1.offset(enumfacing1));
              }
-@@ -197,76 +197,61 @@
+         }
+ 
          return state;
      }
  
@@ -324,7 +331,8 @@
                  EnumFacing enumfacing = aenumfacing[j];
                  worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this);
              }
-@@ -273,122 +273,89 @@
+ 
+             this.updateSurroundingRedstone(worldIn, pos, state);
              Iterator iterator = EnumFacing.Plane.HORIZONTAL.iterator();
              EnumFacing enumfacing1;
  
@@ -476,7 +484,8 @@
          BlockPos blockpos1 = pos.offset(side);
          IBlockState iblockstate = worldIn.getBlockState(blockpos1);
          Block block = iblockstate.getBlock();
-@@ -396,117 +396,44 @@
+         boolean flag = block.isNormalCube();
+         boolean flag1 = worldIn.getBlockState(pos.up()).getBlock().isNormalCube();
          return !flag1 && flag && canConnectUpwardsTo(worldIn, blockpos1.up()) ? true : (canConnectTo(iblockstate, side) ? true : (block == Blocks.powered_repeater && iblockstate.getValue(BlockRedstoneDiode.FACING) == side ? true : !flag && canConnectUpwardsTo(worldIn, blockpos1.down())));
      }
  
@@ -609,7 +618,7 @@
          UP("up"),
          SIDE("side"),
          NONE("none");
-@@ -514,20 +514,16 @@
+         private final String name;
  
          private static final String __OBFID = "CL_00002070";
  
@@ -631,5 +640,4 @@
              return this.name;
          }
      }
--}
-+}
+ }

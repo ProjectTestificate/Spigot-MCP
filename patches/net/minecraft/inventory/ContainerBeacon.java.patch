@@ -1,6 +1,6 @@
----a/net/minecraft/inventory/ContainerBeacon.java
-+++b/net/minecraft/inventory/ContainerBeacon.java
-@@ -1,115 +1,94 @@
+--- decompiled\net\minecraft\inventory\ContainerBeacon.java
++++ src\main\java\net\minecraft\inventory\ContainerBeacon.java
+@@ -1,143 +1,130 @@
  package net.minecraft.inventory;
  
  import net.minecraft.entity.player.EntityPlayer;
@@ -154,7 +154,9 @@
                  return null;
              }
  
-@@ -121,24 +121,21 @@
+             slot.onPickupFromSlot(playerIn, itemstack1);
+         }
+ 
          return itemstack;
      }
  
@@ -182,7 +184,6 @@
              return 1;
          }
      }
--}
 +
 +    // CraftBukkit start
 +    @Override
@@ -196,4 +197,4 @@
 +        return bukkitEntity;
 +    }
 +    // CraftBukkit end
-+}
+ }

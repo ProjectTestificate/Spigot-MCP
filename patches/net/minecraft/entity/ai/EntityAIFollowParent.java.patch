@@ -1,6 +1,7 @@
----a/net/minecraft/entity/ai/EntityAIFollowParent.java
-+++b/net/minecraft/entity/ai/EntityAIFollowParent.java
-@@ -2,99 +2,78 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIFollowParent.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIFollowParent.java
+@@ -1,101 +1,79 @@
+ package net.minecraft.entity.ai;
  
  import java.util.Iterator;
  import java.util.List;
@@ -122,5 +123,4 @@
              this.childAnimal.getNavigator().tryMoveToEntityLiving(this.parentAnimal, this.field_75347_c);
          }
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/tileentity/TileEntityHopper.java
-+++b/net/minecraft/tileentity/TileEntityHopper.java
-@@ -1,18 +1,22 @@
+--- decompiled\net\minecraft\tileentity\TileEntityHopper.java
++++ src\main\java\net\minecraft\tileentity\TileEntityHopper.java
+@@ -1,552 +1,610 @@
  package net.minecraft.tileentity;
  
 +import java.util.ArrayList;
@@ -23,7 +23,10 @@
  import net.minecraft.item.ItemStack;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.nbt.NBTTagList;
-@@ -23,225 +23,288 @@
+ import net.minecraft.server.gui.IUpdatePlayerListBox;
+ import net.minecraft.util.AxisAlignedBB;
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  
@@ -404,7 +407,7 @@
                  return false;
              }
          }
-@@ -249,17 +249,14 @@
+ 
          return true;
      }
  
@@ -425,7 +428,7 @@
                  return false;
              }
          }
-@@ -267,39 +267,34 @@
+ 
          return true;
      }
  
@@ -500,7 +503,9 @@
                          this.setInventorySlotContents(i, itemstack);
                      }
                  }
-@@ -307,36 +307,27 @@
+ 
+                 return false;
+             }
          }
      }
  
@@ -542,7 +547,8 @@
                      return false;
                  }
              }
-@@ -342,30 +342,22 @@
+         }
+ 
          return true;
      }
  
@@ -580,7 +586,8 @@
                      return false;
                  }
              }
-@@ -373,51 +373,38 @@
+         }
+ 
          return true;
      }
  
@@ -644,7 +651,7 @@
                  return func_145898_a(p_145891_0_, entityitem);
              }
          }
-@@ -425,46 +425,79 @@
+ 
          return false;
      }
  
@@ -746,7 +753,8 @@
                  flag = true;
                  p_145898_1_.setDead();
              }
-@@ -473,64 +473,50 @@
+ 
+             return flag;
          }
      }
  
@@ -824,7 +832,7 @@
                  int j = p_174916_1_.getMaxStackSize() - itemstack1.stackSize;
                  int k = Math.min(p_174916_1_.stackSize, j);
                  p_174916_1_.stackSize -= k;
-@@ -536,17 +536,13 @@
+                 itemstack1.stackSize += k;
                  flag = k > 0;
              }
  
@@ -845,7 +853,11 @@
                      }
  
                      p_174916_0_.markDirty();
-@@ -557,123 +557,126 @@
+                 }
+ 
+@@ -555,124 +613,128 @@
+         }
+ 
          return p_174916_1_;
      }
  
@@ -1028,5 +1040,4 @@
              this.inventory[i] = null;
          }
      }
--}
-+}
+ }

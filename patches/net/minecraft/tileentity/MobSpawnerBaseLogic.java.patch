@@ -1,6 +1,6 @@
----a/net/minecraft/tileentity/MobSpawnerBaseLogic.java
-+++b/net/minecraft/tileentity/MobSpawnerBaseLogic.java
-@@ -1,12 +1,11 @@
+--- decompiled\net\minecraft\tileentity\MobSpawnerBaseLogic.java
++++ src\main\java\net\minecraft\tileentity\MobSpawnerBaseLogic.java
+@@ -1,30 +1,33 @@
  package net.minecraft.tileentity;
  
 -import com.google.common.collect.Lists;
@@ -14,7 +14,10 @@
  import net.minecraft.entity.IEntityLivingData;
  import net.minecraft.entity.item.EntityMinecart;
  import net.minecraft.nbt.NBTBase;
-@@ -17,11 +17,7 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.nbt.NBTTagList;
+ import net.minecraft.util.AxisAlignedBB;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.util.WeightedRandom;
  import net.minecraft.world.World;
@@ -36,7 +39,11 @@
      private String mobID = "Pig";
      private final List minecartToSpawn = Lists.newArrayList();
      private MobSpawnerBaseLogic.WeightedRandomMinecart randomEntity;
-@@ -37,106 +37,94 @@
+     private double mobRotation;
+     private double prevMobRotation;
+@@ -35,390 +38,326 @@
+     private int maxNearbyEntities = 6;
+     private int activatingRangeFromPlayer = 16;
      private int spawnRange = 4;
      private static final String __OBFID = "CL_00000129";
  
@@ -172,7 +179,7 @@
                              entityliving.spawnExplosionParticle();
                          }
  
-@@ -140,51 +140,53 @@
+                         flag = true;
                      }
                  }
  
@@ -246,7 +253,7 @@
                          NBTBase nbtbase1 = nbttagcompound2.getTag(s1);
                          nbttagcompound1.setTag(s1, nbtbase1.copy());
                      }
-@@ -193,127 +193,122 @@
+ 
                      entity2.readFromNBT(nbttagcompound1);
                      entity2.setLocationAndAngles(entity1.posX, entity1.posY, entity1.posZ, entity1.rotationYaw, entity1.rotationPitch);
  
@@ -425,7 +432,7 @@
                  nbttaglist.appendTag(this.getRandomEntity().func_98220_a());
              }
  
-@@ -321,45 +321,21 @@
+             p_98280_1_.setTag("SpawnPotentials", nbttaglist);
          }
      }
  
@@ -474,7 +481,9 @@
          this.randomEntity = p_98277_1_;
      }
  
-@@ -367,48 +367,27 @@
+     public abstract void func_98267_a(int p_98267_1_);
+ 
+     public abstract World getSpawnerWorld();
  
      public abstract BlockPos func_177221_b();
  
@@ -528,7 +537,8 @@
                      p_i45757_3_ = "MinecartRideable";
                  }
              }
-@@ -415,8 +415,7 @@
+ 
+             this.field_98222_b = p_i45757_2_;
              this.entityType = p_i45757_3_;
          }
  
@@ -538,9 +548,5 @@
              NBTTagCompound nbttagcompound = new NBTTagCompound();
              nbttagcompound.setTag("Properties", this.field_98222_b);
              nbttagcompound.setString("Type", this.entityType);
-@@ -424,4 +424,4 @@
+             nbttagcompound.setInteger("Weight", this.itemWeight);
              return nbttagcompound;
-         }
-     }
--}
-+}

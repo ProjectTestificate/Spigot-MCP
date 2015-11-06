@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIHarvestFarmland.java
-+++b/net/minecraft/entity/ai/EntityAIHarvestFarmland.java
-@@ -11,22 +11,21 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIHarvestFarmland.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIHarvestFarmland.java
+@@ -9,30 +9,26 @@
+ import net.minecraft.inventory.InventoryBasic;
+ import net.minecraft.item.ItemStack;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -33,7 +35,11 @@
                  return false;
              }
  
-@@ -42,71 +42,54 @@
+             this.field_179501_f = -1;
+             this.field_179502_d = this.theVillager.func_175556_cs();
+@@ -40,76 +36,59 @@
+         }
+ 
          return super.shouldExecute();
      }
  
@@ -122,7 +128,11 @@
                          }
  
                          break;
-@@ -120,24 +120,20 @@
+                     }
+                 }
+@@ -118,28 +97,24 @@
+             this.field_179501_f = -1;
+             this.field_179496_a = 10;
          }
      }
  
@@ -151,9 +161,5 @@
                  this.field_179501_f = 1;
                  return true;
              }
-@@ -145,4 +145,4 @@
+         }
  
-         return false;
-     }
--}
-+}

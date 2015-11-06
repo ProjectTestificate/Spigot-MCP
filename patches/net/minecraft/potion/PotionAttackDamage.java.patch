@@ -1,6 +1,8 @@
----a/net/minecraft/potion/PotionAttackDamage.java
-+++b/net/minecraft/potion/PotionAttackDamage.java
-@@ -3,18 +3,16 @@
+--- decompiled\net\minecraft\potion\PotionAttackDamage.java
++++ src\main\java\net\minecraft\potion\PotionAttackDamage.java
+@@ -1,19 +1,17 @@
+ package net.minecraft.potion;
+ 
  import net.minecraft.entity.ai.attributes.AttributeModifier;
  import net.minecraft.util.ResourceLocation;
  
@@ -22,5 +24,4 @@
 +    public double getAttributeModifierAmount(int p_111183_1_, AttributeModifier p_111183_2_) {
 +        return this.id == Potion.weakness.id ? (double) (-0.5F * (float) (p_111183_1_ + 1)) : 1.3D * (double) (p_111183_1_ + 1);
      }
--}
-+}
+ }

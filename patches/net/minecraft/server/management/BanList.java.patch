@@ -1,6 +1,6 @@
----a/net/minecraft/server/management/BanList.java
-+++b/net/minecraft/server/management/BanList.java
-@@ -1,49 +1,42 @@
+--- decompiled\net\minecraft\server\management\BanList.java
++++ src\main\java\net\minecraft\server\management\BanList.java
+@@ -1,48 +1,42 @@
  package net.minecraft.server.management;
  
 -import com.google.gson.JsonObject;
@@ -61,5 +61,3 @@
  
          return s;
      }
--}
-+}

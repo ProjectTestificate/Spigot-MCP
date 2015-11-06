@@ -1,6 +1,6 @@
----a/net/minecraft/util/FoodStats.java
-+++b/net/minecraft/util/FoodStats.java
-@@ -1,83 +1,104 @@
+--- decompiled\net\minecraft\util\FoodStats.java
++++ src\main\java\net\minecraft\util\FoodStats.java
+@@ -1,136 +1,136 @@
  package net.minecraft.util;
  
  import net.minecraft.entity.player.EntityPlayer;
@@ -149,7 +149,7 @@
              this.foodLevel = p_75112_1_.getInteger("foodLevel");
              this.foodTimer = p_75112_1_.getInteger("foodTickTimer");
              this.foodSaturationLevel = p_75112_1_.getFloat("foodSaturationLevel");
-@@ -89,43 +89,30 @@
+             this.foodExhaustionLevel = p_75112_1_.getFloat("foodExhaustionLevel");
          }
      }
  
@@ -203,5 +203,4 @@
 -    {
 -        this.foodSaturationLevel = foodSaturationLevelIn;
 -    }
--}
-+}
+ }

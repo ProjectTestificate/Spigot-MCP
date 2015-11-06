@@ -1,6 +1,6 @@
----a/net/minecraft/world/storage/ISaveFormat.java
-+++b/net/minecraft/world/storage/ISaveFormat.java
-@@ -1,39 +1,16 @@
+--- decompiled\net\minecraft\world\storage\ISaveFormat.java
++++ src\main\java\net\minecraft\world\storage\ISaveFormat.java
+@@ -1,41 +1,17 @@
  package net.minecraft.world.storage;
  
 -import java.util.List;
@@ -43,5 +43,4 @@
 -
 -    @SideOnly(Side.CLIENT)
 -    boolean canLoadWorld(String p_90033_1_);
--}
-+}
+ }

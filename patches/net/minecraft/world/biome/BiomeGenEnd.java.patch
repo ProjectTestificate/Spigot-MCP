@@ -1,6 +1,7 @@
----a/net/minecraft/world/biome/BiomeGenEnd.java
-+++b/net/minecraft/world/biome/BiomeGenEnd.java
-@@ -2,15 +2,12 @@
+--- decompiled\net\minecraft\world\biome\BiomeGenEnd.java
++++ src\main\java\net\minecraft\world\biome\BiomeGenEnd.java
+@@ -1,30 +1,22 @@
+ package net.minecraft.world.biome;
  
  import net.minecraft.entity.monster.EntityEnderman;
  import net.minecraft.init.Blocks;
@@ -20,7 +21,10 @@
          super(p_i1990_1_);
          this.spawnableMonsterList.clear();
          this.spawnableCreatureList.clear();
-@@ -21,10 +21,4 @@
+         this.spawnableWaterCreatureList.clear();
+         this.spawnableCaveCreatureList.clear();
+         this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityEnderman.class, 10, 4, 4));
+         this.topBlock = Blocks.dirt.getDefaultState();
          this.fillerBlock = Blocks.dirt.getDefaultState();
          this.theBiomeDecorator = new BiomeEndDecorator();
      }
@@ -30,5 +34,4 @@
 -    {
 -        return 0;
 -    }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S13PacketDestroyEntities.java
-+++b/net/minecraft/network/play/server/S13PacketDestroyEntities.java
-@@ -1,52 +1,46 @@
+--- decompiled\net\minecraft\network\play\server\S13PacketDestroyEntities.java
++++ src\main\java\net\minecraft\network\play\server\S13PacketDestroyEntities.java
+@@ -1,58 +1,46 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -72,5 +72,4 @@
 -    {
 -        this.processPacket((INetHandlerPlayClient)handler);
 -    }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S0APacketUseBed.java
-+++b/net/minecraft/network/play/server/S0APacketUseBed.java
-@@ -1,49 +1,44 @@
+--- decompiled\net\minecraft\network\play\server\S0APacketUseBed.java
++++ src\main\java\net\minecraft\network\play\server\S0APacketUseBed.java
+@@ -1,61 +1,44 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -73,5 +73,4 @@
 -    {
 -        this.func_180744_a((INetHandlerPlayClient)handler);
 -    }
--}
-+}
+ }

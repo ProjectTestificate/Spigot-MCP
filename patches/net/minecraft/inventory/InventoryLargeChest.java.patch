@@ -1,6 +1,6 @@
----a/net/minecraft/inventory/InventoryLargeChest.java
-+++b/net/minecraft/inventory/InventoryLargeChest.java
-@@ -1,5 +1,8 @@
+--- decompiled\net\minecraft\inventory\InventoryLargeChest.java
++++ src\main\java\net\minecraft\inventory\InventoryLargeChest.java
+@@ -1,174 +1,186 @@
  package net.minecraft.inventory;
  
 +import java.util.ArrayList;
@@ -9,7 +9,9 @@
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.entity.player.InventoryPlayer;
  import net.minecraft.item.ItemStack;
-@@ -9,167 +9,179 @@
+ import net.minecraft.util.ChatComponentText;
+ import net.minecraft.util.ChatComponentTranslation;
+ import net.minecraft.util.IChatComponent;
  import net.minecraft.world.ILockableContainer;
  import net.minecraft.world.LockCode;
  
@@ -253,5 +255,4 @@
          this.upperChest.clear();
          this.lowerChest.clear();
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S3FPacketCustomPayload.java
-+++b/net/minecraft/network/play/server/S3FPacketCustomPayload.java
-@@ -1,63 +1,53 @@
+--- decompiled\net\minecraft\network\play\server\S3FPacketCustomPayload.java
++++ src\main\java\net\minecraft\network\play\server\S3FPacketCustomPayload.java
+@@ -1,73 +1,54 @@
  package net.minecraft.network.play.server;
  
 -import io.netty.buffer.ByteBuf;
@@ -90,5 +90,4 @@
 -    {
 -        return this.data;
 -    }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/entity/IEntityOwnable.java
-+++b/net/minecraft/entity/IEntityOwnable.java
-@@ -1,9 +1,9 @@
+--- decompiled\net\minecraft\entity\IEntityOwnable.java
++++ src\main\java\net\minecraft\entity\IEntityOwnable.java
+@@ -1,8 +1,8 @@
  package net.minecraft.entity;
  
 -public interface IEntityOwnable
@@ -10,5 +10,4 @@
      String getOwnerId();
  
      Entity getOwner();
--}
-+}
+ }

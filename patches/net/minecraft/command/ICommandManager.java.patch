@@ -1,6 +1,7 @@
----a/net/minecraft/command/ICommandManager.java
-+++b/net/minecraft/command/ICommandManager.java
-@@ -2,8 +2,10 @@
+--- decompiled\net\minecraft\command\ICommandManager.java
++++ src\main\java\net\minecraft\command\ICommandManager.java
+@@ -1,13 +1,14 @@
+ package net.minecraft.command;
  
  import java.util.List;
  import java.util.Map;
@@ -14,9 +15,5 @@
      int executeCommand(ICommandSender sender, String rawCommand);
  
      List getTabCompletionOptions(ICommandSender sender, String input, BlockPos pos);
-@@ -13,4 +13,4 @@
-     List getPossibleCommands(ICommandSender sender);
  
-     Map getCommands();
--}
-+}
+     List getPossibleCommands(ICommandSender sender);

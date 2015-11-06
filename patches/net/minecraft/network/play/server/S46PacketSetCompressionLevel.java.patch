@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S46PacketSetCompressionLevel.java
-+++b/net/minecraft/network/play/server/S46PacketSetCompressionLevel.java
-@@ -1,35 +1,31 @@
+--- decompiled\net\minecraft\network\play\server\S46PacketSetCompressionLevel.java
++++ src\main\java\net\minecraft\network\play\server\S46PacketSetCompressionLevel.java
+@@ -1,41 +1,31 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -50,5 +50,4 @@
 -    {
 -        this.func_179759_a((INetHandlerPlayClient)handler);
 -    }
--}
-+}
+ }

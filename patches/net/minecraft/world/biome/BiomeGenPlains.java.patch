@@ -1,6 +1,6 @@
----a/net/minecraft/world/biome/BiomeGenPlains.java
-+++b/net/minecraft/world/biome/BiomeGenPlains.java
-@@ -1,17 +1,19 @@
+--- decompiled\net\minecraft\world\biome\BiomeGenPlains.java
++++ src\main\java\net\minecraft\world\biome\BiomeGenPlains.java
+@@ -1,109 +1,94 @@
  package net.minecraft.world.biome;
  
  import java.util.Random;
@@ -24,7 +24,9 @@
          super(p_i1986_1_);
          this.setTemperatureRainfall(0.8F, 0.4F);
          this.setHeight(height_LowPlains);
-@@ -23,18 +23,15 @@
+         this.spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityHorse.class, 5, 2, 6));
+         this.theBiomeDecorator.treesPerChunk = -999;
+         this.theBiomeDecorator.flowersPerChunk = 4;
          this.theBiomeDecorator.grassPerChunk = 10;
      }
  
@@ -46,7 +48,10 @@
                  case 0:
                      return BlockFlower.EnumFlowerType.ORANGE_TULIP;
                  case 1:
-@@ -44,40 +44,30 @@
+                     return BlockFlower.EnumFlowerType.RED_TULIP;
+                 case 2:
+                     return BlockFlower.EnumFlowerType.PINK_TULIP;
+                 case 3:
                  default:
                      return BlockFlower.EnumFlowerType.WHITE_TULIP;
              }
@@ -93,7 +98,7 @@
                  j = p_180624_2_.nextInt(16) + 8;
                  k = p_180624_2_.nextInt(16) + 8;
                  l = p_180624_2_.nextInt(worldIn.getHorizon(p_180624_3_.add(j, 0, k)).getY() + 32);
-@@ -84,12 +84,10 @@
+                 DOUBLE_PLANT_GENERATOR.generate(worldIn, p_180624_2_, p_180624_3_.add(j, l, k));
              }
          }
  
@@ -108,7 +113,10 @@
                  j = p_180624_2_.nextInt(16) + 8;
                  k = p_180624_2_.nextInt(16) + 8;
                  l = p_180624_2_.nextInt(worldIn.getHorizon(p_180624_3_.add(j, 0, k)).getY() + 32);
-@@ -100,8 +100,7 @@
+                 DOUBLE_PLANT_GENERATOR.generate(worldIn, p_180624_2_, p_180624_3_.add(j, l, k));
+             }
+         }
+ 
          super.decorate(worldIn, p_180624_2_, p_180624_3_);
      }
  
@@ -118,9 +126,5 @@
          BiomeGenPlains biomegenplains = new BiomeGenPlains(p_180277_1_);
          biomegenplains.setBiomeName("Sunflower Plains");
          biomegenplains.field_150628_aC = true;
-@@ -109,4 +109,4 @@
+         biomegenplains.setColor(9286496);
          biomegenplains.field_150609_ah = 14273354;
-         return biomegenplains;
-     }
--}
-+}

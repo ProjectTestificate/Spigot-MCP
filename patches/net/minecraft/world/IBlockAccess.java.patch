@@ -1,6 +1,8 @@
----a/net/minecraft/world/IBlockAccess.java
-+++b/net/minecraft/world/IBlockAccess.java
-@@ -4,28 +4,14 @@
+--- decompiled\net\minecraft\world\IBlockAccess.java
++++ src\main\java\net\minecraft\world\IBlockAccess.java
+@@ -2,31 +2,17 @@
+ 
+ import net.minecraft.block.state.IBlockState;
  import net.minecraft.tileentity.TileEntity;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -32,5 +34,4 @@
 -
 -    @SideOnly(Side.CLIENT)
 -    WorldType getWorldType();
--}
-+}
+ }

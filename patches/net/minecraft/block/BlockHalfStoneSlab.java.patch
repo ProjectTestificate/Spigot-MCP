@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockHalfStoneSlab.java
-+++b/net/minecraft/block/BlockHalfStoneSlab.java
-@@ -1,12 +1,11 @@
+--- decompiled\net\minecraft\block\BlockHalfStoneSlab.java
++++ src\main\java\net\minecraft\block\BlockHalfStoneSlab.java
+@@ -1,11 +1,10 @@
  package net.minecraft.block;
  
 -public class BlockHalfStoneSlab extends BlockStoneSlab
@@ -14,5 +14,4 @@
 +    public boolean isDouble() {
          return false;
      }
--}
-+}
+ }

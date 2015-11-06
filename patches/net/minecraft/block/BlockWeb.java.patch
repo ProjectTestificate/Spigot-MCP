@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockWeb.java
-+++b/net/minecraft/block/BlockWeb.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockWeb.java
++++ src\main\java\net\minecraft\block\BlockWeb.java
+@@ -1,62 +1,49 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -8,7 +8,8 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.creativetab.CreativeTabs;
-@@ -9,49 +9,39 @@
+ import net.minecraft.entity.Entity;
+ import net.minecraft.init.Items;
  import net.minecraft.item.Item;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
@@ -72,5 +73,4 @@
 -    {
 -        return EnumWorldBlockLayer.CUTOUT;
 -    }
--}
-+}
+ }

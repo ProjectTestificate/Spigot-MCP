@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenMinable.java
-+++b/net/minecraft/world/gen/feature/WorldGenMinable.java
-@@ -1,8 +1,6 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenMinable.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenMinable.java
+@@ -1,83 +1,74 @@
  package net.minecraft.world.gen.feature;
  
 -import com.google.common.base.Predicate;
@@ -9,7 +9,7 @@
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.block.state.pattern.BlockHelper;
  import net.minecraft.init.Blocks;
-@@ -9,37 +9,38 @@
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  
@@ -76,7 +76,7 @@
              int j = MathHelper.floor_double(d6 - d10 / 2.0D);
              int k = MathHelper.floor_double(d7 - d11 / 2.0D);
              int l = MathHelper.floor_double(d8 - d10 / 2.0D);
-@@ -54,29 +54,22 @@
+             int i1 = MathHelper.floor_double(d6 + d10 / 2.0D);
              int j1 = MathHelper.floor_double(d7 + d11 / 2.0D);
              int k1 = MathHelper.floor_double(d8 + d10 / 2.0D);
  
@@ -115,9 +115,5 @@
                                          worldIn.setBlockState(blockpos1, this.oreBlock, 2);
                                      }
                                  }
-@@ -88,4 +88,4 @@
- 
-         return true;
-     }
--}
-+}
+                             }
+                         }

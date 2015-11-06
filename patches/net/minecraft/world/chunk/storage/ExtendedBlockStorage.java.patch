@@ -1,6 +1,8 @@
----a/net/minecraft/world/chunk/storage/ExtendedBlockStorage.java
-+++b/net/minecraft/world/chunk/storage/ExtendedBlockStorage.java
-@@ -5,8 +5,8 @@
+--- decompiled\net\minecraft\world\chunk\storage\ExtendedBlockStorage.java
++++ src\main\java\net\minecraft\world\chunk\storage\ExtendedBlockStorage.java
+@@ -3,165 +3,148 @@
+ import net.minecraft.block.Block;
+ import net.minecraft.block.state.IBlockState;
  import net.minecraft.init.Blocks;
  import net.minecraft.world.chunk.NibbleArray;
  
@@ -11,7 +13,8 @@
      private int yBase;
      private int blockRefCount;
      private int tickRefCount;
-@@ -15,118 +15,107 @@
+     private char[] data;
+     private NibbleArray blocklightArray;
      private NibbleArray skylightArray;
      private static final String __OBFID = "CL_00000375";
  
@@ -167,7 +170,8 @@
                              ++this.tickRefCount;
                          }
                      }
-@@ -135,34 +135,27 @@
+                 }
+             }
          }
      }
  
@@ -206,5 +210,4 @@
 +    public void setSkylightArray(NibbleArray newSkylightArray) {
          this.skylightArray = newSkylightArray;
      }
--}
-+}
+ }

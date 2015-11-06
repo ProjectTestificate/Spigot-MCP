@@ -1,6 +1,6 @@
----a/net/minecraft/world/World.java
-+++b/net/minecraft/world/World.java
-@@ -1,21 +1,16 @@
+--- decompiled\net\minecraft\world\World.java
++++ src\main\java\net\minecraft\world\World.java
+@@ -1,20 +1,19 @@
  package net.minecraft.world;
  
 -import com.google.common.base.Predicate;
@@ -22,7 +22,11 @@
  import net.minecraft.block.BlockHopper;
  import net.minecraft.block.BlockLiquid;
  import net.minecraft.block.BlockSlab;
-@@ -25,15 +25,33 @@
+ import net.minecraft.block.BlockSnow;
+ import net.minecraft.block.BlockStairs;
+@@ -23,19 +22,30 @@
+ import net.minecraft.command.IEntitySelector;
+ import net.minecraft.crash.CrashReport;
  import net.minecraft.crash.CrashReportCategory;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityLiving;
@@ -50,7 +54,11 @@
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
-@@ -49,16 +49,44 @@
+ import net.minecraft.util.EnumParticleTypes;
+ import net.minecraft.util.IntHashMap;
+@@ -47,21 +57,69 @@
+ import net.minecraft.world.biome.BiomeGenBase;
+ import net.minecraft.world.biome.WorldChunkManager;
  import net.minecraft.world.border.WorldBorder;
  import net.minecraft.world.chunk.Chunk;
  import net.minecraft.world.chunk.IChunkProvider;
@@ -121,7 +129,11 @@
      protected final List unloadedEntityList = Lists.newArrayList();
      public final List loadedTileEntityList = Lists.newArrayList();
      public final List tickableTileEntities = Lists.newArrayList();
-@@ -72,37 +72,38 @@
+     private final List addedTileEntityList = Lists.newArrayList();
+     private final List tileEntitiesToBeRemoved = Lists.newArrayList();
+@@ -70,739 +128,745 @@
+     protected final IntHashMap entitiesById = new IntHashMap();
+     private long cloudColour = 16777215L;
      private int skylightSubtracted;
      protected int updateLCG = (new Random()).nextInt();
      protected final int DIST_HASH_MAGIC = 1013904223;
@@ -293,7 +305,10 @@
          this.ambientTickCountdown = this.rand.nextInt(12000);
          this.spawnHostileMobs = true;
          this.spawnPeacefulMobs = true;
-@@ -111,236 +111,262 @@
+         this.lightUpdateBlockList = new int[32768];
+         this.saveHandler = saveHandlerIn;
+         this.theProfiler = profilerIn;
+         this.worldInfo = info;
          this.provider = providerIn;
          this.isRemote = client;
          this.worldBorder = providerIn.getWorldBorder();
@@ -653,7 +668,7 @@
                  block.dropBlockAsItem(this, pos, iblockstate, 0);
              }
  
-@@ -350,40 +350,37 @@
+             return this.setBlockState(pos, Blocks.air.getDefaultState(), 3);
          }
      }
  
@@ -711,7 +726,7 @@
                  this.checkLightFor(EnumSkyBlock.SKY, new BlockPos(x1, i1, z1));
              }
          }
-@@ -393,81 +393,81 @@
+ 
          this.markBlockRangeForRenderUpdate(x1, x2, z1, x1, z2, z1);
      }
  
@@ -839,7 +854,10 @@
                              return "ID #" + Block.getIdFromBlock(blockIn);
                          }
                      }
-@@ -484,38 +484,27 @@
+                 });
+                 CrashReportCategory.addBlockInfo(crashreportcategory, pos, iblockstate);
+                 throw new ReportedException(crashreport);
+             }
          }
      }
  
@@ -887,7 +905,9 @@
                          return false;
                      }
                  }
-@@ -525,15 +525,11 @@
+ 
+                 return true;
+             }
          }
      }
  
@@ -908,7 +928,7 @@
                  pos = new BlockPos(pos.getX(), 255, pos.getZ());
              }
  
-@@ -542,133 +542,96 @@
+             return this.getChunkFromBlockCoords(pos).setLight(pos, 0);
          }
      }
  
@@ -1136,7 +1156,7 @@
                  Chunk chunk = this.getChunkFromBlockCoords(pos);
                  chunk.setLightFor(type, pos, lightValue);
                  this.notifyLightSet(pos);
-@@ -740,66 +740,57 @@
+             }
          }
      }
  
@@ -1233,7 +1253,11 @@
                  int i = MathHelper.floor_double(p_147447_2_.xCoord);
                  int j = MathHelper.floor_double(p_147447_2_.yCoord);
                  int k = MathHelper.floor_double(p_147447_2_.zCoord);
-@@ -812,12 +812,10 @@
+                 int l = MathHelper.floor_double(p_147447_1_.xCoord);
+                 int i1 = MathHelper.floor_double(p_147447_1_.yCoord);
+@@ -810,132 +874,101 @@
+                 BlockPos blockpos = new BlockPos(l, i1, j1);
+                 new BlockPos(i, j, k);
                  IBlockState iblockstate = this.getBlockState(blockpos);
                  Block block = iblockstate.getBlock();
  
@@ -1248,7 +1272,7 @@
                          return movingobjectposition;
                      }
                  }
-@@ -825,17 +825,13 @@
+ 
                  MovingObjectPosition movingobjectposition2 = null;
                  int k1 = 200;
  
@@ -1267,7 +1291,10 @@
                          return p_147447_5_ ? movingobjectposition2 : null;
                      }
  
-@@ -844,42 +844,27 @@
+                     boolean flag5 = true;
+                     boolean flag3 = true;
+                     boolean flag4 = true;
+                     double d0 = 999.0D;
                      double d1 = 999.0D;
                      double d2 = 999.0D;
  
@@ -1325,7 +1352,10 @@
                          flag4 = false;
                      }
  
-@@ -890,49 +890,39 @@
+                     double d3 = 999.0D;
+                     double d4 = 999.0D;
+                     double d5 = 999.0D;
+                     double d6 = p_147447_2_.xCoord - p_147447_1_.xCoord;
                      double d7 = p_147447_2_.yCoord - p_147447_1_.yCoord;
                      double d8 = p_147447_2_.zCoord - p_147447_1_.zCoord;
  
@@ -1385,7 +1415,11 @@
                          enumfacing = k > j1 ? EnumFacing.NORTH : EnumFacing.SOUTH;
                          p_147447_1_ = new Vec3(p_147447_1_.xCoord + d6 * d5, p_147447_1_.yCoord + d7 * d5, d2);
                      }
-@@ -945,115 +945,132 @@
+ 
+                     l = MathHelper.floor_double(p_147447_1_.xCoord) - (enumfacing == EnumFacing.EAST ? 1 : 0);
+@@ -943,120 +976,141 @@
+                     j1 = MathHelper.floor_double(p_147447_1_.zCoord) - (enumfacing == EnumFacing.SOUTH ? 1 : 0);
+                     blockpos = new BlockPos(l, i1, j1);
                      IBlockState iblockstate1 = this.getBlockState(blockpos);
                      Block block1 = iblockstate1.getBlock();
  
@@ -1585,7 +1619,11 @@
                  this.playerEntities.add(entityplayer);
                  this.updateAllPlayersSleepingFlag();
              }
-@@ -1066,76 +1066,90 @@
+ 
+             this.getChunkFromChunkCoords(i, j).addEntity(p_72838_1_);
+@@ -1064,897 +1118,726 @@
+             this.onEntityAdded(p_72838_1_);
+             return true;
          }
      }
  
@@ -1709,7 +1747,8 @@
          ArrayList arraylist = Lists.newArrayList();
          int i = MathHelper.floor_double(p_72945_2_.minX);
          int j = MathHelper.floor_double(p_72945_2_.maxX + 1.0D);
-@@ -1141,71 +1141,88 @@
+         int k = MathHelper.floor_double(p_72945_2_.minY);
+         int l = MathHelper.floor_double(p_72945_2_.maxY + 1.0D);
          int i1 = MathHelper.floor_double(p_72945_2_.minZ);
          int j1 = MathHelper.floor_double(p_72945_2_.maxZ + 1.0D);
  
@@ -1816,7 +1855,8 @@
                      arraylist.add(axisalignedbb1);
                  }
              }
-@@ -1205,21 +1205,18 @@
+         }
+ 
          return arraylist;
      }
  
@@ -1842,7 +1882,9 @@
              --d0;
              --d1;
              ++d2;
-@@ -1230,8 +1230,7 @@
+             ++d3;
+         }
+ 
          return p_175673_2_.posX > d0 && p_175673_2_.posX < d2 && p_175673_2_.posZ > d1 && p_175673_2_.posZ < d3;
      }
  
@@ -1852,7 +1894,8 @@
          ArrayList arraylist = Lists.newArrayList();
          int i = MathHelper.floor_double(p_147461_1_.minX);
          int j = MathHelper.floor_double(p_147461_1_.maxX + 1.0D);
-@@ -1240,34 +1240,23 @@
+         int k = MathHelper.floor_double(p_147461_1_.minY);
+         int l = MathHelper.floor_double(p_147461_1_.maxY + 1.0D);
          int i1 = MathHelper.floor_double(p_147461_1_.minZ);
          int j1 = MathHelper.floor_double(p_147461_1_.maxZ + 1.0D);
  
@@ -1887,7 +1930,8 @@
                      }
                  }
              }
-@@ -1269,183 +1269,44 @@
+         }
+ 
          return arraylist;
      }
  
@@ -2084,7 +2128,7 @@
                  break;
              }
          }
-@@ -1453,26 +1453,16 @@
+ 
          return blockpos1;
      }
  
@@ -2114,7 +2158,7 @@
          this.theProfiler.startSection("entities");
          this.theProfiler.startSection("global");
          int i;
-@@ -1477,35 +1477,37 @@
+         Entity entity;
          CrashReport crashreport;
          CrashReportCategory crashreportcategory;
  
@@ -2161,7 +2205,9 @@
                  this.weatherEffects.remove(i--);
              }
          }
-@@ -1514,33 +1514,36 @@
+ 
+         this.theProfiler.endStartSection("remove");
+         this.loadedEntityList.removeAll(this.unloadedEntityList);
          int j;
          int l;
  
@@ -2213,7 +2259,9 @@
                      continue;
                  }
  
-@@ -1551,15 +1551,13 @@
+                 entity.ridingEntity.riddenByEntity = null;
+                 entity.ridingEntity = null;
+             }
  
              this.theProfiler.startSection("tick");
  
@@ -2233,7 +2281,10 @@
                      crashreport = CrashReport.makeCrashReport(throwable1, "Ticking entity");
                      crashreportcategory = crashreport.makeCategory("Entity being ticked");
                      entity.addEntityCrashInfo(crashreportcategory);
-@@ -1569,89 +1569,109 @@
+                     throw new ReportedException(crashreport);
+                 }
+             }
+ 
              this.theProfiler.endSection();
              this.theProfiler.startSection("remove");
  
@@ -2381,7 +2432,10 @@
                          this.getChunkFromBlockCoords(tileentity1.getPos()).addTileEntity(tileentity1.getPos(), tileentity1);
                      }
  
-@@ -1662,100 +1662,89 @@
+                     this.markBlockForUpdate(tileentity1.getPos());
+                 }
+             }
+ 
              this.addedTileEntityList.clear();
          }
  
@@ -2510,7 +2564,7 @@
                  p_72866_1_.rotationYaw = p_72866_1_.prevRotationYaw;
              }
  
-@@ -1765,58 +1765,46 @@
+             int k = MathHelper.floor_double(p_72866_1_.posX / 16.0D);
              int l = MathHelper.floor_double(p_72866_1_.posY / 16.0D);
              int i1 = MathHelper.floor_double(p_72866_1_.posZ / 16.0D);
  
@@ -2583,7 +2637,7 @@
                  return false;
              }
          }
-@@ -1822,8 +1822,7 @@
+ 
          return true;
      }
  
@@ -2593,7 +2647,7 @@
          int i = MathHelper.floor_double(p_72829_1_.minX);
          int j = MathHelper.floor_double(p_72829_1_.maxX);
          int k = MathHelper.floor_double(p_72829_1_.minY);
-@@ -1831,20 +1831,14 @@
+         int l = MathHelper.floor_double(p_72829_1_.maxY);
          int i1 = MathHelper.floor_double(p_72829_1_.minZ);
          int j1 = MathHelper.floor_double(p_72829_1_.maxZ);
  
@@ -2614,7 +2668,9 @@
                          return true;
                      }
                  }
-@@ -1850,8 +1850,7 @@
+             }
+         }
+ 
          return false;
      }
  
@@ -2624,7 +2680,7 @@
          int i = MathHelper.floor_double(p_72953_1_.minX);
          int j = MathHelper.floor_double(p_72953_1_.maxX);
          int k = MathHelper.floor_double(p_72953_1_.minY);
-@@ -1859,20 +1859,14 @@
+         int l = MathHelper.floor_double(p_72953_1_.maxY);
          int i1 = MathHelper.floor_double(p_72953_1_.minZ);
          int j1 = MathHelper.floor_double(p_72953_1_.maxZ);
  
@@ -2645,7 +2701,9 @@
                          return true;
                      }
                  }
-@@ -1878,8 +1878,7 @@
+             }
+         }
+ 
          return false;
      }
  
@@ -2655,7 +2713,7 @@
          int i = MathHelper.floor_double(p_147470_1_.minX);
          int j = MathHelper.floor_double(p_147470_1_.maxX + 1.0D);
          int k = MathHelper.floor_double(p_147470_1_.minY);
-@@ -1887,24 +1887,16 @@
+         int l = MathHelper.floor_double(p_147470_1_.maxY + 1.0D);
          int i1 = MathHelper.floor_double(p_147470_1_.minZ);
          int j1 = MathHelper.floor_double(p_147470_1_.maxZ + 1.0D);
  
@@ -2679,7 +2737,10 @@
                              return true;
                          }
                      }
-@@ -1909,8 +1909,7 @@
+                 }
+             }
+         }
+ 
          return false;
      }
  
@@ -2689,7 +2750,7 @@
          int i = MathHelper.floor_double(p_72918_1_.minX);
          int j = MathHelper.floor_double(p_72918_1_.maxX + 1.0D);
          int k = MathHelper.floor_double(p_72918_1_.minY);
-@@ -1918,31 +1918,23 @@
+         int l = MathHelper.floor_double(p_72918_1_.maxY + 1.0D);
          int i1 = MathHelper.floor_double(p_72918_1_.minZ);
          int j1 = MathHelper.floor_double(p_72918_1_.maxZ + 1.0D);
  
@@ -2729,7 +2790,8 @@
                                  flag = true;
                                  vec3 = block.modifyAcceleration(this, blockpos, p_72918_3_, vec3);
                              }
-@@ -1951,8 +1951,7 @@
+                         }
+                     }
                  }
              }
  
@@ -2739,7 +2801,11 @@
                  vec3 = vec3.normalize();
                  double d1 = 0.014D;
                  p_72918_3_.motionX += vec3.xCoord * d1;
-@@ -1964,8 +1964,7 @@
+                 p_72918_3_.motionY += vec3.yCoord * d1;
+                 p_72918_3_.motionZ += vec3.zCoord * d1;
+@@ -1962,464 +1845,381 @@
+ 
+             return flag;
          }
      }
  
@@ -2749,7 +2815,7 @@
          int i = MathHelper.floor_double(p_72875_1_.minX);
          int j = MathHelper.floor_double(p_72875_1_.maxX + 1.0D);
          int k = MathHelper.floor_double(p_72875_1_.minY);
-@@ -1973,14 +1973,10 @@
+         int l = MathHelper.floor_double(p_72875_1_.maxY + 1.0D);
          int i1 = MathHelper.floor_double(p_72875_1_.minZ);
          int j1 = MathHelper.floor_double(p_72875_1_.maxZ + 1.0D);
  
@@ -2768,7 +2834,9 @@
                          return true;
                      }
                  }
-@@ -1990,8 +1990,7 @@
+             }
+         }
+ 
          return false;
      }
  
@@ -2778,7 +2846,7 @@
          int i = MathHelper.floor_double(p_72830_1_.minX);
          int j = MathHelper.floor_double(p_72830_1_.maxX + 1.0D);
          int k = MathHelper.floor_double(p_72830_1_.minY);
-@@ -1999,32 +1999,24 @@
+         int l = MathHelper.floor_double(p_72830_1_.maxY + 1.0D);
          int i1 = MathHelper.floor_double(p_72830_1_.minZ);
          int j1 = MathHelper.floor_double(p_72830_1_.maxZ + 1.0D);
  
@@ -2816,7 +2884,10 @@
                              return true;
                          }
                      }
-@@ -2031,42 +2031,34 @@
+                 }
+             }
+         }
+ 
          return false;
      }
  
@@ -2870,7 +2941,8 @@
                              ++i;
                          }
  
-@@ -2075,83 +2075,53 @@
+                         ++j;
+                     }
                  }
              }
  
@@ -2969,7 +3041,10 @@
                          tileentity = tileentity1;
                          break;
                      }
-@@ -2160,50 +2160,39 @@
+                 }
+             }
+ 
+             return tileentity;
          }
      }
  
@@ -3031,7 +3106,9 @@
                  this.addedTileEntityList.remove(tileentity);
                  this.loadedTileEntityList.remove(tileentity);
                  this.tickableTileEntities.remove(tileentity);
-@@ -2212,91 +2212,70 @@
+             }
+ 
+             this.getChunkFromBlockCoords(pos).removeTileEntity(pos);
          }
      }
  
@@ -3143,7 +3220,8 @@
                      --i;
                      this.worldInfo.setCleanWeatherTime(i);
                      this.worldInfo.setThunderTime(this.worldInfo.isThundering() ? 1 : 2);
-@@ -2305,84 +2305,62 @@
+                     this.worldInfo.setRainTime(this.worldInfo.isRaining() ? 1 : 2);
+                 }
  
                  int j = this.worldInfo.getThunderTime();
  
@@ -3247,7 +3325,7 @@
          this.theProfiler.startSection("buildList");
          int i;
          EntityPlayer entityplayer;
-@@ -2389,37 +2389,69 @@
+         int j;
          int k;
          int l;
  
@@ -3315,7 +3393,11 @@
              j = MathHelper.floor_double(entityplayer.posX) + this.rand.nextInt(11) - 5;
              k = MathHelper.floor_double(entityplayer.posY) + this.rand.nextInt(11) - 5;
              l = MathHelper.floor_double(entityplayer.posZ) + this.rand.nextInt(11) - 5;
-@@ -2429,12 +2429,10 @@
+             this.checkLight(new BlockPos(j, k, l));
+         }
+@@ -2427,212 +2227,170 @@
+         this.theProfiler.endSection();
+     }
  
      protected abstract int getRenderDistanceChunks();
  
@@ -3330,7 +3412,10 @@
              this.updateLCG = this.updateLCG * 3 + 1013904223;
              int k = this.updateLCG >> 2;
              int l = k & 15;
-@@ -2445,13 +2445,11 @@
+             int i1 = k >> 8 & 15;
+             int j1 = k >> 16 & 255;
+             BlockPos blockpos = new BlockPos(l, j1, i1);
+             Block block = p_147467_3_.getBlock(blockpos);
              l += p_147467_1_;
              i1 += p_147467_2_;
  
@@ -3348,7 +3433,9 @@
                      this.ambientTickCountdown = this.rand.nextInt(12000) + 6000;
                  }
              }
-@@ -2461,55 +2461,43 @@
+         }
+ 
+         this.theProfiler.endStartSection("checkLight");
          p_147467_3_.enqueueRelightChecks();
      }
  
@@ -3415,7 +3502,9 @@
                          return true;
                      }
                  }
-@@ -2519,32 +2519,23 @@
+             }
+ 
+             return false;
          }
      }
  
@@ -3455,7 +3544,8 @@
                      return true;
                  }
              }
-@@ -2553,12 +2553,10 @@
+ 
+             return false;
          }
      }
  
@@ -3470,7 +3560,7 @@
              flag |= this.checkLightFor(EnumSkyBlock.SKY, pos);
          }
  
-@@ -2566,56 +2566,41 @@
+         flag |= this.checkLightFor(EnumSkyBlock.BLOCK, pos);
          return flag;
      }
  
@@ -3536,7 +3626,9 @@
                          return i;
                      }
                  }
-@@ -2623,15 +2623,17 @@
+ 
+                 return i;
+             }
          }
      }
  
@@ -3557,7 +3649,11 @@
              int i = 0;
              int j = 0;
              this.theProfiler.startSection("getBrightness");
-@@ -2648,16 +2648,12 @@
+             int k = this.getLightFor(lightType, pos);
+             int l = this.getRawLight(pos, lightType);
+@@ -2646,55 +2404,46 @@
+             int i3;
+             int j3;
              int k3;
              int l3;
  
@@ -3577,7 +3673,8 @@
                      l1 = this.lightUpdateBlockList[i++];
                      i2 = (l1 & 63) - 32 + i1;
                      j2 = (l1 >> 6 & 63) - 32 + j1;
-@@ -2666,23 +2666,19 @@
+                     k2 = (l1 >> 12 & 63) - 32 + k1;
+                     int l2 = l1 >> 18 & 15;
                      BlockPos blockpos1 = new BlockPos(i2, j2, k2);
                      i3 = this.getLightFor(lightType, blockpos1);
  
@@ -3605,7 +3702,8 @@
                                      EnumFacing enumfacing = aenumfacing[j4];
                                      int k4 = i2 + enumfacing.getFrontOffsetX();
                                      int l4 = j2 + enumfacing.getFrontOffsetY();
-@@ -2691,8 +2691,7 @@
+                                     int i5 = k2 + enumfacing.getFrontOffsetZ();
+                                     BlockPos blockpos2 = new BlockPos(k4, l4, i5);
                                      int j5 = Math.max(1, this.getBlockState(blockpos2).getBlock().getLightOpacity());
                                      i3 = this.getLightFor(lightType, blockpos2);
  
@@ -3615,7 +3713,11 @@
                                          this.lightUpdateBlockList[j++] = k4 - i1 + 32 | l4 - j1 + 32 << 6 | i5 - k1 + 32 << 12 | l2 - j5 << 18;
                                      }
                                  }
-@@ -2707,8 +2707,7 @@
+                             }
+                         }
+@@ -2705,60 +2454,50 @@
+             }
+ 
              this.theProfiler.endSection();
              this.theProfiler.startSection("checkedPosition < toCheckCount");
  
@@ -3625,7 +3727,8 @@
                  l1 = this.lightUpdateBlockList[i++];
                  i2 = (l1 & 63) - 32 + i1;
                  j2 = (l1 >> 6 & 63) - 32 + j1;
-@@ -2717,46 +2717,37 @@
+                 k2 = (l1 >> 12 & 63) - 32 + k1;
+                 BlockPos blockpos3 = new BlockPos(i2, j2, k2);
                  int k5 = this.getLightFor(lightType, blockpos3);
                  i3 = this.getRawLight(blockpos3, lightType);
  
@@ -3681,7 +3784,11 @@
                                  this.lightUpdateBlockList[j++] = i2 - i1 + 32 + (j2 - j1 + 32 << 6) + (k2 + 1 - k1 + 32 << 12);
                              }
                          }
-@@ -2769,36 +2769,30 @@
+                     }
+                 }
+@@ -2767,790 +2506,615 @@
+             this.theProfiler.endSection();
+             return true;
          }
      }
  
@@ -3730,7 +3837,8 @@
                      this.getChunkFromChunkCoords(i1, j1).getEntitiesWithinAABBForEntity(entityIn, p_175674_2_, arraylist, p_175674_3_);
                  }
              }
-@@ -2811,17 +2811,14 @@
+         }
+ 
          return arraylist;
      }
  
@@ -3752,7 +3860,7 @@
                  arraylist.add(entity);
              }
          }
-@@ -2829,17 +2829,14 @@
+ 
          return arraylist;
      }
  
@@ -3774,7 +3882,7 @@
                  arraylist.add(entity);
              }
          }
-@@ -2847,21 +2847,18 @@
+ 
          return arraylist;
      }
  
@@ -3805,7 +3913,8 @@
                      this.getChunkFromChunkCoords(i1, j1).getEntitiesOfTypeWithinAAAB(clazz, aabb, arraylist, filter);
                  }
              }
-@@ -2874,22 +2874,18 @@
+         }
+ 
          return arraylist;
      }
  
@@ -3833,7 +3942,9 @@
                      entity1 = entity2;
                      d0 = d1;
                  }
-@@ -2899,37 +2899,32 @@
+             }
+         }
+ 
          return entity1;
      }
  
@@ -3887,7 +3998,7 @@
                  ++i;
              }
          }
-@@ -2936,84 +2936,77 @@
+ 
          return i;
      }
  
@@ -4004,7 +4115,9 @@
                              i = Math.max(i, this.getStrongPower(pos.east(), EnumFacing.EAST));
                              return i >= 15 ? i : i;
                          }
-@@ -3023,41 +3023,34 @@
+                     }
+                 }
+             }
          }
      }
  
@@ -4053,7 +4166,7 @@
                  i = l;
              }
          }
-@@ -3065,26 +3065,26 @@
+ 
          return i;
      }
  
@@ -4091,7 +4204,9 @@
                      d4 = d5;
                      entityplayer = entityplayer1;
                  }
-@@ -3094,21 +3094,16 @@
+             }
+         }
+ 
          return entityplayer;
      }
  
@@ -4115,7 +4230,8 @@
                      return true;
                  }
              }
-@@ -3114,17 +3114,13 @@
+         }
+ 
          return false;
      }
  
@@ -4134,7 +4250,7 @@
                  return entityplayer;
              }
          }
-@@ -3129,17 +3129,13 @@
+ 
          return null;
      }
  
@@ -4153,7 +4269,7 @@
                  return entityplayer;
              }
          }
-@@ -3144,219 +3144,146 @@
+ 
          return null;
      }
  
@@ -4424,7 +4540,10 @@
              CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Playing level event");
              CrashReportCategory crashreportcategory = crashreport.makeCategory("Level event being played");
              crashreportcategory.addCrashSection("Block coordinates", CrashReportCategory.getCoordinateInfo(p_180498_3_));
-@@ -3365,124 +3365,89 @@
+             crashreportcategory.addCrashSection("Event source", p_180498_1_);
+             crashreportcategory.addCrashSection("Event type", Integer.valueOf(p_180498_2_));
+             crashreportcategory.addCrashSection("Event data", Integer.valueOf(p_180498_4_));
+             throw new ReportedException(crashreport);
          }
      }
  
@@ -4578,7 +4697,7 @@
                          iblockstate.getBlock().onNeighborBlockChange(this, blockpos1, iblockstate, blockIn);
                      }
                  }
-@@ -3490,13 +3490,11 @@
+             }
          }
      }
  
@@ -4594,7 +4713,7 @@
              f = this.getCurrentMoonPhaseFactor();
              i = this.getChunkFromBlockCoords(pos).getInhabitedTime();
          }
-@@ -3504,54 +3504,39 @@
+ 
          return new DifficultyInstance(this.getDifficulty(), this.getWorldTime(), i, f);
      }
  
@@ -4656,5 +4775,4 @@
 -        return k >= -short1 && k <= short1 && l >= -short1 && l <= short1;
 +        return k >= -short1 && k <= short1 && l >= -short1 && l <= short1 && this.keepSpawnInMemory; // CraftBukkit - Added 'this.keepSpawnInMemory'
      }
--}
-+}
+ }

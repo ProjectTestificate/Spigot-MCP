@@ -1,6 +1,7 @@
----a/net/minecraft/scoreboard/ScoreHealthCriteria.java
-+++b/net/minecraft/scoreboard/ScoreHealthCriteria.java
-@@ -2,42 +2,38 @@
+--- decompiled\net\minecraft\scoreboard\ScoreHealthCriteria.java
++++ src\main\java\net\minecraft\scoreboard\ScoreHealthCriteria.java
+@@ -1,44 +1,39 @@
+ package net.minecraft.scoreboard;
  
  import java.util.Iterator;
  import java.util.List;
@@ -54,5 +55,4 @@
 +    public IScoreObjectiveCriteria.EnumRenderType getRenderType() {
          return IScoreObjectiveCriteria.EnumRenderType.HEARTS;
      }
--}
-+}
+ }

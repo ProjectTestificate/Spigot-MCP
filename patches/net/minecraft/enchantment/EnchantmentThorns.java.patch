@@ -1,6 +1,6 @@
----a/net/minecraft/enchantment/EnchantmentThorns.java
-+++b/net/minecraft/enchantment/EnchantmentThorns.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\enchantment\EnchantmentThorns.java
++++ src\main\java\net\minecraft\enchantment\EnchantmentThorns.java
+@@ -1,71 +1,61 @@
  package net.minecraft.enchantment;
  
  import java.util.Random;
@@ -8,7 +8,7 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.item.ItemArmor;
-@@ -8,65 +8,54 @@
+ import net.minecraft.item.ItemStack;
  import net.minecraft.util.DamageSource;
  import net.minecraft.util.ResourceLocation;
  
@@ -87,5 +87,4 @@
 +    public static int func_92095_b(int p_92095_0_, Random p_92095_1_) {
          return p_92095_0_ > 10 ? p_92095_0_ - 10 : 1 + p_92095_1_.nextInt(4);
      }
--}
-+}
+ }

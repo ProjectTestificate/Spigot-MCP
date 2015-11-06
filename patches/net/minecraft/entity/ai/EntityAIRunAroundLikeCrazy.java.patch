@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIRunAroundLikeCrazy.java
-+++b/net/minecraft/entity/ai/EntityAIRunAroundLikeCrazy.java
-@@ -5,8 +5,8 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIRunAroundLikeCrazy.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIRunAroundLikeCrazy.java
+@@ -3,81 +3,78 @@
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.passive.EntityHorse;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.util.Vec3;
  
@@ -11,7 +13,7 @@
      private EntityHorse horseHost;
      private double field_111178_b;
      private double field_111179_c;
-@@ -14,71 +14,67 @@
+     private double field_111176_d;
      private double field_111177_e;
      private static final String __OBFID = "CL_00001612";
  
@@ -108,5 +110,4 @@
 +            this.horseHost.worldObj.setEntityState(this.horseHost, (byte) 6);
          }
      }
--}
-+}
+ }

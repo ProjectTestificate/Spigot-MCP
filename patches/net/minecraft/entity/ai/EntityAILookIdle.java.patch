@@ -1,6 +1,7 @@
----a/net/minecraft/entity/ai/EntityAILookIdle.java
-+++b/net/minecraft/entity/ai/EntityAILookIdle.java
-@@ -2,42 +2,37 @@
+--- decompiled\net\minecraft\entity\ai\EntityAILookIdle.java
++++ src\main\java\net\minecraft\entity\ai\EntityAILookIdle.java
+@@ -1,42 +1,37 @@
+ package net.minecraft.entity.ai;
  
  import net.minecraft.entity.EntityLiving;
  
@@ -49,5 +50,4 @@
 -        this.idleEntity.getLookHelper().setLookPosition(this.idleEntity.posX + this.lookX, this.idleEntity.posY + (double)this.idleEntity.getEyeHeight(), this.idleEntity.posZ + this.lookZ, 10.0F, (float)this.idleEntity.getVerticalFaceSpeed());
 +        this.idleEntity.getLookHelper().setLookPosition(this.idleEntity.posX + this.lookX, this.idleEntity.posY + (double) this.idleEntity.getEyeHeight(), this.idleEntity.posZ + this.lookZ, 10.0F, (float) this.idleEntity.getVerticalFaceSpeed());
      }
--}
-+}
+ }

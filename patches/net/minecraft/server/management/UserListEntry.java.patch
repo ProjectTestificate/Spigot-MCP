@@ -1,6 +1,7 @@
----a/net/minecraft/server/management/UserListEntry.java
-+++b/net/minecraft/server/management/UserListEntry.java
-@@ -2,30 +2,26 @@
+--- decompiled\net\minecraft\server\management\UserListEntry.java
++++ src\main\java\net\minecraft\server\management\UserListEntry.java
+@@ -1,31 +1,28 @@
+ package net.minecraft.server.management;
  
  import com.google.gson.JsonObject;
  
@@ -36,7 +37,6 @@
      }
  
 -    protected void onSerialization(JsonObject data) {}
--}
 +    protected void onSerialization(JsonObject data) {
 +    }
-+}
+ }

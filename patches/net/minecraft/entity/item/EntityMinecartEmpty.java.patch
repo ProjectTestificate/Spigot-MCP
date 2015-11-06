@@ -1,6 +1,8 @@
----a/net/minecraft/entity/item/EntityMinecartEmpty.java
-+++b/net/minecraft/entity/item/EntityMinecartEmpty.java
-@@ -4,31 +4,25 @@
+--- decompiled\net\minecraft\entity\item\EntityMinecartEmpty.java
++++ src\main\java\net\minecraft\entity\item\EntityMinecartEmpty.java
+@@ -2,64 +2,50 @@
+ 
+ import net.minecraft.entity.Entity;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.world.World;
  
@@ -44,7 +46,7 @@
                  playerIn.mountEntity(this);
              }
  
-@@ -39,22 +39,16 @@
+             return true;
          }
      }
  
@@ -67,7 +69,8 @@
                  this.setRollingDirection(-this.getRollingDirection());
                  this.setRollingAmplitude(10);
                  this.setDamage(50.0F);
-@@ -58,9 +58,7 @@
+                 this.setBeenAttacked();
+             }
          }
      }
  
@@ -76,5 +79,4 @@
 +    public EntityMinecart.EnumMinecartType getMinecartType() {
          return EntityMinecart.EnumMinecartType.RIDEABLE;
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S33PacketUpdateSign.java
-+++b/net/minecraft/network/play/server/S33PacketUpdateSign.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\network\play\server\S33PacketUpdateSign.java
++++ src\main\java\net\minecraft\network\play\server\S33PacketUpdateSign.java
+@@ -1,72 +1,54 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -8,7 +8,7 @@
  import net.minecraft.network.INetHandler;
  import net.minecraft.network.Packet;
  import net.minecraft.network.PacketBuffer;
-@@ -8,55 +8,45 @@
+ import net.minecraft.network.play.INetHandlerPlayClient;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.IChatComponent;
  import net.minecraft.world.World;
@@ -87,5 +87,4 @@
 -    {
 -        return this.field_149349_d;
 -    }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenMegaPineTree.java
-+++b/net/minecraft/world/gen/feature/WorldGenMegaPineTree.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenMegaPineTree.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenMegaPineTree.java
+@@ -1,141 +1,118 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -8,7 +8,9 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockDirt;
  import net.minecraft.block.BlockPlanks;
-@@ -10,58 +10,48 @@
+ import net.minecraft.block.material.Material;
+ import net.minecraft.init.Blocks;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  
@@ -79,7 +81,9 @@
                          this.func_175905_a(worldIn, p_180709_3_.add(0, j, 1), Blocks.log, this.woodMetadata);
                      }
                  }
-@@ -71,72 +71,58 @@
+             }
+ 
+             return true;
          }
      }
  
@@ -164,5 +168,4 @@
              }
          }
      }
--}
-+}
+ }

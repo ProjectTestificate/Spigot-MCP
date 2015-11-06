@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockContainer.java
-+++b/net/minecraft/block/BlockContainer.java
-@@ -6,32 +6,28 @@
+--- decompiled\net\minecraft\block\BlockContainer.java
++++ src\main\java\net\minecraft\block\BlockContainer.java
+@@ -4,33 +4,29 @@
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.tileentity.TileEntity;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -37,5 +39,4 @@
          TileEntity tileentity = worldIn.getTileEntity(pos);
          return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
      }
--}
-+}
+ }

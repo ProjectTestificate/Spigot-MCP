@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemMultiTexture.java
-+++b/net/minecraft/item/ItemMultiTexture.java
-@@ -1,15 +1,15 @@
+--- decompiled\net\minecraft\item\ItemMultiTexture.java
++++ src\main\java\net\minecraft\item\ItemMultiTexture.java
+@@ -1,53 +1,49 @@
  package net.minecraft.item;
  
 -import com.google.common.base.Function;
@@ -22,7 +22,7 @@
          super(block);
          this.theBlock = block2;
          this.nameFunction = nameFunction;
-@@ -18,39 +18,34 @@
+         this.setMaxDamage(0);
          this.setHasSubtypes(true);
      }
  
@@ -70,5 +70,4 @@
 +    public String getUnlocalizedName(ItemStack stack) {
 +        return super.getUnlocalizedName() + "." + (String) this.nameFunction.apply(stack);
      }
--}
-+}
+ }

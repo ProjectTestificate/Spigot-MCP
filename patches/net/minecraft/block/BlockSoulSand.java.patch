@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockSoulSand.java
-+++b/net/minecraft/block/BlockSoulSand.java
-@@ -8,26 +8,23 @@
+--- decompiled\net\minecraft\block\BlockSoulSand.java
++++ src\main\java\net\minecraft\block\BlockSoulSand.java
+@@ -6,27 +6,24 @@
+ import net.minecraft.entity.Entity;
+ import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -31,5 +33,4 @@
          entityIn.motionX *= 0.4D;
          entityIn.motionZ *= 0.4D;
      }
--}
-+}
+ }

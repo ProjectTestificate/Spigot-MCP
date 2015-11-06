@@ -1,6 +1,6 @@
----a/net/minecraft/command/server/CommandAchievement.java
-+++b/net/minecraft/command/server/CommandAchievement.java
-@@ -1,14 +1,8 @@
+--- decompiled\net\minecraft\command\server\CommandAchievement.java
++++ src\main\java\net\minecraft\command\server\CommandAchievement.java
+@@ -1,13 +1,11 @@
  package net.minecraft.command.server;
  
 -import com.google.common.base.Predicate;
@@ -13,7 +13,11 @@
  import net.minecraft.command.CommandBase;
  import net.minecraft.command.CommandException;
  import net.minecraft.command.ICommandSender;
-@@ -18,149 +18,125 @@
+ import net.minecraft.command.WrongUsageException;
+ import net.minecraft.entity.player.EntityPlayerMP;
+@@ -16,184 +14,148 @@
+ import net.minecraft.stats.AchievementList;
+ import net.minecraft.stats.StatBase;
  import net.minecraft.stats.StatList;
  import net.minecraft.util.BlockPos;
  
@@ -214,7 +218,7 @@
                          }
                      }
                  }
-@@ -167,29 +167,19 @@
+             }
          }
      }
  
@@ -246,7 +250,7 @@
                  arraylist.add(statbase.statId);
              }
  
-@@ -192,9 +192,7 @@
+             return func_175762_a(args, arraylist);
          }
      }
  
@@ -255,5 +259,4 @@
 +    public boolean isUsernameIndex(String[] args, int index) {
          return index == 2;
      }
--}
-+}
+ }

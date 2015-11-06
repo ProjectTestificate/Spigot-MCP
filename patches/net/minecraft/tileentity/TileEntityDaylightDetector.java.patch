@@ -1,6 +1,8 @@
----a/net/minecraft/tileentity/TileEntityDaylightDetector.java
-+++b/net/minecraft/tileentity/TileEntityDaylightDetector.java
-@@ -3,21 +3,18 @@
+--- decompiled\net\minecraft\tileentity\TileEntityDaylightDetector.java
++++ src\main\java\net\minecraft\tileentity\TileEntityDaylightDetector.java
+@@ -1,22 +1,19 @@
+ package net.minecraft.tileentity;
+ 
  import net.minecraft.block.BlockDaylightDetector;
  import net.minecraft.server.gui.IUpdatePlayerListBox;
  
@@ -26,5 +28,4 @@
              }
          }
      }
--}
-+}
+ }

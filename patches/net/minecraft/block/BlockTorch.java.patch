@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockTorch.java
-+++b/net/minecraft/block/BlockTorch.java
-@@ -1,8 +1,6 @@
+--- decompiled\net\minecraft\block\BlockTorch.java
++++ src\main\java\net\minecraft\block\BlockTorch.java
+@@ -1,10 +1,9 @@
  package net.minecraft.block;
  
 -import com.google.common.base.Predicate;
@@ -10,7 +10,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyDirection;
-@@ -14,170 +14,132 @@
+ import net.minecraft.block.state.BlockState;
+ import net.minecraft.block.state.IBlockState;
+@@ -12,221 +11,170 @@
+ import net.minecraft.entity.EntityLivingBase;
+ import net.minecraft.init.Blocks;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -229,7 +233,8 @@
                  this.dropBlockAsItem(worldIn, pos, state, 0);
                  worldIn.setBlockToAir(pos);
              }
-@@ -189,29 +189,20 @@
+ 
+             return false;
          }
      }
  
@@ -266,7 +271,7 @@
              f = 0.1F;
              this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.6F, 0.5F + f);
          }
-@@ -219,12 +219,10 @@
+ 
          return super.collisionRayTrace(worldIn, pos, start, end);
      }
  
@@ -281,7 +286,11 @@
              case 1:
                  iblockstate = iblockstate.withProperty(FACING, EnumFacing.EAST);
                  break;
-@@ -245,59 +245,11 @@
+             case 2:
+                 iblockstate = iblockstate.withProperty(FACING, EnumFacing.WEST);
+@@ -243,40 +191,15 @@
+         }
+ 
          return iblockstate;
      }
  
@@ -320,7 +329,11 @@
              case 1:
                  i = b0 | 1;
                  break;
-@@ -296,80 +296,51 @@
+             case 2:
+                 i = b0 | 2;
+@@ -294,79 +217,53 @@
+         }
+ 
          return i;
      }
  
@@ -432,6 +445,5 @@
 +                ;
              }
          }
--}
 +    }
-+}
+ }

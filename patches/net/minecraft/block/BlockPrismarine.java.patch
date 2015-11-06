@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockPrismarine.java
-+++b/net/minecraft/block/BlockPrismarine.java
-@@ -1,54 +1,44 @@
+--- decompiled\net\minecraft\block\BlockPrismarine.java
++++ src\main\java\net\minecraft\block\BlockPrismarine.java
+@@ -1,119 +1,92 @@
  package net.minecraft.block;
  
 -import java.util.List;
@@ -76,7 +76,10 @@
          ROUGH(0, "prismarine", "rough"),
          BRICKS(1, "prismarine_bricks", "bricks"),
          DARK(2, "dark_prismarine", "dark");
-@@ -68,54 +68,44 @@
+         private static final BlockPrismarine.EnumType[] META_LOOKUP = new BlockPrismarine.EnumType[values().length];
+         private final int meta;
+         private final String name;
+         private final String unlocalizedName;
  
          private static final String __OBFID = "CL_00002076";
  
@@ -138,5 +141,3 @@
              }
          }
      }
--}
-+}

@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIControlledByPlayer.java
-+++b/net/minecraft/entity/ai/EntityAIControlledByPlayer.java
-@@ -13,8 +13,8 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIControlledByPlayer.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIControlledByPlayer.java
+@@ -11,186 +11,158 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.pathfinder.WalkNodeProcessor;
  
@@ -11,7 +13,8 @@
      private final EntityLiving thisEntity;
      private final float maxSpeed;
      private float currentSpeed;
-@@ -23,54 +23,45 @@
+     private boolean speedBoosted;
+     private int speedBoostTime;
      private int maxSpeedBoostTime;
      private static final String __OBFID = "CL_00001580";
  
@@ -77,7 +80,8 @@
              this.currentSpeed = this.maxSpeed;
          }
  
-@@ -79,28 +79,23 @@
+         int i = MathHelper.floor_double(this.thisEntity.posX);
+         int j = MathHelper.floor_double(this.thisEntity.posY);
          int k = MathHelper.floor_double(this.thisEntity.posZ);
          float f1 = this.currentSpeed;
  
@@ -111,7 +115,7 @@
          float f6 = entitycreature.getAIMoveSpeed() * f3;
          float f7 = Math.max(f1, 1.0F);
          f7 = f6 / f7;
-@@ -106,64 +106,51 @@
+         float f8 = f1 * f7;
          float f9 = -(f8 * f4);
          float f10 = f8 * f5;
  
@@ -187,7 +191,10 @@
                      ItemStack itemstack1 = new ItemStack(Items.fishing_rod);
                      itemstack1.setTagCompound(itemstack.getTagCompound());
                      entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = itemstack1;
-@@ -172,26 +172,21 @@
+                 }
+             }
+         }
+ 
          this.thisEntity.moveEntityWithHeading(0.0F, f1);
      }
  
@@ -216,5 +223,4 @@
 +    public boolean isControlledByPlayer() {
          return !this.isSpeedBoosted() && this.currentSpeed > this.maxSpeed * 0.3F;
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/layer/IntCache.java
-+++b/net/minecraft/world/gen/layer/IntCache.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\world\gen\layer\IntCache.java
++++ src\main\java\net\minecraft\world\gen\layer\IntCache.java
+@@ -1,79 +1,67 @@
  package net.minecraft.world.gen.layer;
  
 -import com.google.common.collect.Lists;
@@ -17,7 +17,7 @@
      private static int intCacheSize = 256;
      private static List freeSmallArrays = Lists.newArrayList();
      private static List inUseSmallArrays = Lists.newArrayList();
-@@ -12,57 +12,43 @@
+     private static List freeLargeArrays = Lists.newArrayList();
      private static List inUseLargeArrays = Lists.newArrayList();
      private static final String __OBFID = "CL_00000557";
  
@@ -92,7 +92,9 @@
              freeSmallArrays.remove(freeSmallArrays.size() - 1);
          }
  
-@@ -72,9 +72,7 @@
+         freeLargeArrays.addAll(inUseLargeArrays);
+         freeSmallArrays.addAll(inUseSmallArrays);
+         inUseLargeArrays.clear();
          inUseSmallArrays.clear();
      }
  
@@ -101,5 +103,4 @@
 +    public static synchronized String getCacheSizes() {
          return "cache: " + freeLargeArrays.size() + ", tcache: " + freeSmallArrays.size() + ", allocated: " + inUseLargeArrays.size() + ", tallocated: " + inUseSmallArrays.size();
      }
--}
-+}
+ }

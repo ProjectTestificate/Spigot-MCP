@@ -1,6 +1,6 @@
----a/net/minecraft/network/NetHandlerPlayServer.java
-+++b/net/minecraft/network/NetHandlerPlayServer.java
-@@ -1,35 +1,31 @@
+--- decompiled\net\minecraft\network\NetHandlerPlayServer.java
++++ src\main\java\net\minecraft\network\NetHandlerPlayServer.java
+@@ -1,44 +1,46 @@
  package net.minecraft.network;
  
 -import com.google.common.collect.Lists;
@@ -38,7 +38,7 @@
  import net.minecraft.init.Items;
  import net.minecraft.inventory.Container;
  import net.minecraft.inventory.ContainerBeacon;
-@@ -32,10 +32,12 @@
+ import net.minecraft.inventory.ContainerMerchant;
  import net.minecraft.inventory.ContainerRepair;
  import net.minecraft.inventory.IInventory;
  import net.minecraft.inventory.Slot;
@@ -51,7 +51,11 @@
  import net.minecraft.network.play.INetHandlerPlayServer;
  import net.minecraft.network.play.client.C00PacketKeepAlive;
  import net.minecraft.network.play.client.C01PacketChatMessage;
-@@ -63,13 +63,16 @@
+ import net.minecraft.network.play.client.C02PacketUseEntity;
+ import net.minecraft.network.play.client.C03PacketPlayer;
+@@ -61,16 +63,20 @@
+ import net.minecraft.network.play.client.C17PacketCustomPayload;
+ import net.minecraft.network.play.client.C18PacketSpectate;
  import net.minecraft.network.play.client.C19PacketResourcePackStatus;
  import net.minecraft.network.play.server.S00PacketKeepAlive;
  import net.minecraft.network.play.server.S02PacketChat;
@@ -69,7 +73,11 @@
  import net.minecraft.network.play.server.S3APacketTabComplete;
  import net.minecraft.network.play.server.S40PacketDisconnect;
  import net.minecraft.server.MinecraftServer;
-@@ -87,12 +87,62 @@
+ import net.minecraft.server.gui.IUpdatePlayerListBox;
+ import net.minecraft.server.management.UserListBansEntry;
+@@ -85,18 +91,71 @@
+ import net.minecraft.util.ChatComponentTranslation;
+ import net.minecraft.util.EnumChatFormatting;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.util.IChatComponent;
  import net.minecraft.util.IntHashMap;
@@ -139,7 +147,11 @@
      private static final Logger logger = LogManager.getLogger();
      public final NetworkManager netManager;
      private final MinecraftServer serverController;
-@@ -106,96 +106,168 @@
+     public EntityPlayerMP playerEntity;
+     private int networkTickCount;
+@@ -104,177 +163,303 @@
+     private int floatingTickCount;
+     private boolean field_147366_g;
      private int field_147378_h;
      private long lastPingTime;
      private long lastSentPingPacket;
@@ -339,7 +351,8 @@
              double d0 = this.playerEntity.posX;
              double d1 = this.playerEntity.posY;
              double d2 = this.playerEntity.posZ;
-@@ -205,25 +205,89 @@
+             double d3 = 0.0D;
+             double d4 = packetIn.getPositionX() - this.lastPosX;
              double d5 = packetIn.getPositionY() - this.lastPosY;
              double d6 = packetIn.getPositionZ() - this.lastPosZ;
  
@@ -437,7 +450,7 @@
                      float f4 = this.playerEntity.rotationYaw;
                      float f = this.playerEntity.rotationPitch;
                      this.playerEntity.ridingEntity.updateRiderPosition();
-@@ -231,8 +231,7 @@
+                     d8 = this.playerEntity.posX;
                      d9 = this.playerEntity.posY;
                      d10 = this.playerEntity.posZ;
  
@@ -447,7 +460,8 @@
                          f4 = packetIn.getYaw();
                          f = packetIn.getPitch();
                      }
-@@ -241,15 +241,13 @@
+ 
+                     this.playerEntity.onGround = packetIn.isOnGround();
                      this.playerEntity.onUpdateEntity();
                      this.playerEntity.setPositionAndRotation(d8, d9, d10, f4, f);
  
@@ -468,7 +482,8 @@
                              Entity entity = this.playerEntity.ridingEntity;
                              this.playerEntity.playerNetServerHandler.sendPacket(new S18PacketEntityTeleport(entity));
                              this.setPlayerLocation(this.playerEntity.posX, this.playerEntity.posY, this.playerEntity.posZ, this.playerEntity.rotationYaw, this.playerEntity.rotationPitch);
-@@ -260,8 +260,7 @@
+                         }
+ 
                          this.playerEntity.ridingEntity.isAirBorne = true;
                      }
  
@@ -478,7 +493,9 @@
                          this.lastPosX = this.playerEntity.posX;
                          this.lastPosY = this.playerEntity.posY;
                          this.lastPosZ = this.playerEntity.posZ;
-@@ -271,8 +271,7 @@
+                     }
+ 
+                     worldserver.updateEntity(this.playerEntity);
                      return;
                  }
  
@@ -488,7 +505,11 @@
                      this.playerEntity.onUpdateEntity();
                      this.playerEntity.setPositionAndRotation(this.lastPosX, this.lastPosY, this.lastPosZ, this.playerEntity.rotationYaw, this.playerEntity.rotationPitch);
                      worldserver.updateEntity(this.playerEntity);
-@@ -289,26 +289,22 @@
+                     return;
+                 }
+@@ -287,362 +472,453 @@
+                 d9 = this.playerEntity.posY;
+                 d10 = this.playerEntity.posZ;
                  float f1 = this.playerEntity.rotationYaw;
                  float f2 = this.playerEntity.rotationPitch;
  
@@ -519,7 +540,7 @@
                      f1 = packetIn.getYaw();
                      f2 = packetIn.getPitch();
                  }
-@@ -316,31 +316,31 @@
+ 
                  this.playerEntity.onUpdateEntity();
                  this.playerEntity.setPositionAndRotation(this.lastPosX, this.lastPosY, this.lastPosZ, f1, f2);
  
@@ -561,7 +582,9 @@
                      this.playerEntity.jump();
                  }
  
-@@ -350,8 +350,7 @@
+                 this.playerEntity.moveEntity(d11, d12, d13);
+                 this.playerEntity.onGround = packetIn.isOnGround();
+                 double d18 = d12;
                  d11 = d8 - this.playerEntity.posX;
                  d12 = d9 - this.playerEntity.posY;
  
@@ -571,7 +594,7 @@
                      d12 = 0.0D;
                  }
  
-@@ -359,8 +359,8 @@
+                 d13 = d10 - this.playerEntity.posZ;
                  d17 = d11 * d11 + d12 * d12 + d13 * d13;
                  boolean flag1 = false;
  
@@ -582,7 +605,7 @@
                      flag1 = true;
                      logger.warn(this.playerEntity.getName() + " moved wrongly!");
                  }
-@@ -368,87 +368,114 @@
+ 
                  this.playerEntity.setPositionAndRotation(d8, d9, d10, f1, f2);
                  this.playerEntity.addMovementStat(this.playerEntity.posX - d0, this.playerEntity.posY - d1, this.playerEntity.posZ - d2);
  
@@ -728,7 +751,7 @@
              f3 = pitch + this.playerEntity.rotationPitch;
          }
  
-@@ -455,74 +455,80 @@
+         this.playerEntity.setPositionAndRotation(this.lastPosX, this.lastPosY, this.lastPosZ, f2, f3);
          this.playerEntity.playerNetServerHandler.sendPacket(new S08PacketPlayerPosLook(x, y, z, yaw, pitch, relativeSet));
      }
  
@@ -852,7 +875,9 @@
                              this.playerEntity.playerNetServerHandler.sendPacket(new S23PacketBlockChange(worldserver, blockpos));
                          }
                      }
-@@ -532,113 +532,178 @@
+ 
+                     return;
+                 }
              default:
                  throw new IllegalArgumentException("Invalid player action");
          }
@@ -1075,7 +1100,11 @@
                          worldserver1.updateEntityWithOptionalForce(this.playerEntity, false);
                          worldserver2.spawnEntityInWorld(this.playerEntity);
                          worldserver2.updateEntityWithOptionalForce(this.playerEntity, false);
-@@ -652,66 +652,81 @@
+                     }
+ 
+@@ -650,154 +926,405 @@
+                     this.serverController.getConfigurationManager().func_72375_a(this.playerEntity, worldserver1);
+                     this.playerEntity.setPositionAndUpdate(entity.posX, entity.posY, entity.posZ);
                      this.playerEntity.theItemInWorldManager.setWorld(worldserver2);
                      this.serverController.getConfigurationManager().updateTimeAndWeatherForPlayer(this.playerEntity, worldserver2);
                      this.serverController.getConfigurationManager().syncPlayerInventory(this.playerEntity);
@@ -1187,7 +1216,7 @@
                      return packetIn.getClass().getCanonicalName();
                  }
              });
-@@ -718,84 +718,320 @@
+             throw new ReportedException(crashreport);
          }
      }
  
@@ -1547,7 +1576,11 @@
              case 1:
                  this.playerEntity.setSneaking(true);
                  break;
-@@ -810,17 +810,16 @@
+             case 2:
+                 this.playerEntity.setSneaking(false);
+@@ -808,104 +1335,145 @@
+             case 4:
+                 this.playerEntity.setSprinting(false);
                  break;
              case 5:
                  this.playerEntity.wakeUpPlayer(false, true, true);
@@ -1572,7 +1605,8 @@
                  }
  
                  break;
-@@ -831,76 +831,122 @@
+             default:
+                 throw new IllegalArgumentException("Invalid client command!");
          }
      }
  
@@ -1734,7 +1768,11 @@
                          return;
                      }
  
-@@ -919,51 +919,311 @@
+                     this.playerEntity = this.serverController.getConfigurationManager().recreatePlayerEntity(this.playerEntity, 0, false);
+                 }
+@@ -917,96 +1485,348 @@
+             case 3:
+                 this.playerEntity.triggerAchievement(AchievementList.openInventory);
          }
      }
  
@@ -2069,7 +2107,8 @@
                      }
  
                      this.playerEntity.sendContainerAndContentsToPlayer(this.playerEntity.openContainer, arraylist1);
-@@ -973,38 +973,31 @@
+                 }
+             }
          }
      }
  
@@ -2115,7 +2154,11 @@
                          NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                          tileentity.writeToNBT(nbttagcompound1);
                          nbttagcompound1.removeTag("x");
-@@ -1016,498 +1016,477 @@
+                         nbttagcompound1.removeTag("y");
+                         nbttagcompound1.removeTag("z");
+@@ -1014,500 +1834,479 @@
+                     }
+                 }
              }
  
              boolean flag1 = packetIn.getSlotId() >= 1 && packetIn.getSlotId() < 36 + InventoryPlayer.getHotbarSize();
@@ -2895,6 +2938,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

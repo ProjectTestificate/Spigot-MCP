@@ -1,6 +1,8 @@
----a/net/minecraft/entity/monster/EntityGolem.java
-+++b/net/minecraft/entity/monster/EntityGolem.java
-@@ -4,40 +4,35 @@
+--- decompiled\net\minecraft\entity\monster\EntityGolem.java
++++ src\main\java\net\minecraft\entity\monster\EntityGolem.java
+@@ -2,41 +2,36 @@
+ 
+ import net.minecraft.entity.EntityCreature;
  import net.minecraft.entity.passive.IAnimals;
  import net.minecraft.world.World;
  
@@ -49,5 +51,4 @@
 +    public boolean canDespawn() { // SpigotMCP -- Make public as bukkit assumes in same package
          return false;
      }
--}
-+}
+ }

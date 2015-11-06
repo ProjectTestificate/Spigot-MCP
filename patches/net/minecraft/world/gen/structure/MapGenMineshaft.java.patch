@@ -1,6 +1,8 @@
----a/net/minecraft/world/gen/structure/MapGenMineshaft.java
-+++b/net/minecraft/world/gen/structure/MapGenMineshaft.java
-@@ -3,41 +3,38 @@
+--- decompiled\net\minecraft\world\gen\structure\MapGenMineshaft.java
++++ src\main\java\net\minecraft\world\gen\structure\MapGenMineshaft.java
+@@ -1,44 +1,40 @@
+ package net.minecraft.world.gen.structure;
+ 
  import java.util.Iterator;
  import java.util.Map;
  import java.util.Map.Entry;
@@ -55,5 +57,4 @@
 +    protected StructureStart getStructureStart(int p_75049_1_, int p_75049_2_) {
          return new StructureMineshaftStart(this.worldObj, this.rand, p_75049_1_, p_75049_2_);
      }
--}
-+}
+ }

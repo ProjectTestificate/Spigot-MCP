@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/client/C15PacketClientSettings.java
-+++b/net/minecraft/network/play/client/C15PacketClientSettings.java
-@@ -1,14 +1,14 @@
+--- decompiled\net\minecraft\network\play\client\C15PacketClientSettings.java
++++ src\main\java\net\minecraft\network\play\client\C15PacketClientSettings.java
+@@ -1,80 +1,63 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -21,7 +21,7 @@
      private String lang;
      private int view;
      private EntityPlayer.EnumChatVisibility chatVisibility;
-@@ -18,28 +18,10 @@
+     private boolean enableColors;
      private int modelPartFlags;
      private static final String __OBFID = "CL_00001350";
  
@@ -44,7 +44,7 @@
          this.lang = buf.readStringFromBuffer(7);
          this.view = buf.readByte();
          this.chatVisibility = EntityPlayer.EnumChatVisibility.getEnumChatVisibility(buf.readByte());
-@@ -39,8 +39,7 @@
+         this.enableColors = buf.readBoolean();
          this.modelPartFlags = buf.readUnsignedByte();
      }
  
@@ -54,7 +54,7 @@
          buf.writeString(this.lang);
          buf.writeByte(this.view);
          buf.writeByte(this.chatVisibility.getChatVisibility());
-@@ -48,34 +48,27 @@
+         buf.writeBoolean(this.enableColors);
          buf.writeByte(this.modelPartFlags);
      }
  
@@ -94,5 +94,4 @@
 +    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
--}
-+}
+ }

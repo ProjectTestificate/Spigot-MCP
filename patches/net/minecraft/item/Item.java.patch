@@ -1,6 +1,6 @@
----a/net/minecraft/item/Item.java
-+++b/net/minecraft/item/Item.java
-@@ -1,18 +1,8 @@
+--- decompiled\net\minecraft\item\Item.java
++++ src\main\java\net\minecraft\item\Item.java
+@@ -1,15 +1,11 @@
  package net.minecraft.item;
  
 -import com.google.common.base.Function;
@@ -15,7 +15,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockDirt;
  import net.minecraft.block.BlockDoublePlant;
-@@ -42,11 +42,7 @@
+ import net.minecraft.block.BlockFlower;
+ import net.minecraft.block.BlockPlanks;
+@@ -40,15 +36,18 @@
+ import net.minecraft.util.RegistryNamespaced;
+ import net.minecraft.util.ResourceLocation;
  import net.minecraft.util.StatCollector;
  import net.minecraft.util.Vec3;
  import net.minecraft.world.World;
@@ -34,7 +38,11 @@
      public static final RegistryNamespaced itemRegistry = new RegistryNamespaced();
      private static final Map BLOCK_TO_ITEM = Maps.newHashMap();
      protected static final UUID itemModifierUUID = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
-@@ -61,32 +61,25 @@
+     private CreativeTabs tabToDisplayOn;
+     protected static Random itemRand = new Random();
+@@ -59,471 +58,385 @@
+     private Item containerItem;
+     private String potionEffect;
      private String unlocalizedName;
      private static final String __OBFID = "CL_00000041";
  
@@ -78,7 +86,7 @@
                  ;
              }
          }
-@@ -95,399 +95,320 @@
+ 
          return item;
      }
  
@@ -593,7 +601,7 @@
              }
          })).setUnlocalizedName("sandStone"));
          registerItemBlock(Blocks.noteblock);
-@@ -496,30 +496,30 @@
+         registerItemBlock(Blocks.golden_rail);
          registerItemBlock(Blocks.detector_rail);
          registerItemBlock(Blocks.sticky_piston, new ItemPiston(Blocks.sticky_piston));
          registerItemBlock(Blocks.web);
@@ -641,7 +649,11 @@
              }
          })).setUnlocalizedName("rose"));
          registerItemBlock(Blocks.brown_mushroom);
-@@ -571,27 +571,27 @@
+         registerItemBlock(Blocks.red_mushroom);
+         registerItemBlock(Blocks.gold_block);
+@@ -569,32 +482,32 @@
+         registerItemBlock(Blocks.netherrack);
+         registerItemBlock(Blocks.soul_sand);
          registerItemBlock(Blocks.glowstone);
          registerItemBlock(Blocks.lit_pumpkin);
          registerItemBlock(Blocks.trapdoor);
@@ -684,7 +696,11 @@
              }
          })).setUnlocalizedName("stonebricksmooth"));
          registerItemBlock(Blocks.brown_mushroom_block);
-@@ -630,15 +630,15 @@
+         registerItemBlock(Blocks.red_mushroom_block);
+         registerItemBlock(Blocks.iron_bars);
+@@ -628,20 +541,20 @@
+         registerItemBlock(Blocks.spruce_stairs);
+         registerItemBlock(Blocks.birch_stairs);
          registerItemBlock(Blocks.jungle_stairs);
          registerItemBlock(Blocks.command_block);
          registerItemBlock(Blocks.beacon);
@@ -708,7 +724,11 @@
              }
          })).setUnlocalizedName("cobbleWall"));
          registerItemBlock(Blocks.wooden_button);
-@@ -651,7 +651,7 @@
+         registerItemBlock(Blocks.anvil, (new ItemAnvilBlock(Blocks.anvil)).setUnlocalizedName("anvil"));
+         registerItemBlock(Blocks.trapped_chest);
+@@ -649,11 +562,11 @@
+         registerItemBlock(Blocks.heavy_weighted_pressure_plate);
+         registerItemBlock(Blocks.daylight_detector);
          registerItemBlock(Blocks.redstone_block);
          registerItemBlock(Blocks.quartz_ore);
          registerItemBlock(Blocks.hopper);
@@ -717,7 +737,11 @@
          registerItemBlock(Blocks.quartz_stairs);
          registerItemBlock(Blocks.activator_rail);
          registerItemBlock(Blocks.dropper);
-@@ -666,42 +666,42 @@
+         registerItemBlock(Blocks.stained_hardened_clay, (new ItemCloth(Blocks.stained_hardened_clay)).setUnlocalizedName("clayHardenedStained"));
+         registerItemBlock(Blocks.barrier);
+@@ -664,47 +577,47 @@
+         registerItemBlock(Blocks.coal_block);
+         registerItemBlock(Blocks.packed_ice);
          registerItemBlock(Blocks.acacia_stairs);
          registerItemBlock(Blocks.dark_oak_stairs);
          registerItemBlock(Blocks.slime_block);
@@ -782,7 +806,11 @@
              }
          })).setUnlocalizedName("redSandStone"));
          registerItemBlock(Blocks.red_sandstone_stairs);
-@@ -874,7 +874,7 @@
+         registerItemBlock(Blocks.stone_slab2, (new ItemSlab(Blocks.stone_slab2, Blocks.stone_slab2, Blocks.double_stone_slab2)).setUnlocalizedName("stoneSlab2"));
+         registerItem(256, "iron_shovel", (new ItemSpade(Item.ToolMaterial.IRON)).setUnlocalizedName("shovelIron"));
+@@ -872,11 +785,11 @@
+         registerItem(417, "iron_horse_armor", (new Item()).setUnlocalizedName("horsearmormetal").setMaxStackSize(1).setCreativeTab(CreativeTabs.tabMisc));
+         registerItem(418, "golden_horse_armor", (new Item()).setUnlocalizedName("horsearmorgold").setMaxStackSize(1).setCreativeTab(CreativeTabs.tabMisc));
          registerItem(419, "diamond_horse_armor", (new Item()).setUnlocalizedName("horsearmordiamond").setMaxStackSize(1).setCreativeTab(CreativeTabs.tabMisc));
          registerItem(420, "lead", (new ItemLead()).setUnlocalizedName("leash"));
          registerItem(421, "name_tag", (new ItemNameTag()).setUnlocalizedName("nameTag"));
@@ -791,7 +819,11 @@
          registerItem(423, "mutton", (new ItemFood(2, 0.3F, true)).setUnlocalizedName("muttonRaw"));
          registerItem(424, "cooked_mutton", (new ItemFood(6, 0.8F, true)).setUnlocalizedName("muttonCooked"));
          registerItem(425, "banner", (new ItemBanner()).setUnlocalizedName("banner"));
-@@ -897,29 +897,24 @@
+         registerItem(427, "spruce_door", (new ItemDoor(Blocks.spruce_door)).setUnlocalizedName("doorSpruce"));
+         registerItem(428, "birch_door", (new ItemDoor(Blocks.birch_door)).setUnlocalizedName("doorBirch"));
+@@ -895,33 +808,28 @@
+         registerItem(2265, "record_ward", (new ItemRecord("ward")).setUnlocalizedName("record"));
+         registerItem(2266, "record_11", (new ItemRecord("11")).setUnlocalizedName("record"));
          registerItem(2267, "record_wait", (new ItemRecord("wait")).setUnlocalizedName("record"));
      }
  
@@ -827,7 +859,11 @@
          WOOD(0, 59, 2.0F, 0.0F, 15),
          STONE(1, 131, 4.0F, 1.0F, 5),
          IRON(2, 250, 6.0F, 2.0F, 14),
-@@ -933,8 +933,7 @@
+         EMERALD(3, 1561, 8.0F, 3.0F, 10),
+         GOLD(0, 32, 12.0F, 0.0F, 22);
+@@ -931,45 +839,38 @@
+         private final float damageVsEntity;
+         private final int enchantability;
  
          private static final String __OBFID = "CL_00000042";
  
@@ -837,7 +873,7 @@
              this.harvestLevel = harvestLevel;
              this.maxUses = maxUses;
              this.efficiencyOnProperMaterial = efficiency;
-@@ -942,35 +942,28 @@
+             this.damageVsEntity = damageVsEntity;
              this.enchantability = enchantability;
          }
  
@@ -877,5 +913,4 @@
              return this == WOOD ? Item.getItemFromBlock(Blocks.planks) : (this == STONE ? Item.getItemFromBlock(Blocks.cobblestone) : (this == GOLD ? Items.gold_ingot : (this == IRON ? Items.iron_ingot : (this == EMERALD ? Items.diamond : null))));
          }
      }
--}
-+}
+ }

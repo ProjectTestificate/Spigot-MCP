@@ -1,6 +1,6 @@
----a/net/minecraft/command/server/CommandScoreboard.java
-+++b/net/minecraft/command/server/CommandScoreboard.java
-@@ -1,7 +1,5 @@
+--- decompiled\net\minecraft\command\server\CommandScoreboard.java
++++ src\main\java\net\minecraft\command\server\CommandScoreboard.java
+@@ -1,17 +1,16 @@
  package net.minecraft.command.server;
  
 -import com.google.common.collect.Lists;
@@ -8,7 +8,8 @@
  import java.util.ArrayList;
  import java.util.Arrays;
  import java.util.Collection;
-@@ -10,6 +10,7 @@
+ import java.util.HashSet;
+ import java.util.Iterator;
  import java.util.List;
  import java.util.Map;
  import java.util.Set;
@@ -16,7 +17,11 @@
  import net.minecraft.command.CommandBase;
  import net.minecraft.command.CommandException;
  import net.minecraft.command.CommandResultStats;
-@@ -33,234 +33,169 @@
+ import net.minecraft.command.ICommandSender;
+ import net.minecraft.command.SyntaxErrorException;
+@@ -31,1065 +30,782 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.ChatComponentText;
  import net.minecraft.util.ChatComponentTranslation;
  import net.minecraft.util.EnumChatFormatting;
  
@@ -309,7 +314,10 @@
                              throw new WrongUsageException("commands.scoreboard.teams.option.usage", new Object[0]);
                          }
  
-@@ -271,12 +271,10 @@
+                         this.setTeamOption(sender, args, 2);
+                     }
+                 }
+             }
          }
      }
  
@@ -330,7 +338,7 @@
                      throw new CommandException("commands.scoreboard.noMultiWildcard", new Object[0]);
                  }
  
-@@ -288,28 +288,22 @@
+                 i = j;
              }
          }
  
@@ -366,7 +374,9 @@
                      ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation(commandexception.getMessage(), commandexception.getErrorObjects());
                      chatcomponenttranslation.getChatStyle().setColor(EnumChatFormatting.RED);
                      p_175780_1_.addChatMessage(chatcomponenttranslation);
-@@ -320,715 +320,535 @@
+                 }
+             }
+ 
              p_175780_2_[i] = s;
              p_175780_1_.setCommandStat(CommandResultStats.Type.AFFECTED_ENTITIES, arraylist.size());
  
@@ -1275,7 +1285,8 @@
          Scoreboard scoreboard = this.getScoreboard();
          String s = getEntityName(p_175778_1_, p_175778_2_[p_175778_3_++]);
          ScoreObjective scoreobjective = this.getObjective(p_175778_2_[p_175778_3_++], true);
-@@ -1037,57 +1037,34 @@
+         String s1 = p_175778_2_[p_175778_3_++];
+         String s2 = getEntityName(p_175778_1_, p_175778_2_[p_175778_3_++]);
          ScoreObjective scoreobjective1 = this.getObjective(p_175778_2_[p_175778_3_], false);
          Score score = scoreboard.getValueFromObjective(s, scoreobjective);
  
@@ -1349,7 +1360,11 @@
                  }
  
                  int j = score.getScorePoints();
-@@ -1099,197 +1099,136 @@
+                 score.setScorePoints(score1.getScorePoints());
+                 score1.setScorePoints(j);
+@@ -1097,238 +813,174 @@
+ 
+             notifyOperators(p_175778_1_, this, "commands.scoreboard.players.operation.success", new Object[0]);
          }
      }
  
@@ -1591,7 +1606,9 @@
                          return func_175762_a(args, this.getScoreboard().getTeamNames());
                      }
                  }
-@@ -1289,18 +1289,15 @@
+             }
+ 
+             return null;
          }
      }
  
@@ -1614,7 +1631,7 @@
                  arraylist.add(scoreobjective.getName());
              }
          }
-@@ -1308,18 +1308,15 @@
+ 
          return arraylist;
      }
  
@@ -1637,7 +1654,7 @@
                  arraylist.add(scoreobjective.getName());
              }
          }
-@@ -1327,9 +1327,7 @@
+ 
          return arraylist;
      }
  
@@ -1646,5 +1663,4 @@
 +    public boolean isUsernameIndex(String[] args, int index) {
          return !args[0].equalsIgnoreCase("players") ? (args[0].equalsIgnoreCase("teams") ? index == 2 : false) : (args.length > 1 && args[1].equalsIgnoreCase("operation") ? index == 2 || index == 5 : index == 2);
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/block/material/MaterialPortal.java
-+++b/net/minecraft/block/material/MaterialPortal.java
-@@ -1,27 +1,23 @@
+--- decompiled\net\minecraft\block\material\MaterialPortal.java
++++ src\main\java\net\minecraft\block\material\MaterialPortal.java
+@@ -1,26 +1,22 @@
  package net.minecraft.block.material;
  
 -public class MaterialPortal extends Material
@@ -32,5 +32,4 @@
 +    public boolean blocksMovement() {
          return false;
      }
--}
-+}
+ }

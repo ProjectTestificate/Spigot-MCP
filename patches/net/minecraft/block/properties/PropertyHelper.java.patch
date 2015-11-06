@@ -1,6 +1,7 @@
----a/net/minecraft/block/properties/PropertyHelper.java
-+++b/net/minecraft/block/properties/PropertyHelper.java
-@@ -2,53 +2,42 @@
+--- decompiled\net\minecraft\block\properties\PropertyHelper.java
++++ src\main\java\net\minecraft\block\properties\PropertyHelper.java
+@@ -1,53 +1,42 @@
+ package net.minecraft.block.properties;
  
  import com.google.common.base.Objects;
  
@@ -64,5 +65,4 @@
 +    public int hashCode() {
          return 31 * this.valueClass.hashCode() + this.name.hashCode();
      }
--}
-+}
+ }

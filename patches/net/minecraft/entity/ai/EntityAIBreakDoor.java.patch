@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIBreakDoor.java
-+++b/net/minecraft/entity/ai/EntityAIBreakDoor.java
-@@ -5,51 +5,41 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIBreakDoor.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIBreakDoor.java
+@@ -3,90 +3,80 @@
+ import net.minecraft.block.Block;
+ import net.minecraft.block.BlockDoor;
  import net.minecraft.entity.EntityLiving;
  import net.minecraft.world.EnumDifficulty;
  
@@ -63,7 +65,9 @@
                  flag = true;
                  return flag;
              }
-@@ -59,36 +59,36 @@
+         }
+ 
+         flag = false;
          return flag;
      }
  
@@ -110,5 +114,3 @@
              this.theEntity.worldObj.playAuxSFX(2001, this.doorPosition, Block.getIdFromBlock(this.doorBlock));
          }
      }
--}
-+}

@@ -1,6 +1,6 @@
----a/net/minecraft/util/ClassInheritanceMultiMap.java
-+++b/net/minecraft/util/ClassInheritanceMultiMap.java
-@@ -1,42 +1,37 @@
+--- decompiled\net\minecraft\util\ClassInheritanceMultiMap.java
++++ src\main\java\net\minecraft\util\ClassInheritanceMultiMap.java
+@@ -1,134 +1,126 @@
  package net.minecraft.util;
  
 -import com.google.common.collect.AbstractIterator;
@@ -54,7 +54,7 @@
                  this.field_180218_a.put(p_180213_1_, object);
              }
          }
-@@ -41,40 +41,32 @@
+ 
          this.field_180216_b.add(p_180213_1_);
      }
  
@@ -105,7 +105,7 @@
                  this.field_180218_a.put(oclass, p_add_1_);
              }
          }
-@@ -82,18 +82,15 @@
+ 
          return true;
      }
  
@@ -128,7 +128,7 @@
                  flag |= this.field_180218_a.remove(oclass, object1);
              }
          }
-@@ -101,37 +101,41 @@
+ 
          return flag;
      }
  
@@ -180,5 +180,4 @@
 +    public int size() {
          return this.field_180218_a.get(this.field_180217_c).size();
      }
--}
-+}
+ }

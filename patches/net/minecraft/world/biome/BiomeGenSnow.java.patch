@@ -1,6 +1,6 @@
----a/net/minecraft/world/biome/BiomeGenSnow.java
-+++b/net/minecraft/world/biome/BiomeGenSnow.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\biome\BiomeGenSnow.java
++++ src\main\java\net\minecraft\world\biome\BiomeGenSnow.java
+@@ -1,69 +1,62 @@
  package net.minecraft.world.biome;
  
  import java.util.Random;
@@ -8,7 +8,8 @@
  import net.minecraft.init.Blocks;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
-@@ -9,43 +9,38 @@
+ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
+ import net.minecraft.world.gen.feature.WorldGenIcePath;
  import net.minecraft.world.gen.feature.WorldGenIceSpike;
  import net.minecraft.world.gen.feature.WorldGenTaiga2;
  
@@ -60,7 +61,9 @@
                  j = p_180624_2_.nextInt(16) + 8;
                  k = p_180624_2_.nextInt(16) + 8;
                  this.field_150617_aE.generate(worldIn, p_180624_2_, worldIn.getHorizon(p_180624_3_.add(j, 0, k)));
-@@ -55,17 +55,14 @@
+             }
+         }
+ 
          super.decorate(worldIn, p_180624_2_, p_180624_3_);
      }
  
@@ -78,5 +81,3 @@
          biomegenbase.maxHeight = this.maxHeight + 0.4F;
          return biomegenbase;
      }
--}
-+}

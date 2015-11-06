@@ -1,6 +1,6 @@
----a/net/minecraft/command/PlayerSelector.java
-+++b/net/minecraft/command/PlayerSelector.java
-@@ -1,11 +1,5 @@
+--- decompiled\net\minecraft\command\PlayerSelector.java
++++ src\main\java\net\minecraft\command\PlayerSelector.java
+@@ -1,24 +1,19 @@
  package net.minecraft.command;
  
 -import com.google.common.base.Predicate;
@@ -12,7 +12,7 @@
  import java.util.ArrayList;
  import java.util.Collections;
  import java.util.Comparator;
-@@ -13,11 +13,10 @@
+ import java.util.HashMap;
  import java.util.Iterator;
  import java.util.List;
  import java.util.Map;
@@ -25,7 +25,11 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityList;
  import net.minecraft.entity.EntityLivingBase;
-@@ -36,40 +36,48 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.entity.player.EntityPlayerMP;
+@@ -34,78 +29,71 @@
+ import net.minecraft.util.IChatComponent;
+ import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  import net.minecraft.world.WorldSettings;
  
@@ -86,7 +90,7 @@
                  arraylist.add(entity.getDisplayName());
              }
  
-@@ -78,32 +78,25 @@
+             return CommandBase.join(arraylist);
          }
      }
  
@@ -126,7 +130,11 @@
                          ArrayList arraylist1 = Lists.newArrayList();
                          arraylist1.addAll(func_179663_a(map, s1));
                          arraylist1.addAll(func_179648_b(map));
-@@ -119,92 +119,74 @@
+                         arraylist1.addAll(func_179649_c(map));
+                         arraylist1.addAll(func_179659_d(map));
+@@ -117,386 +105,336 @@
+                     }
+                 }
  
                  return func_179658_a(arraylist, map, p_179656_0_, p_179656_2_, s1, blockpos);
              }
@@ -247,7 +255,7 @@
                  }
              });
          }
-@@ -212,31 +212,25 @@
+ 
          return arraylist;
      }
  
@@ -292,7 +300,7 @@
                  }
              });
          }
-@@ -245,30 +245,24 @@
+ 
          return arraylist;
      }
  
@@ -336,7 +344,7 @@
                  }
              });
          }
-@@ -277,39 +277,32 @@
+ 
          return arraylist;
      }
  
@@ -390,7 +398,7 @@
                  }
              });
          }
-@@ -318,69 +318,59 @@
+ 
          return arraylist;
      }
  
@@ -479,7 +487,7 @@
                  }
              });
          }
-@@ -389,29 +389,25 @@
+ 
          return arraylist;
      }
  
@@ -520,7 +528,7 @@
                  }
              });
          }
-@@ -420,26 +420,23 @@
+ 
          return arraylist;
      }
  
@@ -558,7 +566,7 @@
                  }
              });
          }
-@@ -448,43 +448,39 @@
+ 
          return arraylist;
      }
  
@@ -622,7 +630,7 @@
                  }
              });
          }
-@@ -493,8 +493,7 @@
+ 
          return arraylist;
      }
  
@@ -632,7 +640,11 @@
          ArrayList arraylist = Lists.newArrayList();
          String s1 = func_179651_b(p_179660_0_, "type");
          s1 = s1 != null && s1.startsWith("!") ? s1.substring(1) : s1;
-@@ -507,132 +507,100 @@
+         boolean flag = !p_179660_3_.equals("e");
+         boolean flag1 = p_179660_3_.equals("r") && s1 != null;
+@@ -505,258 +443,202 @@
+         int k = func_179653_a(p_179660_0_, "dz", 0);
+         int l = func_179653_a(p_179660_0_, "r", -1);
          Predicate predicate = Predicates.and(p_179660_2_);
          Predicate predicate1 = Predicates.and(IEntitySelector.selectAnything, predicate);
  
@@ -807,7 +819,9 @@
          boolean flag = p_179661_1_ < 0;
          boolean flag1 = p_179661_2_ < 0;
          boolean flag2 = p_179661_3_ < 0;
-@@ -642,86 +642,71 @@
+         int l = p_179661_0_.getX() + (flag ? p_179661_1_ : 0);
+         int i1 = p_179661_0_.getY() + (flag1 ? p_179661_2_ : 0);
+         int j1 = p_179661_0_.getZ() + (flag2 ? p_179661_3_ : 0);
          int k1 = p_179661_0_.getX() + (flag ? 0 : p_179661_1_) + 1;
          int l1 = p_179661_0_.getY() + (flag1 ? 0 : p_179661_2_) + 1;
          int i2 = p_179661_0_.getZ() + (flag2 ? 0 : p_179661_3_) + 1;
@@ -918,7 +932,7 @@
              Map map = getArgumentMap(matcher.group(2));
              String s1 = matcher.group(1);
              int i = !"a".equals(s1) && !"e".equals(s1) ? 1 : 0;
-@@ -731,30 +731,23 @@
+             return func_179653_a(map, "c", i) != 1;
          }
      }
  
@@ -955,7 +969,11 @@
                      case 0:
                          s1 = "x";
                          break;
-@@ -768,18 +768,15 @@
+                     case 1:
+                         s1 = "y";
+@@ -766,22 +648,19 @@
+                         break;
+                     case 3:
                          s1 = "r";
                  }
  
@@ -977,9 +995,5 @@
                      hashmap.put(matcher1.group(1), matcher1.group(2));
                  }
              }
-@@ -787,4 +787,4 @@
+ 
              return hashmap;
-         }
-     }
--}
-+}

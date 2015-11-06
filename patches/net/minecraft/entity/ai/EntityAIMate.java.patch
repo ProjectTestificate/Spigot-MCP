@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIMate.java
-+++b/net/minecraft/entity/ai/EntityAIMate.java
-@@ -3,16 +3,19 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIMate.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIMate.java
+@@ -1,137 +1,125 @@
+ package net.minecraft.entity.ai;
+ 
  import java.util.Iterator;
  import java.util.List;
  import java.util.Random;
@@ -23,7 +25,7 @@
      private EntityAnimal theAnimal;
      World theWorld;
      private EntityAnimal targetMate;
-@@ -22,64 +22,52 @@
+     int spawnBabyDelay;
      double moveSpeed;
      private static final String __OBFID = "CL_00001578";
  
@@ -102,7 +104,8 @@
                  entityanimal = entityanimal1;
                  d0 = this.theAnimal.getDistanceSqToEntity(entityanimal1);
              }
-@@ -88,25 +88,25 @@
+         }
+ 
          return entityanimal;
      }
  
@@ -138,7 +141,10 @@
                      entityplayer.triggerAchievement(AchievementList.breedCow);
                  }
              }
-@@ -117,21 +117,19 @@
+ 
+             this.theAnimal.setGrowingAge(6000);
+             this.targetMate.setGrowingAge(6000);
+             this.theAnimal.resetInLove();
              this.targetMate.resetInLove();
              entityageable.setGrowingAge(-24000);
              entityageable.setLocationAndAngles(this.theAnimal.posX, this.theAnimal.posY, this.theAnimal.posZ, 0.0F, 0.0F);
@@ -163,5 +169,4 @@
              }
          }
      }
--}
-+}
+ }

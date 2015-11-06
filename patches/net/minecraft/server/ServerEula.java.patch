@@ -1,6 +1,8 @@
----a/net/minecraft/server/ServerEula.java
-+++b/net/minecraft/server/ServerEula.java
-@@ -4,75 +4,58 @@
+--- decompiled\net\minecraft\server\ServerEula.java
++++ src\main\java\net\minecraft\server\ServerEula.java
+@@ -2,76 +2,60 @@
+ 
+ import java.io.File;
  import java.io.FileInputStream;
  import java.io.FileOutputStream;
  import java.util.Properties;
@@ -87,5 +89,4 @@
              IOUtils.closeQuietly(fileoutputstream);
          }
      }
--}
-+}
+ }

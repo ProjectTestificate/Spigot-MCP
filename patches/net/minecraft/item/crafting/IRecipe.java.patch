@@ -1,6 +1,6 @@
----a/net/minecraft/item/crafting/IRecipe.java
-+++b/net/minecraft/item/crafting/IRecipe.java
-@@ -1,9 +1,13 @@
+--- decompiled\net\minecraft\item\crafting\IRecipe.java
++++ src\main\java\net\minecraft\item\crafting\IRecipe.java
+@@ -1,18 +1,26 @@
  package net.minecraft.item.crafting;
  
 +import java.util.List;
@@ -18,13 +18,14 @@
      boolean matches(InventoryCrafting p_77569_1_, World worldIn);
  
      ItemStack getCraftingResult(InventoryCrafting p_77572_1_);
-@@ -15,4 +15,8 @@
+ 
+     int getRecipeSize();
+ 
      ItemStack getRecipeOutput();
  
      ItemStack[] getRemainingItems(InventoryCrafting p_179532_1_);
--}
 +
 +    Recipe toBukkitRecipe(); // CraftBukkit
 +
 +    List getIngredients(); // Spigot
-+}
+ }

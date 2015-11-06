@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandWorldBorder.java
-+++b/net/minecraft/command/CommandWorldBorder.java
-@@ -1,44 +1,39 @@
+--- decompiled\net\minecraft\command\CommandWorldBorder.java
++++ src\main\java\net\minecraft\command\CommandWorldBorder.java
+@@ -1,198 +1,152 @@
  package net.minecraft.command;
  
  import java.util.List;
@@ -60,7 +60,7 @@
                      throw new WrongUsageException("commands.worldborder.set.usage", new Object[0]);
                  }
  
-@@ -50,26 +50,19 @@
+                 d0 = worldborder.getTargetSize();
                  d2 = parseDouble(args[1], 1.0D, 6.0E7D);
                  i = args.length > 2 ? parseLong(args[2], 0L, 9223372036854775L) * 1000L : 0L;
  
@@ -99,7 +99,7 @@
                      throw new WrongUsageException("commands.worldborder.add.usage", new Object[0]);
                  }
  
-@@ -80,120 +80,90 @@
+                 d0 = worldborder.getDiameter();
                  d2 = d0 + parseDouble(args[1], -d0, 6.0E7D - d0);
                  i = worldborder.getTimeUntilTarget() + (args.length > 2 ? parseLong(args[2], 0L, 9223372036854775L) * 1000L : 0L);
  
@@ -251,5 +251,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 +        return args.length == 1 ? getListOfStringsMatchingLastWord(args, new String[]{"set", "center", "damage", "warning", "add", "get"}) : (args.length == 2 && args[0].equals("damage") ? getListOfStringsMatchingLastWord(args, new String[]{"buffer", "amount"}) : (args.length == 2 && args[0].equals("warning") ? getListOfStringsMatchingLastWord(args, new String[]{"time", "distance"}) : null));
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockTripWireHook.java
-+++b/net/minecraft/block/BlockTripWireHook.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\block\BlockTripWireHook.java
++++ src\main\java\net\minecraft\block\BlockTripWireHook.java
+@@ -1,10 +1,10 @@
  package net.minecraft.block;
  
 -import com.google.common.base.Objects;
@@ -10,7 +10,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyBool;
-@@ -16,98 +16,82 @@
+ import net.minecraft.block.properties.PropertyDirection;
+ import net.minecraft.block.state.BlockState;
+@@ -14,257 +14,222 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.item.ItemStack;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -136,7 +140,7 @@
                      this.dropBlockAsItem(worldIn, pos, state, 0);
                      worldIn.setBlockToAir(pos);
                  }
-@@ -116,11 +116,10 @@
+             }
          }
      }
  
@@ -152,7 +156,7 @@
          boolean flag4 = !World.doesBlockHaveSolidTopSurface(worldIn, pos.down());
          boolean flag5 = !p_176260_4_;
          boolean flag6 = false;
-@@ -128,42 +128,34 @@
+         int j = 0;
          IBlockState[] aiblockstate = new IBlockState[42];
          BlockPos blockpos1;
  
@@ -206,7 +210,10 @@
                      worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
                      flag5 &= flag7;
                  }
-@@ -174,8 +174,7 @@
+             }
+         }
+ 
+         flag5 &= j > 1;
          flag6 &= flag5;
          IBlockState iblockstate3 = this.getDefaultState().withProperty(ATTACHED, Boolean.valueOf(flag5)).withProperty(POWERED, Boolean.valueOf(flag6));
  
@@ -216,7 +223,7 @@
              blockpos1 = pos.offset(enumfacing, j);
              EnumFacing enumfacing1 = enumfacing.getOpposite();
              worldIn.setBlockState(blockpos1, iblockstate3.withProperty(FACING, enumfacing1), 3);
-@@ -183,84 +183,87 @@
+             this.func_176262_b(worldIn, blockpos1, enumfacing1);
              this.func_180694_a(worldIn, blockpos1, flag5, flag6, flag2, flag3);
          }
  
@@ -338,7 +345,11 @@
              case 1:
                  this.setBlockBounds(0.0F, 0.2F, 0.5F - f, f * 2.0F, 0.8F, 0.5F + f);
                  break;
-@@ -277,119 +277,87 @@
+             case 2:
+                 this.setBlockBounds(1.0F - f * 2.0F, 0.2F, 0.5F - f, 1.0F, 0.8F, 0.5F + f);
+@@ -275,118 +240,88 @@
+             case 4:
+                 this.setBlockBounds(0.5F - f, 0.2F, 1.0F - f * 2.0F, 0.5F + f, 0.8F, 1.0F);
          }
      }
  
@@ -497,6 +508,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

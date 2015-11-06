@@ -1,6 +1,6 @@
----a/net/minecraft/world/WorldProviderEnd.java
-+++b/net/minecraft/world/WorldProviderEnd.java
-@@ -1,108 +1,54 @@
+--- decompiled\net\minecraft\world\WorldProviderEnd.java
++++ src\main\java\net\minecraft\world\WorldProviderEnd.java
+@@ -1,107 +1,55 @@
  package net.minecraft.world;
  
  import net.minecraft.util.BlockPos;
@@ -120,5 +120,4 @@
 +    public String getInternalNameSuffix() {
          return "_end";
      }
--}
-+}
+ }

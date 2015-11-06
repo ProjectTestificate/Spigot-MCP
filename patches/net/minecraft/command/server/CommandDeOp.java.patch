@@ -1,6 +1,6 @@
----a/net/minecraft/command/server/CommandDeOp.java
-+++b/net/minecraft/command/server/CommandDeOp.java
-@@ -1,8 +1,6 @@
+--- decompiled\net\minecraft\command\server\CommandDeOp.java
++++ src\main\java\net\minecraft\command\server\CommandDeOp.java
+@@ -1,58 +1,49 @@
  package net.minecraft.command.server;
  
 -import com.mojang.authlib.GameProfile;
@@ -9,7 +9,7 @@
  import net.minecraft.command.CommandBase;
  import net.minecraft.command.CommandException;
  import net.minecraft.command.ICommandSender;
-@@ -9,51 +9,44 @@
+ import net.minecraft.command.WrongUsageException;
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.BlockPos;
  
@@ -74,5 +74,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
          return args.length == 1 ? getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getConfigurationManager().getOppedPlayerNames()) : null;
      }
--}
-+}
+ }

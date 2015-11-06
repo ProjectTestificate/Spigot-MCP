@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S41PacketServerDifficulty.java
-+++b/net/minecraft/network/play/server/S41PacketServerDifficulty.java
-@@ -1,46 +1,42 @@
+--- decompiled\net\minecraft\network\play\server\S41PacketServerDifficulty.java
++++ src\main\java\net\minecraft\network\play\server\S41PacketServerDifficulty.java
+@@ -1,57 +1,42 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -69,5 +69,4 @@
 -    {
 -        return this.field_179833_a;
 -    }
--}
-+}
+ }

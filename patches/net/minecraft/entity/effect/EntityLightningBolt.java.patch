@@ -1,6 +1,6 @@
----a/net/minecraft/entity/effect/EntityLightningBolt.java
-+++b/net/minecraft/entity/effect/EntityLightningBolt.java
-@@ -1,104 +1,148 @@
+--- decompiled\net\minecraft\entity\effect\EntityLightningBolt.java
++++ src\main\java\net\minecraft\entity\effect\EntityLightningBolt.java
+@@ -1,106 +1,150 @@
  package net.minecraft.entity.effect;
  
  import java.util.List;
@@ -190,7 +190,6 @@
 +    }
  
 -    protected void writeEntityToNBT(NBTTagCompound tagCompound) {}
--}
 +    protected void writeEntityToNBT(NBTTagCompound tagCompound) {
 +    }
-+}
+ }

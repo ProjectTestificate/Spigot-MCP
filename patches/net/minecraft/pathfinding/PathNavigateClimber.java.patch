@@ -1,6 +1,8 @@
----a/net/minecraft/pathfinding/PathNavigateClimber.java
-+++b/net/minecraft/pathfinding/PathNavigateClimber.java
-@@ -6,66 +6,51 @@
+--- decompiled\net\minecraft\pathfinding\PathNavigateClimber.java
++++ src\main\java\net\minecraft\pathfinding\PathNavigateClimber.java
+@@ -4,66 +4,51 @@
+ import net.minecraft.entity.EntityLiving;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  
@@ -81,5 +83,3 @@
              }
          }
      }
--}
-+}

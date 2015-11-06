@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/structure/StructureMineshaftPieces.java
-+++b/net/minecraft/world/gen/structure/StructureMineshaftPieces.java
-@@ -1,10 +1,8 @@
+--- decompiled\net\minecraft\world\gen\structure\StructureMineshaftPieces.java
++++ src\main\java\net\minecraft\world\gen\structure\StructureMineshaftPieces.java
+@@ -1,11 +1,11 @@
  package net.minecraft.world.gen.structure;
  
 -import com.google.common.collect.Lists;
@@ -11,7 +11,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.entity.item.EntityMinecartChest;
-@@ -20,49 +20,72 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.init.Items;
+@@ -18,841 +18,706 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.WeightedRandomChestContent;
  import net.minecraft.world.World;
  
@@ -87,7 +91,7 @@
                  return new StructureMineshaftPieces.Corridor(p_175892_6_, p_175892_1_, structureboundingbox, p_175892_5_);
              }
          }
-@@ -69,793 +69,649 @@
+ 
          return null;
      }
  
@@ -1356,6 +1360,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

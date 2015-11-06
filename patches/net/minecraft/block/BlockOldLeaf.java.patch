@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockOldLeaf.java
-+++b/net/minecraft/block/BlockOldLeaf.java
-@@ -1,13 +1,9 @@
+--- decompiled\net\minecraft\block\BlockOldLeaf.java
++++ src\main\java\net\minecraft\block\BlockOldLeaf.java
+@@ -1,158 +1,91 @@
  package net.minecraft.block;
  
 -import com.google.common.base.Predicate;
@@ -13,7 +13,7 @@
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.init.Items;
  import net.minecraft.item.Item;
-@@ -14,146 +14,80 @@
+ import net.minecraft.item.ItemStack;
  import net.minecraft.stats.StatList;
  import net.minecraft.tileentity.TileEntity;
  import net.minecraft.util.BlockPos;
@@ -189,5 +189,4 @@
              super.harvestBlock(worldIn, player, pos, state, te);
          }
      }
--}
-+}
+ }

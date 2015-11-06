@@ -1,6 +1,8 @@
----a/net/minecraft/nbt/CompressedStreamTools.java
-+++b/net/minecraft/nbt/CompressedStreamTools.java
-@@ -6,137 +6,89 @@
+--- decompiled\net\minecraft\nbt\CompressedStreamTools.java
++++ src\main\java\net\minecraft\nbt\CompressedStreamTools.java
+@@ -4,185 +4,98 @@
+ import java.io.BufferedOutputStream;
+ import java.io.DataInput;
  import java.io.DataInputStream;
  import java.io.DataOutput;
  import java.io.DataOutputStream;
@@ -167,7 +169,8 @@
                  CrashReport crashreport = CrashReport.makeCrashReport(ioexception, "Loading NBT data");
                  CrashReportCategory crashreportcategory = crashreport.makeCategory("NBT Tag");
                  crashreportcategory.addCrashSection("Tag name", "[UNNAMED TAG]");
-@@ -145,44 +145,4 @@
+                 crashreportcategory.addCrashSection("Tag type", Byte.valueOf(b0));
+                 throw new ReportedException(crashreport);
              }
          }
      }
@@ -211,5 +214,4 @@
 -            return nbttagcompound;
 -        }
 -    }
--}
-+}
+ }

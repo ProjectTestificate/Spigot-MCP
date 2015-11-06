@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/structure/MapGenStructureIO.java
-+++b/net/minecraft/world/gen/structure/MapGenStructureIO.java
-@@ -1,13 +1,13 @@
+--- decompiled\net\minecraft\world\gen\structure\MapGenStructureIO.java
++++ src\main\java\net\minecraft\world\gen\structure\MapGenStructureIO.java
+@@ -1,109 +1,91 @@
  package net.minecraft.world.gen.structure;
  
 -import com.google.common.collect.Maps;
@@ -21,7 +21,7 @@
      private static final Logger logger = LogManager.getLogger();
      private static Map field_143040_a = Maps.newHashMap();
      private static Map field_143038_b = Maps.newHashMap();
-@@ -16,92 +16,71 @@
+     private static Map field_143039_c = Maps.newHashMap();
      private static Map field_143037_d = Maps.newHashMap();
      private static final String __OBFID = "CL_00000509";
  
@@ -137,9 +137,5 @@
          registerStructure(StructureMineshaftStart.class, "Mineshaft");
          registerStructure(MapGenVillage.Start.class, "Village");
          registerStructure(MapGenNetherBridge.Start.class, "Fortress");
-@@ -115,4 +115,4 @@
-         ComponentScatteredFeaturePieces.registerScatteredFeaturePieces();
-         StructureOceanMonumentPieces.func_175970_a();
-     }
--}
-+}
+         registerStructure(MapGenStronghold.Start.class, "Stronghold");
+         registerStructure(MapGenScatteredFeature.Start.class, "Temple");

@@ -1,6 +1,6 @@
----a/net/minecraft/inventory/ContainerDispenser.java
-+++b/net/minecraft/inventory/ContainerDispenser.java
-@@ -1,77 +1,76 @@
+--- decompiled\net\minecraft\inventory\ContainerDispenser.java
++++ src\main\java\net\minecraft\inventory\ContainerDispenser.java
+@@ -1,85 +1,95 @@
  package net.minecraft.inventory;
  
  import net.minecraft.entity.player.EntityPlayer;
@@ -114,11 +114,11 @@
                  return null;
              }
  
-@@ -82,4 +82,17 @@
+             slot.onPickupFromSlot(playerIn, itemstack1);
+         }
  
          return itemstack;
      }
--}
 +
 +    // CraftBukkit start
 +    @Override
@@ -132,4 +132,4 @@
 +        return bukkitEntity;
 +    }
 +    // CraftBukkit end
-+}
+ }

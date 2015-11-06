@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockClay.java
-+++b/net/minecraft/block/BlockClay.java
-@@ -1,28 +1,27 @@
+--- decompiled\net\minecraft\block\BlockClay.java
++++ src\main\java\net\minecraft\block\BlockClay.java
+@@ -1,29 +1,27 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -35,5 +35,4 @@
 +    public int quantityDropped(Random random) {
          return 4;
      }
--}
-+}
+ }

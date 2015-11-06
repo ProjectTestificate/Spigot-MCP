@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemMapBase.java
-+++b/net/minecraft/item/ItemMapBase.java
-@@ -4,18 +4,16 @@
+--- decompiled\net\minecraft\item\ItemMapBase.java
++++ src\main\java\net\minecraft\item\ItemMapBase.java
+@@ -2,19 +2,17 @@
+ 
+ import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.network.Packet;
  import net.minecraft.world.World;
  
@@ -21,5 +23,4 @@
 +    public Packet createMapDataPacket(ItemStack stack, World worldIn, EntityPlayer player) {
          return null;
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIDefendVillage.java
-+++b/net/minecraft/entity/ai/EntityAIDefendVillage.java
-@@ -4,54 +4,42 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIDefendVillage.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIDefendVillage.java
+@@ -2,55 +2,43 @@
+ 
+ import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.monster.EntityIronGolem;
  import net.minecraft.village.Village;
  
@@ -65,5 +67,4 @@
 +        this.irongolem.setGoalTarget(this.villageAgressorTarget, org.bukkit.event.entity.EntityTargetEvent.TargetReason.DEFEND_VILLAGE, true); // CraftBukkit - reason
          super.startExecuting();
      }
--}
-+}
+ }

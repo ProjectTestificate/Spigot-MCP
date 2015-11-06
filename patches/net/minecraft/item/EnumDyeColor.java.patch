@@ -1,6 +1,8 @@
----a/net/minecraft/item/EnumDyeColor.java
-+++b/net/minecraft/item/EnumDyeColor.java
-@@ -4,8 +4,7 @@
+--- decompiled\net\minecraft\item\EnumDyeColor.java
++++ src\main\java\net\minecraft\item\EnumDyeColor.java
+@@ -2,12 +2,11 @@
+ 
+ import net.minecraft.block.material.MapColor;
  import net.minecraft.util.EnumChatFormatting;
  import net.minecraft.util.IStringSerializable;
  
@@ -10,7 +12,11 @@
      WHITE(0, 15, "white", "white", MapColor.snowColor, EnumChatFormatting.WHITE),
      ORANGE(1, 14, "orange", "orange", MapColor.adobeColor, EnumChatFormatting.GOLD),
      MAGENTA(2, 13, "magenta", "magenta", MapColor.magentaColor, EnumChatFormatting.AQUA),
-@@ -33,8 +33,7 @@
+     LIGHT_BLUE(3, 12, "light_blue", "lightBlue", MapColor.lightBlueColor, EnumChatFormatting.BLUE),
+     YELLOW(4, 11, "yellow", "yellow", MapColor.yellowColor, EnumChatFormatting.YELLOW),
+@@ -31,77 +30,64 @@
+     private final MapColor mapColor;
+     private final EnumChatFormatting chatColor;
  
      private static final String __OBFID = "CL_00002180";
  
@@ -20,7 +26,8 @@
          this.meta = meta;
          this.dyeDamage = dyeDamage;
          this.name = name;
-@@ -43,67 +43,54 @@
+         this.unlocalizedName = unlocalizedName;
+         this.mapColor = mapColorIn;
          this.chatColor = chatColor;
      }
  
@@ -98,5 +105,3 @@
              DYE_DMG_LOOKUP[var3.getDyeDamage()] = var3;
          }
      }
--}
-+}

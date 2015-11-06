@@ -1,6 +1,8 @@
----a/net/minecraft/item/crafting/RecipeBookCloning.java
-+++b/net/minecraft/item/crafting/RecipeBookCloning.java
-@@ -7,31 +7,32 @@
+--- decompiled\net\minecraft\item\crafting\RecipeBookCloning.java
++++ src\main\java\net\minecraft\item\crafting\RecipeBookCloning.java
+@@ -5,38 +5,36 @@
+ import net.minecraft.item.ItemEditableBook;
+ import net.minecraft.item.ItemStack;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.world.World;
  
@@ -50,7 +52,11 @@
                          return false;
                      }
  
-@@ -46,27 +46,21 @@
+                     ++i;
+                 }
+@@ -44,81 +42,64 @@
+         }
+ 
          return itemstack != null && i > 0;
      }
  
@@ -88,7 +94,8 @@
                          return null;
                      }
  
-@@ -78,45 +78,36 @@
+                     ++i;
+                 }
              }
          }
  
@@ -143,9 +150,5 @@
                  aitemstack[i] = itemstack;
                  break;
              }
-@@ -124,4 +124,4 @@
+         }
  
-         return aitemstack;
-     }
--}
-+}

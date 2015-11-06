@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/client/C0CPacketInput.java
-+++b/net/minecraft/network/play/client/C0CPacketInput.java
-@@ -1,32 +1,25 @@
+--- decompiled\net\minecraft\network\play\client\C0CPacketInput.java
++++ src\main\java\net\minecraft\network\play\client\C0CPacketInput.java
+@@ -1,87 +1,69 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -41,7 +41,7 @@
          this.strafeSpeed = buf.readFloat();
          this.forwardSpeed = buf.readFloat();
          byte b0 = buf.readByte();
-@@ -36,53 +36,43 @@
+         this.jumping = (b0 & 1) > 0;
          this.sneaking = (b0 & 2) > 0;
      }
  
@@ -105,5 +105,4 @@
 +    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
--}
-+}
+ }

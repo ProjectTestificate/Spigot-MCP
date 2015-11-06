@@ -1,6 +1,6 @@
----a/net/minecraft/block/properties/PropertyInteger.java
-+++b/net/minecraft/block/properties/PropertyInteger.java
-@@ -1,33 +1,26 @@
+--- decompiled\net\minecraft\block\properties\PropertyInteger.java
++++ src\main\java\net\minecraft\block\properties\PropertyInteger.java
+@@ -1,88 +1,68 @@
  package net.minecraft.block.properties;
  
 -import com.google.common.collect.ImmutableSet;
@@ -44,7 +44,7 @@
                  hashset.add(Integer.valueOf(k));
              }
  
-@@ -35,55 +35,40 @@
+             this.allowedValues = ImmutableSet.copyOf(hashset);
          }
      }
  
@@ -111,5 +111,4 @@
 +    public String getName(Comparable value) {
 +        return this.getName0((Integer) value);
      }
--}
-+}
+ }

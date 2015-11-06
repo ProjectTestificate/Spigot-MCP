@@ -1,6 +1,6 @@
----a/net/minecraft/tileentity/TileEntityBanner.java
-+++b/net/minecraft/tileentity/TileEntityBanner.java
-@@ -1,51 +1,41 @@
+--- decompiled\net\minecraft\tileentity\TileEntityBanner.java
++++ src\main\java\net\minecraft\tileentity\TileEntityBanner.java
+@@ -1,195 +1,113 @@
  package net.minecraft.tileentity;
  
 -import com.google.common.collect.Lists;
@@ -66,7 +66,9 @@
              this.baseColor = stack.getMetadata() & 15;
          }
  
-@@ -57,19 +57,16 @@
+         this.patternList = null;
+         this.colorList = null;
+         this.field_175121_j = "";
          this.field_175119_g = true;
      }
  
@@ -89,7 +91,9 @@
          super.readFromNBT(compound);
          this.baseColor = compound.getInteger("Base");
          this.patterns = compound.getTagList("Patterns", 10);
-@@ -79,78 +79,47 @@
+         this.patternList = null;
+         this.colorList = null;
+         this.field_175121_j = null;
          this.field_175119_g = true;
      }
  
@@ -216,7 +220,11 @@
          BASE("base", "b"),
          SQUARE_BOTTOM_LEFT("square_bottom_left", "bl", "   ", "   ", "#  "),
          SQUARE_BOTTOM_RIGHT("square_bottom_right", "br", "   ", "   ", "  #"),
-@@ -234,76 +234,42 @@
+         SQUARE_TOP_LEFT("square_top_left", "tl", "#  ", "   ", "   "),
+         SQUARE_TOP_RIGHT("square_top_right", "tr", "  #", "   ", "   "),
+@@ -232,77 +150,44 @@
+         private String[] craftingLayers;
+         private ItemStack patternCraftingStack;
  
          private static final String __OBFID = "CL_00002043";
  
@@ -299,5 +307,4 @@
 -            return null;
 -        }
      }
--}
-+}
+ }

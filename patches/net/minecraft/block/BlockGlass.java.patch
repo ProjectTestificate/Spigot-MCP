@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockGlass.java
-+++b/net/minecraft/block/BlockGlass.java
-@@ -1,39 +1,29 @@
+--- decompiled\net\minecraft\block\BlockGlass.java
++++ src\main\java\net\minecraft\block\BlockGlass.java
+@@ -1,40 +1,29 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -48,5 +48,4 @@
 +    public boolean canSilkHarvest() { // SpigotMCP -- Make public as bukkit assumes in the same package
          return true;
      }
--}
-+}
+ }

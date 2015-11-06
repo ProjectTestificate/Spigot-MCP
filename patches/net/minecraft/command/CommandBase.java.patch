@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandBase.java
-+++b/net/minecraft/command/CommandBase.java
-@@ -1,9 +1,5 @@
+--- decompiled\net\minecraft\command\CommandBase.java
++++ src\main\java\net\minecraft\command\CommandBase.java
+@@ -1,715 +1,540 @@
  package net.minecraft.command;
  
 -import com.google.common.base.Functions;
@@ -10,7 +10,7 @@
  import java.util.ArrayList;
  import java.util.Arrays;
  import java.util.Collection;
-@@ -11,6 +11,7 @@
+ import java.util.Collections;
  import java.util.Iterator;
  import java.util.List;
  import java.util.UUID;
@@ -18,7 +18,10 @@
  import net.minecraft.block.Block;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.player.EntityPlayerMP;
-@@ -21,348 +21,259 @@
+ import net.minecraft.item.Item;
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.ChatComponentText;
  import net.minecraft.util.IChatComponent;
  import net.minecraft.util.ResourceLocation;
  
@@ -470,7 +473,10 @@
                  stringbuilder.append(" ");
              }
  
-@@ -375,49 +375,38 @@
+             String s = p_180529_0_[j];
+             stringbuilder.append(s);
+         }
+ 
          return stringbuilder.toString();
      }
  
@@ -534,7 +540,7 @@
                  }
              }
  
-@@ -426,49 +426,38 @@
+             return new CommandBase.CoordinateArg(d1 + (flag1 ? p_175767_0_ : 0.0D), d1, flag1);
          }
      }
  
@@ -598,7 +604,7 @@
                  }
              }
  
-@@ -477,59 +477,43 @@
+             return d1;
          }
      }
  
@@ -677,7 +683,10 @@
                      stringbuilder.append(", ");
                  }
              }
-@@ -541,106 +541,80 @@
+ 
+             stringbuilder.append(s);
+         }
+ 
          return stringbuilder.toString();
      }
  
@@ -809,7 +818,9 @@
                          arraylist.add(String.valueOf(object));
                      }
                  }
-@@ -650,67 +650,50 @@
+             }
+         }
+ 
          return arraylist;
      }
  
@@ -898,10 +909,9 @@
 +        public double func_179629_b() {
 +            return this.field_179631_b;
          }
--}
 +
 +        public boolean func_179630_c() {
 +            return this.field_179632_c;
 +        }
 +    }
-+}
+ }

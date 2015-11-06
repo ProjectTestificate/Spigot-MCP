@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockGrass.java
-+++b/net/minecraft/block/BlockGrass.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockGrass.java
++++ src\main\java\net\minecraft\block\BlockGrass.java
+@@ -1,168 +1,144 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -8,7 +8,9 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyBool;
-@@ -10,71 +10,54 @@
+ import net.minecraft.block.state.BlockState;
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.creativetab.CreativeTabs;
  import net.minecraft.init.Blocks;
  import net.minecraft.item.Item;
  import net.minecraft.util.BlockPos;
@@ -121,7 +123,7 @@
                          }
                      }
                  }
-@@ -83,62 +83,48 @@
+             }
          }
      }
  
@@ -202,7 +204,10 @@
                          }
                      }
                  }
-@@ -150,26 +150,11 @@
+ 
+                 ++i;
+                 break;
+             }
          }
      }
  
@@ -224,5 +229,4 @@
 +    protected BlockState createBlockState() {
 +        return new BlockState(this, new IProperty[]{SNOWY});
      }
--}
-+}
+ }

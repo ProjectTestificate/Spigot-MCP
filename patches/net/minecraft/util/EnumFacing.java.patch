@@ -1,6 +1,6 @@
----a/net/minecraft/util/EnumFacing.java
-+++b/net/minecraft/util/EnumFacing.java
-@@ -1,17 +1,9 @@
+--- decompiled\net\minecraft\util\EnumFacing.java
++++ src\main\java\net\minecraft\util\EnumFacing.java
+@@ -1,18 +1,16 @@
  package net.minecraft.util;
  
 -import com.google.common.base.Predicate;
@@ -22,7 +22,11 @@
      DOWN(0, 1, -1, "down", EnumFacing.AxisDirection.NEGATIVE, EnumFacing.Axis.Y, new Vec3i(0, -1, 0)),
      UP(1, 0, -1, "up", EnumFacing.AxisDirection.POSITIVE, EnumFacing.Axis.Y, new Vec3i(0, 1, 0)),
      NORTH(2, 3, 2, "north", EnumFacing.AxisDirection.NEGATIVE, EnumFacing.Axis.Z, new Vec3i(0, 0, -1)),
-@@ -24,14 +24,14 @@
+     SOUTH(3, 2, 0, "south", EnumFacing.AxisDirection.POSITIVE, EnumFacing.Axis.Z, new Vec3i(0, 0, 1)),
+     WEST(4, 5, 1, "west", EnumFacing.AxisDirection.NEGATIVE, EnumFacing.Axis.X, new Vec3i(-1, 0, 0)),
+@@ -22,83 +20,45 @@
+     private final int horizontalIndex;
+     private final String name;
      private final EnumFacing.Axis axis;
      private final EnumFacing.AxisDirection axisDirection;
      private final Vec3i directionVec;
@@ -40,7 +44,9 @@
          this.index = indexIn;
          this.horizontalIndex = horizontalIndexIn;
          this.opposite = oppositeIn;
-@@ -41,34 +41,26 @@
+         this.name = nameIn;
+         this.axis = axisIn;
+         this.axisDirection = axisDirectionIn;
          this.directionVec = directionVecIn;
      }
  
@@ -109,7 +115,11 @@
                  return EAST;
              case 2:
                  return SOUTH;
-@@ -109,47 +109,12 @@
+             case 3:
+                 return WEST;
+@@ -107,55 +67,14 @@
+             default:
+                 throw new IllegalStateException("Unable to get Y-rotated facing of " + this);
          }
      }
  
@@ -163,7 +173,11 @@
              case 2:
                  return NORTH;
              case 3:
-@@ -165,108 +165,59 @@
+                 return EAST;
+             case 4:
+@@ -163,112 +82,63 @@
+             default:
+                 throw new IllegalStateException("Unable to get CCW facing of " + this);
          }
      }
  
@@ -286,7 +300,11 @@
                  HORIZONTALS[var3.horizontalIndex] = var3;
              }
  
-@@ -285,65 +285,48 @@
+             NAME_LOOKUP.put(var3.getName2().toLowerCase(), var3);
+         }
+@@ -283,69 +153,52 @@
+         private final EnumFacing.Plane plane;
+ 
          private static final EnumFacing.Axis[] $VALUES = new EnumFacing.Axis[]{X, Y, Z};
          private static final String __OBFID = "CL_00002321";
  
@@ -364,7 +382,11 @@
                  EnumFacing.Axis var3 = var0[var2];
                  NAME_LOOKUP.put(var3.getName2().toLowerCase(), var3);
              }
-@@ -359,19 +359,16 @@
+         }
+     }
+@@ -357,23 +210,20 @@
+         private final String description;
+ 
          private static final EnumFacing.AxisDirection[] $VALUES = new EnumFacing.AxisDirection[]{POSITIVE, NEGATIVE};
          private static final String __OBFID = "CL_00002320";
  
@@ -387,7 +409,11 @@
              return this.description;
          }
      }
-@@ -383,157 +383,114 @@
+ 
+     public static enum Plane implements Predicate, Iterable {
+@@ -381,156 +231,116 @@
+         VERTICAL;
+ 
          private static final EnumFacing.Plane[] $VALUES = new EnumFacing.Plane[]{HORIZONTAL, VERTICAL};
          private static final String __OBFID = "CL_00002319";
  
@@ -613,6 +639,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

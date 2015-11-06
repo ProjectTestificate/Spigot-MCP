@@ -1,6 +1,8 @@
----a/net/minecraft/nbt/NBTTagIntArray.java
-+++b/net/minecraft/nbt/NBTTagIntArray.java
-@@ -5,53 +5,47 @@
+--- decompiled\net\minecraft\nbt\NBTTagIntArray.java
++++ src\main\java\net\minecraft\nbt\NBTTagIntArray.java
+@@ -3,81 +3,70 @@
+ import java.io.DataInput;
+ import java.io.DataOutput;
  import java.io.IOException;
  import java.util.Arrays;
  
@@ -68,7 +70,7 @@
              int k = aint[j];
              s = s + k + ",";
          }
-@@ -59,26 +59,21 @@
+ 
          return s + "]";
      }
  
@@ -98,5 +100,4 @@
 +    public int[] getIntArray() {
          return this.intArray;
      }
--}
-+}
+ }

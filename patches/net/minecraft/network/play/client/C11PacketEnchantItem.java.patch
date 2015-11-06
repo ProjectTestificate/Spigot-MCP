@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/client/C11PacketEnchantItem.java
-+++b/net/minecraft/network/play/client/C11PacketEnchantItem.java
-@@ -1,56 +1,45 @@
+--- decompiled\net\minecraft\network\play\client\C11PacketEnchantItem.java
++++ src\main\java\net\minecraft\network\play\client\C11PacketEnchantItem.java
+@@ -1,57 +1,45 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -69,5 +69,4 @@
 +    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
--}
-+}
+ }

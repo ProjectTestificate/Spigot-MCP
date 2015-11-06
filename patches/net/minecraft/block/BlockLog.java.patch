@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockLog.java
-+++b/net/minecraft/block/BlockLog.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockLog.java
++++ src\main\java\net\minecraft\block\BlockLog.java
+@@ -1,82 +1,72 @@
  package net.minecraft.block;
  
  import java.util.Iterator;
@@ -8,7 +8,10 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.PropertyEnum;
  import net.minecraft.block.state.IBlockState;
-@@ -11,48 +11,42 @@
+ import net.minecraft.creativetab.CreativeTabs;
+ import net.minecraft.entity.EntityLivingBase;
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.IStringSerializable;
  import net.minecraft.world.World;
  
@@ -67,7 +70,8 @@
          X("x"),
          Y("y"),
          Z("z"),
-@@ -61,18 +61,15 @@
+         NONE("none");
+         private final String name;
  
          private static final String __OBFID = "CL_00002100";
  
@@ -92,7 +96,11 @@
                  case 1:
                      return X;
                  case 2:
-@@ -86,46 +86,33 @@
+                     return Y;
+                 case 3:
+@@ -84,47 +74,36 @@
+                 default:
+                     return NONE;
              }
          }
  
@@ -157,6 +165,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

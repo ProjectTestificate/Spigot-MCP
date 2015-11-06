@@ -1,6 +1,6 @@
----a/net/minecraft/item/crafting/ShapelessRecipes.java
-+++b/net/minecraft/item/crafting/ShapelessRecipes.java
-@@ -1,39 +1,55 @@
+--- decompiled\net\minecraft\item\crafting\ShapelessRecipes.java
++++ src\main\java\net\minecraft\item\crafting\ShapelessRecipes.java
+@@ -1,92 +1,105 @@
  package net.minecraft.item.crafting;
  
 -import com.google.common.collect.Lists;
@@ -72,7 +72,7 @@
                  aitemstack[i] = new ItemStack(itemstack.getItem().getContainerItem());
              }
          }
-@@ -42,35 +42,28 @@
+ 
          return aitemstack;
      }
  
@@ -116,7 +116,9 @@
                          return false;
                      }
                  }
-@@ -80,14 +80,11 @@
+             }
+         }
+ 
          return arraylist.isEmpty();
      }
  
@@ -131,11 +133,10 @@
 +    public int getRecipeSize() {
          return this.recipeItems.size();
      }
--}
 +
 +    // Spigot start
 +    public List getIngredients() {
 +        return Collections.unmodifiableList(recipeItems);
 +    }
 +    // Spigot end
-+}
+ }

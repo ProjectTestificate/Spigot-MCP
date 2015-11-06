@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockRailBase.java
-+++b/net/minecraft/block/BlockRailBase.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\block\BlockRailBase.java
++++ src\main\java\net\minecraft\block\BlockRailBase.java
+@@ -1,184 +1,144 @@
  package net.minecraft.block;
  
 -import com.google.common.collect.Lists;
@@ -10,7 +10,8 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.state.IBlockState;
-@@ -11,162 +11,123 @@
+ import net.minecraft.creativetab.CreativeTabs;
+ import net.minecraft.init.Blocks;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -210,7 +211,7 @@
              worldIn.notifyNeighborsOfStateChange(pos, this);
              worldIn.notifyNeighborsOfStateChange(pos.down(), this);
          }
-@@ -175,8 +175,7 @@
+     }
  
      public abstract IProperty getShapeProperty();
  
@@ -220,7 +221,11 @@
          NORTH_SOUTH(0, "north_south"),
          EAST_WEST(1, "east_west"),
          ASCENDING_EAST(2, "ascending_east"),
-@@ -193,57 +193,47 @@
+         ASCENDING_WEST(3, "ascending_west"),
+         ASCENDING_NORTH(4, "ascending_north"),
+@@ -191,86 +151,74 @@
+         private final int meta;
+         private final String name;
  
          private static final String __OBFID = "CL_00002137";
  
@@ -289,7 +294,8 @@
          private final World world;
          private final BlockPos pos;
          private final BlockRailBase block;
-@@ -252,23 +252,20 @@
+         private IBlockState state;
+         private final boolean isPowered;
          private final List field_150657_g = Lists.newArrayList();
          private static final String __OBFID = "CL_00000196";
  
@@ -318,7 +324,11 @@
                  case 1:
                      this.field_150657_g.add(this.pos.north());
                      this.field_150657_g.add(this.pos.south());
-@@ -311,49 +311,36 @@
+                     break;
+                 case 2:
+@@ -309,103 +257,81 @@
+                     this.field_150657_g.add(this.pos.east());
+                     this.field_150657_g.add(this.pos.north());
              }
          }
  
@@ -377,7 +387,7 @@
                      blockpos1 = pos.down();
                      iblockstate = this.world.getBlockState(blockpos1);
                      return BlockRailBase.isRailBlock(iblockstate) ? BlockRailBase.this.new Rail(this.world, blockpos1, iblockstate) : null;
-@@ -359,19 +359,15 @@
+                 }
              }
          }
  
@@ -402,7 +412,7 @@
                      return true;
                  }
              }
-@@ -379,17 +379,14 @@
+ 
              return false;
          }
  
@@ -424,7 +434,7 @@
                      ++i;
                  }
              }
-@@ -397,13 +397,11 @@
+ 
              return i;
          }
  
@@ -440,7 +450,11 @@
              this.field_150657_g.add(p_150645_1_.pos);
              BlockPos blockpos = this.pos.north();
              BlockPos blockpos1 = this.pos.south();
-@@ -415,67 +415,53 @@
+             BlockPos blockpos2 = this.pos.west();
+             BlockPos blockpos3 = this.pos.east();
+@@ -413,356 +339,272 @@
+             boolean flag1 = this.func_180363_c(blockpos1);
+             boolean flag2 = this.func_180363_c(blockpos2);
              boolean flag3 = this.func_180363_c(blockpos3);
              BlockRailBase.EnumRailDirection enumraildirection = null;
  
@@ -522,7 +536,7 @@
                  enumraildirection = BlockRailBase.EnumRailDirection.NORTH_SOUTH;
              }
  
-@@ -483,23 +483,18 @@
+             this.state = this.state.withProperty(this.block.getShapeProperty(), enumraildirection);
              this.world.setBlockState(this.pos, this.state, 3);
          }
  
@@ -550,7 +564,10 @@
              BlockPos blockpos = this.pos.north();
              BlockPos blockpos1 = this.pos.south();
              BlockPos blockpos2 = this.pos.west();
-@@ -510,148 +510,115 @@
+             BlockPos blockpos3 = this.pos.east();
+             boolean flag2 = this.func_180361_d(blockpos);
+             boolean flag3 = this.func_180361_d(blockpos1);
+             boolean flag4 = this.func_180361_d(blockpos2);
              boolean flag5 = this.func_180361_d(blockpos3);
              BlockRailBase.EnumRailDirection enumraildirection = null;
  
@@ -732,7 +749,9 @@
                              rail.func_150645_c(this);
                          }
                      }
-@@ -661,109 +661,75 @@
+                 }
+             }
+ 
              return this;
          }
  
@@ -895,6 +914,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

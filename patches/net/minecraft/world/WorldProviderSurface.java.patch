@@ -1,6 +1,6 @@
----a/net/minecraft/world/WorldProviderSurface.java
-+++b/net/minecraft/world/WorldProviderSurface.java
-@@ -1,17 +1,15 @@
+--- decompiled\net\minecraft\world\WorldProviderSurface.java
++++ src\main\java\net\minecraft\world\WorldProviderSurface.java
+@@ -1,16 +1,14 @@
  package net.minecraft.world;
  
 -public class WorldProviderSurface extends WorldProvider
@@ -20,5 +20,4 @@
 +    public String getInternalNameSuffix() {
          return "";
      }
--}
-+}
+ }

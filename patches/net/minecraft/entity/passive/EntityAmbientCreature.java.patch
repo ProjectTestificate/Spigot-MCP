@@ -1,6 +1,8 @@
----a/net/minecraft/entity/passive/EntityAmbientCreature.java
-+++b/net/minecraft/entity/passive/EntityAmbientCreature.java
-@@ -4,23 +4,20 @@
+--- decompiled\net\minecraft\entity\passive\EntityAmbientCreature.java
++++ src\main\java\net\minecraft\entity\passive\EntityAmbientCreature.java
+@@ -2,24 +2,21 @@
+ 
+ import net.minecraft.entity.EntityLiving;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.world.World;
  
@@ -27,5 +29,4 @@
 +    protected boolean interact(EntityPlayer player) {
          return false;
      }
--}
-+}
+ }

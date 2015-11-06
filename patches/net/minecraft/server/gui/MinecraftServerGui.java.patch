@@ -1,6 +1,6 @@
----a/net/minecraft/server/gui/MinecraftServerGui.java
-+++b/net/minecraft/server/gui/MinecraftServerGui.java
-@@ -1,55 +1,39 @@
+--- decompiled\net\minecraft\server\gui\MinecraftServerGui.java
++++ src\main\java\net\minecraft\server\gui\MinecraftServerGui.java
+@@ -1,206 +1,172 @@
  package net.minecraft.server.gui;
  
 -import com.mojang.util.QueueLogAppender;
@@ -66,7 +66,7 @@
              ;
          }
  
-@@ -55,21 +55,19 @@
+         MinecraftServerGui minecraftservergui = new MinecraftServerGui(serverIn);
          JFrame jframe = new JFrame("Minecraft server");
          jframe.add(minecraftservergui);
          jframe.pack();
@@ -98,7 +98,9 @@
                          interruptedexception.printStackTrace();
                      }
                  }
-@@ -81,25 +81,20 @@
+ 
+                 System.exit(0);
+             }
          });
      }
  
@@ -128,7 +130,7 @@
          JPanel jpanel = new JPanel(new BorderLayout());
          jpanel.add(new StatsComponent(this.server), "North");
          jpanel.add(this.getPlayerListComponent(), "Center");
-@@ -107,54 +107,52 @@
+         jpanel.setBorder(new TitledBorder(new EtchedBorder(), "Stats"));
          return jpanel;
      }
  
@@ -200,7 +202,9 @@
                      MinecraftServerGui.this.func_164247_a(jtextarea, jscrollpane, s);
                  }
              }
-@@ -164,48 +164,37 @@
+         });
+         thread.setDaemon(true);
+         thread.start();
          return jpanel;
      }
  
@@ -256,5 +260,4 @@
              }
          }
      }
--}
-+}
+ }

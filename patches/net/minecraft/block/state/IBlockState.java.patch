@@ -1,6 +1,6 @@
----a/net/minecraft/block/state/IBlockState.java
-+++b/net/minecraft/block/state/IBlockState.java
-@@ -1,11 +1,10 @@
+--- decompiled\net\minecraft\block\state\IBlockState.java
++++ src\main\java\net\minecraft\block\state\IBlockState.java
+@@ -1,14 +1,16 @@
  package net.minecraft.block.state;
  
 -import com.google.common.collect.ImmutableMap;
@@ -18,9 +18,5 @@
      Collection getPropertyNames();
  
      Comparable getValue(IProperty property);
-@@ -18,4 +18,4 @@
-     ImmutableMap getProperties();
  
-     Block getBlock();
--}
-+}
+     IBlockState withProperty(IProperty property, Comparable value);

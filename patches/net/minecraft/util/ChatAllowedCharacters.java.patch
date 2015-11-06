@@ -1,6 +1,6 @@
----a/net/minecraft/util/ChatAllowedCharacters.java
-+++b/net/minecraft/util/ChatAllowedCharacters.java
-@@ -1,33 +1,29 @@
+--- decompiled\net\minecraft\util\ChatAllowedCharacters.java
++++ src\main\java\net\minecraft\util\ChatAllowedCharacters.java
+@@ -1,29 +1,25 @@
  package net.minecraft.util;
  
 -public class ChatAllowedCharacters
@@ -37,6 +37,3 @@
          }
  
          return stringbuilder.toString();
-     }
--}
-+}

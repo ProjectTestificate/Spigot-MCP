@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandEntityData.java
-+++b/net/minecraft/command/CommandEntityData.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\command\CommandEntityData.java
++++ src\main\java\net\minecraft\command\CommandEntityData.java
+@@ -1,87 +1,70 @@
  package net.minecraft.command;
  
  import java.util.List;
@@ -8,7 +8,8 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.nbt.JsonToNBT;
-@@ -9,80 +9,62 @@
+ import net.minecraft.nbt.NBTException;
+ import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.BlockPos;
  
@@ -108,5 +109,4 @@
 +    public boolean isUsernameIndex(String[] args, int index) {
          return index == 0;
      }
--}
-+}
+ }

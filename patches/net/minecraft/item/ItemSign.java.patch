@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemSign.java
-+++b/net/minecraft/item/ItemSign.java
-@@ -12,65 +12,47 @@
+--- decompiled\net\minecraft\item\ItemSign.java
++++ src\main\java\net\minecraft\item\ItemSign.java
+@@ -10,64 +10,46 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  
@@ -79,6 +81,3 @@
                  return true;
              }
          }
-     }
--}
-+}

@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemDye.java
-+++b/net/minecraft/item/ItemDye.java
-@@ -1,10 +1,8 @@
+--- decompiled\net\minecraft\item\ItemDye.java
++++ src\main\java\net\minecraft\item\ItemDye.java
+@@ -1,91 +1,72 @@
  package net.minecraft.item;
  
 -import java.util.List;
@@ -11,7 +11,8 @@
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.creativetab.CreativeTabs;
  import net.minecraft.entity.EntityLivingBase;
-@@ -13,76 +13,59 @@
+ import net.minecraft.entity.passive.EntitySheep;
+ import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.init.Blocks;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -108,7 +109,11 @@
                              --stack.stackSize;
                          }
                      }
-@@ -96,16 +96,13 @@
+ 
+                     return true;
+@@ -94,24 +75,19 @@
+ 
+             return false;
          }
      }
  
@@ -135,7 +140,11 @@
                          igrowable.grow(worldIn, worldIn.rand, target, iblockstate);
                      }
  
-@@ -123,55 +123,34 @@
+                     --stack.stackSize;
+                 }
+@@ -121,59 +97,33 @@
+         }
+ 
          return false;
      }
  
@@ -207,5 +216,4 @@
 -            subItems.add(new ItemStack(itemIn, 1, i));
 -        }
 -    }
--}
-+}
+ }

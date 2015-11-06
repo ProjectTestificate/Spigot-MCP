@@ -1,6 +1,8 @@
----a/net/minecraft/entity/monster/EntityZombie.java
-+++b/net/minecraft/entity/monster/EntityZombie.java
-@@ -3,6 +3,7 @@
+--- decompiled\net\minecraft\entity\monster\EntityZombie.java
++++ src\main\java\net\minecraft\entity\monster\EntityZombie.java
+@@ -1,10 +1,11 @@
+ package net.minecraft.entity.monster;
+ 
  import java.util.Calendar;
  import java.util.List;
  import java.util.UUID;
@@ -8,7 +10,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.command.IEntitySelector;
  import net.minecraft.entity.Entity;
-@@ -36,15 +36,15 @@
+ import net.minecraft.entity.EntityLiving;
+ import net.minecraft.entity.EntityLivingBase;
+@@ -34,35 +35,38 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.pathfinding.PathNavigateGround;
  import net.minecraft.potion.Potion;
  import net.minecraft.potion.PotionEffect;
@@ -35,7 +41,7 @@
      private static final UUID babySpeedBoostUUID = UUID.fromString("B9766B59-9566-4402-BC1F-2EE2A276D836");
      private static final AttributeModifier babySpeedBoostModifier = new AttributeModifier(babySpeedBoostUUID, "Baby speed boost", 0.5D, 1);
      private final EntityAIBreakDoor breakDoor = new EntityAIBreakDoor(this);
-@@ -55,11 +55,12 @@
+     private int conversionTime;
      private boolean field_146076_bu = false;
      private float zombieWidth = -1.0F;
      private float zombieHeight;
@@ -51,7 +57,11 @@
          this.tasks.addTask(0, new EntityAISwimming(this));
          this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
          this.tasks.addTask(2, this.field_175455_a);
-@@ -72,20 +72,18 @@
+         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
+         this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
+@@ -70,274 +74,245 @@
+         this.tasks.addTask(8, new EntityAILookIdle(this));
+         this.applyEntityAI();
          this.setSize(0.6F, 1.95F);
      }
  
@@ -76,7 +86,7 @@
          super.applyEntityAttributes();
          this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(35.0D);
          this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
-@@ -92,74 +92,59 @@
+         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D);
          this.getAttributeMap().registerAttribute(reinforcementChance).setBaseValue(this.rand.nextDouble() * 0.10000000149011612D);
      }
  
@@ -170,7 +180,7 @@
                  iattributeinstance.applyModifier(babySpeedBoostModifier);
              }
          }
-@@ -167,93 +167,82 @@
+ 
          this.setChildSize(childZombie);
      }
  
@@ -296,7 +306,9 @@
                              this.getEntityAttribute(reinforcementChance).applyModifier(new AttributeModifier("Zombie reinforcement caller charge", -0.05000000074505806D, 0));
                              entityzombie.getEntityAttribute(reinforcementChance).applyModifier(new AttributeModifier("Zombie reinforcement callee charge", -0.05000000074505806D, 0));
                              break;
-@@ -262,23 +262,24 @@
+                         }
+                     }
+                 }
              }
  
              return true;
@@ -330,7 +342,7 @@
                  this.convertToVillager();
              }
          }
-@@ -285,55 +285,52 @@
+ 
          super.onUpdate();
      }
  
@@ -407,7 +419,11 @@
              case 0:
                  this.dropItem(Items.iron_ingot, 1);
                  break;
-@@ -347,36 +347,28 @@
+             case 1:
+                 this.dropItem(Items.carrot, 1);
+@@ -345,153 +320,125 @@
+             case 2:
+                 this.dropItem(Items.potato, 1);
          }
      }
  
@@ -451,7 +467,7 @@
              tagCompound.setBoolean("IsVillager", true);
          }
  
-@@ -384,113 +384,92 @@
+         tagCompound.setInteger("ConversionTime", this.isConverting() ? this.conversionTime : -1);
          tagCompound.setBoolean("CanBreakDoors", this.func_146072_bX());
      }
  
@@ -590,7 +606,11 @@
                      entitychicken1.setChickenJockey(true);
                      this.worldObj.spawnEntityInWorld(entitychicken1);
                      this.mountEntity(entitychicken1);
-@@ -501,135 +501,97 @@
+                 }
+             }
+@@ -499,141 +446,102 @@
+ 
+         this.func_146070_a(this.rand.nextFloat() < f * 0.1F);
          this.func_180481_a(p_180482_1_);
          this.func_180483_b(p_180482_1_);
  
@@ -758,7 +778,11 @@
                                  ++i;
                              }
  
-@@ -645,62 +645,54 @@
+                             ++j;
+                         }
+@@ -643,63 +551,56 @@
+         }
+ 
          return i;
      }
  
@@ -832,5 +856,4 @@
              this(p_i2349_2_, p_i2349_3_);
          }
      }
--}
-+}
+ }

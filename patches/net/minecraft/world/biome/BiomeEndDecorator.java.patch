@@ -1,6 +1,8 @@
----a/net/minecraft/world/biome/BiomeEndDecorator.java
-+++b/net/minecraft/world/biome/BiomeEndDecorator.java
-@@ -5,33 +5,33 @@
+--- decompiled\net\minecraft\world\biome\BiomeEndDecorator.java
++++ src\main\java\net\minecraft\world\biome\BiomeEndDecorator.java
+@@ -3,34 +3,32 @@
+ import net.minecraft.entity.boss.EntityDragon;
+ import net.minecraft.init.Blocks;
  import net.minecraft.world.gen.feature.WorldGenSpikes;
  import net.minecraft.world.gen.feature.WorldGenerator;
  
@@ -41,5 +43,4 @@
 +            this.currentWorld.addEntity(entitydragon, SpawnReason.CHUNK_GEN); // CraftBukkit - add SpawnReason
          }
      }
--}
-+}
+ }

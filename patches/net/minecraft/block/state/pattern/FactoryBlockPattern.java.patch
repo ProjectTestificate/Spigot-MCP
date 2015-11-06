@@ -1,6 +1,6 @@
----a/net/minecraft/block/state/pattern/FactoryBlockPattern.java
-+++b/net/minecraft/block/state/pattern/FactoryBlockPattern.java
-@@ -1,24 +1,15 @@
+--- decompiled\net\minecraft\block\state\pattern\FactoryBlockPattern.java
++++ src\main\java\net\minecraft\block\state\pattern\FactoryBlockPattern.java
+@@ -1,138 +1,116 @@
  package net.minecraft.block.state.pattern;
  
 -import com.google.common.base.Joiner;
@@ -31,7 +31,7 @@
      private static final Joiner COMMA_JOIN = Joiner.on(",");
      private final List depth = Lists.newArrayList();
      private final Map symbolMap = Maps.newHashMap();
-@@ -23,48 +23,37 @@
+     private int aisleHeight;
      private int rowWidth;
      private static final String __OBFID = "CL_00002021";
  
@@ -92,7 +92,7 @@
                          }
                      }
                  }
-@@ -73,37 +73,29 @@
+ 
                  this.depth.add(aisle);
                  return this;
              }
@@ -144,7 +144,7 @@
                  }
              }
          }
-@@ -115,25 +115,20 @@
+ 
          return apredicate;
      }
  
@@ -173,5 +173,4 @@
              throw new IllegalStateException("Predicates for character(s) " + COMMA_JOIN.join(arraylist) + " are missing");
          }
      }
--}
-+}
+ }

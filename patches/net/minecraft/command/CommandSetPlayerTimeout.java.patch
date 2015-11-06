@@ -1,6 +1,7 @@
----a/net/minecraft/command/CommandSetPlayerTimeout.java
-+++b/net/minecraft/command/CommandSetPlayerTimeout.java
-@@ -2,37 +2,30 @@
+--- decompiled\net\minecraft\command\CommandSetPlayerTimeout.java
++++ src\main\java\net\minecraft\command\CommandSetPlayerTimeout.java
+@@ -1,37 +1,30 @@
+ package net.minecraft.command;
  
  import net.minecraft.server.MinecraftServer;
  
@@ -45,5 +46,4 @@
 +            notifyOperators(sender, this, "commands.setidletimeout.success", new Object[]{Integer.valueOf(i)});
          }
      }
--}
-+}
+ }

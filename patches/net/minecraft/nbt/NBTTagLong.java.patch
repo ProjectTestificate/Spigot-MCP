@@ -1,6 +1,8 @@
----a/net/minecraft/nbt/NBTTagLong.java
-+++b/net/minecraft/nbt/NBTTagLong.java
-@@ -4,90 +4,74 @@
+--- decompiled\net\minecraft\nbt\NBTTagLong.java
++++ src\main\java\net\minecraft\nbt\NBTTagLong.java
+@@ -2,91 +2,75 @@
+ 
+ import java.io.DataInput;
  import java.io.DataOutput;
  import java.io.IOException;
  
@@ -117,5 +119,4 @@
 +    public float getFloat() {
 +        return (float) this.data;
      }
--}
-+}
+ }

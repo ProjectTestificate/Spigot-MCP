@@ -1,6 +1,8 @@
----a/net/minecraft/world/demo/DemoWorldManager.java
-+++b/net/minecraft/world/demo/DemoWorldManager.java
-@@ -9,125 +9,93 @@
+--- decompiled\net\minecraft\world\demo\DemoWorldManager.java
++++ src\main\java\net\minecraft\world\demo\DemoWorldManager.java
+@@ -7,126 +7,94 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.ChatComponentTranslation;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -151,5 +153,4 @@
              return super.activateBlockOrUseItem(player, worldIn, stack, pos, side, p_180236_6_, p_180236_7_, p_180236_8_);
          }
      }
--}
-+}
+ }

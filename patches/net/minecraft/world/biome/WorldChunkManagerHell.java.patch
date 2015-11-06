@@ -1,6 +1,8 @@
----a/net/minecraft/world/biome/WorldChunkManagerHell.java
-+++b/net/minecraft/world/biome/WorldChunkManagerHell.java
-@@ -3,25 +3,25 @@
+--- decompiled\net\minecraft\world\biome\WorldChunkManagerHell.java
++++ src\main\java\net\minecraft\world\biome\WorldChunkManagerHell.java
+@@ -1,72 +1,62 @@
+ package net.minecraft.world.biome;
+ 
  import java.util.Arrays;
  import java.util.List;
  import java.util.Random;
@@ -37,7 +39,7 @@
              p_76937_1_ = new BiomeGenBase[p_76937_4_ * p_76937_5_];
          }
  
-@@ -33,10 +33,8 @@
+         Arrays.fill(p_76937_1_, 0, p_76937_4_ * p_76937_5_, this.biomeGenerator);
          return p_76937_1_;
      }
  
@@ -50,7 +52,7 @@
              listToReuse = new float[width * length];
          }
  
-@@ -44,10 +44,8 @@
+         Arrays.fill(listToReuse, 0, width * length, this.rainfall);
          return listToReuse;
      }
  
@@ -63,7 +65,7 @@
              oldBiomeList = new BiomeGenBase[width * depth];
          }
  
-@@ -55,19 +55,15 @@
+         Arrays.fill(oldBiomeList, 0, width * depth, this.biomeGenerator);
          return oldBiomeList;
      }
  
@@ -84,5 +86,4 @@
 +    public boolean areBiomesViable(int p_76940_1_, int p_76940_2_, int p_76940_3_, List p_76940_4_) {
          return p_76940_4_.contains(this.biomeGenerator);
      }
--}
-+}
+ }

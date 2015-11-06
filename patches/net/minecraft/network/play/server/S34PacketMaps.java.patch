@@ -1,6 +1,7 @@
----a/net/minecraft/network/play/server/S34PacketMaps.java
-+++b/net/minecraft/network/play/server/S34PacketMaps.java
-@@ -2,15 +2,14 @@
+--- decompiled\net\minecraft\network\play\server\S34PacketMaps.java
++++ src\main\java\net\minecraft\network\play\server\S34PacketMaps.java
+@@ -1,135 +1,96 @@
+ package net.minecraft.network.play.server;
  
  import java.io.IOException;
  import java.util.Collection;
@@ -22,7 +23,10 @@
      private int mapId;
      private byte field_179739_b;
      private Vec4b[] field_179740_c;
-@@ -23,43 +23,40 @@
+     private int field_179737_d;
+     private int field_179738_e;
+     private int field_179735_f;
+     private int field_179736_g;
      private byte[] field_179741_h;
      private static final String __OBFID = "CL_00001311";
  
@@ -78,7 +82,7 @@
              this.field_179736_g = buf.readUnsignedByte();
              this.field_179737_d = buf.readUnsignedByte();
              this.field_179738_e = buf.readUnsignedByte();
-@@ -68,16 +68,14 @@
+             this.field_179741_h = buf.readByteArray();
          }
      }
  
@@ -97,7 +101,8 @@
              Vec4b vec4b = avec4b[j];
              buf.writeByte((vec4b.func_176110_a() & 15) << 4 | vec4b.func_176111_d() & 15);
              buf.writeByte(vec4b.func_176112_b());
-@@ -86,8 +86,7 @@
+             buf.writeByte(vec4b.func_176113_c());
+         }
  
          buf.writeByte(this.field_179735_f);
  
@@ -107,7 +112,7 @@
              buf.writeByte(this.field_179736_g);
              buf.writeByte(this.field_179737_d);
              buf.writeByte(this.field_179738_e);
-@@ -95,15 +95,11 @@
+             buf.writeByteArray(this.field_179741_h);
          }
      }
  
@@ -151,5 +156,4 @@
 -    {
 -        this.func_180741_a((INetHandlerPlayClient)handler);
 -    }
--}
-+}
+ }

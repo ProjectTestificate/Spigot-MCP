@@ -1,6 +1,6 @@
----a/net/minecraft/util/IChatComponent.java
-+++b/net/minecraft/util/IChatComponent.java
-@@ -1,5 +1,10 @@
+--- decompiled\net\minecraft\util\IChatComponent.java
++++ src\main\java\net\minecraft\util\IChatComponent.java
+@@ -1,7 +1,12 @@
  package net.minecraft.util;
  
 +import java.lang.reflect.Type;
@@ -11,7 +11,11 @@
  import com.google.gson.Gson;
  import com.google.gson.GsonBuilder;
  import com.google.gson.JsonArray;
-@@ -11,19 +11,7 @@
+ import com.google.gson.JsonDeserializationContext;
+ import com.google.gson.JsonDeserializer;
+@@ -9,19 +14,13 @@
+ import com.google.gson.JsonObject;
+ import com.google.gson.JsonParseException;
  import com.google.gson.JsonPrimitive;
  import com.google.gson.JsonSerializationContext;
  import com.google.gson.JsonSerializer;
@@ -29,7 +33,11 @@
      IChatComponent setChatStyle(ChatStyle style);
  
      ChatStyle getChatStyle();
-@@ -32,266 +32,192 @@
+ 
+     IChatComponent appendText(String text);
+@@ -30,266 +29,204 @@
+ 
+     String getUnformattedTextForChat();
  
      String getUnformattedText();
  
@@ -425,7 +433,6 @@
 +        public JsonElement serialize(Object p_serialize_1_, Type p_serialize_2_, JsonSerializationContext p_serialize_3_) {
 +            return this.serialize((IChatComponent) p_serialize_1_, p_serialize_2_, p_serialize_3_);
          }
--}
 +
 +        static {
 +            GsonBuilder var0 = new GsonBuilder();
@@ -435,4 +442,4 @@
 +            GSON = var0.create();
 +        }
 +    }
-+}
+ }

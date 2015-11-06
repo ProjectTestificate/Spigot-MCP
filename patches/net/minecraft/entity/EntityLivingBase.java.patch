@@ -1,6 +1,6 @@
----a/net/minecraft/entity/EntityLivingBase.java
-+++b/net/minecraft/entity/EntityLivingBase.java
-@@ -1,13 +1,13 @@
+--- decompiled\net\minecraft\entity\EntityLivingBase.java
++++ src\main\java\net\minecraft\entity\EntityLivingBase.java
+@@ -1,14 +1,15 @@
  package net.minecraft.entity;
  
 -import com.google.common.collect.Maps;
@@ -15,7 +15,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
-@@ -18,6 +18,8 @@
+ import net.minecraft.enchantment.EnchantmentHelper;
+ import net.minecraft.entity.ai.attributes.AttributeModifier;
+@@ -16,10 +17,12 @@
+ import net.minecraft.entity.ai.attributes.IAttribute;
+ import net.minecraft.entity.ai.attributes.IAttributeInstance;
  import net.minecraft.entity.ai.attributes.ServersideAttributeMap;
  import net.minecraft.entity.item.EntityItem;
  import net.minecraft.entity.item.EntityXPOrb;
@@ -24,7 +28,11 @@
  import net.minecraft.entity.passive.EntityWolf;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.entity.player.EntityPlayerMP;
-@@ -29,6 +29,7 @@
+ import net.minecraft.entity.projectile.EntityArrow;
+ import net.minecraft.init.Blocks;
+@@ -27,10 +30,11 @@
+ import net.minecraft.item.ItemArmor;
+ import net.minecraft.item.ItemStack;
  import net.minecraft.nbt.NBTBase;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.nbt.NBTTagFloat;
@@ -32,7 +40,11 @@
  import net.minecraft.nbt.NBTTagList;
  import net.minecraft.nbt.NBTTagShort;
  import net.minecraft.network.play.server.S04PacketEntityEquipment;
-@@ -47,16 +47,28 @@
+ import net.minecraft.network.play.server.S0BPacketAnimation;
+ import net.minecraft.network.play.server.S0DPacketCollectItem;
+@@ -45,20 +49,34 @@
+ import net.minecraft.util.EnumParticleTypes;
+ import net.minecraft.util.MathHelper;
  import net.minecraft.util.Vec3;
  import net.minecraft.world.World;
  import net.minecraft.world.WorldServer;
@@ -69,7 +81,11 @@
      private final ItemStack[] previousEquipment = new ItemStack[5];
      public boolean isSwingInProgress;
      public int swingProgressInt;
-@@ -80,7 +80,7 @@
+     public int arrowHitTimer;
+     public int hurtTime;
+@@ -78,219 +96,207 @@
+     public float renderYawOffset;
+     public float prevRenderYawOffset;
      public float rotationYawHead;
      public float prevRotationYawHead;
      public float jumpMovementFactor = 0.02F;
@@ -78,7 +94,9 @@
      protected int recentlyHit;
      protected boolean dead;
      protected int entityAge;
-@@ -90,7 +90,7 @@
+     protected float field_70768_au;
+     protected float field_110154_aX;
+     protected float field_70764_aw;
      protected float field_70763_ax;
      protected float field_70741_aB;
      protected int scoreValue;
@@ -87,7 +105,10 @@
      protected boolean isJumping;
      public float moveStrafing;
      public float moveForward;
-@@ -101,192 +101,184 @@
+     protected float randomYawVelocity;
+     protected int newPosRotationIncrements;
+     protected double newPosX;
+     protected double newPosY;
      protected double newPosZ;
      protected double newRotationYaw;
      protected double newRotationPitch;
@@ -357,7 +378,11 @@
          }
  
          this.updatePotionEffects();
-@@ -300,25 +300,58 @@
+         this.field_70763_ax = this.field_70764_aw;
+         this.prevRenderYawOffset = this.renderYawOffset;
+@@ -298,1706 +304,1591 @@
+         this.prevRotationYaw = this.rotationYaw;
+         this.prevRotationPitch = this.rotationPitch;
          this.worldObj.theProfiler.endSection();
      }
  
@@ -412,7 +437,8 @@
                      int j = EntityXPOrb.getXPSplit(i);
                      i -= j;
                      this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
-@@ -327,106 +327,87 @@
+                 }
+             }
  
              this.setDead();
  
@@ -542,7 +568,8 @@
                  this.attributeMap.removeAttributeModifiers(itemstack.getAttributeModifiers());
              }
          }
-@@ -435,23 +435,19 @@
+ 
+         tagCompound.setTag("Attributes", SharedMonsterAttributes.writeBaseAttributeMapToNBT(this.getAttributeMap()));
          aitemstack = this.getInventory();
          i = aitemstack.length;
  
@@ -572,7 +599,7 @@
                  nbttaglist.appendTag(potioneffect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
              }
  
-@@ -460,45 +460,50 @@
+             tagCompound.setTag("ActiveEffects", nbttaglist);
          }
      }
  
@@ -647,7 +674,7 @@
          }
  
          this.hurtTime = tagCompund.getShort("HurtTime");
-@@ -512,31 +512,45 @@
+         this.deathTime = tagCompund.getShort("DeathTime");
          this.revengeTimer = tagCompund.getInteger("HurtByTimestamp");
      }
  
@@ -707,7 +734,9 @@
                  this.func_175135_B();
              }
  
-@@ -548,118 +548,100 @@
+             this.potionsNeedUpdate = false;
+         }
+ 
          int i = this.dataWatcher.getWatchableObjectInt(7);
          boolean flag1 = this.dataWatcher.getWatchableObjectByte(8) > 0;
  
@@ -869,7 +898,7 @@
                  return false;
              }
          }
-@@ -667,204 +667,210 @@
+ 
          return true;
      }
  
@@ -1181,7 +1210,9 @@
                          this.playSound(s, this.getSoundVolume(), this.getSoundPitch());
                      }
                  }
-@@ -874,165 +874,151 @@
+ 
+                 return true;
+             }
          }
      }
  
@@ -1408,7 +1439,7 @@
                  i += l;
              }
          }
-@@ -1041,58 +1041,49 @@
+ 
          return i;
      }
  
@@ -1484,7 +1515,8 @@
                      p_70672_2_ = f1 / 25.0F;
                  }
  
-@@ -1101,151 +1101,197 @@
+                 return p_70672_2_;
+             }
          }
      }
  
@@ -1773,7 +1805,7 @@
          return EnumCreatureAttribute.UNDEFINED;
      }
  
-@@ -1254,76 +1254,57 @@
+     public abstract ItemStack getHeldItem();
  
      public abstract ItemStack getEquipmentInSlot(int slotIn);
  
@@ -1868,7 +1900,9 @@
                          }
                      }
                  }
-@@ -1331,98 +1331,72 @@
+             }
+         }
+ 
          this.setPositionAndUpdate(d0, d1, d2);
      }
  
@@ -1983,7 +2017,8 @@
                  d0 = this.posY;
                  this.moveFlying(p_70612_1_, p_70612_2_, 0.02F);
                  this.moveEntity(this.motionX, this.motionY, this.motionZ);
-@@ -1426,85 +1426,66 @@
+                 this.motionX *= 0.5D;
+                 this.motionY *= 0.5D;
                  this.motionZ *= 0.5D;
                  this.motionY -= 0.02D;
  
@@ -2087,7 +2122,8 @@
              }
          }
  
-@@ -1513,8 +1513,7 @@
+         this.prevLimbSwingAmount = this.limbSwingAmount;
+         d0 = this.posX - this.prevPosX;
          double d1 = this.posZ - this.prevPosZ;
          f6 = MathHelper.sqrt_double(d0 * d0 + d1 * d1) * 4.0F;
  
@@ -2097,7 +2133,7 @@
              f6 = 1.0F;
          }
  
-@@ -1522,66 +1522,54 @@
+         this.limbSwingAmount += (f6 - this.limbSwingAmount) * 0.4F;
          this.limbSwing += this.limbSwingAmount;
      }
  
@@ -2179,7 +2215,7 @@
                          this.attributeMap.applyAttributeModifiers(itemstack1.getAttributeModifiers());
                      }
  
-@@ -1589,35 +1589,34 @@
+                     this.previousEquipment[j] = itemstack1 == null ? null : itemstack1.copy();
                  }
              }
  
@@ -2225,7 +2261,9 @@
              f3 = 0.0F;
          }
  
-@@ -1627,159 +1627,131 @@
+         this.field_110154_aX += (f3 - this.field_110154_aX) * 0.3F;
+         this.worldObj.theProfiler.startSection("headTurn");
+         f2 = this.func_110146_f(f1, f2);
          this.worldObj.theProfiler.endSection();
          this.worldObj.theProfiler.startSection("rangeChecks");
  
@@ -2422,7 +2460,8 @@
              this.jumpTicks = 0;
          }
  
-@@ -1789,214 +1789,187 @@
+         this.worldObj.theProfiler.endSection();
+         this.worldObj.theProfiler.startSection("travel");
          this.moveStrafing *= 0.98F;
          this.moveForward *= 0.98F;
          this.randomYawVelocity *= 0.9F;
@@ -2712,5 +2751,4 @@
 +    protected void func_175136_bO() {
          this.potionsNeedUpdate = true;
      }
--}
-+}
+ }

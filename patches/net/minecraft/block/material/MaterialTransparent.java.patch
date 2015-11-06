@@ -1,6 +1,6 @@
----a/net/minecraft/block/material/MaterialTransparent.java
-+++b/net/minecraft/block/material/MaterialTransparent.java
-@@ -1,28 +1,24 @@
+--- decompiled\net\minecraft\block\material\MaterialTransparent.java
++++ src\main\java\net\minecraft\block\material\MaterialTransparent.java
+@@ -1,27 +1,23 @@
  package net.minecraft.block.material;
  
 -public class MaterialTransparent extends Material
@@ -33,5 +33,4 @@
 +    public boolean blocksMovement() {
          return false;
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/util/MessageDeserializer2.java
-+++b/net/minecraft/util/MessageDeserializer2.java
-@@ -1,46 +1,46 @@
+--- decompiled\net\minecraft\util\MessageDeserializer2.java
++++ src\main\java\net\minecraft\util\MessageDeserializer2.java
+@@ -1,52 +1,46 @@
  package net.minecraft.util;
  
 +import java.util.List;
@@ -66,9 +66,5 @@
                      packetbuffer.release();
                  }
  
-@@ -54,4 +54,4 @@
- 
-         throw new CorruptedFrameException("length wider than 21-bit");
-     }
--}
-+}
+                 return;
+             }

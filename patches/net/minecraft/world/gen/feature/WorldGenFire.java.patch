@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenFire.java
-+++b/net/minecraft/world/gen/feature/WorldGenFire.java
-@@ -1,25 +1,24 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenFire.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenFire.java
+@@ -1,24 +1,22 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -31,6 +31,3 @@
          }
  
          return true;
-     }
--}
-+}

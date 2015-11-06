@@ -1,6 +1,6 @@
----a/net/minecraft/entity/projectile/EntityLargeFireball.java
-+++b/net/minecraft/entity/projectile/EntityLargeFireball.java
-@@ -1,64 +1,59 @@
+--- decompiled\net\minecraft\entity\projectile\EntityLargeFireball.java
++++ src\main\java\net\minecraft\entity\projectile\EntityLargeFireball.java
+@@ -1,64 +1,60 @@
  package net.minecraft.entity.projectile;
  
 -import net.minecraft.entity.Entity;
@@ -89,5 +89,4 @@
 +            bukkitYield = this.explosionPower = tagCompund.getInteger("ExplosionPower");
          }
      }
--}
-+}
+ }

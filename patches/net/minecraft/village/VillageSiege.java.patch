@@ -1,6 +1,7 @@
----a/net/minecraft/village/VillageSiege.java
-+++b/net/minecraft/village/VillageSiege.java
-@@ -2,6 +2,7 @@
+--- decompiled\net\minecraft\village\VillageSiege.java
++++ src\main\java\net\minecraft\village\VillageSiege.java
+@@ -1,21 +1,24 @@
+ package net.minecraft.village;
  
  import java.util.Iterator;
  import java.util.List;
@@ -8,7 +9,10 @@
  import net.minecraft.entity.EntityLiving;
  import net.minecraft.entity.IEntityLivingData;
  import net.minecraft.entity.monster.EntityZombie;
-@@ -12,8 +12,10 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.MathHelper;
+ import net.minecraft.util.Vec3;
  import net.minecraft.world.SpawnerAnimals;
  import net.minecraft.world.World;
  
@@ -21,7 +25,11 @@
      private World worldObj;
      private boolean field_75535_b;
      private int field_75536_c = -1;
-@@ -25,63 +25,47 @@
+     private int field_75533_d;
+     private int field_75534_e;
+@@ -23,133 +26,105 @@
+     private int field_75532_g;
+     private int field_75538_h;
      private int field_75539_i;
      private static final String __OBFID = "CL_00001634";
  
@@ -100,7 +108,7 @@
                          this.field_75536_c = 2;
                      }
                  }
-@@ -90,64 +90,53 @@
+             }
          }
      }
  
@@ -182,7 +190,11 @@
                              this.field_75534_e = 0;
                              this.field_75533_d = 20;
                              return true;
-@@ -162,51 +162,40 @@
+                         }
+ 
+@@ -160,51 +135,41 @@
+         }
+ 
          return false;
      }
  
@@ -243,5 +255,3 @@
  
          return null;
      }
--}
-+}

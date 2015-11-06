@@ -1,6 +1,7 @@
----a/net/minecraft/world/gen/layer/GenLayerRiver.java
-+++b/net/minecraft/world/gen/layer/GenLayerRiver.java
-@@ -2,18 +2,17 @@
+--- decompiled\net\minecraft\world\gen\layer\GenLayerRiver.java
++++ src\main\java\net\minecraft\world\gen\layer\GenLayerRiver.java
+@@ -1,52 +1,44 @@
+ package net.minecraft.world.gen.layer;
  
  import net.minecraft.world.biome.BiomeGenBase;
  
@@ -23,7 +24,7 @@
          int i1 = areaX - 1;
          int j1 = areaY - 1;
          int k1 = areaWidth + 2;
-@@ -21,23 +21,18 @@
+         int l1 = areaHeight + 2;
          int[] aint = this.parent.getInts(i1, j1, k1, l1);
          int[] aint1 = IntCache.getIntCache(areaWidth * areaHeight);
  
@@ -50,7 +51,8 @@
                      aint1[j2 + i2 * areaWidth] = BiomeGenBase.river.biomeID;
                  }
              }
-@@ -45,9 +45,7 @@
+         }
+ 
          return aint1;
      }
  
@@ -59,5 +61,4 @@
 +    private int func_151630_c(int p_151630_1_) {
          return p_151630_1_ >= 2 ? 2 + (p_151630_1_ & 1) : p_151630_1_;
      }
--}
-+}
+ }

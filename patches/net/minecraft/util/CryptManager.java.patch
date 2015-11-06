@@ -1,6 +1,8 @@
----a/net/minecraft/util/CryptManager.java
-+++b/net/minecraft/util/CryptManager.java
-@@ -13,102 +13,70 @@
+--- decompiled\net\minecraft\util\CryptManager.java
++++ src\main\java\net\minecraft\util\CryptManager.java
+@@ -11,185 +11,124 @@
+ import java.security.NoSuchAlgorithmException;
+ import java.security.PrivateKey;
  import java.security.PublicKey;
  import java.security.spec.InvalidKeySpecException;
  import java.security.spec.X509EncodedKeySpec;
@@ -125,7 +127,7 @@
              ;
          }
  
-@@ -119,33 +119,20 @@
+         field_180198_a.error("Public key reconstitute failed!");
          return null;
      }
  
@@ -166,7 +168,7 @@
              badpaddingexception.printStackTrace();
          }
  
-@@ -154,25 +154,17 @@
+         field_180198_a.error("Cipher data failed!");
          return null;
      }
  
@@ -196,7 +198,7 @@
              nosuchpaddingexception.printStackTrace();
          }
  
-@@ -179,20 +179,14 @@
+         field_180198_a.error("Cipher creation failed!");
          return null;
      }
  
@@ -216,5 +218,4 @@
              throw new RuntimeException(generalsecurityexception);
          }
      }
--}
-+}
+ }

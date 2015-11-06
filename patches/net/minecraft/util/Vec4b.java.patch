@@ -1,6 +1,6 @@
----a/net/minecraft/util/Vec4b.java
-+++b/net/minecraft/util/Vec4b.java
-@@ -1,73 +1,60 @@
+--- decompiled\net\minecraft\util\Vec4b.java
++++ src\main\java\net\minecraft\util\Vec4b.java
+@@ -1,70 +1,57 @@
  package net.minecraft.util;
  
 -public class Vec4b
@@ -85,6 +85,3 @@
          i = 31 * i + this.field_176116_c;
          i = 31 * i + this.field_176114_d;
          return i;
-     }
--}
-+}

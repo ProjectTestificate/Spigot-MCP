@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S1EPacketRemoveEntityEffect.java
-+++b/net/minecraft/network/play/server/S1EPacketRemoveEntityEffect.java
-@@ -1,48 +1,44 @@
+--- decompiled\net\minecraft\network\play\server\S1EPacketRemoveEntityEffect.java
++++ src\main\java\net\minecraft\network\play\server\S1EPacketRemoveEntityEffect.java
+@@ -1,59 +1,44 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -71,5 +71,4 @@
 -    {
 -        return this.field_149078_b;
 -    }
--}
-+}
+ }

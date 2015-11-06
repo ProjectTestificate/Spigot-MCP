@@ -1,6 +1,6 @@
----a/net/minecraft/potion/PotionHelper.java
-+++b/net/minecraft/potion/PotionHelper.java
-@@ -1,17 +1,11 @@
+--- decompiled\net\minecraft\potion\PotionHelper.java
++++ src\main\java\net\minecraft\potion\PotionHelper.java
+@@ -1,19 +1,18 @@
  package net.minecraft.potion;
  
 -import com.google.common.collect.Lists;
@@ -23,7 +23,11 @@
      public static final String field_77924_a = null;
      public static final String sugarEffect;
      public static final String ghastTearEffect = "+0-1-2-3&4-4+13";
-@@ -32,215 +32,146 @@
+     public static final String spiderEyeEffect;
+     public static final String fermentedSpiderEyeEffect;
+@@ -30,256 +29,176 @@
+     private static final Map potionAmplifiers = Maps.newHashMap();
+     private static final Map DATAVALUE_COLORS;
      private static final String[] potionPrefixes;
      private static final String __OBFID = "CL_00000078";
  
@@ -284,7 +288,10 @@
                      boolean flag = false;
                      boolean flag1 = false;
                      boolean flag2 = false;
-@@ -252,29 +252,21 @@
+                     boolean flag3 = false;
+                     boolean flag4 = false;
+                     byte b0 = -1;
+                     int j1 = 0;
                      int k1 = 0;
                      int l1 = 0;
  
@@ -324,7 +331,11 @@
                                  l1 += func_77904_a(flag3, flag1, flag4, b0, j1, k1, p_77912_3_);
                                  flag3 = false;
                                  flag4 = false;
-@@ -290,11 +290,8 @@
+                                 flag = false;
+                                 flag1 = false;
+@@ -288,15 +207,12 @@
+                                 j1 = 0;
+                                 b0 = -1;
                              }
  
                              flag3 = true;
@@ -338,7 +349,11 @@
                                  l1 += func_77904_a(flag3, flag1, flag4, b0, j1, k1, p_77912_3_);
                                  flag3 = false;
                                  flag4 = false;
-@@ -307,11 +307,8 @@
+                                 flag = false;
+                                 flag1 = false;
+@@ -305,30 +221,24 @@
+                                 j1 = 0;
+                                 b0 = -1;
                              }
  
                              flag4 = true;
@@ -352,7 +367,10 @@
                                  l1 += func_77904_a(flag3, flag1, flag4, b0, j1, k1, p_77912_3_);
                                  flag3 = false;
                                  flag4 = false;
-@@ -322,11 +322,8 @@
+                                 flag = false;
+                                 flag1 = false;
+                                 flag2 = false;
+                                 k1 = 0;
                                  j1 = 0;
                                  b0 = -1;
                              }
@@ -366,7 +384,11 @@
                                  l1 += func_77904_a(flag3, flag1, flag4, b0, j1, k1, p_77912_3_);
                                  flag3 = false;
                                  flag4 = false;
-@@ -338,94 +338,73 @@
+                                 flag = false;
+                                 flag1 = false;
+@@ -336,98 +246,77 @@
+                                 k1 = 0;
+                                 j1 = 0;
                                  b0 = -1;
                              }
  
@@ -482,7 +504,11 @@
                              potioneffect.setSplashPotion(true);
                          }
  
-@@ -438,44 +438,29 @@
+                         arraylist.add(potioneffect);
+                     }
+@@ -436,106 +325,79 @@
+         }
+ 
          return arraylist;
      }
  
@@ -532,7 +558,8 @@
          byte b0 = 0;
          int j = p_77913_1_.length();
          boolean flag = false;
-@@ -480,17 +480,14 @@
+         boolean flag1 = false;
+         boolean flag2 = false;
          boolean flag3 = false;
          int k = 0;
  
@@ -557,7 +584,9 @@
                      p_77913_0_ = brewBitOperations(p_77913_0_, k, flag2, flag1, flag3);
                      flag3 = false;
                      flag1 = false;
-@@ -503,11 +503,8 @@
+                     flag2 = false;
+                     flag = false;
+                     k = 0;
                  }
  
                  flag1 = true;
@@ -571,7 +600,9 @@
                      p_77913_0_ = brewBitOperations(p_77913_0_, k, flag2, flag1, flag3);
                      flag3 = false;
                      flag1 = false;
-@@ -517,11 +517,8 @@
+                     flag2 = false;
+                     flag = false;
+                     k = 0;
                  }
  
                  flag2 = true;
@@ -585,7 +616,7 @@
                      p_77913_0_ = brewBitOperations(p_77913_0_, k, flag2, flag1, flag3);
                      flag3 = false;
                      flag1 = false;
-@@ -529,11 +529,8 @@
+                     flag2 = false;
                      flag = false;
                      k = 0;
                  }
@@ -599,7 +630,11 @@
                      p_77913_0_ = brewBitOperations(p_77913_0_, k, flag2, flag1, flag3);
                      flag3 = false;
                      flag1 = false;
-@@ -546,21 +546,18 @@
+                     flag2 = false;
+                     flag = false;
+@@ -544,25 +406,22 @@
+ 
+                 flag3 = true;
              }
          }
  
@@ -624,7 +659,11 @@
          potionRequirements.put(Integer.valueOf(Potion.regeneration.getId()), "0 & !1 & !2 & !3 & 0+6");
          sugarEffect = "-0+1-2-3&4-4+13";
          potionRequirements.put(Integer.valueOf(Potion.moveSpeed.getId()), "!0 & 1 & !2 & !3 & 1+6");
-@@ -596,6 +596,72 @@
+         magmaCreamEffect = "+0+1-2-3&4-4+13";
+         potionRequirements.put(Integer.valueOf(Potion.fireResistance.getId()), "0 & 1 & !2 & !3 & 0+6");
+@@ -594,8 +453,41 @@
+         potionAmplifiers.put(Integer.valueOf(Potion.poison.getId()), "5");
+         potionAmplifiers.put(Integer.valueOf(Potion.jump.getId()), "5");
          redstoneEffect = "-5+6-7";
          gunpowderEffect = "+14&13-13";
          DATAVALUE_COLORS = Maps.newHashMap();
@@ -664,5 +703,4 @@
 +                "potion.prefix.stinky"
 +        };
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandParticle.java
-+++b/net/minecraft/command/CommandParticle.java
-@@ -1,126 +1,104 @@
+--- decompiled\net\minecraft\command\CommandParticle.java
++++ src\main\java\net\minecraft\command\CommandParticle.java
+@@ -1,127 +1,104 @@
  package net.minecraft.command;
  
  import java.util.List;
@@ -162,5 +162,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 +        return args.length == 1 ? getListOfStringsMatchingLastWord(args, EnumParticleTypes.func_179349_a()) : (args.length > 1 && args.length <= 4 ? func_175771_a(args, 1, pos) : (args.length == 9 ? getListOfStringsMatchingLastWord(args, new String[]{"normal", "force"}) : null));
      }
--}
-+}
+ }

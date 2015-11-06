@@ -1,6 +1,6 @@
----a/net/minecraft/network/login/server/S03PacketEnableCompression.java
-+++b/net/minecraft/network/login/server/S03PacketEnableCompression.java
-@@ -1,42 +1,38 @@
+--- decompiled\net\minecraft\network\login\server\S03PacketEnableCompression.java
++++ src\main\java\net\minecraft\network\login\server\S03PacketEnableCompression.java
+@@ -1,48 +1,38 @@
  package net.minecraft.network.login.server;
  
  import java.io.IOException;
@@ -60,5 +60,4 @@
 -    {
 -        this.processPacket((INetHandlerLoginClient)handler);
 -    }
--}
-+}
+ }

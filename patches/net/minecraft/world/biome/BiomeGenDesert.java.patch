@@ -1,6 +1,6 @@
----a/net/minecraft/world/biome/BiomeGenDesert.java
-+++b/net/minecraft/world/biome/BiomeGenDesert.java
-@@ -1,15 +1,17 @@
+--- decompiled\net\minecraft\world\biome\BiomeGenDesert.java
++++ src\main\java\net\minecraft\world\biome\BiomeGenDesert.java
+@@ -1,19 +1,19 @@
  package net.minecraft.world.biome;
  
  import java.util.Random;
@@ -22,7 +22,11 @@
          super(p_i1977_1_);
          this.spawnableCreatureList.clear();
          this.topBlock = Blocks.sand.getDefaultState();
-@@ -23,17 +23,14 @@
+         this.fillerBlock = Blocks.sand.getDefaultState();
+         this.theBiomeDecorator.treesPerChunk = -999;
+@@ -21,16 +21,14 @@
+         this.theBiomeDecorator.reedsPerChunk = 50;
+         this.theBiomeDecorator.cactiPerChunk = 10;
          this.spawnableCreatureList.clear();
      }
  
@@ -39,6 +43,3 @@
              BlockPos blockpos1 = worldIn.getHorizon(p_180624_3_.add(i, 0, j)).up();
              (new WorldGenDesertWells()).generate(worldIn, p_180624_2_, blockpos1);
          }
-     }
--}
-+}

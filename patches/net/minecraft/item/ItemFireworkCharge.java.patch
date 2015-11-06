@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemFireworkCharge.java
-+++b/net/minecraft/item/ItemFireworkCharge.java
-@@ -1,23 +1,7 @@
+--- decompiled\net\minecraft\item\ItemFireworkCharge.java
++++ src\main\java\net\minecraft\item\ItemFireworkCharge.java
+@@ -1,206 +1,7 @@
  package net.minecraft.item;
  
 -import java.util.List;
@@ -207,5 +207,4 @@
 -            tooltip.add(StatCollector.translateToLocal("item.fireworksCharge.flicker"));
 -        }
 -    }
--}
-+}
+ }

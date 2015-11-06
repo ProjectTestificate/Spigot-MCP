@@ -1,6 +1,6 @@
----a/net/minecraft/entity/boss/IBossDisplayData.java
-+++b/net/minecraft/entity/boss/IBossDisplayData.java
-@@ -1,16 +1,12 @@
+--- decompiled\net\minecraft\entity\boss\IBossDisplayData.java
++++ src\main\java\net\minecraft\entity\boss\IBossDisplayData.java
+@@ -1,14 +1,12 @@
  package net.minecraft.entity.boss;
  
  import net.minecraft.util.IChatComponent;
@@ -18,5 +18,3 @@
      float getHealth();
  
      IChatComponent getDisplayName();
--}
-+}

@@ -1,6 +1,6 @@
----a/net/minecraft/network/ServerStatusResponse.java
-+++b/net/minecraft/network/ServerStatusResponse.java
-@@ -1,5 +1,11 @@
+--- decompiled\net\minecraft\network\ServerStatusResponse.java
++++ src\main\java\net\minecraft\network\ServerStatusResponse.java
+@@ -1,271 +1,235 @@
  package net.minecraft.network;
  
 +import java.lang.reflect.Type;
@@ -12,7 +12,8 @@
  import com.google.gson.JsonArray;
  import com.google.gson.JsonDeserializationContext;
  import com.google.gson.JsonDeserializer;
-@@ -8,267 +8,216 @@
+ import com.google.gson.JsonElement;
+ import com.google.gson.JsonObject;
  import com.google.gson.JsonSerializationContext;
  import com.google.gson.JsonSerializer;
  import com.mojang.authlib.GameProfile;
@@ -409,10 +410,9 @@
 +
 +            return jsonobject;
          }
--}
 +
 +        public JsonElement serialize(Object p_serialize_1_, Type p_serialize_2_, JsonSerializationContext p_serialize_3_) {
 +            return this.serialize((ServerStatusResponse) p_serialize_1_, p_serialize_2_, p_serialize_3_);
 +        }
 +    }
-+}
+ }

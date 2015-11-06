@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockGravel.java
-+++b/net/minecraft/block/BlockGravel.java
-@@ -1,20 +1,20 @@
+--- decompiled\net\minecraft\block\BlockGravel.java
++++ src\main\java\net\minecraft\block\BlockGravel.java
+@@ -1,20 +1,19 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -26,5 +26,3 @@
  
          return rand.nextInt(10 - fortune * 3) == 0 ? Items.flint : Item.getItemFromBlock(this);
      }
--}
-+}

@@ -1,6 +1,8 @@
----a/net/minecraft/inventory/SlotMerchantResult.java
-+++b/net/minecraft/inventory/SlotMerchantResult.java
-@@ -6,71 +6,61 @@
+--- decompiled\net\minecraft\inventory\SlotMerchantResult.java
++++ src\main\java\net\minecraft\inventory\SlotMerchantResult.java
+@@ -4,100 +4,85 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.item.ItemStack;
  import net.minecraft.stats.StatList;
  import net.minecraft.village.MerchantRecipe;
  
@@ -85,7 +87,9 @@
                      itemstack2 = null;
                  }
  
-@@ -80,22 +80,18 @@
+                 this.theMerchantInventory.setInventorySlotContents(0, itemstack1);
+                 this.theMerchantInventory.setInventorySlotContents(1, itemstack2);
+             }
          }
      }
  
@@ -112,9 +116,5 @@
                  firstItem.stackSize -= itemstack2.stackSize;
                  return true;
              }
-@@ -103,4 +103,4 @@
+         }
  
-         return false;
-     }
--}
-+}

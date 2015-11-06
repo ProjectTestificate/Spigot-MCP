@@ -1,6 +1,8 @@
----a/net/minecraft/dispenser/BehaviorDefaultDispenseItem.java
-+++b/net/minecraft/dispenser/BehaviorDefaultDispenseItem.java
-@@ -6,66 +6,105 @@
+--- decompiled\net\minecraft\dispenser\BehaviorDefaultDispenseItem.java
++++ src\main\java\net\minecraft\dispenser\BehaviorDefaultDispenseItem.java
+@@ -4,67 +4,102 @@
+ import net.minecraft.entity.item.EntityItem;
+ import net.minecraft.item.ItemStack;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -125,5 +127,4 @@
 +    private int func_82488_a(EnumFacing facingIn) {
          return facingIn.getFrontOffsetX() + 1 + (facingIn.getFrontOffsetZ() + 1) * 3;
      }
--}
-+}
+ }

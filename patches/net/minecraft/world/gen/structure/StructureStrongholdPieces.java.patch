@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/structure/StructureStrongholdPieces.java
-+++b/net/minecraft/world/gen/structure/StructureStrongholdPieces.java
-@@ -1,10 +1,8 @@
+--- decompiled\net\minecraft\world\gen\structure\StructureStrongholdPieces.java
++++ src\main\java\net\minecraft\world\gen\structure\StructureStrongholdPieces.java
+@@ -1,11 +1,11 @@
  package net.minecraft.world.gen.structure;
  
 -import com.google.common.collect.Lists;
@@ -11,7 +11,11 @@
  import net.minecraft.block.BlockEndPortalFrame;
  import net.minecraft.block.BlockSilverfish;
  import net.minecraft.block.BlockStoneBrick;
-@@ -18,48 +18,74 @@
+ import net.minecraft.block.BlockStoneSlab;
+ import net.minecraft.init.Blocks;
+@@ -16,36 +16,48 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.WeightedRandomChestContent;
  import net.minecraft.world.World;
  
@@ -76,7 +80,11 @@
          MapGenStructureIO.registerStructureComponent(StructureStrongholdPieces.ChestCorridor.class, "SHCC");
          MapGenStructureIO.registerStructureComponent(StructureStrongholdPieces.Corridor.class, "SHFC");
          MapGenStructureIO.registerStructureComponent(StructureStrongholdPieces.Crossing.class, "SH5C");
-@@ -59,14 +59,12 @@
+         MapGenStructureIO.registerStructureComponent(StructureStrongholdPieces.LeftTurn.class, "SHLT");
+         MapGenStructureIO.registerStructureComponent(StructureStrongholdPieces.Library.class, "SHLi");
+@@ -57,145 +69,106 @@
+         MapGenStructureIO.registerStructureComponent(StructureStrongholdPieces.Stairs2.class, "SHStart");
+         MapGenStructureIO.registerStructureComponent(StructureStrongholdPieces.Straight.class, "SHS");
          MapGenStructureIO.registerStructureComponent(StructureStrongholdPieces.StairsStraight.class, "SHSSD");
      }
  
@@ -93,7 +101,8 @@
              StructureStrongholdPieces.PieceWeight pieceweight = apieceweight[j];
              pieceweight.instancesSpawned = 0;
              structurePieceList.add(pieceweight);
-@@ -75,18 +75,15 @@
+         }
+ 
          strongComponentType = null;
      }
  
@@ -116,7 +125,7 @@
                  flag = true;
              }
          }
-@@ -94,106 +94,72 @@
+ 
          return flag;
      }
  
@@ -248,7 +257,11 @@
                                  structurePieceList.remove(pieceweight);
                              }
  
-@@ -205,1514 +205,1313 @@
+                             return stronghold1;
+                         }
+@@ -203,1515 +176,1316 @@
+                 }
+             }
  
              StructureBoundingBox structureboundingbox = StructureStrongholdPieces.Corridor.func_175869_a(p_175955_1_, p_175955_2_, p_175955_3_, p_175955_4_, p_175955_5_, p_175955_6_);
  
@@ -2786,6 +2799,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

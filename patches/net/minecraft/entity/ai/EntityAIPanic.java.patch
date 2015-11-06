@@ -1,6 +1,6 @@
----a/net/minecraft/entity/ai/EntityAIPanic.java
-+++b/net/minecraft/entity/ai/EntityAIPanic.java
-@@ -1,8 +1,10 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIPanic.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIPanic.java
+@@ -1,55 +1,52 @@
  package net.minecraft.entity.ai;
  
  import net.minecraft.entity.EntityCreature;
@@ -14,7 +14,7 @@
      private EntityCreature theEntityCreature;
      protected double speed;
      private double randPosX;
-@@ -12,28 +12,21 @@
+     private double randPosY;
      private double randPosZ;
      private static final String __OBFID = "CL_00001604";
  
@@ -50,7 +50,8 @@
                  this.randPosX = vec3.xCoord;
                  this.randPosY = vec3.yCoord;
                  this.randPosZ = vec3.zCoord;
-@@ -43,14 +43,17 @@
+                 return true;
+             }
          }
      }
  
@@ -71,5 +72,4 @@
 +        // CraftBukkit end
          return !this.theEntityCreature.getNavigator().noPath();
      }
--}
-+}
+ }

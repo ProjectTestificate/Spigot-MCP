@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIArrowAttack.java
-+++b/net/minecraft/entity/ai/EntityAIArrowAttack.java
-@@ -5,8 +5,8 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIArrowAttack.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIArrowAttack.java
+@@ -3,12 +3,12 @@
+ import net.minecraft.entity.EntityLiving;
+ import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.IRangedAttackMob;
  import net.minecraft.util.MathHelper;
  
@@ -11,7 +13,11 @@
      private final EntityLiving entityHost;
      private final IRangedAttackMob rangedAttackEntityHost;
      private EntityLivingBase attackTarget;
-@@ -19,24 +19,18 @@
+     private int rangedAttackTime;
+     private double entityMoveSpeed;
+@@ -17,103 +17,81 @@
+     private int maxRangedAttackTime;
+     private float field_96562_i;
      private float maxAttackDistance;
      private static final String __OBFID = "CL_00001609";
  
@@ -40,7 +46,9 @@
              this.entityMoveSpeed = p_i1650_2_;
              this.field_96561_g = p_i1650_4_;
              this.maxRangedAttackTime = p_i1650_5_;
-@@ -45,76 +45,58 @@
+             this.field_96562_i = p_i1650_6_;
+             this.maxAttackDistance = p_i1650_6_ * p_i1650_6_;
+             this.setMutexBits(3);
          }
      }
  
@@ -130,5 +138,4 @@
 +            this.rangedAttackTime = MathHelper.floor_float(f * (float) (this.maxRangedAttackTime - this.field_96561_g) + (float) this.field_96561_g);
          }
      }
--}
-+}
+ }

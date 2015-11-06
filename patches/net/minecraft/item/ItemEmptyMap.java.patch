@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemEmptyMap.java
-+++b/net/minecraft/item/ItemEmptyMap.java
-@@ -5,32 +5,37 @@
+--- decompiled\net\minecraft\item\ItemEmptyMap.java
++++ src\main\java\net\minecraft\item\ItemEmptyMap.java
+@@ -3,41 +3,42 @@
+ import net.minecraft.creativetab.CreativeTabs;
+ import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.init.Items;
  import net.minecraft.stats.StatList;
  import net.minecraft.world.World;
@@ -54,9 +56,5 @@
                  playerIn.dropPlayerItemWithRandomChoice(itemstack1, false);
              }
  
-@@ -43,4 +43,4 @@
+             playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
              return itemStackIn;
-         }
-     }
--}
-+}

@@ -1,6 +1,8 @@
----a/net/minecraft/world/gen/structure/StructureComponent.java
-+++b/net/minecraft/world/gen/structure/StructureComponent.java
-@@ -3,6 +3,7 @@
+--- decompiled\net\minecraft\world\gen\structure\StructureComponent.java
++++ src\main\java\net\minecraft\world\gen\structure\StructureComponent.java
+@@ -1,10 +1,11 @@
+ package net.minecraft.world.gen.structure;
+ 
  import java.util.Iterator;
  import java.util.List;
  import java.util.Random;
@@ -8,7 +10,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockDirectional;
  import net.minecraft.block.BlockDoor;
-@@ -19,22 +19,22 @@
+ import net.minecraft.block.material.Material;
+ import net.minecraft.block.state.IBlockState;
+@@ -17,26 +18,25 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.WeightedRandomChestContent;
  import net.minecraft.world.World;
  
@@ -37,7 +43,11 @@
          NBTTagCompound nbttagcompound = new NBTTagCompound();
          nbttagcompound.setString("id", MapGenStructureIO.func_143036_a(this));
          nbttagcompound.setTag("BB", this.boundingBox.func_151535_h());
-@@ -46,10 +46,8 @@
+         nbttagcompound.setInteger("O", this.coordBaseMode == null ? -1 : this.coordBaseMode.getHorizontalIndex());
+         nbttagcompound.setInteger("GD", this.componentType);
+@@ -44,14 +44,12 @@
+         return nbttagcompound;
+     }
  
      protected abstract void writeStructureToNBT(NBTTagCompound p_143012_1_);
  
@@ -50,7 +60,11 @@
              this.boundingBox = new StructureBoundingBox(p_143009_2_.getIntArray("BB"));
          }
  
-@@ -61,45 +61,40 @@
+         int i = p_143009_2_.getInteger("O");
+         this.coordBaseMode = i == -1 ? null : EnumFacing.getHorizontal(i);
+@@ -59,120 +57,96 @@
+         this.readStructureFromNBT(p_143009_2_);
+     }
  
      protected abstract void readStructureFromNBT(NBTTagCompound p_143011_1_);
  
@@ -108,7 +122,9 @@
          int i = Math.max(this.boundingBox.minX - 1, p_74860_2_.minX);
          int j = Math.max(this.boundingBox.minY - 1, p_74860_2_.minY);
          int k = Math.max(this.boundingBox.minZ - 1, p_74860_2_.minZ);
-@@ -110,53 +110,39 @@
+         int l = Math.min(this.boundingBox.maxX + 1, p_74860_2_.maxX);
+         int i1 = Math.min(this.boundingBox.maxY + 1, p_74860_2_.maxY);
+         int j1 = Math.min(this.boundingBox.maxZ + 1, p_74860_2_.maxZ);
          int k1;
          int l1;
  
@@ -170,7 +186,8 @@
                      return true;
                  }
              }
-@@ -161,15 +161,11 @@
+         }
+ 
          return false;
      }
  
@@ -191,7 +208,11 @@
                  case 1:
                  case 2:
                      return this.boundingBox.minX + p_74865_1_;
-@@ -184,18 +184,14 @@
+                 case 3:
+                     return this.boundingBox.maxX - p_74865_2_;
+@@ -182,25 +156,19 @@
+                     return p_74865_1_;
+             }
          }
      }
  
@@ -218,7 +239,11 @@
                  case 1:
                      return this.boundingBox.maxZ - p_74873_2_;
                  case 2:
-@@ -212,340 +212,240 @@
+                     return this.boundingBox.minZ + p_74873_2_;
+                 case 3:
+@@ -210,628 +178,462 @@
+                     return p_74873_2_;
+             }
          }
      }
  
@@ -633,7 +658,7 @@
                  return 0;
              }
          }
-@@ -547,53 +547,39 @@
+ 
          return p_151555_2_;
      }
  
@@ -702,7 +727,8 @@
                              this.func_175811_a(worldIn, p_175804_9_, l1, k1, i2, p_175804_2_);
                          }
                      }
-@@ -603,16 +603,11 @@
+                 }
+             }
          }
      }
  
@@ -724,7 +750,8 @@
                          p_74882_11_.selectBlocks(p_74882_10_, l1, k1, i2, k1 == p_74882_4_ || k1 == p_74882_7_ || l1 == p_74882_3_ || l1 == p_74882_6_ || i2 == p_74882_5_ || i2 == p_74882_8_);
                          this.func_175811_a(worldIn, p_74882_11_.func_180780_a(), l1, k1, i2, p_74882_2_);
                      }
-@@ -621,31 +621,19 @@
+                 }
+             }
          }
      }
  
@@ -754,7 +781,8 @@
                              this.func_175811_a(worldIn, p_175805_11_, l1, k1, i2, p_175805_2_);
                          }
                      }
-@@ -645,42 +645,33 @@
+                 }
+             }
          }
      }
  
@@ -811,7 +839,8 @@
                              this.func_175811_a(worldIn, p_180777_9_, l1, k1, i2, p_180777_2_);
                          }
                      }
-@@ -687,152 +687,117 @@
+                 }
+             }
          }
      }
  
@@ -1015,6 +1044,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

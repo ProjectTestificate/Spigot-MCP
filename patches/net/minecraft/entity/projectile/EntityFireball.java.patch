@@ -1,6 +1,6 @@
----a/net/minecraft/entity/projectile/EntityFireball.java
-+++b/net/minecraft/entity/projectile/EntityFireball.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\entity\projectile\EntityFireball.java
++++ src\main\java\net\minecraft\entity\projectile\EntityFireball.java
+@@ -1,8 +1,9 @@
  package net.minecraft.entity.projectile;
  
  import java.util.List;
@@ -8,7 +8,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityLivingBase;
-@@ -15,11 +15,7 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.nbt.NBTTagList;
+@@ -13,15 +14,15 @@
+ import net.minecraft.util.MathHelper;
+ import net.minecraft.util.MovingObjectPosition;
  import net.minecraft.util.ResourceLocation;
  import net.minecraft.util.Vec3;
  import net.minecraft.world.World;
@@ -24,7 +28,11 @@
      private int xTile = -1;
      private int yTile = -1;
      private int zTile = -1;
-@@ -31,70 +31,65 @@
+     private Block inTile;
+     private boolean inGround;
+@@ -29,296 +30,269 @@
+     private int ticksAlive;
+     private int ticksInAir;
      public double accelerationX;
      public double accelerationY;
      public double accelerationZ;
@@ -118,7 +126,7 @@
                          this.setDead();
                      }
  
-@@ -104,14 +104,14 @@
+                     return;
                  }
  
                  this.inGround = false;
@@ -137,7 +145,9 @@
                  ++this.ticksInAir;
              }
  
-@@ -121,8 +121,7 @@
+             Vec3 vec3 = new Vec3(this.posX, this.posY, this.posZ);
+             Vec3 vec31 = new Vec3(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+             MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vec3, vec31);
              vec3 = new Vec3(this.posX, this.posY, this.posZ);
              vec31 = new Vec3(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
  
@@ -147,7 +157,7 @@
                  vec31 = new Vec3(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
              }
  
-@@ -130,23 +130,19 @@
+             Entity entity = null;
              List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
              double d0 = 0.0D;
  
@@ -177,7 +187,7 @@
                              entity = entity1;
                              d0 = d1;
                          }
-@@ -153,13 +153,11 @@
+                     }
                  }
              }
  
@@ -199,7 +209,7 @@
                  this.onImpact(movingobjectposition);
              }
  
-@@ -167,24 +167,21 @@
+             this.posX += this.motionX;
              this.posY += this.motionY;
              this.posZ += this.motionZ;
              float f1 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
@@ -230,7 +240,7 @@
                  this.prevRotationYaw += 360.0F;
              }
  
-@@ -193,15 +193,11 @@
+             this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
              this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
              float f2 = this.getMotionFactor();
  
@@ -246,7 +256,8 @@
                  }
  
                  f2 = 0.8F;
-@@ -207,89 +207,89 @@
+             }
+ 
              this.motionX += this.accelerationX;
              this.motionY += this.accelerationY;
              this.motionZ += this.accelerationZ;
@@ -374,7 +385,8 @@
                      this.motionX = vec3.xCoord;
                      this.motionY = vec3.yCoord;
                      this.motionZ = vec3.zCoord;
-@@ -297,25 +297,20 @@
+                     this.accelerationX = this.motionX * 0.1D;
+                     this.accelerationY = this.motionY * 0.1D;
                      this.accelerationZ = this.motionZ * 0.1D;
                  }
  
@@ -406,5 +418,4 @@
 -    {
 -        return 15728880;
 -    }
--}
-+}
+ }

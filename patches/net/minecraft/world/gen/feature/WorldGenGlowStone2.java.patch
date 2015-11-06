@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenGlowStone2.java
-+++b/net/minecraft/world/gen/feature/WorldGenGlowStone2.java
-@@ -1,55 +1,46 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenGlowStone2.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenGlowStone2.java
+@@ -1,59 +1,48 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -71,9 +71,5 @@
                          worldIn.setBlockState(blockpos1, Blocks.glowstone.getDefaultState(), 2);
                      }
                  }
-@@ -60,4 +60,4 @@
-             return true;
-         }
-     }
--}
-+}
+             }
+ 

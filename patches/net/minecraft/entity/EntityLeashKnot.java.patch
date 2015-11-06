@@ -1,6 +1,7 @@
----a/net/minecraft/entity/EntityLeashKnot.java
-+++b/net/minecraft/entity/EntityLeashKnot.java
-@@ -2,76 +2,71 @@
+--- decompiled\net\minecraft\entity\EntityLeashKnot.java
++++ src\main\java\net\minecraft\entity\EntityLeashKnot.java
+@@ -1,162 +1,163 @@
+ package net.minecraft.entity;
  
  import java.util.Iterator;
  import java.util.List;
@@ -102,7 +103,7 @@
          ItemStack itemstack = playerIn.getHeldItem();
          boolean flag = false;
          double d0;
-@@ -81,83 +81,90 @@
+         List list;
          Iterator iterator;
          EntityLiving entityliving;
  
@@ -223,5 +224,4 @@
  
          return entityleashknot;
      }
--}
-+}
+ }

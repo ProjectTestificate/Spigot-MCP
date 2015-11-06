@@ -1,6 +1,7 @@
----a/net/minecraft/util/ChatComponentProcessor.java
-+++b/net/minecraft/util/ChatComponentProcessor.java
-@@ -2,90 +2,76 @@
+--- decompiled\net\minecraft\util\ChatComponentProcessor.java
++++ src\main\java\net\minecraft\util\ChatComponentProcessor.java
+@@ -1,92 +1,77 @@
+ package net.minecraft.util;
  
  import java.util.Iterator;
  import java.util.List;
@@ -119,5 +120,4 @@
 -        return (IChatComponent)object;
 +        return (IChatComponent) object;
      }
--}
-+}
+ }

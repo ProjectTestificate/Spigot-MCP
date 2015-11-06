@@ -1,6 +1,6 @@
----a/net/minecraft/network/ThreadQuickExitException.java
-+++b/net/minecraft/network/ThreadQuickExitException.java
-@@ -1,19 +1,17 @@
+--- decompiled\net\minecraft\network\ThreadQuickExitException.java
++++ src\main\java\net\minecraft\network\ThreadQuickExitException.java
+@@ -1,18 +1,16 @@
  package net.minecraft.network;
  
 -public final class ThreadQuickExitException extends RuntimeException
@@ -22,5 +22,4 @@
          this.setStackTrace(new StackTraceElement[0]);
          return this;
      }
--}
-+}
+ }

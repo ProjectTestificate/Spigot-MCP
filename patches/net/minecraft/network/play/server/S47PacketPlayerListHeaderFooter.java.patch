@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S47PacketPlayerListHeaderFooter.java
-+++b/net/minecraft/network/play/server/S47PacketPlayerListHeaderFooter.java
-@@ -1,51 +1,43 @@
+--- decompiled\net\minecraft\network\play\server\S47PacketPlayerListHeaderFooter.java
++++ src\main\java\net\minecraft\network\play\server\S47PacketPlayerListHeaderFooter.java
+@@ -1,58 +1,43 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -70,5 +70,4 @@
 -    {
 -        return this.field_179702_b;
 -    }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/ChunkProviderSettings.java
-+++b/net/minecraft/world/gen/ChunkProviderSettings.java
-@@ -1,5 +1,10 @@
+--- decompiled\net\minecraft\world\gen\ChunkProviderSettings.java
++++ src\main\java\net\minecraft\world\gen\ChunkProviderSettings.java
+@@ -1,21 +1,23 @@
  package net.minecraft.world.gen;
  
 +import java.lang.reflect.Type;
@@ -11,7 +11,8 @@
  import com.google.gson.Gson;
  import com.google.gson.GsonBuilder;
  import com.google.gson.JsonDeserializationContext;
-@@ -8,13 +8,7 @@
+ import com.google.gson.JsonDeserializer;
+ import com.google.gson.JsonElement;
  import com.google.gson.JsonObject;
  import com.google.gson.JsonSerializationContext;
  import com.google.gson.JsonSerializer;
@@ -26,7 +27,11 @@
      public final float coordinateScale;
      public final float heightScale;
      public final float upperLimitScale;
-@@ -94,8 +94,7 @@
+     public final float lowerLimitScale;
+     public final float depthNoiseScaleX;
+@@ -92,12 +94,11 @@
+     public final int lapisCount;
+     public final int lapisCenterHeight;
      public final int lapisSpread;
      private static final String __OBFID = "CL_00002006";
  
@@ -36,7 +41,11 @@
          this.coordinateScale = settingsFactory.coordinateScale;
          this.heightScale = settingsFactory.heightScale;
          this.upperLimitScale = settingsFactory.upperLimitScale;
-@@ -176,515 +176,486 @@
+         this.lowerLimitScale = settingsFactory.lowerLimitScale;
+         this.depthNoiseScaleX = settingsFactory.depthNoiseScaleX;
+@@ -174,516 +175,493 @@
+         this.lapisCount = settingsFactory.lapisCount;
+         this.lapisCenterHeight = settingsFactory.lapisCenterHeight;
          this.lapisSpread = settingsFactory.lapisSpread;
      }
  
@@ -1005,10 +1014,9 @@
 +        public Object deserialize(JsonElement p_deserialize_1_, Type p_deserialize_2_, JsonDeserializationContext p_deserialize_3_) {
 +            return this.func_177861_a(p_deserialize_1_, p_deserialize_2_, p_deserialize_3_);
          }
--}
 +
 +        public JsonElement serialize(Object p_serialize_1_, Type p_serialize_2_, JsonSerializationContext p_serialize_3_) {
 +            return this.func_177862_a((ChunkProviderSettings.Factory) p_serialize_1_, p_serialize_2_, p_serialize_3_);
 +        }
 +    }
-+}
+ }

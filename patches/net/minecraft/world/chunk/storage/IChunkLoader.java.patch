@@ -1,6 +1,6 @@
----a/net/minecraft/world/chunk/storage/IChunkLoader.java
-+++b/net/minecraft/world/chunk/storage/IChunkLoader.java
-@@ -1,10 +1,12 @@
+--- decompiled\net\minecraft\world\chunk\storage\IChunkLoader.java
++++ src\main\java\net\minecraft\world\chunk\storage\IChunkLoader.java
+@@ -1,14 +1,15 @@
  package net.minecraft.world.chunk.storage;
  
  import java.io.IOException;
@@ -16,9 +16,5 @@
      Chunk loadChunk(World worldIn, int x, int z) throws IOException;
  
      void saveChunk(World worldIn, Chunk chunkIn) throws MinecraftException, IOException;
-@@ -16,4 +16,4 @@
-     void chunkTick();
  
-     void saveExtraData();
--}
-+}
+     void saveExtraChunkData(World worldIn, Chunk chunkIn);

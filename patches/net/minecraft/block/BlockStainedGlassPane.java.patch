@@ -1,13 +1,13 @@
----a/net/minecraft/block/BlockStainedGlassPane.java
-+++b/net/minecraft/block/BlockStainedGlassPane.java
-@@ -1,6 +1,5 @@
+--- decompiled\net\minecraft\block\BlockStainedGlassPane.java
++++ src\main\java\net\minecraft\block\BlockStainedGlassPane.java
+@@ -1,81 +1,52 @@
  package net.minecraft.block;
  
 -import java.util.List;
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyEnum;
-@@ -8,75 +8,45 @@
+ import net.minecraft.block.state.BlockState;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.creativetab.CreativeTabs;
  import net.minecraft.item.EnumDyeColor;
@@ -96,5 +96,4 @@
              BlockBeacon.updateColorAsync(worldIn, pos);
          }
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/command/CommandHelp.java
-+++b/net/minecraft/command/CommandHelp.java
-@@ -5,6 +5,7 @@
+--- decompiled\net\minecraft\command\CommandHelp.java
++++ src\main\java\net\minecraft\command\CommandHelp.java
+@@ -3,113 +3,96 @@
+ import java.util.Arrays;
+ import java.util.Collections;
  import java.util.List;
  import java.util.Map;
  import java.util.Set;
@@ -8,7 +10,8 @@
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.event.ClickEvent;
  import net.minecraft.server.MinecraftServer;
-@@ -13,54 +13,45 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.ChatComponentTranslation;
  import net.minecraft.util.EnumChatFormatting;
  import net.minecraft.util.MathHelper;
  
@@ -76,7 +79,7 @@
                  throw numberinvalidexception;
              }
  
-@@ -68,48 +68,40 @@
+             throw new CommandNotFoundException();
          }
  
          int j = Math.min((k + 1) * 7, list.size());
@@ -134,5 +137,4 @@
              return null;
          }
      }
--}
-+}
+ }

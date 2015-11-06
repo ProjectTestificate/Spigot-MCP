@@ -1,6 +1,6 @@
----a/net/minecraft/world/chunk/EmptyChunk.java
-+++b/net/minecraft/world/chunk/EmptyChunk.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\world\chunk\EmptyChunk.java
++++ src\main\java\net\minecraft\world\chunk\EmptyChunk.java
+@@ -1,119 +1,115 @@
  package net.minecraft.world.chunk;
  
 -import com.google.common.base.Predicate;
@@ -10,7 +10,8 @@
  import net.minecraft.block.Block;
  import net.minecraft.entity.Entity;
  import net.minecraft.init.Blocks;
-@@ -11,110 +11,104 @@
+ import net.minecraft.tileentity.TileEntity;
+ import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.EnumSkyBlock;
  import net.minecraft.world.World;
@@ -164,5 +165,4 @@
 +    public boolean getAreLevelsEmpty(int startY, int endY) {
          return true;
      }
--}
-+}
+ }

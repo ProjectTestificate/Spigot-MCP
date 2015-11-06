@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/layer/GenLayerSmooth.java
-+++b/net/minecraft/world/gen/layer/GenLayerSmooth.java
-@@ -1,17 +1,16 @@
+--- decompiled\net\minecraft\world\gen\layer\GenLayerSmooth.java
++++ src\main\java\net\minecraft\world\gen\layer\GenLayerSmooth.java
+@@ -1,58 +1,46 @@
  package net.minecraft.world.gen.layer;
  
 -public class GenLayerSmooth extends GenLayer
@@ -22,7 +22,7 @@
          int i1 = areaX - 1;
          int j1 = areaY - 1;
          int k1 = areaWidth + 2;
-@@ -19,40 +19,29 @@
+         int l1 = areaHeight + 2;
          int[] aint = this.parent.getInts(i1, j1, k1, l1);
          int[] aint1 = IntCache.getIntCache(areaWidth * areaHeight);
  
@@ -70,9 +70,5 @@
                          k3 = i3;
                      }
                  }
-@@ -61,4 +61,4 @@
  
-         return aint1;
-     }
--}
-+}
+                 aint1[j2 + i2 * areaWidth] = k3;

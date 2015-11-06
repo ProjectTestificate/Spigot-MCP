@@ -1,6 +1,8 @@
----a/net/minecraft/entity/EnumCreatureType.java
-+++b/net/minecraft/entity/EnumCreatureType.java
-@@ -6,8 +6,7 @@
+--- decompiled\net\minecraft\entity\EnumCreatureType.java
++++ src\main\java\net\minecraft\entity\EnumCreatureType.java
+@@ -4,12 +4,11 @@
+ import net.minecraft.entity.monster.IMob;
+ import net.minecraft.entity.passive.EntityAmbientCreature;
  import net.minecraft.entity.passive.EntityAnimal;
  import net.minecraft.entity.passive.EntityWaterMob;
  
@@ -10,7 +12,11 @@
      MONSTER(IMob.class, 70, Material.air, false, false),
      CREATURE(EntityAnimal.class, 10, Material.air, true, true),
      AMBIENT(EntityAmbientCreature.class, 15, Material.air, true, false),
-@@ -20,8 +20,7 @@
+     WATER_CREATURE(EntityWaterMob.class, 5, Material.water, true, false);
+     private final Class creatureClass;
+@@ -18,34 +17,29 @@
+     private final boolean isPeacefulCreature;
+     private final boolean isAnimal;
  
      private static final String __OBFID = "CL_00001551";
  
@@ -20,7 +26,7 @@
          this.creatureClass = p_i1596_3_;
          this.maxNumberOfCreature = p_i1596_4_;
          this.creatureMaterial = p_i1596_5_;
-@@ -29,24 +29,19 @@
+         this.isPeacefulCreature = p_i1596_6_;
          this.isAnimal = p_i1596_7_;
      }
  
@@ -47,5 +53,4 @@
 +    public boolean getAnimal() {
          return this.isAnimal;
      }
--}
-+}
+ }

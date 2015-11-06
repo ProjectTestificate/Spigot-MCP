@@ -1,6 +1,8 @@
----a/net/minecraft/tileentity/IHopper.java
-+++b/net/minecraft/tileentity/IHopper.java
-@@ -3,8 +3,8 @@
+--- decompiled\net\minecraft\tileentity\IHopper.java
++++ src\main\java\net\minecraft\tileentity\IHopper.java
+@@ -1,12 +1,12 @@
+ package net.minecraft.tileentity;
+ 
  import net.minecraft.inventory.IInventory;
  import net.minecraft.world.World;
  
@@ -11,9 +13,5 @@
      World getWorld();
  
      double getXPos();
-@@ -12,4 +12,4 @@
-     double getYPos();
  
-     double getZPos();
--}
-+}
+     double getYPos();

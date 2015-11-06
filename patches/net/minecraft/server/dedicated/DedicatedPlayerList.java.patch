@@ -1,6 +1,6 @@
----a/net/minecraft/server/dedicated/DedicatedPlayerList.java
-+++b/net/minecraft/server/dedicated/DedicatedPlayerList.java
-@@ -1,28 +1,25 @@
+--- decompiled\net\minecraft\server\dedicated\DedicatedPlayerList.java
++++ src\main\java\net\minecraft\server\dedicated\DedicatedPlayerList.java
+@@ -1,31 +1,28 @@
  package net.minecraft.server.dedicated;
  
 -import com.mojang.authlib.GameProfile;
@@ -38,7 +38,11 @@
              this.getBannedPlayers().setLanServer(true);
              this.getBannedIPs().setLanServer(true);
          }
-@@ -36,152 +36,110 @@
+ 
+         this.loadUserBansList();
+@@ -34,153 +31,112 @@
+         this.saveIpBanList();
+         this.loadOpsList();
          this.readWhiteList();
          this.saveOpsList();
  
@@ -223,5 +227,4 @@
 +    public DedicatedServer getServerInstance() {
 +        return (DedicatedServer) super.getServerInstance();
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/world/pathfinder/NodeProcessor.java
-+++b/net/minecraft/world/pathfinder/NodeProcessor.java
-@@ -6,8 +6,8 @@
+--- decompiled\net\minecraft\world\pathfinder\NodeProcessor.java
++++ src\main\java\net\minecraft\world\pathfinder\NodeProcessor.java
+@@ -4,37 +4,35 @@
+ import net.minecraft.pathfinding.PathPoint;
+ import net.minecraft.util.IntHashMap;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.IBlockAccess;
  
@@ -11,7 +13,7 @@
      protected IBlockAccess field_176169_a;
      protected IntHashMap field_176167_b = new IntHashMap();
      protected int field_176168_c;
-@@ -15,8 +15,7 @@
+     protected int field_176165_d;
      protected int field_176166_e;
      private static final String __OBFID = "CL_00001967";
  
@@ -21,7 +23,7 @@
          this.field_176169_a = p_176162_1_;
          this.field_176167_b.clearMap();
          this.field_176168_c = MathHelper.floor_float(p_176162_2_.width + 1.0F);
-@@ -24,14 +24,15 @@
+         this.field_176165_d = MathHelper.floor_float(p_176162_2_.height + 1.0F);
          this.field_176166_e = MathHelper.floor_float(p_176162_2_.width + 1.0F);
      }
  
@@ -42,9 +44,5 @@
              pathpoint = new PathPoint(p_176159_1_, p_176159_2_, p_176159_3_);
              this.field_176167_b.addKey(l, pathpoint);
          }
-@@ -45,4 +45,4 @@
-     public abstract PathPoint func_176160_a(Entity p_176160_1_, double p_176160_2_, double p_176160_4_, double p_176160_6_);
  
-     public abstract int func_176164_a(PathPoint[] p_176164_1_, Entity p_176164_2_, PathPoint p_176164_3_, PathPoint p_176164_4_, float p_176164_5_);
--}
-+}
+         return pathpoint;

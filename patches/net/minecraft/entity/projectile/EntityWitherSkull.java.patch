@@ -1,6 +1,8 @@
----a/net/minecraft/entity/projectile/EntityWitherSkull.java
-+++b/net/minecraft/entity/projectile/EntityWitherSkull.java
-@@ -11,127 +11,104 @@
+--- decompiled\net\minecraft\entity\projectile\EntityWitherSkull.java
++++ src\main\java\net\minecraft\entity\projectile\EntityWitherSkull.java
+@@ -9,128 +9,107 @@
+ import net.minecraft.util.DamageSource;
+ import net.minecraft.util.MovingObjectPosition;
  import net.minecraft.world.EnumDifficulty;
  import net.minecraft.world.Explosion;
  import net.minecraft.world.World;
@@ -171,5 +173,4 @@
 +    public void setInvulnerable(boolean p_82343_1_) {
 +        this.dataWatcher.updateObject(10, Byte.valueOf((byte) (p_82343_1_ ? 1 : 0)));
      }
--}
-+}
+ }

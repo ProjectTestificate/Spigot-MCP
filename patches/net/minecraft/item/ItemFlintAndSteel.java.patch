@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemFlintAndSteel.java
-+++b/net/minecraft/item/ItemFlintAndSteel.java
-@@ -8,36 +8,55 @@
+--- decompiled\net\minecraft\item\ItemFlintAndSteel.java
++++ src\main\java\net\minecraft\item\ItemFlintAndSteel.java
+@@ -6,35 +6,51 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -64,6 +66,3 @@
              stack.damageItem(1, playerIn);
              return true;
          }
-     }
--}
-+}

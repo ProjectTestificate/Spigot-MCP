@@ -1,6 +1,6 @@
----a/net/minecraft/server/management/UserListWhitelistEntry.java
-+++b/net/minecraft/server/management/UserListWhitelistEntry.java
-@@ -1,53 +1,45 @@
+--- decompiled\net\minecraft\server\management\UserListWhitelistEntry.java
++++ src\main\java\net\minecraft\server\management\UserListWhitelistEntry.java
+@@ -1,54 +1,44 @@
  package net.minecraft.server.management;
  
 +import java.util.UUID;
@@ -69,5 +69,4 @@
              return null;
          }
      }
--}
-+}
+ }

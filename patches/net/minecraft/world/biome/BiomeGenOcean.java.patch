@@ -1,6 +1,6 @@
----a/net/minecraft/world/biome/BiomeGenOcean.java
-+++b/net/minecraft/world/biome/BiomeGenOcean.java
-@@ -1,25 +1,24 @@
+--- decompiled\net\minecraft\world\biome\BiomeGenOcean.java
++++ src\main\java\net\minecraft\world\biome\BiomeGenOcean.java
+@@ -1,26 +1,24 @@
  package net.minecraft.world.biome;
  
  import java.util.Random;
@@ -32,5 +32,4 @@
 +    public void genTerrainBlocks(World worldIn, Random p_180622_2_, ChunkPrimer p_180622_3_, int p_180622_4_, int p_180622_5_, double p_180622_6_) {
          super.genTerrainBlocks(worldIn, p_180622_2_, p_180622_3_, p_180622_4_, p_180622_5_, p_180622_6_);
      }
--}
-+}
+ }

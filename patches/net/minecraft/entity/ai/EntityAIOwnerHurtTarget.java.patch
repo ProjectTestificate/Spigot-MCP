@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIOwnerHurtTarget.java
-+++b/net/minecraft/entity/ai/EntityAIOwnerHurtTarget.java
-@@ -3,35 +3,29 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIOwnerHurtTarget.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIOwnerHurtTarget.java
+@@ -1,54 +1,44 @@
+ package net.minecraft.entity.ai;
+ 
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.passive.EntityTameable;
  
@@ -45,7 +47,7 @@
                  this.theTarget = entitylivingbase.getLastAttacker();
                  int i = entitylivingbase.getLastAttackerTime();
                  return i != this.field_142050_e && this.isSuitableTarget(this.theTarget, false) && this.theEntityTameable.func_142018_a(this.theTarget, entitylivingbase);
-@@ -40,18 +40,15 @@
+             }
          }
      }
  
@@ -64,5 +66,3 @@
  
          super.startExecuting();
      }
--}
-+}

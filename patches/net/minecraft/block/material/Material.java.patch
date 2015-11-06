@@ -1,6 +1,6 @@
----a/net/minecraft/block/material/Material.java
-+++b/net/minecraft/block/material/Material.java
-@@ -1,7 +1,7 @@
+--- decompiled\net\minecraft\block\material\Material.java
++++ src\main\java\net\minecraft\block\material\Material.java
+@@ -1,9 +1,9 @@
  package net.minecraft.block.material;
  
 -public class Material
@@ -10,7 +10,11 @@
      public static final Material air = new MaterialTransparent(MapColor.airColor);
      public static final Material grass = new Material(MapColor.grassColor);
      public static final Material ground = new Material(MapColor.dirtColor);
-@@ -34,11 +34,11 @@
+     public static final Material wood = (new Material(MapColor.woodColor)).setBurning();
+     public static final Material rock = (new Material(MapColor.stoneColor)).setRequiresTool();
+@@ -32,15 +32,15 @@
+     public static final Material clay = new Material(MapColor.clayColor);
+     public static final Material gourd = (new Material(MapColor.foliageColor)).setNoPushMobility();
      public static final Material dragonEgg = (new Material(MapColor.foliageColor)).setNoPushMobility();
      public static final Material portal = (new MaterialPortal(MapColor.airColor)).setImmovableMobility();
      public static final Material cake = (new Material(MapColor.airColor)).setNoPushMobility();
@@ -26,7 +30,11 @@
              return false;
          }
      }).setRequiresTool().setNoPushMobility();
-@@ -53,101 +53,82 @@
+     public static final Material piston = (new Material(MapColor.stoneColor)).setImmovableMobility();
+     public static final Material barrier = (new Material(MapColor.airColor)).setRequiresTool().setImmovableMobility();
+@@ -51,102 +51,84 @@
+     private boolean requiresNoTool = true;
+     private int mobilityFlag;
      private boolean isAdventureModeExempt;
      private static final String __OBFID = "CL_00000542";
  
@@ -144,5 +152,4 @@
 +    public MapColor getMaterialMapColor() {
          return this.materialMapColor;
      }
--}
-+}
+ }

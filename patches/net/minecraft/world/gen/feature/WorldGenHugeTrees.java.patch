@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenHugeTrees.java
-+++b/net/minecraft/world/gen/feature/WorldGenHugeTrees.java
-@@ -1,20 +1,22 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenHugeTrees.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenHugeTrees.java
+@@ -1,146 +1,118 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -27,7 +27,7 @@
          super(p_i45458_1_);
          this.baseHeight = p_i45458_2_;
          this.field_150538_d = p_i45458_3_;
-@@ -24,39 +24,30 @@
+         this.woodMetadata = p_i45458_4_;
          this.leavesMetadata = p_i45458_5_;
      }
  
@@ -81,7 +81,7 @@
                              flag = false;
                          }
                      }
-@@ -68,56 +68,43 @@
+                 }
              }
  
              return flag;
@@ -147,7 +147,7 @@
                          this.func_175905_a(worldIn, blockpos1, Blocks.leaves, this.leavesMetadata);
                      }
                  }
-@@ -124,26 +124,20 @@
+             }
          }
      }
  
@@ -176,6 +176,3 @@
                  }
              }
          }
-     }
--}
-+}

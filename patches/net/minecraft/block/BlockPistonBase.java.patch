@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockPistonBase.java
-+++b/net/minecraft/block/BlockPistonBase.java
-@@ -1,6 +1,8 @@
+--- decompiled\net\minecraft\block\BlockPistonBase.java
++++ src\main\java\net\minecraft\block\BlockPistonBase.java
+@@ -1,8 +1,10 @@
  package net.minecraft.block;
  
 +import java.util.AbstractList;
@@ -9,7 +9,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyBool;
-@@ -21,18 +21,20 @@
+ import net.minecraft.block.properties.PropertyDirection;
+ import net.minecraft.block.state.BlockPistonStructureHelper;
+@@ -19,218 +21,191 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.World;
@@ -37,7 +41,8 @@
          super(Material.piston);
          this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(EXTENDED, Boolean.valueOf(false)));
          this.isSticky = isSticky;
-@@ -41,93 +41,83 @@
+         this.setStepSound(soundTypePiston);
+         this.setHardness(0.5F);
          this.setCreativeTab(CreativeTabs.tabRedstone);
      }
  
@@ -162,7 +167,8 @@
                      return true;
                  }
              }
-@@ -136,98 +136,79 @@
+ 
+             return false;
          }
      }
  
@@ -286,7 +292,11 @@
                      case 1:
                          this.setBlockBounds(0.0F, 0.25F, 0.0F, 1.0F, 1.0F, 1.0F);
                          break;
-@@ -248,55 +248,43 @@
+                     case 2:
+                         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
+@@ -246,157 +221,162 @@
+                         break;
+                     case 6:
                          this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
                  }
              }
@@ -352,7 +362,7 @@
                  return EnumFacing.DOWN;
              }
          }
-@@ -303,64 +303,44 @@
+ 
          return entityIn.getHorizontalFacing().getOpposite();
      }
  
@@ -432,7 +442,7 @@
              worldIn.setBlockToAir(pos.offset(direction));
          }
  
-@@ -368,20 +368,57 @@
+         BlockPistonStructureHelper blockpistonstructurehelper = new BlockPistonStructureHelper(worldIn, pos, direction, extending);
          List list = blockpistonstructurehelper.getBlocksToMove();
          List list1 = blockpistonstructurehelper.getBlocksToDestroy();
  
@@ -499,7 +509,9 @@
                  Block block = worldIn.getBlockState(blockpos1).getBlock();
                  block.dropBlockAsItem(worldIn, blockpos1, worldIn.getBlockState(blockpos1), 0);
                  worldIn.setBlockToAir(blockpos1);
-@@ -392,9 +392,8 @@
+                 --i;
+                 ablock[i] = block;
+             }
  
              IBlockState iblockstate;
  
@@ -511,7 +523,11 @@
                  iblockstate = worldIn.getBlockState(blockpos1);
                  Block block1 = iblockstate.getBlock();
                  block1.getMetaFromState(iblockstate);
-@@ -408,8 +408,7 @@
+                 worldIn.setBlockToAir(blockpos1);
+                 blockpos1 = blockpos1.offset(enumfacing1);
+@@ -406,128 +386,95 @@
+                 ablock[i] = block1;
+             }
  
              BlockPos blockpos2 = pos.offset(direction);
  
@@ -521,7 +537,9 @@
                  BlockPistonExtension.EnumPistonType enumpistontype = this.isSticky ? BlockPistonExtension.EnumPistonType.STICKY : BlockPistonExtension.EnumPistonType.DEFAULT;
                  iblockstate = Blocks.piston_head.getDefaultState().withProperty(BlockPistonExtension.FACING, direction).withProperty(BlockPistonExtension.TYPE, enumpistontype);
                  IBlockState iblockstate1 = Blocks.piston_extension.getDefaultState().withProperty(BlockPistonMoving.FACING, direction).withProperty(BlockPistonMoving.TYPE, this.isSticky ? BlockPistonExtension.EnumPistonType.STICKY : BlockPistonExtension.EnumPistonType.DEFAULT);
-@@ -419,19 +419,16 @@
+                 worldIn.setBlockState(blockpos2, iblockstate1, 4);
+                 worldIn.setTileEntity(blockpos2, BlockPistonMoving.newTileEntity(iblockstate, direction, true, false));
+             }
  
              int k;
  
@@ -545,7 +563,8 @@
                  worldIn.notifyNeighborsOfStateChange(blockpos2, Blocks.piston_head);
                  worldIn.notifyNeighborsOfStateChange(pos, this);
              }
-@@ -439,96 +439,65 @@
+ 
+             return true;
          }
      }
  
@@ -680,6 +699,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

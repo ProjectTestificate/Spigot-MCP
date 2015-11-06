@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S36PacketSignEditorOpen.java
-+++b/net/minecraft/network/play/server/S36PacketSignEditorOpen.java
-@@ -1,43 +1,39 @@
+--- decompiled\net\minecraft\network\play\server\S36PacketSignEditorOpen.java
++++ src\main\java\net\minecraft\network\play\server\S36PacketSignEditorOpen.java
+@@ -1,49 +1,39 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -61,5 +61,4 @@
 -    {
 -        this.processPacket((INetHandlerPlayClient)handler);
 -    }
--}
-+}
+ }

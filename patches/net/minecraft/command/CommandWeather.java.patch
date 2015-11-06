@@ -1,6 +1,7 @@
----a/net/minecraft/command/CommandWeather.java
-+++b/net/minecraft/command/CommandWeather.java
-@@ -2,61 +2,54 @@
+--- decompiled\net\minecraft\command\CommandWeather.java
++++ src\main\java\net\minecraft\command\CommandWeather.java
+@@ -1,86 +1,72 @@
+ package net.minecraft.command;
  
  import java.util.List;
  import java.util.Random;
@@ -80,7 +81,10 @@
                      throw new WrongUsageException("commands.weather.usage", new Object[0]);
                  }
  
-@@ -72,17 +72,12 @@
+                 worldinfo.setCleanWeatherTime(0);
+                 worldinfo.setRainTime(i);
+                 worldinfo.setThunderTime(i);
+                 worldinfo.setRaining(true);
                  worldinfo.setThundering(true);
                  notifyOperators(sender, this, "commands.weather.thunder", new Object[0]);
              }
@@ -98,5 +102,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 +        return args.length == 1 ? getListOfStringsMatchingLastWord(args, new String[]{"clear", "rain", "thunder"}) : null;
      }
--}
-+}
+ }

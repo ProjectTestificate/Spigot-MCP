@@ -1,6 +1,6 @@
----a/net/minecraft/entity/ai/RandomPositionGenerator.java
-+++b/net/minecraft/entity/ai/RandomPositionGenerator.java
-@@ -1,33 +1,32 @@
+--- decompiled\net\minecraft\entity\ai\RandomPositionGenerator.java
++++ src\main\java\net\minecraft\entity\ai\RandomPositionGenerator.java
+@@ -1,115 +1,95 @@
  package net.minecraft.entity.ai;
  
  import java.util.Random;
@@ -44,7 +44,8 @@
          Random random = p_75462_0_.getRNG();
          boolean flag = false;
          int k = 0;
-@@ -38,47 +38,36 @@
+         int l = 0;
+         int i1 = 0;
          float f = -99999.0F;
          boolean flag1;
  
@@ -102,7 +103,9 @@
                          k1 += random.nextInt(p_75462_1_ / 2);
                      }
                  }
-@@ -87,12 +87,10 @@
+ 
+                 j1 += MathHelper.floor_double(p_75462_0_.posX);
+                 i2 += MathHelper.floor_double(p_75462_0_.posY);
                  k1 += MathHelper.floor_double(p_75462_0_.posZ);
                  blockpos = new BlockPos(j1, i2, k1);
  
@@ -117,7 +120,10 @@
                          f = f1;
                          k = j1;
                          l = i2;
-@@ -103,18 +103,12 @@
+                         i1 = k1;
+                         flag = true;
+                     }
+                 }
              }
          }
  
@@ -133,5 +139,4 @@
              return null;
          }
      }
--}
-+}
+ }

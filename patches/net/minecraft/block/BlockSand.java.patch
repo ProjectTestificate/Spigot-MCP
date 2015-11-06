@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockSand.java
-+++b/net/minecraft/block/BlockSand.java
-@@ -1,67 +1,42 @@
+--- decompiled\net\minecraft\block\BlockSand.java
++++ src\main\java\net\minecraft\block\BlockSand.java
+@@ -1,130 +1,95 @@
  package net.minecraft.block;
  
 -import java.util.List;
@@ -83,7 +83,10 @@
          SAND(0, "sand", "default", MapColor.sandColor),
          RED_SAND(1, "red_sand", "red", MapColor.dirtColor);
          private static final BlockSand.EnumType[] META_LOOKUP = new BlockSand.EnumType[values().length];
-@@ -73,60 +73,49 @@
+         private final int meta;
+         private final String name;
+         private final MapColor mapColor;
+         private final String unlocalizedName;
  
          private static final String __OBFID = "CL_00002069";
  
@@ -152,5 +155,3 @@
              }
          }
      }
--}
-+}

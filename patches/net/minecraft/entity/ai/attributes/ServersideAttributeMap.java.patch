@@ -1,6 +1,6 @@
----a/net/minecraft/entity/ai/attributes/ServersideAttributeMap.java
-+++b/net/minecraft/entity/ai/attributes/ServersideAttributeMap.java
-@@ -1,89 +1,77 @@
+--- decompiled\net\minecraft\entity\ai\attributes\ServersideAttributeMap.java
++++ src\main\java\net\minecraft\entity\ai\attributes\ServersideAttributeMap.java
+@@ -1,104 +1,90 @@
  package net.minecraft.entity.ai.attributes;
  
 -import com.google.common.collect.Sets;
@@ -116,7 +116,7 @@
                  hashset.add(iattributeinstance);
              }
          }
-@@ -92,14 +92,11 @@
+ 
          return hashset;
      }
  
@@ -131,5 +131,4 @@
 +    public IAttributeInstance getAttributeInstance(IAttribute p_111151_1_) {
          return this.func_180795_e(p_111151_1_);
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/scoreboard/Scoreboard.java
-+++b/net/minecraft/scoreboard/Scoreboard.java
-@@ -1,17 +1,14 @@
+--- decompiled\net\minecraft\scoreboard\Scoreboard.java
++++ src\main\java\net\minecraft\scoreboard\Scoreboard.java
+@@ -1,418 +1,349 @@
  package net.minecraft.scoreboard;
  
 -import com.google.common.collect.Lists;
@@ -24,7 +24,9 @@
      private final Map scoreObjectives = Maps.newHashMap();
      private final Map scoreObjectiveCriterias = Maps.newHashMap();
      private final Map entitiesScoreObjectives = Maps.newHashMap();
-@@ -21,92 +21,75 @@
+     private final ScoreObjective[] objectiveDisplaySlots = new ScoreObjective[19];
+     private final Map teams = Maps.newHashMap();
+     private final Map teamMemberships = Maps.newHashMap();
      private static String[] field_178823_g = null;
      private static final String __OBFID = "CL_00000619";
  
@@ -142,7 +144,8 @@
                  arraylist.add(score);
              }
          }
-@@ -114,135 +114,108 @@
+ 
+         Collections.sort(arraylist, Score.scoreComparator);
          return arraylist;
      }
  
@@ -315,7 +318,7 @@
              scoreplayerteam = new ScorePlayerTeam(this, p_96527_1_);
              this.teams.put(p_96527_1_, scoreplayerteam);
              this.broadcastTeamCreated(scoreplayerteam);
-@@ -251,32 +251,25 @@
+             return scoreplayerteam;
          }
      }
  
@@ -355,7 +358,9 @@
                  this.removePlayerFromTeams(player);
              }
  
-@@ -286,69 +286,66 @@
+             this.teamMemberships.put(player, scoreplayerteam);
+             scoreplayerteam.getMembershipCollection().add(player);
+             return true;
          }
      }
  
@@ -457,7 +462,7 @@
              case 0:
                  return "list";
              case 1:
-@@ -358,12 +358,10 @@
+                 return "sidebar";
              case 2:
                  return "belowName";
              default:
@@ -472,7 +477,8 @@
                          return "sidebar.team." + enumchatformatting.getFriendlyName();
                      }
                  }
-@@ -372,31 +372,20 @@
+ 
+                 return null;
          }
      }
  
@@ -509,7 +515,8 @@
                      return enumchatformatting.getColorIndex() + 3;
                  }
              }
-@@ -403,21 +403,16 @@
+ 
+             return -1;
          }
      }
  
@@ -529,6 +536,3 @@
          }
  
          return field_178823_g;
-     }
--}
-+}

@@ -1,6 +1,6 @@
----a/net/minecraft/entity/projectile/EntityEgg.java
-+++b/net/minecraft/entity/projectile/EntityEgg.java
-@@ -1,7 +1,9 @@
+--- decompiled\net\minecraft\entity\projectile\EntityEgg.java
++++ src\main\java\net\minecraft\entity\projectile\EntityEgg.java
+@@ -1,68 +1,98 @@
  package net.minecraft.entity.projectile;
  
 +import net.minecraft.entity.Entity;
@@ -10,7 +10,7 @@
  import net.minecraft.init.Items;
  import net.minecraft.item.Item;
  import net.minecraft.util.DamageSource;
-@@ -9,43 +9,81 @@
+ import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.util.MovingObjectPosition;
  import net.minecraft.world.World;
  
@@ -102,7 +102,9 @@
                  EntityChicken entitychicken = new EntityChicken(this.worldObj);
                  entitychicken.setGrowingAge(-24000);
                  entitychicken.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-@@ -55,16 +55,13 @@
+                 this.worldObj.spawnEntityInWorld(entitychicken);
+             }
+         }
  
          double d0 = 0.08D;
  
@@ -119,5 +121,4 @@
              this.setDead();
          }
      }
--}
-+}
+ }

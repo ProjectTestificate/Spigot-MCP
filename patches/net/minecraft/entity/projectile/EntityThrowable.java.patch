@@ -1,6 +1,6 @@
----a/net/minecraft/entity/projectile/EntityThrowable.java
-+++b/net/minecraft/entity/projectile/EntityThrowable.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\entity\projectile\EntityThrowable.java
++++ src\main\java\net\minecraft\entity\projectile\EntityThrowable.java
+@@ -1,8 +1,9 @@
  package net.minecraft.entity.projectile;
  
  import java.util.List;
@@ -8,7 +8,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityLivingBase;
-@@ -16,130 +16,96 @@
+ import net.minecraft.entity.IProjectile;
+ import net.minecraft.entity.player.EntityPlayer;
+@@ -14,314 +15,257 @@
+ import net.minecraft.util.MathHelper;
+ import net.minecraft.util.MovingObjectPosition;
  import net.minecraft.util.ResourceLocation;
  import net.minecraft.util.Vec3;
  import net.minecraft.world.World;
@@ -174,7 +178,7 @@
                      this.setDead();
                  }
  
-@@ -147,14 +147,14 @@
+                 return;
              }
  
              this.inGround = false;
@@ -193,7 +197,9 @@
              ++this.ticksInAir;
          }
  
-@@ -164,34 +164,28 @@
+         Vec3 vec3 = new Vec3(this.posX, this.posY, this.posZ);
+         Vec3 vec31 = new Vec3(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+         MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vec3, vec31);
          vec3 = new Vec3(this.posX, this.posY, this.posZ);
          vec31 = new Vec3(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
  
@@ -237,7 +243,7 @@
                              entity = entity1;
                              d0 = d1;
                          }
-@@ -199,23 +199,17 @@
+                     }
                  }
              }
  
@@ -268,7 +274,7 @@
              }
          }
  
-@@ -221,24 +221,21 @@
+         this.posX += this.motionX;
          this.posY += this.motionY;
          this.posZ += this.motionZ;
          float f1 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
@@ -299,7 +305,8 @@
              this.prevRotationYaw += 360.0F;
          }
  
-@@ -248,62 +248,53 @@
+         this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
+         this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
          float f2 = 0.99F;
          float f3 = this.getGravityVelocity();
  
@@ -380,7 +387,7 @@
              this.inTile = Block.getBlockById(tagCompund.getByte("inTile") & 255);
          }
  
-@@ -310,20 +310,16 @@
+         this.throwableShake = tagCompund.getByte("shake") & 255;
          this.inGround = tagCompund.getByte("inGround") == 1;
          this.throwerName = tagCompund.getString("ownerName");
  
@@ -402,5 +409,3 @@
  
          return this.thrower;
      }
--}
-+}

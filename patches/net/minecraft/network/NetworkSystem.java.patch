@@ -1,6 +1,6 @@
----a/net/minecraft/network/NetworkSystem.java
-+++b/net/minecraft/network/NetworkSystem.java
-@@ -1,46 +1,11 @@
+--- decompiled\net\minecraft\network\NetworkSystem.java
++++ src\main\java\net\minecraft\network\NetworkSystem.java
+@@ -1,32 +1,14 @@
  package net.minecraft.network;
  
 -import com.google.common.collect.Lists;
@@ -32,7 +32,11 @@
  import net.minecraft.crash.CrashReport;
  import net.minecraft.crash.CrashReportCategory;
  import net.minecraft.network.play.server.S40PacketDisconnect;
-@@ -37,35 +37,51 @@
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.server.network.NetHandlerHandshakeTCP;
+@@ -35,187 +17,163 @@
+ import net.minecraft.util.MessageDeserializer;
+ import net.minecraft.util.MessageDeserializer2;
  import net.minecraft.util.MessageSerializer;
  import net.minecraft.util.MessageSerializer2;
  import net.minecraft.util.ReportedException;
@@ -101,7 +105,9 @@
              return this.genericLoad();
          }
      };
-@@ -75,132 +75,90 @@
+     private final MinecraftServer mcServer;
+     public volatile boolean isAlive;
+     private final List endpoints = Collections.synchronizedList(Lists.newArrayList());
      private final List networkManagers = Collections.synchronizedList(Lists.newArrayList());
      private static final String __OBFID = "CL_00001447";
  
@@ -276,7 +282,8 @@
                                          return networkmanager.toString();
                                      }
                                  });
-@@ -209,11 +209,11 @@
+                                 throw new ReportedException(crashreport);
+                             }
  
                              logger.warn("Failed to handle packet for " + networkmanager.getRemoteAddress(), exception);
                              final ChatComponentText chatcomponenttext = new ChatComponentText("Internal server error");
@@ -292,7 +299,11 @@
                                      networkmanager.closeChannel(chatcomponenttext);
                                  }
                              }, new GenericFutureListener[0]);
-@@ -225,9 +225,7 @@
+                             networkmanager.disableAutoRead();
+                         }
+@@ -223,10 +181,9 @@
+                 }
+             }
          }
      }
  
@@ -301,5 +312,4 @@
 +    public MinecraftServer getServer() {
          return this.mcServer;
      }
--}
-+}
+ }

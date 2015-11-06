@@ -1,6 +1,7 @@
----a/net/minecraft/util/LoggingPrintStream.java
-+++b/net/minecraft/util/LoggingPrintStream.java
-@@ -2,34 +2,32 @@
+--- decompiled\net\minecraft\util\LoggingPrintStream.java
++++ src\main\java\net\minecraft\util\LoggingPrintStream.java
+@@ -1,36 +1,33 @@
+ package net.minecraft.util;
  
  import java.io.OutputStream;
  import java.io.PrintStream;
@@ -43,5 +44,4 @@
 -        LOGGER.info("[{}]@.({}:{}): {}", new Object[] {this.domain, stacktraceelement.getFileName(), Integer.valueOf(stacktraceelement.getLineNumber()), string});
 +        LOGGER.info("[{}]@.({}:{}): {}", new Object[]{this.domain, stacktraceelement.getFileName(), Integer.valueOf(stacktraceelement.getLineNumber()), string});
      }
--}
-+}
+ }

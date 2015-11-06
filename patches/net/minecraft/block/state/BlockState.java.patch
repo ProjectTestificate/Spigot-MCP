@@ -1,6 +1,6 @@
----a/net/minecraft/block/state/BlockState.java
-+++b/net/minecraft/block/state/BlockState.java
-@@ -1,15 +1,5 @@
+--- decompiled\net\minecraft\block\state\BlockState.java
++++ src\main\java\net\minecraft\block\state\BlockState.java
+@@ -1,235 +1,202 @@
  package net.minecraft.block.state;
  
 -import com.google.common.base.Function;
@@ -16,7 +16,10 @@
  import java.util.ArrayList;
  import java.util.Arrays;
  import java.util.Collection;
-@@ -20,21 +20,34 @@
+ import java.util.Collections;
+ import java.util.Comparator;
+ import java.util.HashMap;
+ import java.util.Iterator;
  import java.util.LinkedHashMap;
  import java.util.List;
  import java.util.Map;
@@ -62,7 +65,7 @@
          }
      };
      private final Block block;
-@@ -45,18 +45,16 @@
+     private final ImmutableList properties;
      private final ImmutableList validStates;
      private static final String __OBFID = "CL_00002030";
  
@@ -90,7 +93,8 @@
              }
          });
          this.properties = ImmutableList.copyOf(properties);
-@@ -66,9 +66,8 @@
+         LinkedHashMap linkedhashmap = Maps.newLinkedHashMap();
+         ArrayList arraylist = Lists.newArrayList();
          Iterable iterable = Cartesian.cartesianProduct(this.getAllowedValues());
          Iterator iterator = iterable.iterator();
  
@@ -102,7 +106,8 @@
              Map map = MapPopulator.createMap(this.properties, list);
              BlockState.StateImplementation stateimplementation = new BlockState.StateImplementation(blockIn, ImmutableMap.copyOf(map), null);
              linkedhashmap.put(map, stateimplementation);
-@@ -77,161 +77,122 @@
+             arraylist.add(stateimplementation);
+         }
  
          iterator = arraylist.iterator();
  
@@ -330,10 +335,9 @@
 +            hashmap.put(property, value);
 +            return hashmap;
          }
--}
 +
 +        StateImplementation(Block p_i45661_1_, ImmutableMap p_i45661_2_, Object p_i45661_3_) {
 +            this(p_i45661_1_, p_i45661_2_);
 +        }
 +    }
-+}
+ }

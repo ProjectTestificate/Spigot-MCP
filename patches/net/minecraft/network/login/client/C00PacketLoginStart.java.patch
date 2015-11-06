@@ -1,6 +1,6 @@
----a/net/minecraft/network/login/client/C00PacketLoginStart.java
-+++b/net/minecraft/network/login/client/C00PacketLoginStart.java
-@@ -1,47 +1,43 @@
+--- decompiled\net\minecraft\network\login\client\C00PacketLoginStart.java
++++ src\main\java\net\minecraft\network\login\client\C00PacketLoginStart.java
+@@ -1,47 +1,44 @@
  package net.minecraft.network.login.client;
  
 -import com.mojang.authlib.GameProfile;
@@ -62,5 +62,4 @@
 +    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerLoginServer) handler);
      }
--}
-+}
+ }

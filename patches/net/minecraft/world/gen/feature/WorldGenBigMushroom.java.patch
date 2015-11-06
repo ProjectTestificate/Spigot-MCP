@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenBigMushroom.java
-+++b/net/minecraft/world/gen/feature/WorldGenBigMushroom.java
-@@ -1,193 +1,154 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenBigMushroom.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenBigMushroom.java
+@@ -1,219 +1,174 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -238,7 +238,7 @@
                                          this.func_175905_a(worldIn, blockpos1, Block.getBlockById(Block.getIdFromBlock(Blocks.brown_mushroom_block) + i), k1);
                                      }
                                  }
-@@ -197,12 +197,10 @@
+                             }
                          }
                      }
  
@@ -253,7 +253,7 @@
                              this.func_175905_a(worldIn, p_180709_3_.up(l), Block.getBlockById(Block.getIdFromBlock(Blocks.brown_mushroom_block) + i), 10);
                          }
                      }
-@@ -210,12 +210,8 @@
+ 
                      return true;
                  }
              }
@@ -264,5 +264,4 @@
              return false;
          }
      }
--}
-+}
+ }

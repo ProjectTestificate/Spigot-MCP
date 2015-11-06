@@ -1,6 +1,6 @@
----a/net/minecraft/entity/IRangedAttackMob.java
-+++b/net/minecraft/entity/IRangedAttackMob.java
-@@ -1,7 +1,7 @@
+--- decompiled\net\minecraft\entity\IRangedAttackMob.java
++++ src\main\java\net\minecraft\entity\IRangedAttackMob.java
+@@ -1,6 +1,6 @@
  package net.minecraft.entity;
  
 -public interface IRangedAttackMob
@@ -8,5 +8,4 @@
 +public interface IRangedAttackMob {
 +
      void attackEntityWithRangedAttack(EntityLivingBase p_82196_1_, float p_82196_2_);
--}
-+}
+ }

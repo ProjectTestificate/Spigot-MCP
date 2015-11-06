@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAIMoveIndoors.java
-+++b/net/minecraft/entity/ai/EntityAIMoveIndoors.java
-@@ -6,88 +6,68 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIMoveIndoors.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIMoveIndoors.java
+@@ -4,89 +4,69 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.Vec3;
  import net.minecraft.village.Village;
  import net.minecraft.village.VillageDoorInfo;
  
@@ -106,5 +108,4 @@
          this.insidePosZ = this.doorInfo.getInsideBlockPos().getZ();
          this.doorInfo = null;
      }
--}
-+}
+ }

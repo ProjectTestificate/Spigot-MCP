@@ -1,6 +1,6 @@
----a/net/minecraft/entity/projectile/EntityPotion.java
-+++b/net/minecraft/entity/projectile/EntityPotion.java
-@@ -1,8 +1,11 @@
+--- decompiled\net\minecraft\entity\projectile\EntityPotion.java
++++ src\main\java\net\minecraft\entity\projectile\EntityPotion.java
+@@ -1,137 +1,139 @@
  package net.minecraft.entity.projectile;
  
 +import java.util.HashMap;
@@ -12,7 +12,9 @@
  import net.minecraft.init.Items;
  import net.minecraft.item.ItemStack;
  import net.minecraft.nbt.NBTTagCompound;
-@@ -12,123 +12,116 @@
+ import net.minecraft.potion.Potion;
+ import net.minecraft.potion.PotionEffect;
+ import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.MovingObjectPosition;
  import net.minecraft.world.World;
@@ -194,7 +196,11 @@
                                      }
                                  }
                              }
-@@ -143,33 +143,25 @@
+                         }
+                     }
+@@ -141,34 +143,27 @@
+             this.worldObj.playAuxSFX(2002, new BlockPos(this), this.getPotionDamage());
+             this.setDead();
          }
      }
  
@@ -232,5 +238,4 @@
              tagCompound.setTag("Potion", this.potionDamage.writeToNBT(new NBTTagCompound()));
          }
      }
--}
-+}
+ }

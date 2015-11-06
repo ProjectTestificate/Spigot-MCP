@@ -1,6 +1,7 @@
----a/net/minecraft/entity/ai/EntityAIPlay.java
-+++b/net/minecraft/entity/ai/EntityAIPlay.java
-@@ -2,61 +2,52 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIPlay.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIPlay.java
+@@ -1,112 +1,91 @@
+ package net.minecraft.entity.ai;
  
  import java.util.Iterator;
  import java.util.List;
@@ -78,7 +79,8 @@
                      return false;
                  }
              }
-@@ -67,49 +67,38 @@
+ 
+             return true;
          }
      }
  
@@ -134,6 +136,3 @@
  
              this.villagerObj.getNavigator().tryMoveToXYZ(vec3.xCoord, vec3.yCoord, vec3.zCoord, this.speed);
          }
-     }
--}
-+}

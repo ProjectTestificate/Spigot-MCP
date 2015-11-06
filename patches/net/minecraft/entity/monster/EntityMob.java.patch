@@ -1,6 +1,6 @@
----a/net/minecraft/entity/monster/EntityMob.java
-+++b/net/minecraft/entity/monster/EntityMob.java
-@@ -1,12 +1,10 @@
+--- decompiled\net\minecraft\entity\monster\EntityMob.java
++++ src\main\java\net\minecraft\entity\monster\EntityMob.java
+@@ -1,184 +1,162 @@
  package net.minecraft.entity.monster;
  
 -import com.google.common.base.Predicate;
@@ -13,7 +13,8 @@
  import net.minecraft.entity.ai.EntityAIBase;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.DamageSource;
-@@ -15,9 +15,12 @@
+ import net.minecraft.util.MathHelper;
+ import net.minecraft.world.EnumDifficulty;
  import net.minecraft.world.EnumSkyBlock;
  import net.minecraft.world.World;
  
@@ -29,7 +30,10 @@
      {
          private static final String __OBFID = "CL_00002208";
          public boolean func_179911_a(Entity p_179911_1_)
-@@ -28,105 +28,85 @@
+         {
+             return p_179911_1_ instanceof EntityCreeper && ((EntityCreeper)p_179911_1_).getCreeperState() > 0;
+         }
+         public boolean apply(Object p_apply_1_)
          {
              return this.func_179911_a((Entity)p_apply_1_);
          }
@@ -168,7 +172,8 @@
              }
  
              this.func_174815_a(this, p_70652_1_);
-@@ -137,25 +137,19 @@
+         }
+ 
          return flag;
      }
  
@@ -199,7 +204,10 @@
                  int j = this.worldObj.getSkylightSubtracted();
                  this.worldObj.setSkylightSubtracted(10);
                  i = this.worldObj.getLightFromNeighbors(blockpos);
-@@ -166,20 +166,16 @@
+                 this.worldObj.setSkylightSubtracted(j);
+             }
+ 
+             return i <= this.rand.nextInt(8);
          }
      }
  
@@ -221,5 +229,4 @@
 +    protected boolean func_146066_aG() {
          return true;
      }
--}
-+}
+ }

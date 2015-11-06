@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockRedSandstone.java
-+++b/net/minecraft/block/BlockRedSandstone.java
-@@ -1,64 +1,41 @@
+--- decompiled\net\minecraft\block\BlockRedSandstone.java
++++ src\main\java\net\minecraft\block\BlockRedSandstone.java
+@@ -1,121 +1,89 @@
  package net.minecraft.block;
  
 -import java.util.List;
@@ -78,7 +78,10 @@
          DEFAULT(0, "red_sandstone", "default"),
          CHISELED(1, "chiseled_red_sandstone", "chiseled"),
          SMOOTH(2, "smooth_red_sandstone", "smooth");
-@@ -70,54 +70,44 @@
+         private static final BlockRedSandstone.EnumType[] META_LOOKUP = new BlockRedSandstone.EnumType[values().length];
+         private final int meta;
+         private final String name;
+         private final String unlocalizedName;
  
          private static final String __OBFID = "CL_00002071";
  
@@ -140,5 +143,3 @@
              }
          }
      }
--}
-+}

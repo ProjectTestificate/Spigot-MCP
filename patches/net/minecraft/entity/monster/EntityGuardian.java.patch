@@ -1,6 +1,6 @@
----a/net/minecraft/entity/monster/EntityGuardian.java
-+++b/net/minecraft/entity/monster/EntityGuardian.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\entity\monster\EntityGuardian.java
++++ src\main\java\net\minecraft\entity\monster\EntityGuardian.java
+@@ -1,10 +1,10 @@
  package net.minecraft.entity.monster;
  
 -import com.google.common.base.Predicate;
@@ -10,7 +10,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityLivingBase;
-@@ -38,11 +38,7 @@
+ import net.minecraft.entity.SharedMonsterAttributes;
+ import net.minecraft.entity.ai.EntityAIBase;
+@@ -36,28 +36,27 @@
+ import net.minecraft.util.Vec3;
+ import net.minecraft.util.WeightedRandom;
  import net.minecraft.util.WeightedRandomFishable;
  import net.minecraft.world.EnumDifficulty;
  import net.minecraft.world.World;
@@ -26,7 +30,8 @@
      private float field_175482_b;
      private float field_175484_c;
      private float field_175483_bk;
-@@ -51,10 +51,10 @@
+     private float field_175485_bl;
+     private float field_175486_bm;
      private EntityLivingBase field_175478_bn;
      private int field_175479_bo;
      private boolean field_175480_bp;
@@ -40,7 +45,11 @@
          super(worldIn);
          this.experienceValue = 10;
          this.setSize(0.85F, 0.85F);
-@@ -73,7 +73,8 @@
+         this.tasks.addTask(4, new EntityGuardian.AIGuardianAttack());
+         EntityAIMoveTowardsRestriction entityaimovetowardsrestriction;
+@@ -71,626 +70,488 @@
+         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 10, true, false, new EntityGuardian.GuardianTargetSelector()));
+         this.moveHelper = new EntityGuardian.GuardianMoveHelper();
          this.field_175484_c = this.field_175482_b = this.rand.nextFloat();
      }
  
@@ -50,7 +59,8 @@
      {
          super.applyEntityAttributes();
          this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D);
-@@ -82,75 +82,60 @@
+         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5D);
+         this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(16.0D);
          this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D);
      }
  
@@ -140,7 +150,9 @@
              this.setSize(1.9975F, 1.9975F);
              this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.30000001192092896D);
              this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(8.0D);
-@@ -160,192 +160,130 @@
+             this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(80.0D);
+             this.enablePersistence();
+             this.wander.func_179479_b(400);
          }
      }
  
@@ -366,7 +378,7 @@
                      double d2 = entitylivingbase.posZ - this.posZ;
                      double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
                      d0 /= d3;
-@@ -345,154 +345,117 @@
+                     d1 /= d3;
                      d2 /= d3;
                      double d4 = this.rand.nextDouble();
  
@@ -558,7 +570,9 @@
                  entitylivingbase.attackEntityFrom(DamageSource.causeThornsDamage(this), 2.0F);
                  entitylivingbase.playSound("damage.thorns", 0.5F, 1.0F);
              }
-@@ -502,112 +502,88 @@
+         }
+ 
+         this.wander.func_179480_f();
          return super.attackEntityFrom(source, amount);
      }
  
@@ -701,7 +715,8 @@
                      ;
                  }
  
-@@ -619,49 +619,46 @@
+                 super.updateTask();
+             }
          }
      }
  
@@ -766,7 +781,7 @@
                      d10 = d7;
                      d11 = d8;
                      d12 = d9;
-@@ -669,30 +669,24 @@
+                 }
  
                  this.field_179930_g.getLookHelper().setLookPosition(d10 + (d7 - d10) * 0.125D, d11 + (d8 - d11) * 0.125D, d12 + (d9 - d12) * 0.125D, 10.0F, 40.0F);
                  this.field_179930_g.func_175476_l(true);
@@ -800,5 +815,4 @@
 +            return this.func_179915_a((EntityLivingBase) p_apply_1_);
          }
      }
--}
-+}
+ }

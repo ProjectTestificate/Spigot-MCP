@@ -1,6 +1,6 @@
----a/net/minecraft/network/NettyEncryptingDecoder.java
-+++b/net/minecraft/network/NettyEncryptingDecoder.java
-@@ -1,31 +1,27 @@
+--- decompiled\net\minecraft\network\NettyEncryptingDecoder.java
++++ src\main\java\net\minecraft\network\NettyEncryptingDecoder.java
+@@ -1,29 +1,28 @@
  package net.minecraft.network;
  
 -import io.netty.buffer.ByteBuf;
@@ -40,5 +40,4 @@
 +    protected void decode(ChannelHandlerContext p_decode_1_, Object p_decode_2_, List p_decode_3_) throws ShortBufferException {
 +        this.decode(p_decode_1_, (ByteBuf) p_decode_2_, p_decode_3_);
      }
--}
-+}
+ }

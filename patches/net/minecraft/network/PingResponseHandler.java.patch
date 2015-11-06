@@ -1,6 +1,6 @@
----a/net/minecraft/network/PingResponseHandler.java
-+++b/net/minecraft/network/PingResponseHandler.java
-@@ -1,58 +1,63 @@
+--- decompiled\net\minecraft\network\PingResponseHandler.java
++++ src\main\java\net\minecraft\network\PingResponseHandler.java
+@@ -1,62 +1,60 @@
  package net.minecraft.network;
  
 +import java.net.InetSocketAddress;
@@ -83,7 +83,11 @@
                      this.writeAndFlush(p_channelRead_1_, this.getStringBuffer(s));
                      break;
                  default:
-@@ -67,33 +67,26 @@
+                     boolean flag1 = bytebuf.readUnsignedByte() == 1;
+                     flag1 &= bytebuf.readUnsignedByte() == 250;
+@@ -65,63 +63,51 @@
+                     flag1 &= bytebuf.readUnsignedByte() >= 73;
+                     flag1 &= 3 + bytebuf.readBytes(bytebuf.readShort() * 2).array().length + 4 == j;
                      flag1 &= bytebuf.readInt() <= 65535;
                      flag1 &= bytebuf.readableBytes() == 0;
  
@@ -128,7 +132,7 @@
                  bytebuf.resetReaderIndex();
                  p_channelRead_1_.channel().pipeline().remove("legacy_query");
                  p_channelRead_1_.fireChannelRead(p_channelRead_2_);
-@@ -104,13 +104,11 @@
+             }
          }
      }
  
@@ -144,7 +148,7 @@
          ByteBuf bytebuf = Unpooled.buffer();
          bytebuf.writeByte(255);
          char[] achar = string.toCharArray();
-@@ -118,13 +118,11 @@
+         bytebuf.writeShort(achar.length);
          char[] achar1 = achar;
          int i = achar.length;
  
@@ -156,6 +160,3 @@
          }
  
          return bytebuf;
-     }
--}
-+}

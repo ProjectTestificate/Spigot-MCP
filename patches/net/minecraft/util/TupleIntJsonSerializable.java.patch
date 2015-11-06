@@ -1,6 +1,6 @@
----a/net/minecraft/util/TupleIntJsonSerializable.java
-+++b/net/minecraft/util/TupleIntJsonSerializable.java
-@@ -1,29 +1,25 @@
+--- decompiled\net\minecraft\util\TupleIntJsonSerializable.java
++++ src\main\java\net\minecraft\util\TupleIntJsonSerializable.java
+@@ -1,28 +1,24 @@
  package net.minecraft.util;
  
 -public class TupleIntJsonSerializable
@@ -34,5 +34,4 @@
 +    public void setJsonSerializableValue(IJsonSerializable jsonSerializableValueIn) {
          this.jsonSerializableValue = jsonSerializableValueIn;
      }
--}
-+}
+ }

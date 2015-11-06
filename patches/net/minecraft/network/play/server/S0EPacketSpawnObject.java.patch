@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S0EPacketSpawnObject.java
-+++b/net/minecraft/network/play/server/S0EPacketSpawnObject.java
-@@ -1,15 +1,15 @@
+--- decompiled\net\minecraft\network\play\server\S0EPacketSpawnObject.java
++++ src\main\java\net\minecraft\network\play\server\S0EPacketSpawnObject.java
+@@ -1,19 +1,19 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -22,7 +22,11 @@
      private int field_149018_a;
      private int field_149016_b;
      private int field_149017_c;
-@@ -25,14 +25,15 @@
+     private int field_149014_d;
+     private int field_149015_e;
+@@ -23,216 +23,125 @@
+     private int field_149022_i;
+     private int field_149019_j;
      private int field_149020_k;
      private static final String __OBFID = "CL_00001276";
  
@@ -42,7 +46,9 @@
          this.field_149018_a = p_i45166_1_.getEntityId();
          this.field_149016_b = MathHelper.floor_double(p_i45166_1_.posX * 32.0D);
          this.field_149017_c = MathHelper.floor_double(p_i45166_1_.posY * 32.0D);
-@@ -43,51 +43,43 @@
+         this.field_149014_d = MathHelper.floor_double(p_i45166_1_.posZ * 32.0D);
+         this.field_149021_h = MathHelper.floor_float(p_i45166_1_.rotationPitch * 256.0F / 360.0F);
+         this.field_149022_i = MathHelper.floor_float(p_i45166_1_.rotationYaw * 256.0F / 360.0F);
          this.field_149019_j = p_i45166_2_;
          this.field_149020_k = p_i45166_3_;
  
@@ -105,7 +111,9 @@
          this.field_149018_a = buf.readVarIntFromBuffer();
          this.field_149019_j = buf.readByte();
          this.field_149016_b = buf.readInt();
-@@ -97,16 +97,14 @@
+         this.field_149017_c = buf.readInt();
+         this.field_149014_d = buf.readInt();
+         this.field_149021_h = buf.readByte();
          this.field_149022_i = buf.readByte();
          this.field_149020_k = buf.readInt();
  
@@ -124,7 +132,9 @@
          buf.writeVarIntToBuffer(this.field_149018_a);
          buf.writeByte(this.field_149019_j);
          buf.writeInt(this.field_149016_b);
-@@ -116,89 +116,43 @@
+         buf.writeInt(this.field_149017_c);
+         buf.writeInt(this.field_149014_d);
+         buf.writeByte(this.field_149021_h);
          buf.writeByte(this.field_149022_i);
          buf.writeInt(this.field_149020_k);
  
@@ -257,5 +267,4 @@
 -    {
 -        this.field_149020_k = p_149002_1_;
 -    }
--}
-+}
+ }

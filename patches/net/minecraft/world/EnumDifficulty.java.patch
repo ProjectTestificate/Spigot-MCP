@@ -1,6 +1,6 @@
----a/net/minecraft/world/EnumDifficulty.java
-+++b/net/minecraft/world/EnumDifficulty.java
-@@ -1,7 +1,6 @@
+--- decompiled\net\minecraft\world\EnumDifficulty.java
++++ src\main\java\net\minecraft\world\EnumDifficulty.java
+@@ -1,47 +1,40 @@
  package net.minecraft.world;
  
 -public enum EnumDifficulty
@@ -9,7 +9,10 @@
      PEACEFUL(0, "options.difficulty.peaceful"),
      EASY(1, "options.difficulty.easy"),
      NORMAL(2, "options.difficulty.normal"),
-@@ -12,37 +12,30 @@
+     HARD(3, "options.difficulty.hard");
+     private static final EnumDifficulty[] difficultyEnums = new EnumDifficulty[values().length];
+     private final int difficultyId;
+     private final String difficultyResourceKey;
  
      private static final String __OBFID = "CL_00001510";
  
@@ -51,5 +54,4 @@
              difficultyEnums[var3.difficultyId] = var3;
          }
      }
--}
-+}
+ }

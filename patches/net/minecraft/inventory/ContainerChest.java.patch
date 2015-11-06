@@ -1,6 +1,6 @@
----a/net/minecraft/inventory/ContainerChest.java
-+++b/net/minecraft/inventory/ContainerChest.java
-@@ -1,72 +1,96 @@
+--- decompiled\net\minecraft\inventory\ContainerChest.java
++++ src\main\java\net\minecraft\inventory\ContainerChest.java
+@@ -1,93 +1,111 @@
  package net.minecraft.inventory;
  
  import net.minecraft.entity.player.EntityPlayer;
@@ -133,7 +133,7 @@
                  slot.onSlotChanged();
              }
          }
-@@ -80,15 +80,12 @@
+ 
          return itemstack;
      }
  
@@ -149,5 +149,4 @@
 +    public IInventory getLowerChestInventory() {
          return this.lowerChestInventory;
      }
--}
-+}
+ }

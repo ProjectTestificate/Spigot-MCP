@@ -1,6 +1,6 @@
----a/net/minecraft/command/server/CommandTestFor.java
-+++b/net/minecraft/command/server/CommandTestFor.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\command\server\CommandTestFor.java
++++ src\main\java\net\minecraft\command\server\CommandTestFor.java
+@@ -1,8 +1,9 @@
  package net.minecraft.command.server;
  
  import java.util.List;
@@ -8,7 +8,11 @@
  import net.minecraft.command.CommandBase;
  import net.minecraft.command.CommandException;
  import net.minecraft.command.ICommandSender;
-@@ -12,71 +12,56 @@
+ import net.minecraft.command.WrongUsageException;
+ import net.minecraft.entity.Entity;
+@@ -10,72 +11,57 @@
+ import net.minecraft.nbt.NBTException;
+ import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.BlockPos;
  
@@ -96,5 +100,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
          return args.length == 1 ? getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames()) : null;
      }
--}
-+}
+ }

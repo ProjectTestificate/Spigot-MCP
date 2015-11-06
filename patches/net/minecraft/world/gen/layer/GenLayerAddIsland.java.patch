@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/layer/GenLayerAddIsland.java
-+++b/net/minecraft/world/gen/layer/GenLayerAddIsland.java
-@@ -1,17 +1,16 @@
+--- decompiled\net\minecraft\world\gen\layer\GenLayerAddIsland.java
++++ src\main\java\net\minecraft\world\gen\layer\GenLayerAddIsland.java
+@@ -1,95 +1,71 @@
  package net.minecraft.world.gen.layer;
  
 -public class GenLayerAddIsland extends GenLayer
@@ -22,7 +22,7 @@
          int i1 = areaX - 1;
          int j1 = areaY - 1;
          int k1 = areaWidth + 2;
-@@ -19,76 +19,54 @@
+         int l1 = areaHeight + 2;
          int[] aint = this.parent.getInts(i1, j1, k1, l1);
          int[] aint1 = IntCache.getIntCache(areaWidth * areaHeight);
  
@@ -115,9 +115,5 @@
                      aint1[j2 + i2 * areaWidth] = k3;
                  }
              }
-@@ -95,4 +95,4 @@
+         }
  
-         return aint1;
-     }
--}
-+}

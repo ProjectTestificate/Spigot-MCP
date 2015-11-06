@@ -1,6 +1,8 @@
----a/net/minecraft/inventory/ISidedInventory.java
-+++b/net/minecraft/inventory/ISidedInventory.java
-@@ -3,12 +3,12 @@
+--- decompiled\net\minecraft\inventory\ISidedInventory.java
++++ src\main\java\net\minecraft\inventory\ISidedInventory.java
+@@ -1,12 +1,12 @@
+ package net.minecraft.inventory;
+ 
  import net.minecraft.item.ItemStack;
  import net.minecraft.util.EnumFacing;
  
@@ -13,5 +15,3 @@
      boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction);
  
      boolean canExtractItem(int index, ItemStack stack, EnumFacing direction);
--}
-+}

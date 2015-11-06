@@ -1,6 +1,8 @@
----a/net/minecraft/world/gen/layer/GenLayerShore.java
-+++b/net/minecraft/world/gen/layer/GenLayerShore.java
-@@ -4,23 +4,21 @@
+--- decompiled\net\minecraft\world\gen\layer\GenLayerShore.java
++++ src\main\java\net\minecraft\world\gen\layer\GenLayerShore.java
+@@ -2,168 +2,122 @@
+ 
+ import net.minecraft.world.biome.BiomeGenBase;
  import net.minecraft.world.biome.BiomeGenJungle;
  import net.minecraft.world.biome.BiomeGenMesa;
  
@@ -34,7 +36,7 @@
                  int k1 = aint[j1 + 1 + (i1 + 1) * (areaWidth + 2)];
                  BiomeGenBase biomegenbase = BiomeGenBase.getBiome(k1);
                  int l1;
-@@ -31,99 +31,67 @@
+                 int i2;
                  int j2;
                  int k2;
  
@@ -156,7 +158,8 @@
                      this.func_151632_a(aint, aint1, j1, i1, areaWidth, k1, BiomeGenBase.stoneBeach.biomeID);
                  }
              }
-@@ -133,40 +133,29 @@
+         }
+ 
          return aint1;
      }
  
@@ -200,5 +203,4 @@
 +    private boolean func_151633_d(int p_151633_1_) {
          return BiomeGenBase.getBiome(p_151633_1_) instanceof BiomeGenMesa;
      }
--}
-+}
+ }

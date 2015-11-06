@@ -1,6 +1,6 @@
----a/net/minecraft/util/Cartesian.java
-+++b/net/minecraft/util/Cartesian.java
-@@ -1,9 +1,5 @@
+--- decompiled\net\minecraft\util\Cartesian.java
++++ src\main\java\net\minecraft\util\Cartesian.java
+@@ -1,210 +1,179 @@
  package net.minecraft.util;
  
 -import com.google.common.base.Function;
@@ -10,7 +10,8 @@
  import java.lang.reflect.Array;
  import java.util.ArrayList;
  import java.util.Arrays;
-@@ -12,200 +12,177 @@
+ import java.util.Collections;
+ import java.util.Iterator;
  import java.util.List;
  import java.util.NoSuchElementException;
  
@@ -322,6 +323,5 @@
 +                this(p_i46019_1_, p_i46019_2_);
 +            }
          }
--}
 +    }
-+}
+ }

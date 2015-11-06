@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S3CPacketUpdateScore.java
-+++b/net/minecraft/network/play/server/S3CPacketUpdateScore.java
-@@ -1,111 +1,79 @@
+--- decompiled\net\minecraft\network\play\server\S3CPacketUpdateScore.java
++++ src\main\java\net\minecraft\network\play\server\S3CPacketUpdateScore.java
+@@ -1,111 +1,78 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -130,5 +130,3 @@
  
          private static final String __OBFID = "CL_00002288";
      }
--}
-+}

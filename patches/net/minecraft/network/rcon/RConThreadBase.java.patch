@@ -1,6 +1,6 @@
----a/net/minecraft/network/rcon/RConThreadBase.java
-+++b/net/minecraft/network/rcon/RConThreadBase.java
-@@ -1,16 +1,12 @@
+--- decompiled\net\minecraft\network\rcon\RConThreadBase.java
++++ src\main\java\net\minecraft\network\rcon\RConThreadBase.java
+@@ -1,186 +1,151 @@
  package net.minecraft.network.rcon;
  
 -import com.google.common.collect.Lists;
@@ -23,7 +23,10 @@
      private static final AtomicInteger THREAD_ID = new AtomicInteger(0);
      protected boolean running;
      protected IServer server;
-@@ -23,80 +23,64 @@
+     protected final String threadName;
+     protected Thread rconThread;
+     protected int field_72615_d = 5;
+     protected List socketList = Lists.newArrayList();
      protected List serverSocketList = Lists.newArrayList();
      private static final String __OBFID = "CL_00001801";
  
@@ -119,7 +122,7 @@
                  this.socketList.remove(socket);
              }
  
-@@ -104,38 +104,28 @@
+             return flag1;
          }
      }
  
@@ -166,7 +169,7 @@
                  this.serverSocketList.remove(socket);
              }
  
-@@ -143,22 +143,18 @@
+             return flag1;
          }
      }
  
@@ -194,7 +197,7 @@
                  ++i;
              }
          }
-@@ -166,23 +166,19 @@
+ 
          this.socketList.clear();
          iterator = this.serverSocketList.iterator();
  
@@ -219,5 +222,4 @@
              this.logWarning("Force closed " + i + " sockets");
          }
      }
--}
-+}
+ }

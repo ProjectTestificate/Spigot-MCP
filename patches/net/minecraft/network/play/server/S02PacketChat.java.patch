@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S02PacketChat.java
-+++b/net/minecraft/network/play/server/S02PacketChat.java
-@@ -1,63 +1,60 @@
+--- decompiled\net\minecraft\network\play\server\S02PacketChat.java
++++ src\main\java\net\minecraft\network\play\server\S02PacketChat.java
+@@ -1,69 +1,59 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -93,5 +93,4 @@
 -    {
 -        this.processPacket((INetHandlerPlayClient)handler);
 -    }
--}
-+}
+ }

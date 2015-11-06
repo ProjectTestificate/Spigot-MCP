@@ -1,6 +1,6 @@
----a/net/minecraft/enchantment/Enchantment.java
-+++b/net/minecraft/enchantment/Enchantment.java
-@@ -1,12 +1,8 @@
+--- decompiled\net\minecraft\enchantment\Enchantment.java
++++ src\main\java\net\minecraft\enchantment\Enchantment.java
+@@ -1,22 +1,27 @@
  package net.minecraft.enchantment;
  
 -import com.google.common.collect.Lists;
@@ -12,7 +12,8 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.EnumCreatureAttribute;
-@@ -13,8 +13,14 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.util.DamageSource;
  import net.minecraft.util.ResourceLocation;
  import net.minecraft.util.StatCollector;
  
@@ -29,7 +30,11 @@
      private static final Enchantment[] enchantmentsList = new Enchantment[256];
      public static final Enchantment[] enchantmentsBookList;
      private static final Map locationEnchantments = Maps.newHashMap();
-@@ -49,130 +49,110 @@
+     public static final Enchantment protection = new EnchantmentProtection(0, new ResourceLocation("protection"), 10, 0);
+     public static final Enchantment fireProtection = new EnchantmentProtection(1, new ResourceLocation("fire_protection"), 5, 1);
+@@ -47,131 +52,112 @@
+     private final int weight;
+     public EnumEnchantmentType type;
      protected String name;
      private static final String __OBFID = "CL_00000105";
  
@@ -189,5 +194,4 @@
 -        enchantmentsBookList = (Enchantment[])var0.toArray(new Enchantment[var0.size()]);
 +        enchantmentsBookList = (Enchantment[]) var0.toArray(new Enchantment[var0.size()]);
      }
--}
-+}
+ }

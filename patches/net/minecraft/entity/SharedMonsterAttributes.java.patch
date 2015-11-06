@@ -1,6 +1,8 @@
----a/net/minecraft/entity/SharedMonsterAttributes.java
-+++b/net/minecraft/entity/SharedMonsterAttributes.java
-@@ -3,6 +3,7 @@
+--- decompiled\net\minecraft\entity\SharedMonsterAttributes.java
++++ src\main\java\net\minecraft\entity\SharedMonsterAttributes.java
+@@ -1,139 +1,122 @@
+ package net.minecraft.entity;
+ 
  import java.util.Collection;
  import java.util.Iterator;
  import java.util.UUID;
@@ -8,7 +10,7 @@
  import net.minecraft.entity.ai.attributes.AttributeModifier;
  import net.minecraft.entity.ai.attributes.BaseAttributeMap;
  import net.minecraft.entity.ai.attributes.IAttribute;
-@@ -10,50 +10,49 @@
+ import net.minecraft.entity.ai.attributes.IAttributeInstance;
  import net.minecraft.entity.ai.attributes.RangedAttribute;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.nbt.NBTTagList;
@@ -79,7 +81,10 @@
                      nbttaglist.appendTag(writeAttributeModifierToNBT(attributemodifier));
                  }
              }
-@@ -66,8 +66,7 @@
+ 
+             nbttagcompound.setTag("Modifiers", nbttaglist);
+         }
+ 
          return nbttagcompound;
      }
  
@@ -89,7 +94,9 @@
          NBTTagCompound nbttagcompound = new NBTTagCompound();
          nbttagcompound.setString("Name", p_111262_0_.getName());
          nbttagcompound.setDouble("Amount", p_111262_0_.getAmount());
-@@ -77,44 +77,33 @@
+         nbttagcompound.setInteger("Operation", p_111262_0_.getOperation());
+         nbttagcompound.setLong("UUIDMost", p_111262_0_.getID().getMostSignificantBits());
+         nbttagcompound.setLong("UUIDLeast", p_111262_0_.getID().getLeastSignificantBits());
          return nbttagcompound;
      }
  
@@ -141,7 +148,9 @@
                          p_111258_0_.removeModifier(attributemodifier1);
                      }
  
-@@ -122,19 +122,14 @@
+                     p_111258_0_.applyModifier(attributemodifier);
+                 }
+             }
          }
      }
  
@@ -162,5 +171,4 @@
              return null;
          }
      }
--}
-+}
+ }

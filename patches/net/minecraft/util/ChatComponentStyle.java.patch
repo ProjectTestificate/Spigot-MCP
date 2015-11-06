@@ -1,6 +1,6 @@
----a/net/minecraft/util/ChatComponentStyle.java
-+++b/net/minecraft/util/ChatComponentStyle.java
-@@ -1,57 +1,52 @@
+--- decompiled\net\minecraft\util\ChatComponentStyle.java
++++ src\main\java\net\minecraft\util\ChatComponentStyle.java
+@@ -1,158 +1,120 @@
  package net.minecraft.util;
  
 +import java.util.Iterator;
@@ -76,7 +76,7 @@
                  ichatcomponent.getChatStyle().setParentStyle(this.style);
              }
          }
-@@ -62,99 +62,69 @@
+ 
          return this.style;
      }
  
@@ -200,5 +200,4 @@
 +    public String toString() {
          return "BaseComponent{style=" + this.style + ", siblings=" + this.siblings + '}';
      }
--}
-+}
+ }

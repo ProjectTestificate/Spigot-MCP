@@ -1,6 +1,6 @@
----a/net/minecraft/command/server/CommandWhitelist.java
-+++b/net/minecraft/command/server/CommandWhitelist.java
-@@ -1,8 +1,6 @@
+--- decompiled\net\minecraft\command\server\CommandWhitelist.java
++++ src\main\java\net\minecraft\command\server\CommandWhitelist.java
+@@ -1,127 +1,99 @@
  package net.minecraft.command.server;
  
 -import com.mojang.authlib.GameProfile;
@@ -9,7 +9,9 @@
  import net.minecraft.command.CommandBase;
  import net.minecraft.command.CommandException;
  import net.minecraft.command.ICommandSender;
-@@ -11,89 +11,72 @@
+ import net.minecraft.command.WrongUsageException;
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.ChatComponentText;
  import net.minecraft.util.ChatComponentTranslation;
  
@@ -127,7 +129,7 @@
                      minecraftserver.getConfigurationManager().loadWhiteList();
                      notifyOperators(sender, this, "commands.whitelist.reloaded", new Object[0]);
                  }
-@@ -103,33 +103,21 @@
+             }
          }
      }
  
@@ -158,9 +160,5 @@
                      return getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getPlayerProfileCache().func_152654_a());
                  }
              }
-@@ -127,4 +127,4 @@
+ 
              return null;
-         }
-     }
--}
-+}

@@ -1,6 +1,6 @@
----a/net/minecraft/command/server/CommandBlockLogic.java
-+++b/net/minecraft/command/server/CommandBlockLogic.java
-@@ -1,25 +1,27 @@
+--- decompiled\net\minecraft\command\server\CommandBlockLogic.java
++++ src\main\java\net\minecraft\command\server\CommandBlockLogic.java
+@@ -1,223 +1,322 @@
  package net.minecraft.command.server;
  
 -import io.netty.buffer.ByteBuf;
@@ -40,7 +40,7 @@
      private static final SimpleDateFormat timestampFormat = new SimpleDateFormat("HH:mm:ss");
      private int successCount;
      private boolean trackOutput = true;
-@@ -28,182 +28,278 @@
+     private IChatComponent lastOutput = null;
      private String commandStored = "";
      private String customName = "@";
      private final CommandResultStats resultStats = new CommandResultStats();
@@ -400,7 +400,7 @@
                  p_175574_1_.openEditCommandBlock(this);
              }
  
-@@ -216,9 +216,7 @@
+             return true;
          }
      }
  
@@ -409,5 +409,4 @@
 +    public CommandResultStats getCommandResultStats() {
          return this.resultStats;
      }
--}
-+}
+ }

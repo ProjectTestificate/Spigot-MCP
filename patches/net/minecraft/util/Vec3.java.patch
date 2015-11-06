@@ -1,6 +1,6 @@
----a/net/minecraft/util/Vec3.java
-+++b/net/minecraft/util/Vec3.java
-@@ -1,29 +1,22 @@
+--- decompiled\net\minecraft\util\Vec3.java
++++ src\main\java\net\minecraft\util\Vec3.java
+@@ -1,174 +1,132 @@
  package net.minecraft.util;
  
 -import net.minecraftforge.fml.relauncher.Side;
@@ -36,7 +36,8 @@
              z = 0.0D;
          }
  
-@@ -32,151 +32,108 @@
+         this.xCoord = x;
+         this.yCoord = y;
          this.zCoord = z;
      }
  
@@ -207,5 +208,4 @@
 +        double d2 = this.zCoord * (double) f1 - this.xCoord * (double) f2;
          return new Vec3(d0, d1, d2);
      }
--}
-+}
+ }

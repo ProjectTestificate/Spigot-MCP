@@ -1,6 +1,6 @@
----a/net/minecraft/entity/player/InventoryPlayer.java
-+++b/net/minecraft/entity/player/InventoryPlayer.java
-@@ -1,6 +1,10 @@
+--- decompiled\net\minecraft\entity\player\InventoryPlayer.java
++++ src\main\java\net\minecraft\entity\player\InventoryPlayer.java
+@@ -1,8 +1,11 @@
  package net.minecraft.entity.player;
  
 +import java.util.ArrayList;
@@ -10,7 +10,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.command.server.CommandTestForBlock;
  import net.minecraft.crash.CrashReport;
-@@ -15,11 +15,7 @@
+ import net.minecraft.crash.CrashReportCategory;
+ import net.minecraft.inventory.IInventory;
+@@ -13,763 +16,603 @@
+ import net.minecraft.nbt.NBTTagList;
+ import net.minecraft.util.ChatComponentText;
  import net.minecraft.util.ChatComponentTranslation;
  import net.minecraft.util.IChatComponent;
  import net.minecraft.util.ReportedException;
@@ -27,7 +31,8 @@
      public ItemStack[] mainInventory = new ItemStack[36];
      public ItemStack[] armorInventory = new ItemStack[4];
      public int currentItem;
-@@ -28,23 +28,87 @@
+     public EntityPlayer player;
+     private ItemStack itemStack;
      public boolean inventoryChanged;
      private static final String __OBFID = "CL_00001709";
  
@@ -95,7 +100,7 @@
                  return i;
              }
          }
-@@ -56,41 +56,36 @@
+ 
          return -1;
      }
  
@@ -154,7 +159,7 @@
                  return i;
              }
          }
-@@ -96,174 +96,78 @@
+ 
          return -1;
      }
  
@@ -308,7 +313,8 @@
                      return k;
                  }
              }
-@@ -233,98 +233,39 @@
+         }
+ 
          return k;
      }
  
@@ -395,7 +401,8 @@
                  i -= k;
                  this.mainInventory[j].stackSize += k;
                  this.mainInventory[j].animationsToGo = 5;
-@@ -310,30 +310,22 @@
+                 return i;
+             }
          }
      }
  
@@ -432,7 +439,7 @@
                  this.mainInventory[i] = null;
              }
  
-@@ -340,150 +340,113 @@
+             return true;
          }
      }
  
@@ -615,7 +622,7 @@
              index -= aitemstack.length;
              aitemstack = this.armorInventory;
          }
-@@ -491,41 +491,33 @@
+ 
          aitemstack[index] = stack;
      }
  
@@ -665,7 +672,8 @@
                  this.armorInventory[i].writeToNBT(nbttagcompound);
                  p_70442_1_.appendTag(nbttagcompound);
              }
-@@ -533,43 +533,35 @@
+         }
+ 
          return p_70442_1_;
      }
  
@@ -717,7 +725,7 @@
              index -= aitemstack.length;
              aitemstack = this.armorInventory;
          }
-@@ -577,50 +577,39 @@
+ 
          return aitemstack[index];
      }
  
@@ -785,7 +793,7 @@
                  i += k;
              }
          }
-@@ -631,86 +631,73 @@
+ 
          return i;
      }
  
@@ -899,7 +907,7 @@
                  return true;
              }
          }
-@@ -720,56 +720,51 @@
+ 
          return false;
      }
  
@@ -970,5 +978,4 @@
              this.armorInventory[i] = null;
          }
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandSpreadPlayers.java
-+++b/net/minecraft/command/CommandSpreadPlayers.java
-@@ -1,17 +1,11 @@
+--- decompiled\net\minecraft\command\CommandSpreadPlayers.java
++++ src\main\java\net\minecraft\command\CommandSpreadPlayers.java
+@@ -1,404 +1,344 @@
  package net.minecraft.command;
  
 -import com.google.common.collect.Lists;
@@ -16,7 +16,10 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.player.EntityPlayer;
-@@ -19,64 +19,58 @@
+ import net.minecraft.entity.player.EntityPlayerMP;
+ import net.minecraft.scoreboard.Team;
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.ChatComponentTranslation;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
@@ -103,7 +106,9 @@
                          throw new PlayerNotFoundException();
                      }
  
-@@ -88,20 +88,16 @@
+                     arraylist.add(entityplayermp);
+                 }
+             }
  
              sender.setCommandStat(CommandResultStats.Type.AFFECTED_ENTITIES, arraylist.size());
  
@@ -129,7 +134,8 @@
          Random random = new Random();
          double d2 = p_110669_3_.field_111101_a - p_110669_6_;
          double d3 = p_110669_3_.field_111100_b - p_110669_6_;
-@@ -110,64 +110,53 @@
+         double d4 = p_110669_3_.field_111101_a + p_110669_6_;
+         double d5 = p_110669_3_.field_111100_b + p_110669_6_;
          CommandSpreadPlayers.Position[] aposition = this.func_110670_a(random, p_110669_9_ ? this.func_110667_a(p_110669_2_) : p_110669_2_.size(), d2, d3, d4, d5);
          int i = this.func_110668_a(p_110669_3_, p_110669_4_, worldIn, random, d2, d3, d4, d5, aposition, p_110669_9_);
          double d6 = this.func_110671_a(p_110669_2_, worldIn, aposition, p_110669_9_);
@@ -211,7 +217,7 @@
                              ++k;
                              position1.field_111101_a += position2.field_111101_a - position.field_111101_a;
                              position1.field_111100_b += position2.field_111100_b - position.field_111100_b;
-@@ -176,45 +176,37 @@
+                         }
                      }
                  }
  
@@ -264,7 +270,7 @@
                          position1.func_111097_a(p_110668_5_, p_110668_6_, p_110668_8_, p_110668_10_, p_110668_12_);
                          flag1 = true;
                      }
-@@ -219,52 +219,40 @@
+                 }
              }
          }
  
@@ -329,7 +335,8 @@
                      double d1 = position.func_111099_a(p_110671_3_[k]);
                      d2 = Math.min(d1, d2);
                  }
-@@ -271,15 +271,14 @@
+             }
+ 
              d0 += d2;
          }
  
@@ -349,7 +356,8 @@
              CommandSpreadPlayers.Position position = new CommandSpreadPlayers.Position();
              position.func_111097_a(p_110670_1_, p_110670_3_, p_110670_5_, p_110670_7_, p_110670_9_);
              aposition[j] = position;
-@@ -289,120 +289,90 @@
+         }
+ 
          return aposition;
      }
  
@@ -528,7 +536,6 @@
 -            }
 +            return !material.isLiquid() && material != Material.fire;
          }
--}
 +
 +        public void func_111097_a(Random p_111097_1_, double p_111097_2_, double p_111097_4_, double p_111097_6_, double p_111097_8_) {
 +            this.field_111101_a = MathHelper.getRandomDoubleInRange(p_111097_1_, p_111097_2_, p_111097_6_);
@@ -542,4 +549,4 @@
 +        }
 +        // CraftBukkit end
 +    }
-+}
+ }

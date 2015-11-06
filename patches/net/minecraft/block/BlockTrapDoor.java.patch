@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockTrapDoor.java
-+++b/net/minecraft/block/BlockTrapDoor.java
-@@ -14,23 +14,21 @@
+--- decompiled\net\minecraft\block\BlockTrapDoor.java
++++ src\main\java\net\minecraft\block\BlockTrapDoor.java
+@@ -12,190 +12,161 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.init.Blocks;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -30,7 +32,8 @@
          super(materialIn);
          this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(OPEN, Boolean.valueOf(false)).withProperty(HALF, BlockTrapDoor.DoorHalf.BOTTOM));
          float f = 0.5F;
-@@ -40,144 +40,120 @@
+         float f1 = 1.0F;
+         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
          this.setCreativeTab(CreativeTabs.tabRedstone);
      }
  
@@ -222,7 +225,7 @@
              iblockstate = iblockstate.withProperty(FACING, facing).withProperty(OPEN, Boolean.valueOf(false));
              iblockstate = iblockstate.withProperty(HALF, hitY > 0.5F ? BlockTrapDoor.DoorHalf.TOP : BlockTrapDoor.DoorHalf.BOTTOM);
          }
-@@ -185,13 +185,11 @@
+ 
          return iblockstate;
      }
  
@@ -241,7 +244,11 @@
              case 0:
                  return EnumFacing.NORTH;
              case 1:
-@@ -206,10 +206,8 @@
+                 return EnumFacing.SOUTH;
+             case 2:
+@@ -204,14 +175,12 @@
+             default:
+                 return EnumFacing.EAST;
          }
      }
  
@@ -254,7 +261,11 @@
              case 1:
                  return 0;
              case 2:
-@@ -222,112 +222,81 @@
+                 return 1;
+             case 3:
+@@ -220,113 +189,84 @@
+             default:
+                 return 3;
          }
      }
  
@@ -401,6 +412,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/command/ICommandSender.java
-+++b/net/minecraft/command/ICommandSender.java
-@@ -6,8 +6,8 @@
+--- decompiled\net\minecraft\command\ICommandSender.java
++++ src\main\java\net\minecraft\command\ICommandSender.java
+@@ -4,12 +4,12 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.IChatComponent;
  import net.minecraft.util.Vec3;
  import net.minecraft.world.World;
  
@@ -11,9 +13,5 @@
      String getName();
  
      IChatComponent getDisplayName();
-@@ -27,4 +27,4 @@
-     boolean sendCommandFeedback();
  
-     void setCommandStat(CommandResultStats.Type type, int amount);
--}
-+}
+     void addChatMessage(IChatComponent message);

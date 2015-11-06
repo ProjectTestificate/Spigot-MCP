@@ -1,6 +1,6 @@
----a/net/minecraft/world/storage/MapStorage.java
-+++b/net/minecraft/world/storage/MapStorage.java
-@@ -1,7 +1,5 @@
+--- decompiled\net\minecraft\world\storage\MapStorage.java
++++ src\main\java\net\minecraft\world\storage\MapStorage.java
+@@ -1,221 +1,178 @@
  package net.minecraft.world.storage;
  
 -import com.google.common.collect.Lists;
@@ -8,7 +8,8 @@
  import java.io.DataInputStream;
  import java.io.DataOutputStream;
  import java.io.File;
-@@ -10,42 +10,40 @@
+ import java.io.FileInputStream;
+ import java.io.FileOutputStream;
  import java.util.Iterator;
  import java.util.List;
  import java.util.Map;
@@ -77,7 +78,8 @@
                              throw new RuntimeException("Failed to instantiate " + p_75742_1_.toString(), exception);
                          }
  
-@@ -62,16 +62,12 @@
+                         FileInputStream fileinputstream = new FileInputStream(file1);
+                         NBTTagCompound nbttagcompound = CompressedStreamTools.readCompressed(fileinputstream);
                          fileinputstream.close();
                          worldsaveddata.readFromNBT(nbttagcompound.getCompoundTag("data"));
                      }
@@ -95,7 +97,8 @@
                  this.loadedDataMap.put(p_75742_2_, worldsaveddata);
                  this.loadedDataList.add(worldsaveddata);
              }
-@@ -79,10 +79,8 @@
+ 
+             return worldsaveddata;
          }
      }
  
@@ -108,7 +111,7 @@
              this.loadedDataList.remove(this.loadedDataMap.remove(p_75745_1_));
          }
  
-@@ -90,33 +90,25 @@
+         this.loadedDataMap.put(p_75745_1_, p_75745_2_);
          this.loadedDataList.add(p_75745_2_);
      }
  
@@ -147,7 +150,8 @@
                      NBTTagCompound nbttagcompound = new NBTTagCompound();
                      p_75747_1_.writeToNBT(nbttagcompound);
                      NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-@@ -122,87 +122,66 @@
+                     nbttagcompound1.setTag("data", nbttagcompound);
+                     FileOutputStream fileoutputstream = new FileOutputStream(file1);
                      CompressedStreamTools.writeCompressed(nbttagcompound1, fileoutputstream);
                      fileoutputstream.close();
                  }
@@ -259,7 +263,7 @@
                          nbttagcompound.setShort(s1, short1);
                      }
  
-@@ -211,15 +211,11 @@
+                     DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(file1));
                      CompressedStreamTools.write(nbttagcompound, dataoutputstream);
                      dataoutputstream.close();
                  }
@@ -272,6 +276,3 @@
  
              return oshort.shortValue();
          }
-     }
--}
-+}

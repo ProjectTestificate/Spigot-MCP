@@ -1,6 +1,7 @@
----a/net/minecraft/stats/ObjectiveStat.java
-+++b/net/minecraft/stats/ObjectiveStat.java
-@@ -2,15 +2,14 @@
+--- decompiled\net\minecraft\stats\ObjectiveStat.java
++++ src\main\java\net\minecraft\stats\ObjectiveStat.java
+@@ -1,15 +1,14 @@
+ package net.minecraft.stats;
  
  import net.minecraft.scoreboard.ScoreDummyCriteria;
  
@@ -17,5 +18,4 @@
          super(p_i45483_1_.statId);
          this.field_151459_g = p_i45483_1_;
      }
--}
-+}
+ }

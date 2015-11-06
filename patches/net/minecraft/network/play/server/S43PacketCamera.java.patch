@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S43PacketCamera.java
-+++b/net/minecraft/network/play/server/S43PacketCamera.java
-@@ -1,44 +1,39 @@
+--- decompiled\net\minecraft\network\play\server\S43PacketCamera.java
++++ src\main\java\net\minecraft\network\play\server\S43PacketCamera.java
+@@ -1,50 +1,39 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -62,5 +62,4 @@
 -    {
 -        this.func_179779_a((INetHandlerPlayClient)handler);
 -    }
--}
-+}
+ }

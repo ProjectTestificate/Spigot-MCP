@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/layer/GenLayerIsland.java
-+++b/net/minecraft/world/gen/layer/GenLayerIsland.java
-@@ -1,33 +1,28 @@
+--- decompiled\net\minecraft\world\gen\layer\GenLayerIsland.java
++++ src\main\java\net\minecraft\world\gen\layer\GenLayerIsland.java
+@@ -1,31 +1,26 @@
  package net.minecraft.world.gen.layer;
  
 -public class GenLayerIsland extends GenLayer
@@ -40,5 +40,3 @@
  
          return aint;
      }
--}
-+}

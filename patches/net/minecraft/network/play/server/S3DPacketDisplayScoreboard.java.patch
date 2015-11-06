@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S3DPacketDisplayScoreboard.java
-+++b/net/minecraft/network/play/server/S3DPacketDisplayScoreboard.java
-@@ -1,55 +1,48 @@
+--- decompiled\net\minecraft\network\play\server\S3DPacketDisplayScoreboard.java
++++ src\main\java\net\minecraft\network\play\server\S3DPacketDisplayScoreboard.java
+@@ -1,67 +1,48 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -81,5 +81,4 @@
 -    {
 -        return this.field_149373_b;
 -    }
--}
-+}
+ }

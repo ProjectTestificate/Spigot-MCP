@@ -1,6 +1,6 @@
----a/net/minecraft/command/server/CommandOp.java
-+++b/net/minecraft/command/server/CommandOp.java
-@@ -1,11 +1,7 @@
+--- decompiled\net\minecraft\command\server\CommandOp.java
++++ src\main\java\net\minecraft\command\server\CommandOp.java
+@@ -1,82 +1,68 @@
  package net.minecraft.command.server;
  
 -import com.google.common.collect.Lists;
@@ -11,7 +11,7 @@
  import net.minecraft.command.CommandBase;
  import net.minecraft.command.CommandException;
  import net.minecraft.command.ICommandSender;
-@@ -11,73 +11,63 @@
+ import net.minecraft.command.WrongUsageException;
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.BlockPos;
  
@@ -103,5 +103,4 @@
              return null;
          }
      }
--}
-+}
+ }

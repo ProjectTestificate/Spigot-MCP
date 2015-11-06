@@ -1,13 +1,17 @@
----a/net/minecraft/network/rcon/RConThreadQuery.java
-+++b/net/minecraft/network/rcon/RConThreadQuery.java
-@@ -1,6 +1,5 @@
+--- decompiled\net\minecraft\network\rcon\RConThreadQuery.java
++++ src\main\java\net\minecraft\network\rcon\RConThreadQuery.java
+@@ -1,8 +1,7 @@
  package net.minecraft.network.rcon;
  
 -import com.google.common.collect.Maps;
  import java.io.IOException;
  import java.net.DatagramPacket;
  import java.net.DatagramSocket;
-@@ -13,13 +13,11 @@
+ import java.net.InetAddress;
+ import java.net.PortUnreachableException;
+@@ -11,19 +10,19 @@
+ import java.net.SocketTimeoutException;
+ import java.net.UnknownHostException;
  import java.util.Date;
  import java.util.Iterator;
  import java.util.Map;
@@ -29,7 +33,11 @@
      private long lastAuthCheckTime;
      private int queryPort;
      private int serverPort;
-@@ -40,8 +40,7 @@
+     private int maxPlayers;
+     private String serverMotd;
+@@ -38,43 +37,35 @@
+     private long time;
+     private RConOutputStream output;
      private long lastQueryResponseTime;
      private static final String __OBFID = "CL_00001802";
  
@@ -39,7 +47,10 @@
          super(p_i1536_1_, "Query Listener");
          this.queryPort = p_i1536_1_.getIntProperty("query.port", 0);
          this.serverHostname = p_i1536_1_.getHostname();
-@@ -52,27 +52,20 @@
+         this.serverPort = p_i1536_1_.getPort();
+         this.serverMotd = p_i1536_1_.getMotd();
+         this.maxPlayers = p_i1536_1_.getMaxPlayers();
+         this.worldName = p_i1536_1_.getFolderName();
          this.lastQueryResponseTime = 0L;
          this.queryHostname = "0.0.0.0";
  
@@ -72,7 +83,11 @@
              this.queryPort = this.serverPort;
              this.logInfo("Setting default query port to " + this.queryPort);
              p_i1536_1_.setProperty("query.port", Integer.valueOf(this.queryPort));
-@@ -86,36 +86,28 @@
+             p_i1536_1_.setProperty("debug", Boolean.valueOf(false));
+             p_i1536_1_.saveProperties();
+@@ -84,50 +75,41 @@
+         this.output = new RConOutputStream(1460);
+         this.queryClients = Maps.newHashMap();
          this.time = (new Date()).getTime();
      }
  
@@ -117,7 +132,8 @@
                          RConOutputStream rconoutputstream = new RConOutputStream(1460);
                          rconoutputstream.writeInt(0);
                          rconoutputstream.writeByteArray(this.getRequestID(requestPacket.getSocketAddress()));
-@@ -125,7 +125,7 @@
+                         rconoutputstream.writeString(this.serverMotd);
+                         rconoutputstream.writeString("SMP");
                          rconoutputstream.writeString(this.worldName);
                          rconoutputstream.writeString(Integer.toString(this.getNumberOfPlayers()));
                          rconoutputstream.writeString(Integer.toString(this.maxPlayers));
@@ -126,7 +142,11 @@
                          rconoutputstream.writeString(this.queryHostname);
                          this.sendResponsePacket(rconoutputstream.toByteArray(), requestPacket);
                          this.logDebug("Status [" + socketaddress + "]");
-@@ -137,21 +137,16 @@
+                     }
+                 case 9:
+@@ -135,34 +117,28 @@
+                     this.logDebug("Challenge [" + socketaddress + "]");
+                     return true;
                  default:
                      return true;
              }
@@ -150,7 +170,7 @@
              byte[] abyte = this.output.toByteArray();
              byte[] abyte1 = this.getRequestID(requestPacket.getSocketAddress());
              abyte[1] = abyte1[0];
-@@ -158,9 +158,7 @@
+             abyte[2] = abyte1[1];
              abyte[3] = abyte1[2];
              abyte[4] = abyte1[3];
              return abyte;
@@ -161,7 +181,11 @@
              this.lastQueryResponseTime = i;
              this.output.reset();
              this.output.writeInt(0);
-@@ -196,8 +196,7 @@
+             this.output.writeByteArray(this.getRequestID(requestPacket.getSocketAddress()));
+             this.output.writeString("splitnum");
+@@ -194,204 +170,157 @@
+             this.output.writeInt(0);
+             String[] astring = this.server.getAllUsernames();
              String[] astring1 = astring;
              int j = astring.length;
  
@@ -171,7 +195,9 @@
                  String s = astring1[k];
                  this.output.writeString(s);
              }
-@@ -207,51 +207,40 @@
+ 
+             this.output.writeInt(0);
+             return this.output.toByteArray();
          }
      }
  
@@ -235,7 +261,7 @@
                          iterator.remove();
                      }
                  }
-@@ -258,101 +258,71 @@
+             }
          }
      }
  
@@ -361,7 +387,7 @@
          private long timestamp = (new Date()).getTime();
          private int randomChallenge;
          private byte[] requestId;
-@@ -361,8 +361,7 @@
+         private byte[] challengeValue;
          private String requestIdAsString;
          private static final String __OBFID = "CL_00001803";
  
@@ -371,7 +397,8 @@
              byte[] abyte = requestPacket.getData();
              this.requestId = new byte[4];
              this.requestId[0] = abyte[3];
-@@ -371,27 +371,23 @@
+             this.requestId[1] = abyte[4];
+             this.requestId[2] = abyte[5];
              this.requestId[3] = abyte[6];
              this.requestIdAsString = new String(this.requestId);
              this.randomChallenge = (new Random()).nextInt(16777216);
@@ -403,5 +430,4 @@
              return this.requestId;
          }
      }
--}
-+}
+ }

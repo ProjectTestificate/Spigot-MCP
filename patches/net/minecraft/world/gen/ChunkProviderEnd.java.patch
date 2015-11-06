@@ -1,6 +1,7 @@
----a/net/minecraft/world/gen/ChunkProviderEnd.java
-+++b/net/minecraft/world/gen/ChunkProviderEnd.java
-@@ -2,6 +2,7 @@
+--- decompiled\net\minecraft\world\gen\ChunkProviderEnd.java
++++ src\main\java\net\minecraft\world\gen\ChunkProviderEnd.java
+@@ -1,9 +1,10 @@
+ package net.minecraft.world.gen;
  
  import java.util.List;
  import java.util.Random;
@@ -8,7 +9,11 @@
  import net.minecraft.block.BlockFalling;
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
-@@ -16,8 +16,8 @@
+ import net.minecraft.entity.EnumCreatureType;
+ import net.minecraft.init.Blocks;
+@@ -14,12 +15,12 @@
+ import net.minecraft.world.biome.BiomeGenBase;
+ import net.minecraft.world.chunk.Chunk;
  import net.minecraft.world.chunk.ChunkPrimer;
  import net.minecraft.world.chunk.IChunkProvider;
  
@@ -19,7 +24,11 @@
      private Random endRNG;
      private NoiseGeneratorOctaves noiseGen1;
      private NoiseGeneratorOctaves noiseGen2;
-@@ -34,8 +34,7 @@
+     private NoiseGeneratorOctaves noiseGen3;
+     public NoiseGeneratorOctaves noiseGen4;
+@@ -32,65 +33,56 @@
+     double[] noiseData3;
+     double[] noiseData4;
      double[] noiseData5;
      private static final String __OBFID = "CL_00000397";
  
@@ -29,7 +38,9 @@
          this.endWorld = worldIn;
          this.endRNG = new Random(p_i2007_2_);
          this.noiseGen1 = new NoiseGeneratorOctaves(this.endRNG, 16);
-@@ -45,16 +45,14 @@
+         this.noiseGen2 = new NoiseGeneratorOctaves(this.endRNG, 16);
+         this.noiseGen3 = new NoiseGeneratorOctaves(this.endRNG, 8);
+         this.noiseGen4 = new NoiseGeneratorOctaves(this.endRNG, 10);
          this.noiseGen5 = new NoiseGeneratorOctaves(this.endRNG, 16);
      }
  
@@ -54,7 +65,10 @@
                      double d0 = 0.25D;
                      double d1 = this.densities[((i1 + 0) * l + j1 + 0) * b1 + k1 + 0];
                      double d2 = this.densities[((i1 + 0) * l + j1 + 1) * b1 + k1 + 0];
-@@ -69,26 +69,22 @@
+                     double d3 = this.densities[((i1 + 1) * l + j1 + 0) * b1 + k1 + 0];
+                     double d4 = this.densities[((i1 + 1) * l + j1 + 1) * b1 + k1 + 0];
+                     double d5 = (this.densities[((i1 + 0) * l + j1 + 0) * b1 + k1 + 1] - d1) * d0;
+                     double d6 = (this.densities[((i1 + 0) * l + j1 + 1) * b1 + k1 + 1] - d2) * d0;
                      double d7 = (this.densities[((i1 + 1) * l + j1 + 0) * b1 + k1 + 1] - d3) * d0;
                      double d8 = (this.densities[((i1 + 1) * l + j1 + 1) * b1 + k1 + 1] - d4) * d0;
  
@@ -85,7 +99,11 @@
                                      iblockstate = Blocks.end_stone.getDefaultState();
                                  }
  
-@@ -113,51 +113,36 @@
+                                 int k2 = i2 + i1 * 8;
+                                 int l2 = l1 + k1 * 4;
+@@ -111,84 +103,66 @@
+                 }
+             }
          }
      }
  
@@ -145,7 +163,9 @@
                              --k;
                              p_180519_1_.setBlockState(i, l, j, iblockstate1);
                          }
-@@ -164,9 +164,8 @@
+                     }
+                 }
+             }
          }
      }
  
@@ -157,7 +177,7 @@
          ChunkPrimer chunkprimer = new ChunkPrimer();
          this.biomesForGeneration = this.endWorld.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, x * 16, z * 16, 16, 16);
          this.func_180520_a(x, z, chunkprimer);
-@@ -174,18 +174,16 @@
+         this.func_180519_a(chunkprimer);
          Chunk chunk = new Chunk(this.endWorld, chunkprimer, x, z);
          byte[] abyte = chunk.getBiomeArray();
  
@@ -181,7 +201,11 @@
              p_73187_1_ = new double[p_73187_5_ * p_73187_6_ * p_73187_7_];
          }
  
-@@ -200,64 +200,51 @@
+         double d0 = 684.412D;
+         double d1 = 684.412D;
+@@ -198,65 +172,53 @@
+         this.noiseData1 = this.noiseGen3.generateNoiseOctaves(this.noiseData1, p_73187_2_, p_73187_3_, p_73187_4_, p_73187_5_, p_73187_6_, p_73187_7_, d0 / 80.0D, d1 / 160.0D, d0 / 80.0D);
+         this.noiseData2 = this.noiseGen1.generateNoiseOctaves(this.noiseData2, p_73187_2_, p_73187_3_, p_73187_4_, p_73187_5_, p_73187_6_, p_73187_7_, d0, d1, d0);
          this.noiseData3 = this.noiseGen2.generateNoiseOctaves(this.noiseData3, p_73187_2_, p_73187_3_, p_73187_4_, p_73187_5_, p_73187_6_, p_73187_7_, d0, d1, d0);
          int k1 = 0;
  
@@ -258,7 +282,11 @@
                          d2 = d2 * (1.0D - d6) + -30.0D * d6;
                      }
  
-@@ -267,66 +267,56 @@
+                     p_73187_1_[k1] = d2;
+                     ++k1;
+@@ -265,67 +227,58 @@
+         }
+ 
          return p_73187_1_;
      }
  
@@ -338,5 +366,4 @@
 +    public Chunk provideChunk(BlockPos blockPosIn) {
          return this.provideChunk(blockPosIn.getX() >> 4, blockPosIn.getZ() >> 4);
      }
--}
-+}
+ }

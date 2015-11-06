@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S14PacketEntity.java
-+++b/net/minecraft/network/play/server/S14PacketEntity.java
-@@ -1,16 +1,13 @@
+--- decompiled\net\minecraft\network\play\server\S14PacketEntity.java
++++ src\main\java\net\minecraft\network\play\server\S14PacketEntity.java
+@@ -1,232 +1,164 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -22,7 +22,10 @@
      protected int field_149074_a;
      protected byte field_149072_b;
      protected byte field_149073_c;
-@@ -22,211 +22,145 @@
+     protected byte field_149070_d;
+     protected byte field_149071_e;
+     protected byte field_149068_f;
+     protected boolean field_179743_g;
      protected boolean field_149069_g;
      private static final String __OBFID = "CL_00001312";
  
@@ -331,6 +334,5 @@
 +        public void processPacket(INetHandler handler) {
 +            super.processPacket((INetHandlerPlayClient) handler);
          }
--}
 +    }
-+}
+ }

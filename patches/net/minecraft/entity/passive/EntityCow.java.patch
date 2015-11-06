@@ -1,6 +1,8 @@
----a/net/minecraft/entity/passive/EntityCow.java
-+++b/net/minecraft/entity/passive/EntityCow.java
-@@ -19,16 +19,21 @@
+--- decompiled\net\minecraft\entity\passive\EntityCow.java
++++ src\main\java\net\minecraft\entity\passive\EntityCow.java
+@@ -17,119 +17,109 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.pathfinding.PathNavigateGround;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -23,7 +25,10 @@
          this.tasks.addTask(0, new EntityAISwimming(this));
          this.tasks.addTask(1, new EntityAIPanic(this, 2.0D));
          this.tasks.addTask(2, new EntityAIMate(this, 1.0D));
-@@ -38,99 +38,86 @@
+         this.tasks.addTask(3, new EntityAITempt(this, 1.25D, Items.wheat, false));
+         this.tasks.addTask(4, new EntityAIFollowParent(this, 1.25D));
+         this.tasks.addTask(5, new EntityAIWander(this, 1.0D));
+         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
          this.tasks.addTask(7, new EntityAILookIdle(this));
      }
  
@@ -151,5 +156,4 @@
 +    public float getEyeHeight() {
          return this.height;
      }
--}
-+}
+ }

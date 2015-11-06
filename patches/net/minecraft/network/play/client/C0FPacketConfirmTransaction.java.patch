@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/client/C0FPacketConfirmTransaction.java
-+++b/net/minecraft/network/play/client/C0FPacketConfirmTransaction.java
-@@ -1,60 +1,48 @@
+--- decompiled\net\minecraft\network\play\client\C0FPacketConfirmTransaction.java
++++ src\main\java\net\minecraft\network\play\client\C0FPacketConfirmTransaction.java
+@@ -1,61 +1,48 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -73,5 +73,4 @@
 +    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
--}
-+}
+ }

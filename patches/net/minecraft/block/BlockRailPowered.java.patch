@@ -1,13 +1,14 @@
----a/net/minecraft/block/BlockRailPowered.java
-+++b/net/minecraft/block/BlockRailPowered.java
-@@ -1,6 +1,5 @@
+--- decompiled\net\minecraft\block\BlockRailPowered.java
++++ src\main\java\net\minecraft\block\BlockRailPowered.java
+@@ -1,256 +1,212 @@
  package net.minecraft.block;
  
 -import com.google.common.base.Predicate;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyBool;
  import net.minecraft.block.properties.PropertyEnum;
-@@ -9,75 +9,70 @@
+ import net.minecraft.block.state.BlockState;
+ import net.minecraft.block.state.IBlockState;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -107,7 +108,8 @@
                          ++j;
                          ++k;
                          flag1 = false;
-@@ -85,25 +85,20 @@
+                     }
+ 
                      enumraildirection = BlockRailBase.EnumRailDirection.EAST_WEST;
                      break;
                  case 4:
@@ -138,7 +140,8 @@
                          --l;
                          ++k;
                          flag1 = false;
-@@ -113,13 +113,11 @@
+                     }
+ 
                      enumraildirection = BlockRailBase.EnumRailDirection.NORTH_SOUTH;
                      break;
                  case 6:
@@ -155,7 +158,10 @@
                          --l;
                      }
  
-@@ -131,127 +131,102 @@
+                     enumraildirection = BlockRailBase.EnumRailDirection.NORTH_SOUTH;
+             }
+ 
+             return this.func_176567_a(worldIn, new BlockPos(j, k, l), p_176566_4_, p_176566_5_, enumraildirection) ? true : flag1 && this.func_176567_a(worldIn, new BlockPos(j, k - 1, l), p_176566_4_, p_176566_5_, enumraildirection);
          }
      }
  
@@ -339,6 +345,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

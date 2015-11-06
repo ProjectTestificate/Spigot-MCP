@@ -1,6 +1,8 @@
----a/net/minecraft/enchantment/EnumEnchantmentType.java
-+++b/net/minecraft/enchantment/EnumEnchantmentType.java
-@@ -7,8 +7,7 @@
+--- decompiled\net\minecraft\enchantment\EnumEnchantmentType.java
++++ src\main\java\net\minecraft\enchantment\EnumEnchantmentType.java
+@@ -5,12 +5,11 @@
+ import net.minecraft.item.ItemBow;
+ import net.minecraft.item.ItemFishingRod;
  import net.minecraft.item.ItemSword;
  import net.minecraft.item.ItemTool;
  
@@ -10,7 +12,11 @@
      ALL,
      ARMOR,
      ARMOR_FEET,
-@@ -23,34 +23,21 @@
+     ARMOR_LEGS,
+     ARMOR_TORSO,
+@@ -21,33 +20,22 @@
+     BREAKABLE,
+     BOW;
  
      private static final String __OBFID = "CL_00000106";
  
@@ -49,5 +55,4 @@
              return p_77557_1_ instanceof ItemSword ? this == WEAPON : (p_77557_1_ instanceof ItemTool ? this == DIGGER : (p_77557_1_ instanceof ItemBow ? this == BOW : (p_77557_1_ instanceof ItemFishingRod ? this == FISHING_ROD : false)));
          }
      }
--}
-+}
+ }

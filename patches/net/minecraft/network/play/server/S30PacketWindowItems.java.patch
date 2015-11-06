@@ -1,6 +1,7 @@
----a/net/minecraft/network/play/server/S30PacketWindowItems.java
-+++b/net/minecraft/network/play/server/S30PacketWindowItems.java
-@@ -2,68 +2,61 @@
+--- decompiled\net\minecraft\network\play\server\S30PacketWindowItems.java
++++ src\main\java\net\minecraft\network\play\server\S30PacketWindowItems.java
+@@ -1,80 +1,62 @@
+ package net.minecraft.network.play.server;
  
  import java.io.IOException;
  import java.util.List;
@@ -95,5 +96,4 @@
 -    {
 -        return this.field_148913_b;
 -    }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/pathfinding/PathFinder.java
-+++b/net/minecraft/pathfinding/PathFinder.java
-@@ -5,30 +5,27 @@
+--- decompiled\net\minecraft\pathfinding\PathFinder.java
++++ src\main\java\net\minecraft\pathfinding\PathFinder.java
+@@ -3,119 +3,100 @@
+ import net.minecraft.entity.Entity;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.pathfinder.NodeProcessor;
  
@@ -38,7 +40,9 @@
          this.path.clearPath();
          this.field_176190_c.func_176162_a(p_176189_1_, p_176189_2_);
          PathPoint pathpoint = this.field_176190_c.func_176161_a(p_176189_2_);
-@@ -38,8 +38,7 @@
+         PathPoint pathpoint1 = this.field_176190_c.func_176160_a(p_176189_2_, p_176189_3_, p_176189_5_, p_176189_7_);
+         PathEntity pathentity = this.func_176187_a(p_176189_2_, pathpoint, pathpoint1, p_176189_9_);
+         this.field_176190_c.func_176163_a();
          return pathentity;
      }
  
@@ -48,7 +52,7 @@
          p_176187_2_.totalPathDistance = 0.0F;
          p_176187_2_.distanceToNext = p_176187_2_.distanceToSquared(p_176187_3_);
          p_176187_2_.distanceToTarget = p_176187_2_.distanceToNext;
-@@ -47,39 +47,32 @@
+         this.path.clearPath();
          this.path.addPoint(p_176187_2_);
          PathPoint pathpoint2 = p_176187_2_;
  
@@ -96,7 +100,7 @@
                          pathpoint4.distanceToTarget = pathpoint4.totalPathDistance + pathpoint4.distanceToNext;
                          this.path.addPoint(pathpoint4);
                      }
-@@ -88,23 +88,18 @@
+                 }
              }
          }
  
@@ -124,7 +128,7 @@
              ++i;
          }
  
-@@ -112,13 +112,11 @@
+         PathPoint[] apathpoint = new PathPoint[i];
          pathpoint2 = p_75853_2_;
          --i;
  
@@ -136,6 +140,3 @@
          }
  
          return new PathEntity(apathpoint);
-     }
--}
-+}

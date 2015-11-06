@@ -1,6 +1,6 @@
----a/net/minecraft/command/ICommand.java
-+++b/net/minecraft/command/ICommand.java
-@@ -1,20 +1,22 @@
+--- decompiled\net\minecraft\command\ICommand.java
++++ src\main\java\net\minecraft\command\ICommand.java
+@@ -1,19 +1,20 @@
  package net.minecraft.command;
  
  import java.util.List;
@@ -24,6 +24,3 @@
  
      List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos);
  
-     boolean isUsernameIndex(String[] args, int index);
--}
-+}

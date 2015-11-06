@@ -1,6 +1,6 @@
----a/net/minecraft/network/NettyEncryptionTranslator.java
-+++b/net/minecraft/network/NettyEncryptionTranslator.java
-@@ -1,28 +1,25 @@
+--- decompiled\net\minecraft\network\NettyEncryptionTranslator.java
++++ src\main\java\net\minecraft\network\NettyEncryptionTranslator.java
+@@ -1,54 +1,49 @@
  package net.minecraft.network;
  
 -import io.netty.buffer.ByteBuf;
@@ -37,7 +37,7 @@
              this.field_150505_b = new byte[i];
          }
  
-@@ -30,8 +30,7 @@
+         p_150502_1_.readBytes(this.field_150505_b, 0, i);
          return this.field_150505_b;
      }
  
@@ -47,7 +47,7 @@
          int i = buffer.readableBytes();
          byte[] abyte = this.func_150502_a(buffer);
          ByteBuf bytebuf1 = ctx.alloc().heapBuffer(this.cipher.getOutputSize(i));
-@@ -39,18 +39,15 @@
+         bytebuf1.writerIndex(this.cipher.update(abyte, 0, i, bytebuf1.array(), bytebuf1.arrayOffset()));
          return bytebuf1;
      }
  
@@ -66,5 +66,3 @@
  
          p_150504_2_.writeBytes(this.field_150506_c, 0, this.cipher.update(abyte, 0, i, this.field_150506_c));
      }
--}
-+}

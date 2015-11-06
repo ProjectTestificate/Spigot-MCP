@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenCanopyTree.java
-+++b/net/minecraft/world/gen/feature/WorldGenCanopyTree.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenCanopyTree.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenCanopyTree.java
+@@ -1,78 +1,63 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -8,7 +8,8 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockPlanks;
  import net.minecraft.block.material.Material;
-@@ -9,68 +9,53 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -93,7 +94,11 @@
                      this.func_175921_a(worldIn, p_180709_3_.down());
                      this.func_175921_a(worldIn, p_180709_3_.add(1, -1, 0));
                      this.func_175921_a(worldIn, p_180709_3_.add(1, -1, 1));
-@@ -84,12 +84,10 @@
+                     this.func_175921_a(worldIn, p_180709_3_.add(0, -1, 1));
+                     EnumFacing enumfacing = EnumFacing.Plane.HORIZONTAL.random(p_180709_2_);
+@@ -82,131 +67,123 @@
+                     int j1 = p_180709_3_.getZ();
+                     int k1 = 0;
                      int l1;
                      int i2;
  
@@ -108,7 +113,8 @@
                              i1 += enumfacing.getFrontOffsetX();
                              j1 += enumfacing.getFrontOffsetZ();
                              --l;
-@@ -98,8 +98,7 @@
+                         }
+ 
                          BlockPos blockpos1 = new BlockPos(i1, i2, j1);
                          Material material = worldIn.getBlockState(blockpos1).getBlock().getMaterial();
  
@@ -118,7 +124,8 @@
                              this.func_175905_a(worldIn, blockpos1, Blocks.log2, BlockPlanks.EnumType.DARK_OAK.getMetadata() - 4);
                              this.func_175905_a(worldIn, blockpos1.east(), Blocks.log2, BlockPlanks.EnumType.DARK_OAK.getMetadata() - 4);
                              this.func_175905_a(worldIn, blockpos1.south(), Blocks.log2, BlockPlanks.EnumType.DARK_OAK.getMetadata() - 4);
-@@ -108,20 +108,16 @@
+                             this.func_175905_a(worldIn, blockpos1.east().south(), Blocks.log2, BlockPlanks.EnumType.DARK_OAK.getMetadata() - 4);
+                             k1 = i2;
                          }
                      }
  
@@ -140,7 +147,9 @@
                                  byte b2 = 1;
                                  this.func_150526_a(worldIn, i1 + l1, k1 + b2, j1 + i2);
                                  this.func_150526_a(worldIn, 1 + i1 - l1, k1 + b2, j1 + i2);
-@@ -129,51 +129,57 @@
+                                 this.func_150526_a(worldIn, i1 + l1, k1 + b2, 1 + j1 - i2);
+                                 this.func_150526_a(worldIn, 1 + i1 - l1, k1 + b2, 1 + j1 - i2);
+                             }
                          }
                      }
  
@@ -227,7 +236,9 @@
                                              this.func_150526_a(worldIn, i1 + l1 + l2, k1 - 1, j1 + i2 + j2);
                                          }
                                      }
-@@ -187,28 +187,20 @@
+                                 }
+                             }
+                         }
                      }
  
                      return true;
@@ -257,5 +268,4 @@
              this.func_175905_a(worldIn, new BlockPos(p_150526_2_, p_150526_3_, p_150526_4_), Blocks.leaves2, 1);
          }
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenPumpkin.java
-+++b/net/minecraft/world/gen/feature/WorldGenPumpkin.java
-@@ -1,27 +1,26 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenPumpkin.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenPumpkin.java
+@@ -1,26 +1,24 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -33,6 +33,3 @@
          }
  
          return true;
-     }
--}
-+}

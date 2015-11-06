@@ -1,6 +1,6 @@
----a/net/minecraft/scoreboard/Team.java
-+++b/net/minecraft/scoreboard/Team.java
-@@ -1,16 +1,14 @@
+--- decompiled\net\minecraft\scoreboard\Team.java
++++ src\main\java\net\minecraft\scoreboard\Team.java
+@@ -1,73 +1,59 @@
  package net.minecraft.scoreboard;
  
 -import com.google.common.collect.Maps;
@@ -23,7 +23,7 @@
          return other == null ? false : this == other;
      }
  
-@@ -19,21 +19,12 @@
+     public abstract String getRegisteredName();
  
      public abstract String formatString(String input);
  
@@ -45,7 +45,10 @@
          ALWAYS("always", 0),
          NEVER("never", 1),
          HIDE_FOR_OTHER_TEAMS("hideForOtherTeams", 2),
-@@ -43,34 +43,28 @@
+         HIDE_FOR_OWN_TEAM("hideForOwnTeam", 3);
+         private static Map field_178828_g = Maps.newHashMap();
+         public final String field_178830_e;
+         public final int field_178827_f;
  
          private static final String __OBFID = "CL_00001962";
  
@@ -84,5 +87,3 @@
              }
          }
      }
--}
-+}

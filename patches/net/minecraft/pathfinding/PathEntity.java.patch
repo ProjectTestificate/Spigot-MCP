@@ -1,6 +1,8 @@
----a/net/minecraft/pathfinding/PathEntity.java
-+++b/net/minecraft/pathfinding/PathEntity.java
-@@ -3,83 +3,68 @@
+--- decompiled\net\minecraft\pathfinding\PathEntity.java
++++ src\main\java\net\minecraft\pathfinding\PathEntity.java
+@@ -1,101 +1,81 @@
+ package net.minecraft.pathfinding;
+ 
  import net.minecraft.entity.Entity;
  import net.minecraft.util.Vec3;
  
@@ -111,7 +113,8 @@
                      return false;
                  }
              }
-@@ -93,10 +93,8 @@
+ 
+             return true;
          }
      }
  
@@ -122,5 +125,4 @@
 -        return pathpoint == null ? false : pathpoint.xCoord == (int)p_75880_1_.xCoord && pathpoint.zCoord == (int)p_75880_1_.zCoord;
 +        return pathpoint == null ? false : pathpoint.xCoord == (int) p_75880_1_.xCoord && pathpoint.zCoord == (int) p_75880_1_.zCoord;
      }
--}
-+}
+ }

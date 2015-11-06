@@ -1,6 +1,6 @@
----a/net/minecraft/server/management/UserListBansEntry.java
-+++b/net/minecraft/server/management/UserListBansEntry.java
-@@ -1,61 +1,56 @@
+--- decompiled\net\minecraft\server\management\UserListBansEntry.java
++++ src\main\java\net\minecraft\server\management\UserListBansEntry.java
+@@ -1,60 +1,57 @@
  package net.minecraft.server.management;
  
 -import com.google.gson.JsonObject;
@@ -89,5 +89,4 @@
          }
 +        // Spigot End
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/world/chunk/Chunk.java
-+++b/net/minecraft/world/chunk/Chunk.java
-@@ -1,8 +1,5 @@
+--- decompiled\net\minecraft\world\chunk\Chunk.java
++++ src\main\java\net\minecraft\world\chunk\Chunk.java
+@@ -1,25 +1,29 @@
  package net.minecraft.world.chunk;
  
 -import com.google.common.base.Predicate;
@@ -9,7 +9,7 @@
  import java.util.Arrays;
  import java.util.Iterator;
  import java.util.List;
-@@ -10,14 +10,20 @@
+ import java.util.Map;
  import java.util.Random;
  import java.util.concurrent.Callable;
  import java.util.concurrent.ConcurrentLinkedQueue;
@@ -31,7 +31,11 @@
  import net.minecraft.tileentity.TileEntity;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
-@@ -33,26 +33,37 @@
+ import net.minecraft.util.ClassInheritanceMultiMap;
+ import net.minecraft.util.EnumFacing;
+@@ -31,30 +35,42 @@
+ import net.minecraft.world.WorldType;
+ import net.minecraft.world.biome.BiomeGenBase;
  import net.minecraft.world.biome.WorldChunkManager;
  import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
  import net.minecraft.world.gen.ChunkProviderDebug;
@@ -78,7 +82,11 @@
      private boolean isTerrainPopulated;
      private boolean isLightPopulated;
      private boolean field_150815_m;
-@@ -64,7 +64,9 @@
+     private boolean isModified;
+     private boolean hasEntities;
+@@ -62,205 +78,171 @@
+     private int heightMapMinimum;
+     private long inhabitedTime;
      private int queuedLightChecks;
      private ConcurrentLinkedQueue field_177447_w;
      private static final String __OBFID = "CL_00000373";
@@ -118,7 +126,7 @@
          this.storageArrays = new ExtendedBlockStorage[16];
          this.blockBiomeArray = new byte[256];
          this.precipitationHeightMap = new int[256];
-@@ -74,41 +74,44 @@
+         this.updateSkylightColumns = new boolean[256];
          this.chunkTileEntityMap = Maps.newHashMap();
          this.queuedLightChecks = 4096;
          this.field_177447_w = Queues.newConcurrentLinkedQueue();
@@ -180,7 +188,10 @@
                              this.storageArrays[k1] = new ExtendedBlockStorage(k1 << 4, flag);
                          }
  
-@@ -120,23 +120,19 @@
+                         this.storageArrays[k1].set(k, i1 & 15, l, iblockstate);
+                     }
+                 }
+             }
          }
      }
  
@@ -214,7 +225,7 @@
                  return this.storageArrays[i].getYLocation();
              }
          }
-@@ -148,117 +148,59 @@
+ 
          return 0;
      }
  
@@ -346,7 +357,11 @@
                      }
  
                      ++k;
-@@ -270,18 +270,15 @@
+                     break;
+                 }
+@@ -268,52 +250,43 @@
+         }
+ 
          this.isModified = true;
      }
  
@@ -377,7 +392,8 @@
                          this.updateSkylightColumns[i + j * 16] = false;
                          int k = this.getHeight(i, j);
                          int l = this.xPosition * 16 + i;
-@@ -296,23 +296,20 @@
+                         int i1 = this.zPosition * 16 + j;
+                         int j1 = Integer.MAX_VALUE;
                          Iterator iterator;
                          EnumFacing enumfacing;
  
@@ -405,7 +421,11 @@
                              this.worldObj.theProfiler.endSection();
                              return;
                          }
-@@ -325,22 +325,17 @@
+                     }
+                 }
+@@ -323,1323 +296,1066 @@
+         }
+ 
          this.worldObj.theProfiler.endSection();
      }
  
@@ -438,7 +458,7 @@
                  this.worldObj.checkLightFor(EnumSkyBlock.SKY, new BlockPos(x, i1, z));
              }
  
-@@ -352,23 +352,19 @@
+             this.isModified = true;
          }
      }
  
@@ -466,7 +486,7 @@
              this.worldObj.markBlocksDirtyVertical(x + this.xPosition * 16, z + this.zPosition * 16, i1, l);
              this.heightMap[z << 4 | x] = i1;
              int j1 = this.xPosition * 16 + x;
-@@ -376,31 +376,23 @@
+             int k1 = this.zPosition * 16 + z;
              int l1;
              int i2;
  
@@ -505,7 +525,8 @@
                              extendedblockstorage.setExtSkylightValue(x, l1 & 15, z, 0);
                              this.worldObj.notifyLightSet(new BlockPos((this.xPosition << 4) + x, l1, (this.zPosition << 4) + z));
                          }
-@@ -409,27 +409,23 @@
+                     }
+                 }
  
                  l1 = 15;
  
@@ -537,7 +558,9 @@
                          extendedblockstorage1.setExtSkylightValue(x, i1 & 15, z, l1);
                      }
                  }
-@@ -439,23 +439,19 @@
+             }
+ 
+             l1 = this.heightMap[z << 4 | x];
              i2 = l;
              int j2 = l1;
  
@@ -567,7 +590,10 @@
                      this.updateSkylightNeighborHeight(j1 + enumfacing.getFrontOffsetX(), k1 + enumfacing.getFrontOffsetZ(), i2, j2);
                  }
  
-@@ -467,31 +467,24 @@
+                 this.updateSkylightNeighborHeight(j1, k1, i2, j2);
+             }
+ 
+             this.isModified = true;
          }
      }
  
@@ -607,7 +633,9 @@
                      CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Getting block");
                      throw new ReportedException(crashreport);
                  }
-@@ -502,22 +502,16 @@
+             }
+         }
+ 
          return block;
      }
  
@@ -635,7 +663,7 @@
                      return CrashReportCategory.getCoordinateInfo(new BlockPos(Chunk.this.xPosition * 16 + x, y, Chunk.this.zPosition * 16 + z));
                  }
              });
-@@ -523,22 +523,16 @@
+             throw reportedexception;
          }
      }
  
@@ -663,7 +691,7 @@
                      return CrashReportCategory.getCoordinateInfo(pos);
                  }
              });
-@@ -544,36 +544,26 @@
+             throw reportedexception;
          }
      }
  
@@ -706,7 +734,8 @@
                          int j = pos.getX() & 15;
                          int k = pos.getY() & 15;
                          int i = pos.getZ() & 15;
-@@ -580,17 +580,13 @@
+                         return extendedblockstorage.get(j, k, i);
+                     }
                  }
  
                  return Blocks.air.getDefaultState();
@@ -728,7 +757,8 @@
                          return CrashReportCategory.getCoordinateInfo(pos);
                      }
                  });
-@@ -598,54 +598,42 @@
+                 throw new ReportedException(crashreport);
+             }
          }
      }
  
@@ -793,7 +823,9 @@
                      return null;
                  }
  
-@@ -655,82 +655,61 @@
+                 extendedblockstorage = this.storageArrays[j >> 4] = new ExtendedBlockStorage(j >> 4 << 4, !this.worldObj.provider.getHasNoSky());
+                 flag = j >= i1;
+             }
  
              extendedblockstorage.set(i, j & 15, k, state);
  
@@ -893,7 +925,10 @@
                          tileentity.updateContainingBlockInfo();
                      }
                  }
-@@ -739,8 +739,7 @@
+ 
+                 this.isModified = true;
+                 return iblockstate1;
+             }
          }
      }
  
@@ -903,7 +938,7 @@
          int i = pos.getX() & 15;
          int j = pos.getY();
          int k = pos.getZ() & 15;
-@@ -748,53 +748,42 @@
+         ExtendedBlockStorage extendedblockstorage = this.storageArrays[j >> 4];
          return extendedblockstorage == null ? (this.canSeeSky(pos) ? p_177413_1_.defaultLightValue : 0) : (p_177413_1_ == EnumSkyBlock.SKY ? (this.worldObj.provider.getHasNoSky() ? 0 : extendedblockstorage.getExtSkylightValue(i, j & 15, k)) : (p_177413_1_ == EnumSkyBlock.BLOCK ? extendedblockstorage.getExtBlocklightValue(i, j & 15, k) : p_177413_1_.defaultLightValue));
      }
  
@@ -966,7 +1001,7 @@
                  i1 = j1;
              }
  
-@@ -802,27 +802,27 @@
+             return i1;
          }
      }
  
@@ -1003,7 +1038,8 @@
              k = this.entityLists.length - 1;
          }
  
-@@ -831,57 +831,88 @@
+         entityIn.addedToChunk = true;
+         entityIn.chunkCoordX = this.xPosition;
          entityIn.chunkCoordY = k;
          entityIn.chunkCoordZ = this.zPosition;
          this.entityLists[k].add(entityIn);
@@ -1105,7 +1141,7 @@
              this.chunkTileEntityMap.remove(pos);
              return null;
          }
-@@ -892,57 +892,57 @@
+ 
          return tileentity;
      }
  
@@ -1189,7 +1225,7 @@
                  entity.onChunkLoad();
              }
  
-@@ -951,56 +951,79 @@
+             this.worldObj.loadEntities(this.entityLists[i]);
          }
      }
  
@@ -1294,7 +1330,9 @@
                                  listToFill.add(entity1);
                              }
                          }
-@@ -1010,58 +1010,46 @@
+                     }
+                 }
+             }
          }
      }
  
@@ -1368,7 +1406,9 @@
          boolean flag = p_76624_1_.chunkExists(p_76624_3_, p_76624_4_ - 1);
          boolean flag1 = p_76624_1_.chunkExists(p_76624_3_ + 1, p_76624_4_);
          boolean flag2 = p_76624_1_.chunkExists(p_76624_3_, p_76624_4_ + 1);
-@@ -1071,88 +1071,68 @@
+         boolean flag3 = p_76624_1_.chunkExists(p_76624_3_ - 1, p_76624_4_);
+         boolean flag4 = p_76624_1_.chunkExists(p_76624_3_ - 1, p_76624_4_ - 1);
+         boolean flag5 = p_76624_1_.chunkExists(p_76624_3_ + 1, p_76624_4_ + 1);
          boolean flag6 = p_76624_1_.chunkExists(p_76624_3_ - 1, p_76624_4_ + 1);
          boolean flag7 = p_76624_1_.chunkExists(p_76624_3_ + 1, p_76624_4_ - 1);
  
@@ -1475,7 +1515,10 @@
                      i1 = blockpos1.getY() + 1;
                  }
              }
-@@ -1162,28 +1162,22 @@
+ 
+             this.precipitationHeightMap[k] = i1;
+         }
+ 
          return new BlockPos(pos.getX(), this.precipitationHeightMap[k], pos.getZ());
      }
  
@@ -1508,7 +1551,7 @@
                  TileEntity tileentity = this.createNewTileEntity(blockpos);
                  this.worldObj.setTileEntity(blockpos, tileentity);
                  this.worldObj.markBlockRangeForRenderUpdate(blockpos, blockpos);
-@@ -1189,35 +1189,44 @@
+             }
          }
      }
  
@@ -1559,7 +1602,7 @@
                  return false;
              }
          }
-@@ -1224,153 +1224,55 @@
+ 
          return true;
      }
  
@@ -1729,7 +1772,8 @@
                  return;
              }
  
-@@ -1379,23 +1379,19 @@
+             int j = this.queuedLightChecks % 16;
+             int k = this.queuedLightChecks / 16 % 16;
              int l = this.queuedLightChecks / 256;
              ++this.queuedLightChecks;
  
@@ -1757,7 +1801,10 @@
                              this.worldObj.checkLight(blockpos2);
                          }
                      }
-@@ -1406,100 +1406,74 @@
+ 
+                     this.worldObj.checkLight(blockpos1);
+                 }
+             }
          }
      }
  
@@ -1881,7 +1928,7 @@
          BlockPos blockpos = new BlockPos(this.xPosition << 4, 0, this.zPosition << 4);
          int k = this.getTopFilledSegment();
          boolean flag = false;
-@@ -1507,32 +1507,25 @@
+         boolean flag1 = false;
          int l;
          BlockPos blockpos1;
  
@@ -1920,7 +1967,7 @@
                  this.worldObj.checkLight(blockpos1);
              }
          }
-@@ -1540,109 +1540,81 @@
+ 
          return true;
      }
  
@@ -2047,6 +2094,3 @@
          CHECK;
  
          private static final String __OBFID = "CL_00002009";
-     }
--}
-+}

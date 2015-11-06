@@ -1,6 +1,6 @@
----a/net/minecraft/inventory/ICrafting.java
-+++b/net/minecraft/inventory/ICrafting.java
-@@ -1,8 +1,10 @@
+--- decompiled\net\minecraft\inventory\ICrafting.java
++++ src\main\java\net\minecraft\inventory\ICrafting.java
+@@ -1,12 +1,13 @@
  package net.minecraft.inventory;
  
  import java.util.List;
@@ -14,9 +14,5 @@
      void sendContainerAndContentsToPlayer(Container containerToSend, List itemsList);
  
      void sendSlotContents(Container containerToSend, int slotInd, ItemStack stack);
-@@ -12,4 +12,4 @@
-     void sendProgressBarUpdate(Container containerIn, int varToUpdate, int newValue);
  
-     void func_175173_a(Container p_175173_1_, IInventory p_175173_2_);
--}
-+}
+     void sendProgressBarUpdate(Container containerIn, int varToUpdate, int newValue);

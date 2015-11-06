@@ -1,6 +1,7 @@
----a/net/minecraft/scoreboard/ScoreboardSaveData.java
-+++b/net/minecraft/scoreboard/ScoreboardSaveData.java
-@@ -2,106 +2,91 @@
+--- decompiled\net\minecraft\scoreboard\ScoreboardSaveData.java
++++ src\main\java\net\minecraft\scoreboard\ScoreboardSaveData.java
+@@ -1,202 +1,167 @@
+ package net.minecraft.scoreboard;
  
  import java.util.Collection;
  import java.util.Iterator;
@@ -131,7 +132,8 @@
                      scoreplayerteam.func_178773_b(enumvisible);
                  }
              }
-@@ -112,18 +112,14 @@
+ 
+             this.func_96502_a(scoreplayerteam, nbttagcompound.getTagList("Players", 8));
          }
      }
  
@@ -157,7 +159,7 @@
                  String s = p_96504_1_.getString("slot_" + i);
                  ScoreObjective scoreobjective = this.theScoreboard.getObjective(s);
                  this.theScoreboard.setObjectiveInDisplaySlot(i, scoreobjective);
-@@ -133,17 +133,13 @@
+             }
          }
      }
  
@@ -177,7 +179,7 @@
                  ScoreObjective scoreobjective = this.theScoreboard.addScoreObjective(nbttagcompound.getString("Name"), iscoreobjectivecriteria);
                  scoreobjective.setDisplayName(nbttagcompound.getString("DisplayName"));
                  scoreobjective.setRenderType(IScoreObjectiveCriteria.EnumRenderType.func_178795_a(nbttagcompound.getString("RenderType")));
-@@ -149,31 +149,24 @@
+             }
          }
      }
  
@@ -214,7 +216,7 @@
              nbt.setTag("Objectives", this.objectivesToNbt());
              nbt.setTag("PlayerScores", this.scoresToNbt());
              nbt.setTag("Teams", this.func_96496_a());
-@@ -180,21 +180,18 @@
+             this.func_96497_d(nbt);
          }
      }
  
@@ -240,7 +242,11 @@
                  nbttagcompound.setString("TeamColor", scoreplayerteam.func_178775_l().getFriendlyName());
              }
  
-@@ -207,9 +207,8 @@
+             nbttagcompound.setString("Prefix", scoreplayerteam.getColorPrefix());
+             nbttagcompound.setString("Suffix", scoreplayerteam.getColorSuffix());
+@@ -205,57 +170,49 @@
+             nbttagcompound.setString("NameTagVisibility", scoreplayerteam.func_178770_i().field_178830_e);
+             nbttagcompound.setString("DeathMessageVisibility", scoreplayerteam.func_178771_j().field_178830_e);
              NBTTagList nbttaglist1 = new NBTTagList();
              Iterator iterator1 = scoreplayerteam.getMembershipCollection().iterator();
  
@@ -252,7 +258,10 @@
                  nbttaglist1.appendTag(new NBTTagString(s));
              }
  
-@@ -220,40 +220,33 @@
+             nbttagcompound.setTag("Players", nbttaglist1);
+             nbttaglist.appendTag(nbttagcompound);
+         }
+ 
          return nbttaglist;
      }
  
@@ -301,7 +310,11 @@
                  NBTTagCompound nbttagcompound = new NBTTagCompound();
                  nbttagcompound.setString("Name", scoreobjective.getName());
                  nbttagcompound.setString("CriteriaName", scoreobjective.getCriteria().getName());
-@@ -266,18 +266,15 @@
+                 nbttagcompound.setString("DisplayName", scoreobjective.getDisplayName());
+                 nbttagcompound.setString("RenderType", scoreobjective.getRenderType().func_178796_a());
+@@ -264,22 +221,19 @@
+         }
+ 
          return nbttaglist;
      }
  
@@ -324,9 +337,5 @@
                  NBTTagCompound nbttagcompound = new NBTTagCompound();
                  nbttagcompound.setString("Name", score.getPlayerName());
                  nbttagcompound.setString("Objective", score.getObjective().getName());
-@@ -289,4 +289,4 @@
- 
-         return nbttaglist;
-     }
--}
-+}
+                 nbttagcompound.setInteger("Score", score.getScorePoints());
+                 nbttagcompound.setBoolean("Locked", score.isLocked());

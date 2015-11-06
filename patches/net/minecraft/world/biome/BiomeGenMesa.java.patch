@@ -1,6 +1,7 @@
----a/net/minecraft/world/biome/BiomeGenMesa.java
-+++b/net/minecraft/world/biome/BiomeGenMesa.java
-@@ -2,6 +2,7 @@
+--- decompiled\net\minecraft\world\biome\BiomeGenMesa.java
++++ src\main\java\net\minecraft\world\biome\BiomeGenMesa.java
+@@ -1,9 +1,10 @@
+ package net.minecraft.world.biome;
  
  import java.util.Arrays;
  import java.util.Random;
@@ -8,7 +9,11 @@
  import net.minecraft.block.BlockColored;
  import net.minecraft.block.BlockDirt;
  import net.minecraft.block.BlockSand;
-@@ -14,11 +14,7 @@
+ import net.minecraft.block.material.Material;
+ import net.minecraft.block.state.IBlockState;
+@@ -12,26 +13,24 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.world.World;
  import net.minecraft.world.chunk.ChunkPrimer;
  import net.minecraft.world.gen.NoiseGeneratorPerlin;
  import net.minecraft.world.gen.feature.WorldGenAbstractTree;
@@ -23,7 +28,9 @@
      private IBlockState[] field_150621_aC;
      private long field_150622_aD;
      private NoiseGeneratorPerlin field_150623_aE;
-@@ -28,8 +28,7 @@
+     private NoiseGeneratorPerlin field_150624_aF;
+     private NoiseGeneratorPerlin field_150625_aG;
+     private boolean field_150626_aH;
      private boolean field_150620_aI;
      private static final String __OBFID = "CL_00000176";
  
@@ -33,7 +40,11 @@
          super(p_i45380_1_);
          this.field_150626_aH = p_i45380_2_;
          this.field_150620_aI = p_i45380_3_;
-@@ -45,31 +45,25 @@
+         this.setDisableRain();
+         this.setTemperatureRainfall(2.0F, 0.0F);
+@@ -43,60 +42,51 @@
+         this.theBiomeDecorator.reedsPerChunk = 3;
+         this.theBiomeDecorator.cactiPerChunk = 5;
          this.theBiomeDecorator.flowersPerChunk = 0;
          this.spawnableCreatureList.clear();
  
@@ -71,7 +82,10 @@
              Random random1 = new Random(this.field_150622_aD);
              this.field_150623_aE = new NoiseGeneratorPerlin(random1, 4);
              this.field_150624_aF = new NoiseGeneratorPerlin(random1, 1);
-@@ -80,21 +80,18 @@
+         }
+ 
+         this.field_150622_aD = worldIn.getSeed();
+         double d5 = 0.0D;
          int k;
          int l;
  
@@ -98,7 +112,11 @@
                      d5 = d4;
                  }
  
-@@ -107,113 +107,79 @@
+                 d5 += 64.0D;
+             }
+@@ -105,245 +95,179 @@
+         k = p_180622_4_ & 15;
+         l = p_180622_5_ & 15;
          boolean flag = true;
          IBlockState iblockstate = Blocks.stained_hardened_clay.getDefaultState();
          IBlockState iblockstate3 = this.fillerBlock;
@@ -240,7 +258,9 @@
                              iblockstate2 = this.func_180629_a(p_180622_4_, k1, p_180622_5_);
                              p_180622_3_.setBlockState(l, k1, k, iblockstate2);
                          }
-@@ -225,20 +225,17 @@
+                     }
+                 }
+             }
          }
      }
  
@@ -264,7 +284,10 @@
                  this.field_150621_aC[j] = Blocks.stained_hardened_clay.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.ORANGE);
              }
          }
-@@ -249,13 +249,11 @@
+ 
+         j = random.nextInt(4) + 2;
+         int k;
+         int l;
          int i1;
          int j1;
  
@@ -280,7 +303,7 @@
                  this.field_150621_aC[i1 + j1] = Blocks.stained_hardened_clay.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.YELLOW);
              }
          }
-@@ -263,26 +263,22 @@
+ 
          k = random.nextInt(4) + 2;
          int k1;
  
@@ -311,7 +334,7 @@
                  this.field_150621_aC[k1 + l1] = Blocks.stained_hardened_clay.getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.RED);
              }
          }
-@@ -290,63 +290,41 @@
+ 
          i1 = random.nextInt(3) + 3;
          j1 = 0;
  
@@ -381,6 +404,3 @@
  
          biomegenmesa.func_150557_a(this.color, true);
          return biomegenmesa;
-     }
--}
-+}

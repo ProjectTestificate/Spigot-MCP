@@ -1,6 +1,8 @@
----a/net/minecraft/entity/monster/EntityGiantZombie.java
-+++b/net/minecraft/entity/monster/EntityGiantZombie.java
-@@ -4,32 +4,28 @@
+--- decompiled\net\minecraft\entity\monster\EntityGiantZombie.java
++++ src\main\java\net\minecraft\entity\monster\EntityGiantZombie.java
+@@ -2,33 +2,29 @@
+ 
+ import net.minecraft.entity.SharedMonsterAttributes;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -37,5 +39,4 @@
 +    public float func_180484_a(BlockPos p_180484_1_) {
          return this.worldObj.getLightBrightness(p_180484_1_) - 0.5F;
      }
--}
-+}
+ }

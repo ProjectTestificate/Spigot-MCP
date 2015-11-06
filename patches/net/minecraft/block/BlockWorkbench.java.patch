@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockWorkbench.java
-+++b/net/minecraft/block/BlockWorkbench.java
-@@ -15,65 +15,49 @@
+--- decompiled\net\minecraft\block\BlockWorkbench.java
++++ src\main\java\net\minecraft\block\BlockWorkbench.java
+@@ -13,66 +13,55 @@
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.util.IChatComponent;
  import net.minecraft.world.IInteractionObject;
  import net.minecraft.world.World;
  
@@ -89,10 +91,9 @@
 +        public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
 +            return new ContainerWorkbench(playerInventory, this.world, this.position);
          }
--}
 +
 +        public String getGuiID() {
 +            return "minecraft:crafting_table";
 +        }
 +    }
-+}
+ }

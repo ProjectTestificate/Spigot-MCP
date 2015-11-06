@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityAILookAtVillager.java
-+++b/net/minecraft/entity/ai/EntityAILookAtVillager.java
-@@ -3,57 +3,46 @@
+--- decompiled\net\minecraft\entity\ai\EntityAILookAtVillager.java
++++ src\main\java\net\minecraft\entity\ai\EntityAILookAtVillager.java
+@@ -1,58 +1,47 @@
+ package net.minecraft.entity.ai;
+ 
  import net.minecraft.entity.monster.EntityIronGolem;
  import net.minecraft.entity.passive.EntityVillager;
  
@@ -68,5 +70,4 @@
          this.theGolem.getLookHelper().setLookPositionWithEntity(this.theVillager, 30.0F, 30.0F);
          --this.lookTime;
      }
--}
-+}
+ }

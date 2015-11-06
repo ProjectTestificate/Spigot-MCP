@@ -1,6 +1,6 @@
----a/net/minecraft/world/WorldProviderHell.java
-+++b/net/minecraft/world/WorldProviderHell.java
-@@ -1,97 +1,71 @@
+--- decompiled\net\minecraft\world\WorldProviderHell.java
++++ src\main\java\net\minecraft\world\WorldProviderHell.java
+@@ -1,97 +1,72 @@
  package net.minecraft.world;
  
 -import net.minecraft.util.Vec3;
@@ -118,5 +118,4 @@
              }
          };
      }
--}
-+}
+ }

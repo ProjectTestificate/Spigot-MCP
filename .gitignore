@@ -8,6 +8,8 @@ target
 # Python Scripts
 gradle.log
 __pycache__
+JDiff.jar
+jdiff-version.txt
 
 # ForgeGradle
 *.gradle

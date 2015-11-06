@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemAxe.java
-+++b/net/minecraft/item/ItemAxe.java
-@@ -1,23 +1,22 @@
+--- decompiled\net\minecraft\item\ItemAxe.java
++++ src\main\java\net\minecraft\item\ItemAxe.java
+@@ -1,23 +1,23 @@
  package net.minecraft.item;
  
 -import com.google.common.collect.Sets;
@@ -31,5 +31,4 @@
 +    public float getStrVsBlock(ItemStack stack, Block block) {
          return block.getMaterial() != Material.wood && block.getMaterial() != Material.plants && block.getMaterial() != Material.vine ? super.getStrVsBlock(stack, block) : this.efficiencyOnProperMaterial;
      }
--}
-+}
+ }

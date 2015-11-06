@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockDropper.java
-+++b/net/minecraft/block/BlockDropper.java
-@@ -3,6 +3,7 @@
+--- decompiled\net\minecraft\block\BlockDropper.java
++++ src\main\java\net\minecraft\block\BlockDropper.java
+@@ -1,82 +1,81 @@
+ package net.minecraft.block;
+ 
  import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
  import net.minecraft.dispenser.IBehaviorDispenseItem;
  import net.minecraft.inventory.IInventory;
@@ -8,7 +10,9 @@
  import net.minecraft.item.ItemStack;
  import net.minecraft.tileentity.TileEntity;
  import net.minecraft.tileentity.TileEntityDispenser;
-@@ -12,69 +12,70 @@
+ import net.minecraft.tileentity.TileEntityDropper;
+ import net.minecraft.tileentity.TileEntityHopper;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -113,9 +117,5 @@
                              itemstack1 = itemstack.copy();
                          }
                      }
-@@ -84,4 +84,4 @@
-             }
-         }
-     }
--}
-+}
+ 
+                     tileentitydispenser.setInventorySlotContents(i, itemstack1);

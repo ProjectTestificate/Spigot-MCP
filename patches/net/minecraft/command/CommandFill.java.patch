@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandFill.java
-+++b/net/minecraft/command/CommandFill.java
-@@ -1,10 +1,8 @@
+--- decompiled\net\minecraft\command\CommandFill.java
++++ src\main\java\net\minecraft\command\CommandFill.java
+@@ -1,11 +1,11 @@
  package net.minecraft.command;
  
 -import com.google.common.collect.Lists;
@@ -11,7 +11,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.init.Blocks;
-@@ -15,41 +15,38 @@
+ import net.minecraft.inventory.IInventory;
+ import net.minecraft.nbt.JsonToNBT;
+@@ -13,177 +13,138 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.tileentity.TileEntity;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -64,7 +68,7 @@
                  i = parseInt(args[7], 0, 15);
              }
  
-@@ -57,20 +57,14 @@
+             BlockPos blockpos2 = new BlockPos(Math.min(blockpos.getX(), blockpos1.getX()), Math.min(blockpos.getY(), blockpos1.getY()), Math.min(blockpos.getZ(), blockpos1.getZ()));
              BlockPos blockpos3 = new BlockPos(Math.max(blockpos.getX(), blockpos1.getX()), Math.max(blockpos.getY(), blockpos1.getY()), Math.max(blockpos.getZ(), blockpos1.getZ()));
              int j = (blockpos3.getX() - blockpos2.getX() + 1) * (blockpos3.getY() - blockpos2.getY() + 1) * (blockpos3.getZ() - blockpos2.getZ() + 1);
  
@@ -91,7 +95,8 @@
                              throw new CommandException("commands.fill.outOfWorld", new Object[0]);
                          }
                      }
-@@ -79,73 +79,53 @@
+                 }
+ 
                  NBTTagCompound nbttagcompound = new NBTTagCompound();
                  boolean flag = false;
  
@@ -187,7 +192,10 @@
                                          world.setBlockState(blockpos4, Blocks.air.getDefaultState(), 2);
                                          arraylist.add(blockpos4);
                                      }
-@@ -159,11 +159,9 @@
+ 
+                                     continue;
+                                 }
+                             }
  
                              TileEntity tileentity1 = world.getTileEntity(blockpos4);
  
@@ -202,7 +210,7 @@
                                  }
  
                                  world.setBlockState(blockpos4, Blocks.barrier.getDefaultState(), block == Blocks.barrier ? 2 : 4);
-@@ -171,17 +171,14 @@
+                             }
  
                              iblockstate = block.getStateFromMeta(i);
  
@@ -223,7 +231,11 @@
                                          nbttagcompound.setInteger("x", blockpos4.getX());
                                          nbttagcompound.setInteger("y", blockpos4.getY());
                                          nbttagcompound.setInteger("z", blockpos4.getZ());
-@@ -195,34 +195,26 @@
+                                         tileentity.readFromNBT(nbttagcompound);
+                                     }
+@@ -193,34 +154,27 @@
+                     }
+                 }
  
                  Iterator iterator = arraylist.iterator();
  
@@ -263,5 +275,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 +        return args.length > 0 && args.length <= 3 ? func_175771_a(args, 0, pos) : (args.length > 3 && args.length <= 6 ? func_175771_a(args, 3, pos) : (args.length == 7 ? func_175762_a(args, Block.blockRegistry.getKeys()) : (args.length == 9 ? getListOfStringsMatchingLastWord(args, new String[]{"replace", "destroy", "keep", "hollow", "outline"}) : null)));
      }
--}
-+}
+ }

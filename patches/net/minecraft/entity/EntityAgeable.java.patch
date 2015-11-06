@@ -1,6 +1,8 @@
----a/net/minecraft/entity/EntityAgeable.java
-+++b/net/minecraft/entity/EntityAgeable.java
-@@ -8,53 +8,66 @@
+--- decompiled\net\minecraft\entity\EntityAgeable.java
++++ src\main\java\net\minecraft\entity\EntityAgeable.java
+@@ -6,208 +6,195 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  
@@ -89,7 +91,7 @@
                              }
                          }
                      }
-@@ -63,37 +63,29 @@
+                 }
              }
  
              return true;
@@ -133,7 +135,7 @@
                  this.func_175500_n();
              }
          }
-@@ -100,115 +100,96 @@
+ 
          int l = j - k;
          this.setGrowingAge(j);
  
@@ -273,5 +275,4 @@
 +    protected final void setScale(float p_98055_1_) {
          super.setSize(this.field_98056_d * p_98055_1_, this.field_98057_e * p_98055_1_);
      }
--}
-+}
+ }

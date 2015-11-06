@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemMinecart.java
-+++b/net/minecraft/item/ItemMinecart.java
-@@ -14,104 +14,134 @@
+--- decompiled\net\minecraft\item\ItemMinecart.java
++++ src\main\java\net\minecraft\item\ItemMinecart.java
+@@ -12,116 +12,139 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -178,7 +180,8 @@
                      entityminecart.setCustomNameTag(stack.getDisplayName());
                  }
  
-@@ -118,12 +118,8 @@
+                 worldIn.spawnEntityInWorld(entityminecart);
+             }
  
              --stack.stackSize;
              return true;
@@ -189,5 +192,4 @@
              return false;
          }
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemFishFood.java
-+++b/net/minecraft/item/ItemFishFood.java
-@@ -1,51 +1,42 @@
+--- decompiled\net\minecraft\item\ItemFishFood.java
++++ src\main\java\net\minecraft\item\ItemFishFood.java
+@@ -1,86 +1,59 @@
  package net.minecraft.item;
  
 -import com.google.common.collect.Maps;
@@ -63,7 +63,8 @@
              player.addPotionEffect(new PotionEffect(Potion.poison.id, 1200, 3));
              player.addPotionEffect(new PotionEffect(Potion.hunger.id, 300, 2));
              player.addPotionEffect(new PotionEffect(Potion.confusion.id, 300, 1));
-@@ -54,48 +54,12 @@
+         }
+ 
          super.onFoodEaten(stack, worldIn, player);
      }
  
@@ -97,7 +98,11 @@
          COD(0, "cod", 2, 0.1F, 5, 0.6F),
          SALMON(1, "salmon", 2, 0.1F, 6, 0.8F),
          CLOWNFISH(2, "clownfish", 1, 0.1F),
-@@ -94,8 +94,7 @@
+         PUFFERFISH(3, "pufferfish", 1, 0.1F);
+         private static final Map META_LOOKUP = Maps.newHashMap();
+@@ -92,85 +65,72 @@
+         private final float cookedSaturationModifier;
+         private boolean cookable = false;
  
          private static final String __OBFID = "CL_00000033";
  
@@ -107,7 +112,9 @@
              this.meta = meta;
              this.unlocalizedName = unlocalizedName;
              this.uncookedHealAmount = uncookedHeal;
-@@ -105,8 +105,7 @@
+             this.uncookedSaturationModifier = uncookedSaturation;
+             this.cookedHealAmount = cookedHeal;
+             this.cookedSaturationModifier = cookedSaturation;
              this.cookable = true;
          }
  
@@ -117,7 +124,9 @@
              this.meta = meta;
              this.unlocalizedName = unlocalizedName;
              this.uncookedHealAmount = uncookedHeal;
-@@ -116,63 +116,51 @@
+             this.uncookedSaturationModifier = uncookedSaturation;
+             this.cookedHealAmount = 0;
+             this.cookedSaturationModifier = 0.0F;
              this.cookable = false;
          }
  
@@ -191,5 +200,3 @@
              }
          }
      }
--}
-+}

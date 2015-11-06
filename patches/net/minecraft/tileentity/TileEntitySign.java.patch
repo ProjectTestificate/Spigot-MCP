@@ -1,6 +1,6 @@
----a/net/minecraft/tileentity/TileEntitySign.java
-+++b/net/minecraft/tileentity/TileEntitySign.java
-@@ -1,16 +1,15 @@
+--- decompiled\net\minecraft\tileentity\TileEntitySign.java
++++ src\main\java\net\minecraft\tileentity\TileEntitySign.java
+@@ -1,214 +1,211 @@
  package net.minecraft.tileentity;
  
 -import com.google.gson.JsonParseException;
@@ -18,7 +18,7 @@
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.ChatComponentProcessor;
  import net.minecraft.util.ChatComponentText;
-@@ -18,92 +18,105 @@
+ import net.minecraft.util.ChatStyle;
  import net.minecraft.util.IChatComponent;
  import net.minecraft.util.Vec3;
  import net.minecraft.world.World;
@@ -171,7 +171,7 @@
                  this.signText[i] = new ChatComponentText(s);
              }
          }
-@@ -112,93 +112,76 @@
+ 
          this.field_174883_i.func_179668_a(compound);
      }
  
@@ -302,7 +302,7 @@
                  }
              }
          }
-@@ -207,9 +207,7 @@
+ 
          return true;
      }
  
@@ -311,5 +311,4 @@
 +    public CommandResultStats func_174880_d() {
          return this.field_174883_i;
      }
--}
-+}
+ }

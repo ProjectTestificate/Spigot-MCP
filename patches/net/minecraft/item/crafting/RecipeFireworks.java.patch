@@ -1,6 +1,6 @@
----a/net/minecraft/item/crafting/RecipeFireworks.java
-+++b/net/minecraft/item/crafting/RecipeFireworks.java
-@@ -1,8 +1,6 @@
+--- decompiled\net\minecraft\item\crafting\RecipeFireworks.java
++++ src\main\java\net\minecraft\item\crafting\RecipeFireworks.java
+@@ -1,263 +1,201 @@
  package net.minecraft.item.crafting;
  
 -import com.google.common.collect.Lists;
@@ -9,7 +9,8 @@
  import net.minecraft.init.Items;
  import net.minecraft.inventory.InventoryCrafting;
  import net.minecraft.item.ItemDye;
-@@ -10,13 +10,17 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.nbt.NBTTagList;
  import net.minecraft.world.World;
  
@@ -34,7 +35,8 @@
          this.field_92102_a = null;
          int i = 0;
          int j = 0;
-@@ -25,49 +25,29 @@
+         int k = 0;
+         int l = 0;
          int i1 = 0;
          int j1 = 0;
  
@@ -100,7 +102,10 @@
                          return false;
                      }
  
-@@ -81,78 +81,57 @@
+                     ++j1;
+                 }
+             }
+         }
  
          i1 += k + j1;
  
@@ -196,7 +201,7 @@
                              b0 = 3;
                          }
                      }
-@@ -161,9 +161,8 @@
+                 }
  
                  int[] aint1 = new int[arraylist.size()];
  
@@ -208,7 +213,7 @@
                  }
  
                  nbttagcompound1.setIntArray("Colors", aint1);
-@@ -171,23 +171,16 @@
+                 nbttagcompound1.setByte("Type", b0);
                  nbttagcompound.setTag("Explosion", nbttagcompound1);
                  this.field_92102_a.setTagCompound(nbttagcompound);
                  return true;
@@ -237,7 +242,8 @@
                              this.field_92102_a = itemstack1.copy();
                              this.field_92102_a.stackSize = 1;
                          }
-@@ -196,72 +196,54 @@
+                     }
+                 }
  
                  int[] aint = new int[arraylist1.size()];
  
@@ -320,6 +326,3 @@
          }
  
          return aitemstack;
-     }
--}
-+}

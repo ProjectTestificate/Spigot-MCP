@@ -1,6 +1,6 @@
----a/net/minecraft/tileentity/TileEntity.java
-+++b/net/minecraft/tileentity/TileEntity.java
-@@ -1,10 +1,9 @@
+--- decompiled\net\minecraft\tileentity\TileEntity.java
++++ src\main\java\net\minecraft\tileentity\TileEntity.java
+@@ -1,269 +1,265 @@
  package net.minecraft.tileentity;
  
 -import com.google.common.collect.Maps;
@@ -12,7 +12,7 @@
  import net.minecraft.block.BlockJukebox;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.crash.CrashReportCategory;
-@@ -11,70 +11,103 @@
+ import net.minecraft.init.Blocks;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.network.Packet;
  import net.minecraft.util.BlockPos;
@@ -147,7 +147,7 @@
              compound.setString("id", s);
              compound.setInteger("x", this.pos.getX());
              compound.setInteger("y", this.pos.getY());
-@@ -85,38 +85,29 @@
+             compound.setInteger("z", this.pos.getZ());
          }
      }
  
@@ -197,7 +197,7 @@
              IBlockState iblockstate = this.worldObj.getBlockState(this.pos);
              this.blockMetadata = iblockstate.getBlock().getMetaFromState(iblockstate);
          }
-@@ -126,144 +126,118 @@
+ 
          return this.blockMetadata;
      }
  
@@ -385,11 +385,14 @@
          addMapping(TileEntityFurnace.class, "Furnace");
          addMapping(TileEntityChest.class, "Chest");
          addMapping(TileEntityEnderChest.class, "EnderChest");
-@@ -284,4 +284,19 @@
+         addMapping(BlockJukebox.TileEntityJukebox.class, "RecordPlayer");
+         addMapping(TileEntityDispenser.class, "Trap");
+@@ -282,6 +278,21 @@
+         addMapping(TileEntityHopper.class, "Hopper");
+         addMapping(TileEntityComparator.class, "Comparator");
          addMapping(TileEntityFlowerPot.class, "FlowerPot");
          addMapping(TileEntityBanner.class, "Banner");
      }
--}
 +
 +    // CraftBukkit start - add method
 +    public InventoryHolder getOwner() {
@@ -405,4 +408,4 @@
 +        return null;
 +    }
 +    // CraftBukkit end
-+}
+ }

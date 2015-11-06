@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenBigTree.java
-+++b/net/minecraft/world/gen/feature/WorldGenBigTree.java
-@@ -1,10 +1,8 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenBigTree.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenBigTree.java
+@@ -1,21 +1,23 @@
  package net.minecraft.world.gen.feature;
  
 -import com.google.common.collect.Lists;
@@ -11,7 +11,8 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockLog;
  import net.minecraft.block.material.Material;
-@@ -12,8 +12,10 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  
@@ -24,7 +25,11 @@
      private Random field_175949_k;
      private World world;
      private BlockPos field_175947_m;
-@@ -29,8 +29,7 @@
+     int heightLimit;
+     int height;
+@@ -27,12 +29,11 @@
+     int field_175950_h;
+     int leafDistanceLimit;
      List field_175948_j;
      private static final String __OBFID = "CL_00000400";
  
@@ -34,7 +39,11 @@
          super(p_i2008_1_);
          this.field_175947_m = BlockPos.ORIGIN;
          this.heightAttenuation = 0.618D;
-@@ -42,20 +42,17 @@
+         this.field_175944_d = 0.381D;
+         this.field_175945_e = 1.0D;
+@@ -40,316 +41,254 @@
+         this.field_175943_g = 1;
+         this.field_175950_h = 12;
          this.leafDistanceLimit = 4;
      }
  
@@ -59,7 +68,8 @@
              i = 1;
          }
  
-@@ -63,31 +63,26 @@
+         int j = this.field_175947_m.getY() + this.height;
+         int k = this.heightLimit - this.leafDistanceLimit;
          this.field_175948_j = Lists.newArrayList();
          this.field_175948_j.add(new WorldGenBigTree.FoliageCoordinates(this.field_175947_m.up(k), j));
  
@@ -101,7 +111,8 @@
                              this.field_175948_j.add(new WorldGenBigTree.FoliageCoordinates(blockpos, blockpos2.getY()));
                          }
                      }
-@@ -96,22 +96,17 @@
+                 }
+             }
          }
      }
  
@@ -129,7 +140,7 @@
                          this.func_175905_a(this.world, blockpos1, p_180712_3_, 0);
                      }
                  }
-@@ -118,25 +118,18 @@
+             }
          }
      }
  
@@ -161,7 +172,7 @@
                  return 0.0F;
              }
  
-@@ -143,57 +143,47 @@
+             return f2 * 0.5F;
          }
      }
  
@@ -234,7 +245,7 @@
                  enumaxis = BlockLog.EnumAxis.Z;
              }
          }
-@@ -202,74 +202,60 @@
+ 
          return enumaxis;
      }
  
@@ -329,7 +340,8 @@
                      return j;
                  }
              }
-@@ -278,27 +278,22 @@
+ 
+             return -1;
          }
      }
  
@@ -363,7 +375,8 @@
              this.generateLeafNodeList();
              this.func_175941_b();
              this.func_175942_c();
-@@ -308,49 +308,32 @@
+             this.func_175939_d();
+             return true;
          }
      }
  
@@ -423,10 +436,9 @@
 +            super(p_i45635_1_.getX(), p_i45635_1_.getY(), p_i45635_1_.getZ());
 +            this.field_178000_b = p_i45635_2_;
          }
--}
 +
 +        public int func_177999_q() {
 +            return this.field_178000_b;
 +        }
 +    }
-+}
+ }

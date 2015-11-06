@@ -1,6 +1,8 @@
----a/net/minecraft/potion/PotionAbsorption.java
-+++b/net/minecraft/potion/PotionAbsorption.java
-@@ -4,25 +4,22 @@
+--- decompiled\net\minecraft\potion\PotionAbsorption.java
++++ src\main\java\net\minecraft\potion\PotionAbsorption.java
+@@ -2,26 +2,23 @@
+ 
+ import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.ai.attributes.BaseAttributeMap;
  import net.minecraft.util.ResourceLocation;
  
@@ -31,5 +33,4 @@
 +        p_111185_1_.setAbsorptionAmount(p_111185_1_.getAbsorptionAmount() + (float) (4 * (p_111185_3_ + 1)));
          super.applyAttributesModifiersToEntity(p_111185_1_, p_111185_2_, p_111185_3_);
      }
--}
-+}
+ }

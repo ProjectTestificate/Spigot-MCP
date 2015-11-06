@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S1DPacketEntityEffect.java
-+++b/net/minecraft/network/play/server/S1DPacketEntityEffect.java
-@@ -1,14 +1,14 @@
+--- decompiled\net\minecraft\network\play\server\S1DPacketEntityEffect.java
++++ src\main\java\net\minecraft\network\play\server\S1DPacketEntityEffect.java
+@@ -1,104 +1,61 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -21,7 +21,7 @@
      private int field_149434_a;
      private byte field_149432_b;
      private byte field_149433_c;
-@@ -18,27 +18,25 @@
+     private int field_149431_d;
      private byte field_179708_e;
      private static final String __OBFID = "CL_00001343";
  
@@ -59,7 +59,7 @@
          this.field_149434_a = buf.readVarIntFromBuffer();
          this.field_149432_b = buf.readByte();
          this.field_149433_c = buf.readByte();
-@@ -47,8 +47,7 @@
+         this.field_149431_d = buf.readVarIntFromBuffer();
          this.field_179708_e = buf.readByte();
      }
  
@@ -69,7 +69,7 @@
          buf.writeVarIntToBuffer(this.field_149434_a);
          buf.writeByte(this.field_149432_b);
          buf.writeByte(this.field_149433_c);
-@@ -56,26 +56,11 @@
+         buf.writeVarIntToBuffer(this.field_149431_d);
          buf.writeByte(this.field_179708_e);
      }
  
@@ -121,5 +121,4 @@
 -    {
 -        return this.field_179708_e != 0;
 -    }
--}
-+}
+ }

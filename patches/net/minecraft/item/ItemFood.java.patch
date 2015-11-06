@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemFood.java
-+++b/net/minecraft/item/ItemFood.java
-@@ -6,8 +6,8 @@
+--- decompiled\net\minecraft\item\ItemFood.java
++++ src\main\java\net\minecraft\item\ItemFood.java
+@@ -4,12 +4,12 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.potion.PotionEffect;
  import net.minecraft.stats.StatList;
  import net.minecraft.world.World;
  
@@ -11,7 +13,11 @@
      public final int itemUseDuration;
      private final int healAmount;
      private final float saturationModifier;
-@@ -19,8 +19,7 @@
+     private final boolean isWolfsFavoriteMeat;
+     private boolean alwaysEdible;
+@@ -17,87 +17,73 @@
+     private int potionDuration;
+     private int potionAmplifier;
      private float potionEffectProbability;
      private static final String __OBFID = "CL_00000036";
  
@@ -21,7 +27,7 @@
          this.itemUseDuration = 32;
          this.healAmount = amount;
          this.isWolfsFavoriteMeat = isWolfFood;
-@@ -28,13 +28,11 @@
+         this.saturationModifier = saturation;
          this.setCreativeTab(CreativeTabs.tabFood);
      }
  
@@ -37,7 +43,8 @@
          --stack.stackSize;
          playerIn.getFoodStats().addStats(this, stack);
          worldIn.playSoundAtEntity(playerIn, "random.burp", 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
-@@ -43,53 +43,42 @@
+         this.onFoodEaten(stack, worldIn, playerIn);
+         playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
          return stack;
      }
  
@@ -99,7 +106,7 @@
          this.potionId = id;
          this.potionDuration = duration;
          this.potionAmplifier = amplifier;
-@@ -95,10 +95,8 @@
+         this.potionEffectProbability = probability;
          return this;
      }
  
@@ -109,5 +116,4 @@
          this.alwaysEdible = true;
          return this;
      }
--}
-+}
+ }

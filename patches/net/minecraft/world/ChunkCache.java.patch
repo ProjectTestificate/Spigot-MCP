@@ -1,6 +1,8 @@
----a/net/minecraft/world/ChunkCache.java
-+++b/net/minecraft/world/ChunkCache.java
-@@ -6,12 +6,8 @@
+--- decompiled\net\minecraft\world\ChunkCache.java
++++ src\main\java\net\minecraft\world\ChunkCache.java
+@@ -4,187 +4,78 @@
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.init.Blocks;
  import net.minecraft.tileentity.TileEntity;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -17,7 +19,7 @@
      protected int chunkX;
      protected int chunkZ;
      protected Chunk[][] chunkArray;
-@@ -20,8 +20,7 @@
+     protected boolean hasExtendedLevels;
      protected World worldObj;
      private static final String __OBFID = "CL_00000155";
  
@@ -27,7 +29,10 @@
          this.worldObj = worldIn;
          this.chunkX = posFromIn.getX() - subIn >> 4;
          this.chunkZ = posFromIn.getZ() - subIn >> 4;
-@@ -32,70 +32,39 @@
+         int j = posToIn.getX() + subIn >> 4;
+         int k = posToIn.getZ() + subIn >> 4;
+         this.chunkArray = new Chunk[j - this.chunkX + 1][k - this.chunkZ + 1];
+         this.hasExtendedLevels = true;
          int l;
          int i1;
  
@@ -106,7 +111,8 @@
                      return chunk.getBlockState(pos);
                  }
              }
-@@ -102,139 +102,13 @@
+         }
+ 
          return Blocks.air.getDefaultState();
      }
  
@@ -197,5 +203,4 @@
 -    {
 -        return this.worldObj.getWorldType();
 -    }
--}
-+}
+ }

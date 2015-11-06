@@ -1,6 +1,6 @@
----a/net/minecraft/world/border/IBorderListener.java
-+++b/net/minecraft/world/border/IBorderListener.java
-@@ -1,7 +1,7 @@
+--- decompiled\net\minecraft\world\border\IBorderListener.java
++++ src\main\java\net\minecraft\world\border\IBorderListener.java
+@@ -1,9 +1,9 @@
  package net.minecraft.world.border;
  
 -public interface IBorderListener
@@ -10,9 +10,5 @@
      void onSizeChanged(WorldBorder border, double newSize);
  
      void onTransitionStarted(WorldBorder border, double oldSize, double newSize, long time);
-@@ -15,4 +15,4 @@
-     void onDamageAmountChanged(WorldBorder border, double newAmount);
  
-     void onDamageBufferChanged(WorldBorder border, double newSize);
--}
-+}
+     void onCenterChanged(WorldBorder border, double x, double z);

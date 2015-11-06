@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenIceSpike.java
-+++b/net/minecraft/world/gen/feature/WorldGenIceSpike.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenIceSpike.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenIceSpike.java
+@@ -1,119 +1,97 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -8,7 +8,7 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.material.Material;
  import net.minecraft.init.Blocks;
-@@ -8,63 +8,51 @@
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  
@@ -92,7 +92,9 @@
                                  }
                              }
                          }
-@@ -75,43 +75,33 @@
+                     }
+                 }
+             }
  
              k = j - 1;
  
@@ -146,9 +148,5 @@
                                      blockpos1 = blockpos1.down(p_180709_2_.nextInt(5) + 1);
                                      l1 = p_180709_2_.nextInt(5);
                                  }
-@@ -129,4 +129,4 @@
-             return true;
-         }
-     }
--}
-+}
+ 
+                                 continue;

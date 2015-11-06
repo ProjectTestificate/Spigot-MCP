@@ -1,6 +1,8 @@
----a/net/minecraft/inventory/SlotCrafting.java
-+++b/net/minecraft/inventory/SlotCrafting.java
-@@ -11,133 +11,108 @@
+--- decompiled\net\minecraft\inventory\SlotCrafting.java
++++ src\main\java\net\minecraft\inventory\SlotCrafting.java
+@@ -9,133 +9,108 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.item.ItemSword;
  import net.minecraft.item.crafting.CraftingManager;
  import net.minecraft.stats.AchievementList;
  
@@ -158,5 +160,3 @@
              }
          }
      }
--}
-+}

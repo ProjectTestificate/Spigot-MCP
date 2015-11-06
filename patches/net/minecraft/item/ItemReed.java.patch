@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemReed.java
-+++b/net/minecraft/item/ItemReed.java
-@@ -10,56 +10,43 @@
+--- decompiled\net\minecraft\item\ItemReed.java
++++ src\main\java\net\minecraft\item\ItemReed.java
+@@ -8,59 +8,46 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -69,9 +71,5 @@
                      --stack.stackSize;
                      return true;
                  }
-@@ -67,4 +67,4 @@
-             return false;
-         }
-     }
--}
-+}
+             }
+ 

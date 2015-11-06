@@ -1,6 +1,6 @@
----a/net/minecraft/world/biome/BiomeGenRiver.java
-+++b/net/minecraft/world/biome/BiomeGenRiver.java
-@@ -1,13 +1,12 @@
+--- decompiled\net\minecraft\world\biome\BiomeGenRiver.java
++++ src\main\java\net\minecraft\world\biome\BiomeGenRiver.java
+@@ -1,12 +1,11 @@
  package net.minecraft.world.biome;
  
 -public class BiomeGenRiver extends BiomeGenBase
@@ -15,5 +15,4 @@
          super(p_i1987_1_);
          this.spawnableCreatureList.clear();
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S38PacketPlayerListItem.java
-+++b/net/minecraft/network/play/server/S38PacketPlayerListItem.java
-@@ -1,14 +1,8 @@
+--- decompiled\net\minecraft\network\play\server\S38PacketPlayerListItem.java
++++ src\main\java\net\minecraft\network\play\server\S38PacketPlayerListItem.java
+@@ -1,167 +1,145 @@
  package net.minecraft.network.play.server;
  
 -import com.google.common.collect.Lists;
@@ -13,7 +13,7 @@
  import net.minecraft.entity.player.EntityPlayerMP;
  import net.minecraft.network.INetHandler;
  import net.minecraft.network.Packet;
-@@ -13,70 +13,62 @@
+ import net.minecraft.network.PacketBuffer;
  import net.minecraft.network.play.INetHandlerPlayClient;
  import net.minecraft.util.IChatComponent;
  import net.minecraft.world.WorldSettings;
@@ -105,7 +105,7 @@
                              gameprofile.getProperties().put(s, new Property(s, s1));
                          }
                      }
-@@ -85,67 +85,59 @@
+ 
                      gametype = WorldSettings.GameType.getByID(buf.readVarIntFromBuffer());
                      k = buf.readVarIntFromBuffer();
  
@@ -188,7 +188,7 @@
                              buf.writeBoolean(false);
                          }
                      }
-@@ -154,11 +154,9 @@
+ 
                      buf.writeVarIntToBuffer(addplayerdata.func_179960_c().getID());
                      buf.writeVarIntToBuffer(addplayerdata.func_179963_b());
  
@@ -203,7 +203,11 @@
                          buf.writeBoolean(true);
                          buf.writeChatComponent(addplayerdata.func_179961_d());
                      }
-@@ -176,11 +176,9 @@
+ 
+                     break;
+@@ -174,16 +152,13 @@
+                     buf.writeVarIntToBuffer(addplayerdata.func_179963_b());
+                     break;
                  case 4:
                      buf.writeUuid(addplayerdata.func_179962_a().getId());
  
@@ -218,7 +222,11 @@
                          buf.writeBoolean(true);
                          buf.writeChatComponent(addplayerdata.func_179961_d());
                      }
-@@ -193,19 +193,15 @@
+ 
+                     break;
+@@ -191,129 +166,93 @@
+                     buf.writeUuid(addplayerdata.func_179962_a().getId());
+             }
          }
      }
  
@@ -253,7 +261,9 @@
          ADD_PLAYER,
          UPDATE_GAME_MODE,
          UPDATE_LATENCY,
-@@ -226,95 +226,73 @@
+         UPDATE_DISPLAY_NAME,
+         REMOVE_PLAYER;
+ 
          private static final String __OBFID = "CL_00002295";
      }
  
@@ -383,6 +393,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

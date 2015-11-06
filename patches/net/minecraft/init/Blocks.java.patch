@@ -1,6 +1,8 @@
----a/net/minecraft/init/Blocks.java
-+++b/net/minecraft/init/Blocks.java
-@@ -34,8 +34,8 @@
+--- decompiled\net\minecraft\init\Blocks.java
++++ src\main\java\net\minecraft\init\Blocks.java
+@@ -32,12 +32,12 @@
+ import net.minecraft.block.BlockStaticLiquid;
+ import net.minecraft.block.BlockTallGrass;
  import net.minecraft.block.BlockTripWireHook;
  import net.minecraft.util.ResourceLocation;
  
@@ -11,7 +13,11 @@
      public static final Block air;
      public static final Block stone;
      public static final BlockGrass grass;
-@@ -236,41 +236,35 @@
+     public static final Block dirt;
+     public static final Block cobblestone;
+@@ -234,81 +234,76 @@
+     public static final Block red_sandstone_stairs;
+     public static final BlockSlab double_stone_slab2;
      public static final BlockSlab stone_slab2;
      private static final String __OBFID = "CL_00000204";
  
@@ -65,7 +71,10 @@
              sponge = getRegisteredBlock("sponge");
              glass = getRegisteredBlock("glass");
              lapis_ore = getRegisteredBlock("lapis_ore");
-@@ -280,32 +280,32 @@
+             lapis_block = getRegisteredBlock("lapis_block");
+             dispenser = getRegisteredBlock("dispenser");
+             sandstone = getRegisteredBlock("sandstone");
+             noteblock = getRegisteredBlock("noteblock");
              bed = getRegisteredBlock("bed");
              golden_rail = getRegisteredBlock("golden_rail");
              detector_rail = getRegisteredBlock("detector_rail");
@@ -114,7 +123,11 @@
              diamond_ore = getRegisteredBlock("diamond_ore");
              diamond_block = getRegisteredBlock("diamond_block");
              crafting_table = getRegisteredBlock("crafting_table");
-@@ -337,9 +337,9 @@
+             wheat = getRegisteredBlock("wheat");
+             farmland = getRegisteredBlock("farmland");
+@@ -335,13 +330,13 @@
+             redstone_torch = getRegisteredBlock("redstone_torch");
+             stone_button = getRegisteredBlock("stone_button");
              snow_layer = getRegisteredBlock("snow_layer");
              ice = getRegisteredBlock("ice");
              snow = getRegisteredBlock("snow");
@@ -126,7 +139,11 @@
              jukebox = getRegisteredBlock("jukebox");
              oak_fence = getRegisteredBlock("fence");
              spruce_fence = getRegisteredBlock("spruce_fence");
-@@ -351,10 +351,10 @@
+             birch_fence = getRegisteredBlock("birch_fence");
+             jungle_fence = getRegisteredBlock("jungle_fence");
+@@ -349,15 +344,15 @@
+             acacia_fence = getRegisteredBlock("acacia_fence");
+             pumpkin = getRegisteredBlock("pumpkin");
              netherrack = getRegisteredBlock("netherrack");
              soul_sand = getRegisteredBlock("soul_sand");
              glowstone = getRegisteredBlock("glowstone");
@@ -141,7 +158,11 @@
              trapdoor = getRegisteredBlock("trapdoor");
              monster_egg = getRegisteredBlock("monster_egg");
              stonebrick = getRegisteredBlock("stonebrick");
-@@ -375,7 +375,7 @@
+             brown_mushroom_block = getRegisteredBlock("brown_mushroom_block");
+             red_mushroom_block = getRegisteredBlock("red_mushroom_block");
+@@ -373,56 +368,56 @@
+             jungle_fence_gate = getRegisteredBlock("jungle_fence_gate");
+             dark_oak_fence_gate = getRegisteredBlock("dark_oak_fence_gate");
              acacia_fence_gate = getRegisteredBlock("acacia_fence_gate");
              brick_stairs = getRegisteredBlock("brick_stairs");
              stone_brick_stairs = getRegisteredBlock("stone_brick_stairs");
@@ -150,7 +171,7 @@
              waterlily = getRegisteredBlock("waterlily");
              nether_brick = getRegisteredBlock("nether_brick");
              nether_brick_fence = getRegisteredBlock("nether_brick_fence");
-@@ -383,44 +383,44 @@
+             nether_brick_stairs = getRegisteredBlock("nether_brick_stairs");
              nether_wart = getRegisteredBlock("nether_wart");
              enchanting_table = getRegisteredBlock("enchanting_table");
              brewing_stand = getRegisteredBlock("brewing_stand");
@@ -206,7 +227,11 @@
              quartz_block = getRegisteredBlock("quartz_block");
              quartz_stairs = getRegisteredBlock("quartz_stairs");
              activator_rail = getRegisteredBlock("activator_rail");
-@@ -436,19 +436,19 @@
+             dropper = getRegisteredBlock("dropper");
+             stained_hardened_clay = getRegisteredBlock("stained_hardened_clay");
+@@ -434,19 +429,19 @@
+             coal_block = getRegisteredBlock("coal_block");
+             packed_ice = getRegisteredBlock("packed_ice");
              acacia_stairs = getRegisteredBlock("acacia_stairs");
              dark_oak_stairs = getRegisteredBlock("dark_oak_stairs");
              slime_block = getRegisteredBlock("slime");
@@ -228,5 +253,4 @@
 +            stone_slab2 = (BlockSlab) getRegisteredBlock("stone_slab2");
          }
      }
--}
-+}
+ }

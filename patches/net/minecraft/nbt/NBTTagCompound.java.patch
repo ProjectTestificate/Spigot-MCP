@@ -1,13 +1,13 @@
----a/net/minecraft/nbt/NBTTagCompound.java
-+++b/net/minecraft/nbt/NBTTagCompound.java
-@@ -1,6 +1,5 @@
+--- decompiled\net\minecraft\nbt\NBTTagCompound.java
++++ src\main\java\net\minecraft\nbt\NBTTagCompound.java
+@@ -1,453 +1,350 @@
  package net.minecraft.nbt;
  
 -import com.google.common.collect.Maps;
  import java.io.DataInput;
  import java.io.DataOutput;
  import java.io.IOException;
-@@ -8,340 +8,262 @@
+ import java.util.Iterator;
  import java.util.Map;
  import java.util.Set;
  import java.util.concurrent.Callable;
@@ -454,7 +454,7 @@
                  return NBTBase.NBT_TYPES[expectedType];
              }
          });
-@@ -351,69 +351,55 @@
+         crashreportcategory.addCrashSection("Tag name", key);
          return crashreport;
      }
  
@@ -541,7 +541,8 @@
              CrashReport crashreport = CrashReport.makeCrashReport(ioexception, "Loading NBT data");
              CrashReportCategory crashreportcategory = crashreport.makeCategory("NBT Tag");
              crashreportcategory.addCrashSection("Tag name", key);
-@@ -423,32 +423,23 @@
+             crashreportcategory.addCrashSection("Tag type", Byte.valueOf(id));
+             throw new ReportedException(crashreport);
          }
      }
  
@@ -581,5 +582,4 @@
              }
          }
      }
--}
-+}
+ }

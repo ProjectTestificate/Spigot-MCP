@@ -1,6 +1,6 @@
----a/net/minecraft/entity/ai/attributes/BaseAttribute.java
-+++b/net/minecraft/entity/ai/attributes/BaseAttribute.java
-@@ -1,59 +1,50 @@
+--- decompiled\net\minecraft\entity\ai\attributes\BaseAttribute.java
++++ src\main\java\net\minecraft\entity\ai\attributes\BaseAttribute.java
+@@ -1,58 +1,49 @@
  package net.minecraft.entity.ai.attributes;
  
 -public abstract class BaseAttribute implements IAttribute
@@ -70,5 +70,4 @@
 +    public boolean equals(Object p_equals_1_) {
 +        return p_equals_1_ instanceof IAttribute && this.unlocalizedName.equals(((IAttribute) p_equals_1_).getAttributeUnlocalizedName());
      }
--}
-+}
+ }

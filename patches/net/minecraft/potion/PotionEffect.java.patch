@@ -1,6 +1,7 @@
----a/net/minecraft/potion/PotionEffect.java
-+++b/net/minecraft/potion/PotionEffect.java
-@@ -2,36 +2,30 @@
+--- decompiled\net\minecraft\potion\PotionEffect.java
++++ src\main\java\net\minecraft\potion\PotionEffect.java
+@@ -1,227 +1,171 @@
+ package net.minecraft.potion;
  
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.nbt.NBTTagCompound;
@@ -43,7 +44,7 @@
          this.potionID = id;
          this.duration = effectDuration;
          this.amplifier = effectAmplifier;
-@@ -39,8 +39,7 @@
+         this.isAmbient = ambient;
          this.showParticles = showParticles;
      }
  
@@ -53,7 +54,7 @@
          this.potionID = other.potionID;
          this.duration = other.duration;
          this.amplifier = other.amplifier;
-@@ -48,64 +48,49 @@
+         this.isAmbient = other.isAmbient;
          this.showParticles = other.showParticles;
      }
  
@@ -134,7 +135,9 @@
                  this.performEffect(entityIn);
              }
  
-@@ -117,100 +117,78 @@
+             this.deincrementDuration();
+         }
+ 
          return this.duration > 0;
      }
  
@@ -266,5 +269,4 @@
 -    {
 -        return this.isPotionDurationMax;
 -    }
--}
-+}
+ }

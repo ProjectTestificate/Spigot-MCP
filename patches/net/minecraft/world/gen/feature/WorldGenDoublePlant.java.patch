@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenDoublePlant.java
-+++b/net/minecraft/world/gen/feature/WorldGenDoublePlant.java
-@@ -1,29 +1,28 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenDoublePlant.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenDoublePlant.java
+@@ -1,33 +1,30 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -39,9 +39,5 @@
                  Blocks.double_plant.placeAt(worldIn, blockpos1, this.field_150549_a, 2);
                  flag = true;
              }
-@@ -33,4 +33,4 @@
+         }
  
-         return flag;
-     }
--}
-+}

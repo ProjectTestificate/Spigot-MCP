@@ -1,6 +1,7 @@
----a/net/minecraft/inventory/ContainerHorseInventory.java
-+++b/net/minecraft/inventory/ContainerHorseInventory.java
-@@ -2,114 +2,110 @@
+--- decompiled\net\minecraft\inventory\ContainerHorseInventory.java
++++ src\main\java\net\minecraft\inventory\ContainerHorseInventory.java
+@@ -1,131 +1,122 @@
+ package net.minecraft.inventory;
  
  import net.minecraft.entity.passive.EntityHorse;
  import net.minecraft.entity.player.EntityPlayer;
@@ -174,7 +175,7 @@
                  slot.onSlotChanged();
              }
          }
-@@ -123,10 +123,8 @@
+ 
          return itemstack;
      }
  
@@ -184,5 +185,4 @@
          super.onContainerClosed(playerIn);
          this.horseInventory.closeInventory(playerIn);
      }
--}
-+}
+ }

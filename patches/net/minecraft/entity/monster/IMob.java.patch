@@ -1,6 +1,6 @@
----a/net/minecraft/entity/monster/IMob.java
-+++b/net/minecraft/entity/monster/IMob.java
-@@ -1,33 +1,33 @@
+--- decompiled\net\minecraft\entity\monster\IMob.java
++++ src\main\java\net\minecraft\entity\monster\IMob.java
+@@ -1,33 +1,34 @@
  package net.minecraft.entity.monster;
  
 -import com.google.common.base.Predicate;
@@ -51,5 +51,4 @@
 +            return this.func_179982_a((Entity) p_apply_1_);
          }
      };
--}
-+}
+ }

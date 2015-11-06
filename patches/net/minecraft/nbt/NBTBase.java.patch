@@ -1,6 +1,8 @@
----a/net/minecraft/nbt/NBTBase.java
-+++b/net/minecraft/nbt/NBTBase.java
-@@ -4,9 +4,9 @@
+--- decompiled\net\minecraft\nbt\NBTBase.java
++++ src\main\java\net\minecraft\nbt\NBTBase.java
+@@ -2,27 +2,25 @@
+ 
+ import java.io.DataInput;
  import java.io.DataOutput;
  import java.io.IOException;
  
@@ -13,7 +15,10 @@
      private static final String __OBFID = "CL_00001229";
  
      abstract void write(DataOutput output) throws IOException;
-@@ -17,10 +17,8 @@
+ 
+     abstract void read(DataInput input, int depth, NBTSizeTracker sizeTracker) throws IOException;
+ 
+     public abstract String toString();
  
      public abstract byte getId();
  
@@ -26,7 +31,11 @@
              case 0:
                  return new NBTTagEnd();
              case 1:
-@@ -52,47 +52,37 @@
+                 return new NBTTagByte();
+             case 2:
+@@ -50,50 +48,43 @@
+         }
+     }
  
      public abstract NBTBase copy();
  
@@ -87,9 +96,8 @@
  
 -            public abstract float getFloat();
 -        }
--}
 +        public abstract double getDouble();
 +
 +        public abstract float getFloat();
 +    }
-+}
+ }

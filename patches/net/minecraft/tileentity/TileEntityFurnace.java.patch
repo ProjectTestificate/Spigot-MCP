@@ -1,6 +1,6 @@
----a/net/minecraft/tileentity/TileEntityFurnace.java
-+++b/net/minecraft/tileentity/TileEntityFurnace.java
-@@ -1,5 +1,8 @@
+--- decompiled\net\minecraft\tileentity\TileEntityFurnace.java
++++ src\main\java\net\minecraft\tileentity\TileEntityFurnace.java
+@@ -1,17 +1,19 @@
  package net.minecraft.tileentity;
  
 +import java.util.ArrayList;
@@ -9,7 +9,9 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockFurnace;
  import net.minecraft.block.material.Material;
-@@ -9,7 +9,6 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.entity.player.InventoryPlayer;
+ import net.minecraft.init.Blocks;
  import net.minecraft.init.Items;
  import net.minecraft.inventory.Container;
  import net.minecraft.inventory.ContainerFurnace;
@@ -17,7 +19,11 @@
  import net.minecraft.inventory.ISidedInventory;
  import net.minecraft.inventory.SlotFurnaceFuel;
  import net.minecraft.item.Item;
-@@ -21,123 +21,132 @@
+ import net.minecraft.item.ItemBlock;
+ import net.minecraft.item.ItemHoe;
+@@ -19,399 +21,406 @@
+ import net.minecraft.item.ItemSword;
+ import net.minecraft.item.ItemTool;
  import net.minecraft.item.crafting.FurnaceRecipes;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.nbt.NBTTagList;
@@ -202,7 +208,9 @@
                  this.furnaceItemStacks[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
              }
          }
-@@ -149,27 +149,22 @@
+ 
+         this.furnaceBurnTime = compound.getShort("BurnTime");
+         this.cookTime = compound.getShort("CookTime");
          this.totalCookTime = compound.getShort("CookTimeTotal");
          this.currentItemBurnTime = getItemBurnTime(this.furnaceItemStacks[1]);
  
@@ -237,7 +245,7 @@
                  this.furnaceItemStacks[i].writeToNBT(nbttagcompound1);
                  nbttaglist.appendTag(nbttagcompound1);
              }
-@@ -176,63 +176,72 @@
+         }
  
          compound.setTag("Items", nbttaglist);
  
@@ -346,7 +354,7 @@
                                  Item item = this.furnaceItemStacks[1].getItem().getContainerItem();
                                  this.furnaceItemStacks[1] = item != null ? new ItemStack(item) : null;
                              }
-@@ -240,155 +240,156 @@
+                         }
                      }
                  }
  
@@ -570,7 +578,7 @@
                  return false;
              }
          }
-@@ -396,18 +396,15 @@
+ 
          return true;
      }
  
@@ -595,7 +603,11 @@
              case 0:
                  return this.furnaceBurnTime;
              case 1:
-@@ -423,10 +423,8 @@
+                 return this.currentItemBurnTime;
+             case 2:
+@@ -421,14 +430,12 @@
+             default:
+                 return 0;
          }
      }
  
@@ -608,7 +620,11 @@
              case 0:
                  this.furnaceBurnTime = value;
                  break;
-@@ -441,17 +441,13 @@
+             case 1:
+                 this.currentItemBurnTime = value;
+@@ -439,18 +446,15 @@
+             case 3:
+                 this.totalCookTime = value;
          }
      }
  
@@ -627,5 +643,4 @@
              this.furnaceItemStacks[i] = null;
          }
      }
--}
-+}
+ }

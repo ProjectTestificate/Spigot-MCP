@@ -1,6 +1,8 @@
----a/net/minecraft/world/IWorldAccess.java
-+++b/net/minecraft/world/IWorldAccess.java
-@@ -4,8 +4,8 @@
+--- decompiled\net\minecraft\world\IWorldAccess.java
++++ src\main\java\net\minecraft\world\IWorldAccess.java
+@@ -2,23 +2,23 @@
+ 
+ import net.minecraft.entity.Entity;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.util.BlockPos;
  
@@ -11,7 +13,10 @@
      void markBlockForUpdate(BlockPos pos);
  
      void notifyLightSet(BlockPos pos);
-@@ -16,7 +16,7 @@
+ 
+     void markBlockRangeForRenderUpdate(int x1, int y1, int z1, int x2, int y2, int z2);
+ 
+     void playSound(String soundName, double x, double y, double z, float volume, float pitch);
  
      void playSoundToNearExcept(EntityPlayer except, String soundName, double x, double y, double z, float volume, float pitch);
  
@@ -20,9 +25,5 @@
  
      void onEntityAdded(Entity entityIn);
  
-@@ -29,4 +29,4 @@
-     void playAusSFX(EntityPlayer p_180439_1_, int p_180439_2_, BlockPos blockPosIn, int p_180439_4_);
+     void onEntityRemoved(Entity entityIn);
  
-     void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress);
--}
-+}

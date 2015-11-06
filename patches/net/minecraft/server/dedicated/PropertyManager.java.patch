@@ -1,6 +1,8 @@
----a/net/minecraft/server/dedicated/PropertyManager.java
-+++b/net/minecraft/server/dedicated/PropertyManager.java
-@@ -5,157 +5,140 @@
+--- decompiled\net\minecraft\server\dedicated\PropertyManager.java
++++ src\main\java\net\minecraft\server\dedicated\PropertyManager.java
+@@ -3,158 +3,142 @@
+ import java.io.File;
+ import java.io.FileInputStream;
  import java.io.FileOutputStream;
  import java.io.IOException;
  import java.util.Properties;
@@ -223,5 +225,4 @@
 +    public void setProperty(String key, Object value) {
          this.serverProperties.setProperty(key, "" + value);
      }
--}
-+}
+ }

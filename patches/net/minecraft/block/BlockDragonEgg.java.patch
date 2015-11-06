@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockDragonEgg.java
-+++b/net/minecraft/block/BlockDragonEgg.java
-@@ -1,108 +1,101 @@
+--- decompiled\net\minecraft\block\BlockDragonEgg.java
++++ src\main\java\net\minecraft\block\BlockDragonEgg.java
+@@ -1,145 +1,120 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -153,7 +153,10 @@
                          worldIn.setBlockState(blockpos1, iblockstate, 2);
                          worldIn.setBlockToAir(pos);
                      }
-@@ -116,19 +116,15 @@
+ 
+                     return;
+                 }
+             }
          }
      }
  
@@ -186,5 +189,4 @@
 -    {
 -        return null;
 -    }
--}
-+}
+ }

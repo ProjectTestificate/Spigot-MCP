@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/client/C0BPacketEntityAction.java
-+++b/net/minecraft/network/play/client/C0BPacketEntityAction.java
-@@ -1,72 +1,53 @@
+--- decompiled\net\minecraft\network\play\client\C0BPacketEntityAction.java
++++ src\main\java\net\minecraft\network\play\client\C0BPacketEntityAction.java
+@@ -1,75 +1,55 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -88,9 +88,5 @@
          START_SNEAKING,
          STOP_SNEAKING,
          STOP_SLEEPING,
-@@ -78,4 +78,4 @@
- 
-         private static final String __OBFID = "CL_00002283";
-     }
--}
-+}
+         START_SPRINTING,
+         STOP_SPRINTING,

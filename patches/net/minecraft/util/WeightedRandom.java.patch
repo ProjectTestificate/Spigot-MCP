@@ -1,6 +1,8 @@
----a/net/minecraft/util/WeightedRandom.java
-+++b/net/minecraft/util/WeightedRandom.java
-@@ -4,70 +4,57 @@
+--- decompiled\net\minecraft\util\WeightedRandom.java
++++ src\main\java\net\minecraft\util\WeightedRandom.java
+@@ -2,71 +2,59 @@
+ 
+ import java.util.Collection;
  import java.util.Iterator;
  import java.util.Random;
  
@@ -89,6 +91,5 @@
 +        public Item(int itemWeightIn) {
 +            this.itemWeight = itemWeightIn;
          }
--}
 +    }
-+}
+ }

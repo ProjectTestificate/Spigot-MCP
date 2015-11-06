@@ -1,6 +1,6 @@
----a/net/minecraft/entity/EnumCreatureAttribute.java
-+++b/net/minecraft/entity/EnumCreatureAttribute.java
-@@ -1,11 +1,9 @@
+--- decompiled\net\minecraft\entity\EnumCreatureAttribute.java
++++ src\main\java\net\minecraft\entity\EnumCreatureAttribute.java
+@@ -1,9 +1,8 @@
  package net.minecraft.entity;
  
 -public enum EnumCreatureAttribute
@@ -11,5 +11,3 @@
      ARTHROPOD;
  
      private static final String __OBFID = "CL_00001553";
--}
-+}

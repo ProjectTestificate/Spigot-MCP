@@ -1,6 +1,6 @@
----a/net/minecraft/inventory/InventoryCraftResult.java
-+++b/net/minecraft/inventory/InventoryCraftResult.java
-@@ -1,111 +1,130 @@
+--- decompiled\net\minecraft\inventory\InventoryCraftResult.java
++++ src\main\java\net\minecraft\inventory\InventoryCraftResult.java
+@@ -1,112 +1,128 @@
  package net.minecraft.inventory;
  
 +import java.util.ArrayList;
@@ -176,5 +176,4 @@
              this.stackResult[i] = null;
          }
      }
--}
-+}
+ }

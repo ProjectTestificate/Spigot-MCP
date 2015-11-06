@@ -1,6 +1,6 @@
----a/net/minecraft/entity/ai/EntityAIAvoidEntity.java
-+++b/net/minecraft/entity/ai/EntityAIAvoidEntity.java
-@@ -1,10 +1,6 @@
+--- decompiled\net\minecraft\entity\ai\EntityAIAvoidEntity.java
++++ src\main\java\net\minecraft\entity\ai\EntityAIAvoidEntity.java
+@@ -1,29 +1,31 @@
  package net.minecraft.entity.ai;
  
 -import com.google.common.base.Predicate;
@@ -10,7 +10,7 @@
  import net.minecraft.command.IEntitySelector;
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityCreature;
-@@ -10,19 +10,25 @@
+ import net.minecraft.pathfinding.PathEntity;
  import net.minecraft.pathfinding.PathNavigate;
  import net.minecraft.util.Vec3;
  
@@ -41,7 +41,11 @@
          }
      };
      protected EntityCreature theEntity;
-@@ -34,8 +34,7 @@
+     private double farSpeed;
+     private double nearSpeed;
+@@ -32,72 +34,55 @@
+     private PathEntity entityPathEntity;
+     private PathNavigate entityPathNavigate;
      private Predicate field_179510_i;
      private static final String __OBFID = "CL_00001574";
  
@@ -51,7 +55,9 @@
          this.theEntity = p_i45890_1_;
          this.field_179510_i = p_i45890_2_;
          this.field_179508_f = p_i45890_3_;
-@@ -45,61 +45,44 @@
+         this.farSpeed = p_i45890_4_;
+         this.nearSpeed = p_i45890_6_;
+         this.entityPathNavigate = p_i45890_1_.getNavigator();
          this.setMutexBits(1);
      }
  
@@ -124,5 +130,4 @@
              this.theEntity.getNavigator().setSpeed(this.farSpeed);
          }
      }
--}
-+}
+ }

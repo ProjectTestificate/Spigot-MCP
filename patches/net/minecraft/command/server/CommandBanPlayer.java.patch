@@ -1,6 +1,6 @@
----a/net/minecraft/command/server/CommandBanPlayer.java
-+++b/net/minecraft/command/server/CommandBanPlayer.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\command\server\CommandBanPlayer.java
++++ src\main\java\net\minecraft\command\server\CommandBanPlayer.java
+@@ -1,81 +1,69 @@
  package net.minecraft.command.server;
  
 -import com.mojang.authlib.GameProfile;
@@ -10,7 +10,9 @@
  import net.minecraft.command.CommandBase;
  import net.minecraft.command.CommandException;
  import net.minecraft.command.ICommandSender;
-@@ -12,71 +12,61 @@
+ import net.minecraft.command.WrongUsageException;
+ import net.minecraft.entity.player.EntityPlayerMP;
+ import net.minecraft.server.MinecraftServer;
  import net.minecraft.server.management.UserListBansEntry;
  import net.minecraft.util.BlockPos;
  
@@ -99,5 +101,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
          return args.length >= 1 ? getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames()) : null;
      }
--}
-+}
+ }

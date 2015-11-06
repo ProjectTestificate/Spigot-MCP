@@ -1,6 +1,6 @@
----a/net/minecraft/command/server/CommandMessageRaw.java
-+++b/net/minecraft/command/server/CommandMessageRaw.java
-@@ -1,8 +1,6 @@
+--- decompiled\net\minecraft\command\server\CommandMessageRaw.java
++++ src\main\java\net\minecraft\command\server\CommandMessageRaw.java
+@@ -1,69 +1,60 @@
  package net.minecraft.command.server;
  
 -import com.google.gson.JsonParseException;
@@ -9,7 +9,10 @@
  import net.minecraft.command.CommandBase;
  import net.minecraft.command.CommandException;
  import net.minecraft.command.ICommandSender;
-@@ -12,57 +12,49 @@
+ import net.minecraft.command.SyntaxErrorException;
+ import net.minecraft.command.WrongUsageException;
+ import net.minecraft.entity.player.EntityPlayerMP;
+ import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.ChatComponentProcessor;
  import net.minecraft.util.IChatComponent;
@@ -83,5 +86,4 @@
 +    public boolean isUsernameIndex(String[] args, int index) {
          return index == 0;
      }
--}
-+}
+ }

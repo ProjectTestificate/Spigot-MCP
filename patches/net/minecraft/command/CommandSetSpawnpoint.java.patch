@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandSetSpawnpoint.java
-+++b/net/minecraft/command/CommandSetSpawnpoint.java
-@@ -1,54 +1,46 @@
+--- decompiled\net\minecraft\command\CommandSetSpawnpoint.java
++++ src\main\java\net\minecraft\command\CommandSetSpawnpoint.java
+@@ -1,55 +1,46 @@
  package net.minecraft.command;
  
  import java.util.List;
@@ -68,5 +68,4 @@
 +    public boolean isUsernameIndex(String[] args, int index) {
          return index == 0;
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/client/C10PacketCreativeInventoryAction.java
-+++b/net/minecraft/network/play/client/C10PacketCreativeInventoryAction.java
-@@ -1,57 +1,46 @@
+--- decompiled\net\minecraft\network\play\client\C10PacketCreativeInventoryAction.java
++++ src\main\java\net\minecraft\network\play\client\C10PacketCreativeInventoryAction.java
+@@ -1,58 +1,46 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -70,5 +70,4 @@
 +    public void processPacket(INetHandler handler) {
 +        this.handle((INetHandlerPlayServer) handler);
      }
--}
-+}
+ }

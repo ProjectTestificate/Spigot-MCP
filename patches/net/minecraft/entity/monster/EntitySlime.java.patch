@@ -1,6 +1,8 @@
----a/net/minecraft/entity/monster/EntitySlime.java
-+++b/net/minecraft/entity/monster/EntitySlime.java
-@@ -25,16 +25,20 @@
+--- decompiled\net\minecraft\entity\monster\EntitySlime.java
++++ src\main\java\net\minecraft\entity\monster\EntitySlime.java
+@@ -23,502 +23,432 @@
+ import net.minecraft.world.World;
+ import net.minecraft.world.WorldType;
  import net.minecraft.world.biome.BiomeGenBase;
  import net.minecraft.world.chunk.Chunk;
  
@@ -22,7 +24,10 @@
          super(worldIn);
          this.moveHelper = new EntitySlime.SlimeMoveHelper();
          this.tasks.addTask(1, new EntitySlime.AISlimeFloat());
-@@ -45,42 +45,36 @@
+         this.tasks.addTask(2, new EntitySlime.AISlimeAttack());
+         this.tasks.addTask(3, new EntitySlime.AISlimeFaceRandom());
+         this.tasks.addTask(5, new EntitySlime.AISlimeHop());
+         this.targetTasks.addTask(1, new EntityAIFindEntityNearestPlayer(this));
          this.targetTasks.addTask(3, new EntityAIFindEntityNearest(this, EntityIronGolem.class));
      }
  
@@ -76,7 +81,7 @@
              i = 0;
          }
  
-@@ -88,18 +88,15 @@
+         this.setSlimeSize(i + 1);
          this.field_175452_bi = tagCompund.getBoolean("wasOnGround");
      }
  
@@ -101,7 +106,7 @@
              this.isDead = true;
          }
  
-@@ -109,31 +109,27 @@
+         this.squishFactor += (this.squishAmount - this.squishFactor) * 0.5F;
          this.prevSquishFactor = this.squishFactor;
          super.onUpdate();
  
@@ -143,7 +148,7 @@
              this.squishAmount = 1.0F;
          }
  
-@@ -142,32 +142,26 @@
+         this.field_175452_bi = this.onGround;
          this.alterSquishAmount();
      }
  
@@ -183,7 +188,7 @@
                  this.resetHeight();
              }
          }
-@@ -175,119 +175,107 @@
+ 
          super.func_145781_i(p_145781_1_);
      }
  
@@ -343,7 +348,8 @@
                      return super.getCanSpawnHere();
                  }
              }
-@@ -296,39 +296,32 @@
+ 
+             return false;
          }
      }
  
@@ -390,7 +396,8 @@
              ++i;
          }
  
-@@ -336,190 +336,159 @@
+         int j = 1 << i;
+         this.setSlimeSize(j);
          return super.func_180482_a(p_180482_1_, p_180482_2_);
      }
  
@@ -625,5 +632,4 @@
              }
          }
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemPickaxe.java
-+++b/net/minecraft/item/ItemPickaxe.java
-@@ -1,28 +1,29 @@
+--- decompiled\net\minecraft\item\ItemPickaxe.java
++++ src\main\java\net\minecraft\item\ItemPickaxe.java
+@@ -1,28 +1,30 @@
  package net.minecraft.item;
  
 -import com.google.common.collect.Sets;
@@ -41,5 +41,4 @@
 +    public float getStrVsBlock(ItemStack stack, Block block) {
          return block.getMaterial() != Material.iron && block.getMaterial() != Material.anvil && block.getMaterial() != Material.rock ? super.getStrVsBlock(stack, block) : this.efficiencyOnProperMaterial;
      }
--}
-+}
+ }

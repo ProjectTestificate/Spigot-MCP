@@ -1,6 +1,6 @@
----a/net/minecraft/network/play/server/S2CPacketSpawnGlobalEntity.java
-+++b/net/minecraft/network/play/server/S2CPacketSpawnGlobalEntity.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\network\play\server\S2CPacketSpawnGlobalEntity.java
++++ src\main\java\net\minecraft\network\play\server\S2CPacketSpawnGlobalEntity.java
+@@ -1,95 +1,61 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -8,7 +8,7 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.effect.EntityLightningBolt;
  import net.minecraft.network.INetHandler;
-@@ -8,11 +8,7 @@
+ import net.minecraft.network.Packet;
  import net.minecraft.network.PacketBuffer;
  import net.minecraft.network.play.INetHandlerPlayClient;
  import net.minecraft.util.MathHelper;
@@ -23,7 +23,7 @@
      private int field_149059_a;
      private int field_149057_b;
      private int field_149058_c;
-@@ -20,22 +20,22 @@
+     private int field_149055_d;
      private int field_149056_e;
      private static final String __OBFID = "CL_00001278";
  
@@ -52,7 +52,7 @@
          this.field_149059_a = buf.readVarIntFromBuffer();
          this.field_149056_e = buf.readByte();
          this.field_149057_b = buf.readInt();
-@@ -44,8 +44,7 @@
+         this.field_149058_c = buf.readInt();
          this.field_149055_d = buf.readInt();
      }
  
@@ -62,7 +62,7 @@
          buf.writeVarIntToBuffer(this.field_149059_a);
          buf.writeByte(this.field_149056_e);
          buf.writeInt(this.field_149057_b);
-@@ -53,16 +53,12 @@
+         buf.writeInt(this.field_149058_c);
          buf.writeInt(this.field_149055_d);
      }
  
@@ -108,5 +108,4 @@
 -    {
 -        return this.field_149056_e;
 -    }
--}
-+}
+ }

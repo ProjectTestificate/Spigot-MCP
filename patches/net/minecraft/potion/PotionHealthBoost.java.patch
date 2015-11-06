@@ -1,6 +1,8 @@
----a/net/minecraft/potion/PotionHealthBoost.java
-+++b/net/minecraft/potion/PotionHealthBoost.java
-@@ -4,23 +4,20 @@
+--- decompiled\net\minecraft\potion\PotionHealthBoost.java
++++ src\main\java\net\minecraft\potion\PotionHealthBoost.java
+@@ -2,24 +2,21 @@
+ 
+ import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.ai.attributes.BaseAttributeMap;
  import net.minecraft.util.ResourceLocation;
  
@@ -27,5 +29,4 @@
              p_111187_1_.setHealth(p_111187_1_.getMaxHealth());
          }
      }
--}
-+}
+ }

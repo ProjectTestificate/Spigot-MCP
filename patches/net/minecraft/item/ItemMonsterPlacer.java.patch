@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemMonsterPlacer.java
-+++b/net/minecraft/item/ItemMonsterPlacer.java
-@@ -1,7 +1,5 @@
+--- decompiled\net\minecraft\item\ItemMonsterPlacer.java
++++ src\main\java\net\minecraft\item\ItemMonsterPlacer.java
+@@ -1,9 +1,7 @@
  package net.minecraft.item;
  
 -import java.util.Iterator;
@@ -8,7 +8,11 @@
  import net.minecraft.block.BlockFence;
  import net.minecraft.block.BlockLiquid;
  import net.minecraft.block.state.IBlockState;
-@@ -23,66 +23,47 @@
+ import net.minecraft.creativetab.CreativeTabs;
+ import net.minecraft.entity.Entity;
+@@ -21,147 +19,111 @@
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.util.MathHelper;
  import net.minecraft.util.MovingObjectPosition;
  import net.minecraft.util.StatCollector;
  import net.minecraft.world.World;
@@ -91,7 +95,10 @@
                          --stack.stackSize;
                      }
  
-@@ -93,22 +93,18 @@
+                     return true;
+                 }
+             }
+ 
              pos = pos.offset(side);
              double d0 = 0.0D;
  
@@ -119,7 +126,8 @@
                      --stack.stackSize;
                  }
              }
-@@ -117,51 +117,36 @@
+ 
+             return true;
          }
      }
  
@@ -183,7 +191,11 @@
                                  --itemStackIn.stackSize;
                              }
  
-@@ -173,36 +173,45 @@
+                             playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+                         }
+@@ -171,47 +133,40 @@
+                 return itemStackIn;
+             }
          }
      }
  
@@ -248,5 +260,4 @@
 -            subItems.add(new ItemStack(itemIn, 1, entityegginfo.spawnedID));
 -        }
 -    }
--}
-+}
+ }

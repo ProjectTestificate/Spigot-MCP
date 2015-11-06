@@ -1,6 +1,6 @@
----a/net/minecraft/world/Explosion.java
-+++b/net/minecraft/world/Explosion.java
-@@ -1,22 +1,17 @@
+--- decompiled\net\minecraft\world\Explosion.java
++++ src\main\java\net\minecraft\world\Explosion.java
+@@ -1,116 +1,106 @@
  package net.minecraft.world;
  
 -import com.google.common.collect.Lists;
@@ -22,7 +22,9 @@
  import net.minecraft.entity.item.EntityTNTPrimed;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.init.Blocks;
-@@ -23,11 +23,7 @@
+ import net.minecraft.util.AxisAlignedBB;
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.DamageSource;
  import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.util.MathHelper;
  import net.minecraft.util.Vec3;
@@ -44,7 +46,7 @@
      private final boolean isFlaming;
      private final boolean isSmoking;
      private final Random explosionRNG;
-@@ -35,33 +35,20 @@
+     private final World worldObj;
      private final double explosionX;
      private final double explosionY;
      private final double explosionZ;
@@ -82,7 +84,7 @@
          this.explosionX = p_i45754_3_;
          this.explosionY = p_i45754_5_;
          this.explosionZ = p_i45754_7_;
-@@ -69,15 +69,25 @@
+         this.isFlaming = p_i45754_10_;
          this.isSmoking = p_i45754_11_;
      }
  
@@ -121,7 +123,9 @@
                          double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
                          d0 /= d3;
                          d1 /= d3;
-@@ -96,19 +96,16 @@
+                         d2 /= d3;
+                         float f = this.explosionSize * (0.7F + this.worldObj.rand.nextFloat() * 0.6F);
+                         double d4 = this.explosionX;
                          double d6 = this.explosionY;
                          double d8 = this.explosionZ;
  
@@ -145,7 +149,11 @@
                                  hashset.add(blockpos);
                              }
  
-@@ -123,50 +123,56 @@
+                             d4 += d0 * 0.30000001192092896D;
+                             d6 += d1 * 0.30000001192092896D;
+@@ -121,147 +111,171 @@
+             }
+         }
  
          this.affectedBlockPositions.addAll(hashset);
          float f3 = this.explosionSize * 2.0F;
@@ -221,7 +229,7 @@
                          }
                      }
                  }
-@@ -170,45 +170,67 @@
+             }
          }
      }
  
@@ -310,7 +318,7 @@
                      d3 *= d7;
                      d4 *= d7;
                      d5 *= d7;
-@@ -216,11 +216,10 @@
+                     this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, (d0 + this.explosionX * 1.0D) / 2.0D, (d1 + this.explosionY * 1.0D) / 2.0D, (d2 + this.explosionZ * 1.0D) / 2.0D, d3, d4, d5, new int[0]);
                      this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2, d3, d4, d5, new int[0]);
                  }
  
@@ -326,7 +334,8 @@
                      }
  
                      this.worldObj.setBlockState(blockpos, Blocks.air.getDefaultState(), 3);
-@@ -229,40 +229,36 @@
+                     block.onBlockDestroyedByExplosion(this.worldObj, blockpos, this);
+                 }
              }
          }
  
@@ -379,5 +388,4 @@
 +    public List func_180343_e() {
          return this.affectedBlockPositions;
      }
--}
-+}
+ }

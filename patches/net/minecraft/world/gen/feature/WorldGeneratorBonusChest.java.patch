@@ -1,6 +1,7 @@
----a/net/minecraft/world/gen/feature/WorldGeneratorBonusChest.java
-+++b/net/minecraft/world/gen/feature/WorldGeneratorBonusChest.java
-@@ -2,6 +2,7 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGeneratorBonusChest.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGeneratorBonusChest.java
+@@ -1,83 +1,71 @@
+ package net.minecraft.world.gen.feature;
  
  import java.util.List;
  import java.util.Random;
@@ -8,7 +9,9 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.material.Material;
  import net.minecraft.init.Blocks;
-@@ -11,46 +11,38 @@
+ import net.minecraft.tileentity.TileEntity;
+ import net.minecraft.tileentity.TileEntityChest;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.WeightedRandomChestContent;
  import net.minecraft.world.World;
  
@@ -67,7 +70,7 @@
                      }
  
                      BlockPos blockpos2 = blockpos1.east();
-@@ -59,23 +59,19 @@
+                     BlockPos blockpos3 = blockpos1.west();
                      BlockPos blockpos4 = blockpos1.north();
                      BlockPos blockpos5 = blockpos1.south();
  
@@ -95,9 +98,5 @@
                          worldIn.setBlockState(blockpos5, Blocks.torch.getDefaultState(), 2);
                      }
  
-@@ -86,4 +86,4 @@
-             return false;
-         }
-     }
--}
-+}
+                     return true;
+                 }

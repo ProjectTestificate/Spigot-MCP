@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenVines.java
-+++b/net/minecraft/world/gen/feature/WorldGenVines.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenVines.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenVines.java
+@@ -1,42 +1,36 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -8,7 +8,7 @@
  import net.minecraft.block.BlockVine;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.init.Blocks;
-@@ -8,38 +8,31 @@
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -52,6 +52,3 @@
          }
  
          return true;
-     }
--}
-+}

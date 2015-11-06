@@ -1,6 +1,6 @@
----a/net/minecraft/world/Teleporter.java
-+++b/net/minecraft/world/Teleporter.java
-@@ -1,10 +1,8 @@
+--- decompiled\net\minecraft\world\Teleporter.java
++++ src\main\java\net\minecraft\world\Teleporter.java
+@@ -1,255 +1,331 @@
  package net.minecraft.world;
  
 -import com.google.common.collect.Lists;
@@ -11,7 +11,9 @@
  import net.minecraft.block.BlockPortal;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.entity.Entity;
-@@ -13,101 +13,155 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.LongHashMap;
  import net.minecraft.util.MathHelper;
  
@@ -212,7 +214,9 @@
                                  d0 = d1;
                                  object = blockpos;
                              }
-@@ -117,58 +117,68 @@
+                         }
+                     }
+                 }
              }
          }
  
@@ -303,7 +307,7 @@
                      flag2 = this.func_180265_a(blockpos3);
                      flag3 = this.func_180265_a(blockpos3.offset(enumfacing2));
                  }
-@@ -172,81 +172,95 @@
+ 
                  float f6 = 0.5F;
                  float f1 = 0.5F;
  
@@ -449,7 +453,11 @@
          int l = i;
          int i1 = j;
          int j1 = k;
-@@ -269,59 +269,47 @@
+         int k1 = 0;
+         int l1 = this.random.nextInt(4);
+@@ -267,62 +343,50 @@
+         int l4;
+         int i5;
          double d3;
          double d4;
  
@@ -523,7 +531,11 @@
                                  d0 = d4;
                                  l = i2;
                                  i1 = i3;
-@@ -333,54 +333,42 @@
+                                 j1 = k2;
+                                 k1 = j3 % 4;
+@@ -331,55 +395,44 @@
+                     }
+                 }
              }
          }
  
@@ -589,7 +601,11 @@
                                      d0 = d4;
                                      l = i2;
                                      i1 = i3;
-@@ -397,19 +397,16 @@
+                                     j1 = k2;
+                                     k1 = j3 % 2;
+@@ -395,27 +448,22 @@
+         int j2 = i1;
+         k2 = j1;
          int l5 = k1 % 2;
          int l2 = 1 - l5;
  
@@ -618,7 +634,11 @@
                          l3 = k5 + (j3 - 1) * l5 + i3 * l2;
                          i4 = j2 + k3;
                          j4 = k2 + (j3 - 1) * l2 - i3 * l5;
-@@ -426,12 +426,9 @@
+                         boolean flag = k3 < 0;
+                         this.worldServerInstance.setBlockState(new BlockPos(l3, i4, j4), flag ? Blocks.obsidian.getDefaultState() : Blocks.air.getDefaultState());
+@@ -424,28 +472,23 @@
+             }
+         }
  
          IBlockState iblockstate = Blocks.portal.getDefaultState().withProperty(BlockPortal.AXIS, l5 != 0 ? EnumFacing.Axis.X : EnumFacing.Axis.Z);
  
@@ -634,7 +654,8 @@
                      i4 = k5 + (k3 - 1) * l5;
                      j4 = j2 + l3;
                      k4 = k2 + (k3 - 1) * l2;
-@@ -440,10 +440,8 @@
+                     boolean flag1 = k3 == 0 || k3 == 3 || l3 == -1 || l3 == 3;
+                     this.worldServerInstance.setBlockState(new BlockPos(i4, j4, k4), flag1 ? Blocks.obsidian.getDefaultState() : iblockstate, 2);
                  }
              }
  
@@ -647,7 +668,11 @@
                      i4 = k5 + (k3 - 1) * l5;
                      j4 = j2 + l3;
                      k4 = k2 + (k3 - 1) * l2;
-@@ -455,22 +455,17 @@
+                     this.worldServerInstance.notifyNeighborsOfStateChange(new BlockPos(i4, j4, k4), this.worldServerInstance.getBlockState(new BlockPos(i4, j4, k4)).getBlock());
+                 }
+@@ -453,38 +496,33 @@
+         }
+ 
          return true;
      }
  
@@ -674,7 +699,7 @@
                      iterator.remove();
                      this.destinationCoordinateCache.remove(olong.longValue());
                  }
-@@ -476,16 +476,15 @@
+             }
          }
      }
  
@@ -692,5 +717,4 @@
              this.lastUpdateTime = p_i45747_3_;
          }
      }
--}
-+}
+ }

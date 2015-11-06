@@ -1,6 +1,6 @@
----a/net/minecraft/command/CommandTrigger.java
-+++b/net/minecraft/command/CommandTrigger.java
-@@ -1,10 +1,8 @@
+--- decompiled\net\minecraft\command\CommandTrigger.java
++++ src\main\java\net\minecraft\command\CommandTrigger.java
+@@ -1,137 +1,108 @@
  package net.minecraft.command;
  
 -import com.google.common.collect.Lists;
@@ -11,7 +11,9 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.player.EntityPlayerMP;
  import net.minecraft.scoreboard.IScoreObjectiveCriteria;
-@@ -13,77 +13,62 @@
+ import net.minecraft.scoreboard.Score;
+ import net.minecraft.scoreboard.ScoreObjective;
+ import net.minecraft.scoreboard.Scoreboard;
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.util.BlockPos;
  
@@ -119,7 +121,7 @@
                              }
  
                              score.increseScore(i);
-@@ -95,45 +95,35 @@
+                         }
  
                          score.setLocked(true);
  
@@ -174,5 +176,4 @@
 -            return args.length == 2 ? getListOfStringsMatchingLastWord(args, new String[] {"add", "set"}): null;
 -        }
      }
--}
-+}
+ }

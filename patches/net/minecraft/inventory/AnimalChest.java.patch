@@ -1,6 +1,6 @@
----a/net/minecraft/inventory/AnimalChest.java
-+++b/net/minecraft/inventory/AnimalChest.java
-@@ -1,23 +1,29 @@
+--- decompiled\net\minecraft\inventory\AnimalChest.java
++++ src\main\java\net\minecraft\inventory\AnimalChest.java
+@@ -1,21 +1,64 @@
  package net.minecraft.inventory;
  
 -import net.minecraft.util.IChatComponent;
@@ -39,7 +39,6 @@
 +        super(s, false, i, (org.bukkit.craftbukkit.entity.CraftHorse) horse.getBukkitEntity());
 +        this.horse = horse;
      }
--}
 +
 +    @Override
 +    public net.minecraft.item.ItemStack[] getContents() {
@@ -76,4 +75,4 @@
 +        return maxStack;
 +    }
 +    // CraftBukkit end
-+}
+ }

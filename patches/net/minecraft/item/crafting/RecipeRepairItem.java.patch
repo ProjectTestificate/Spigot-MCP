@@ -1,6 +1,6 @@
----a/net/minecraft/item/crafting/RecipeRepairItem.java
-+++b/net/minecraft/item/crafting/RecipeRepairItem.java
-@@ -1,33 +1,37 @@
+--- decompiled\net\minecraft\item\crafting\RecipeRepairItem.java
++++ src\main\java\net\minecraft\item\crafting\RecipeRepairItem.java
+@@ -1,115 +1,106 @@
  package net.minecraft.item.crafting;
  
 -import com.google.common.collect.Lists;
@@ -53,7 +53,9 @@
                          return false;
                      }
                  }
-@@ -38,46 +38,38 @@
+             }
+         }
+ 
          return arraylist.size() == 2;
      }
  
@@ -111,7 +113,10 @@
                      i1 = 0;
                  }
  
-@@ -88,31 +88,25 @@
+                 return new ItemStack(itemstack2.getItem(), 1, i1);
+             }
+         }
+ 
          return null;
      }
  
@@ -145,6 +150,3 @@
          }
  
          return aitemstack;
-     }
--}
-+}

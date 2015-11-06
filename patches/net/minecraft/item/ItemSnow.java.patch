@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemSnow.java
-+++b/net/minecraft/item/ItemSnow.java
-@@ -8,49 +8,39 @@
+--- decompiled\net\minecraft\item\ItemSnow.java
++++ src\main\java\net\minecraft\item\ItemSnow.java
+@@ -6,64 +6,52 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
@@ -64,7 +66,10 @@
                          --stack.stackSize;
                          return true;
                      }
-@@ -62,9 +62,7 @@
+                 }
+             }
+ 
+             return super.onItemUse(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ);
          }
      }
  
@@ -73,5 +78,4 @@
 +    public int getMetadata(int damage) {
          return damage;
      }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/item/crafting/CraftingManager.java
-+++b/net/minecraft/item/crafting/CraftingManager.java
-@@ -1,15 +1,11 @@
+--- decompiled\net\minecraft\item\crafting\CraftingManager.java
++++ src\main\java\net\minecraft\item\crafting\CraftingManager.java
+@@ -1,15 +1,14 @@
  package net.minecraft.item.crafting;
  
 -import com.google.common.collect.Lists;
@@ -15,7 +15,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockPlanks;
  import net.minecraft.block.BlockStone;
-@@ -22,19 +22,34 @@
+ import net.minecraft.block.BlockStoneSlab;
+ import net.minecraft.block.BlockStoneSlabNew;
+@@ -20,23 +19,31 @@
+ import net.minecraft.item.EnumDyeColor;
+ import net.minecraft.item.Item;
  import net.minecraft.item.ItemStack;
  import net.minecraft.world.World;
  
@@ -50,7 +54,11 @@
          (new RecipesTools()).addRecipes(this);
          (new RecipesWeapons()).addRecipes(this);
          (new RecipesIngots()).addRecipes(this);
-@@ -49,308 +49,327 @@
+         (new RecipesFood()).addRecipes(this);
+         (new RecipesCrafting()).addRecipes(this);
+@@ -47,312 +54,304 @@
+         this.recipes.add(new RecipesMapCloning());
+         this.recipes.add(new RecipesMapExtending());
          this.recipes.add(new RecipeFireworks());
          this.recipes.add(new RecipeRepairItem());
          (new RecipesBanners()).func_179534_a(this);
@@ -398,7 +406,8 @@
                  ++k;
                  j = s2.length();
                  s = s + s2;
-@@ -229,36 +229,28 @@
+             }
+         }
  
          HashMap hashmap;
  
@@ -450,7 +459,9 @@
                  aitemstack[i1] = null;
              }
          }
-@@ -271,89 +271,75 @@
+ 
+         ShapedRecipes shapedrecipes = new ShapedRecipes(j, k, aitemstack, stack);
+         this.recipes.add(shapedrecipes);
          return shapedrecipes;
      }
  
@@ -565,5 +576,4 @@
 +    public List getRecipeList() {
          return this.recipes;
      }
--}
-+}
+ }

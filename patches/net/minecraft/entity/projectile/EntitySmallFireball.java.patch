@@ -1,6 +1,8 @@
----a/net/minecraft/entity/projectile/EntitySmallFireball.java
-+++b/net/minecraft/entity/projectile/EntitySmallFireball.java
-@@ -8,63 +8,62 @@
+--- decompiled\net\minecraft\entity\projectile\EntitySmallFireball.java
++++ src\main\java\net\minecraft\entity\projectile\EntitySmallFireball.java
+@@ -6,81 +6,79 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.DamageSource;
  import net.minecraft.util.MovingObjectPosition;
  import net.minecraft.world.World;
  
@@ -94,7 +96,8 @@
                      }
                  }
              }
-@@ -74,14 +74,11 @@
+ 
+             this.setDead();
          }
      }
  
@@ -109,5 +112,4 @@
 +    public boolean attackEntityFrom(DamageSource source, float amount) {
          return false;
      }
--}
-+}
+ }

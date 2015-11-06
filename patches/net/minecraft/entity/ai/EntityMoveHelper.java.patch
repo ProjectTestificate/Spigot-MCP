@@ -1,6 +1,8 @@
----a/net/minecraft/entity/ai/EntityMoveHelper.java
-+++b/net/minecraft/entity/ai/EntityMoveHelper.java
-@@ -4,8 +4,10 @@
+--- decompiled\net\minecraft\entity\ai\EntityMoveHelper.java
++++ src\main\java\net\minecraft\entity\ai\EntityMoveHelper.java
+@@ -2,112 +2,98 @@
+ 
+ import net.minecraft.entity.EntityLiving;
  import net.minecraft.entity.SharedMonsterAttributes;
  import net.minecraft.util.MathHelper;
  
@@ -13,7 +15,8 @@
      protected EntityLiving entity;
      protected double posX;
      protected double posY;
-@@ -14,26 +14,22 @@
+     protected double posZ;
+     protected double speed;
      protected boolean update;
      private static final String __OBFID = "CL_00001573";
  
@@ -44,7 +47,7 @@
          this.posX = p_75642_1_;
          this.posY = p_75642_3_;
          this.posZ = p_75642_5_;
-@@ -41,74 +41,61 @@
+         this.speed = p_75642_7_;
          this.update = true;
      }
  
@@ -133,5 +136,4 @@
 +    public double func_179918_f() {
          return this.posZ;
      }
--}
-+}
+ }

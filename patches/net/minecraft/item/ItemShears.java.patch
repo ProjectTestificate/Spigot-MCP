@@ -1,6 +1,8 @@
----a/net/minecraft/item/ItemShears.java
-+++b/net/minecraft/item/ItemShears.java
-@@ -8,38 +8,31 @@
+--- decompiled\net\minecraft\item\ItemShears.java
++++ src\main\java\net\minecraft\item\ItemShears.java
+@@ -6,39 +6,32 @@
+ import net.minecraft.entity.EntityLivingBase;
+ import net.minecraft.init.Blocks;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -45,5 +47,4 @@
 +    public float getStrVsBlock(ItemStack stack, Block block) {
          return block != Blocks.web && block.getMaterial() != Material.leaves ? (block == Blocks.wool ? 5.0F : super.getStrVsBlock(stack, block)) : 15.0F;
      }
--}
-+}
+ }

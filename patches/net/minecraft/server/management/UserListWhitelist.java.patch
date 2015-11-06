@@ -1,6 +1,6 @@
----a/net/minecraft/server/management/UserListWhitelist.java
-+++b/net/minecraft/server/management/UserListWhitelist.java
-@@ -1,73 +1,58 @@
+--- decompiled\net\minecraft\server\management\UserListWhitelist.java
++++ src\main\java\net\minecraft\server\management\UserListWhitelist.java
+@@ -1,72 +1,59 @@
  package net.minecraft.server.management;
  
 -import com.google.gson.JsonObject;
@@ -92,5 +92,4 @@
 +    protected String getObjectKey(Object obj) {
 +        return this.func_152704_b((GameProfile) obj);
      }
--}
-+}
+ }

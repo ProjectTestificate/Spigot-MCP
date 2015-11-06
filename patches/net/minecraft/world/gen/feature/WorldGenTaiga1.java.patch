@@ -1,6 +1,6 @@
----a/net/minecraft/world/gen/feature/WorldGenTaiga1.java
-+++b/net/minecraft/world/gen/feature/WorldGenTaiga1.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\world\gen\feature\WorldGenTaiga1.java
++++ src\main\java\net\minecraft\world\gen\feature\WorldGenTaiga1.java
+@@ -1,134 +1,104 @@
  package net.minecraft.world.gen.feature;
  
  import java.util.Random;
@@ -8,7 +8,7 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockPlanks;
  import net.minecraft.block.material.Material;
-@@ -8,128 +8,97 @@
+ import net.minecraft.init.Blocks;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -162,5 +162,4 @@
              return false;
          }
      }
--}
-+}
+ }

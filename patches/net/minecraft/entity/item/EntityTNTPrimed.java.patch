@@ -1,6 +1,8 @@
----a/net/minecraft/entity/item/EntityTNTPrimed.java
-+++b/net/minecraft/entity/item/EntityTNTPrimed.java
-@@ -6,28 +6,32 @@
+--- decompiled\net\minecraft\entity\item\EntityTNTPrimed.java
++++ src\main\java\net\minecraft\entity\item\EntityTNTPrimed.java
+@@ -4,105 +4,110 @@
+ import net.minecraft.entity.EntityLivingBase;
+ import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.world.World;
  
@@ -39,7 +41,7 @@
          this.fuse = 80;
          this.prevPosX = p_i1730_2_;
          this.prevPosY = p_i1730_4_;
-@@ -34,19 +34,19 @@
+         this.prevPosZ = p_i1730_6_;
          this.tntPlacedBy = p_i1730_8_;
      }
  
@@ -68,7 +70,9 @@
          this.prevPosX = this.posX;
          this.prevPosY = this.posY;
          this.prevPosZ = this.posZ;
-@@ -57,53 +57,54 @@
+         this.motionY -= 0.03999999910593033D;
+         this.moveEntity(this.motionX, this.motionY, this.motionZ);
+         this.motionX *= 0.9800000190734863D;
          this.motionY *= 0.9800000190734863D;
          this.motionZ *= 0.9800000190734863D;
  
@@ -145,5 +149,4 @@
 +    public float getEyeHeight() {
          return 0.0F;
      }
--}
-+}
+ }

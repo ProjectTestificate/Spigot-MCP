@@ -1,6 +1,6 @@
----a/net/minecraft/util/JsonUtils.java
-+++b/net/minecraft/util/JsonUtils.java
-@@ -1,262 +1,128 @@
+--- decompiled\net\minecraft\util\JsonUtils.java
++++ src\main\java\net\minecraft\util\JsonUtils.java
+@@ -1,266 +1,130 @@
  package net.minecraft.util;
  
 +
@@ -309,9 +309,5 @@
                      return "a boolean (" + s + ")";
                  }
              }
-@@ -266,4 +266,4 @@
+ 
              return s;
-         }
-     }
--}
-+}

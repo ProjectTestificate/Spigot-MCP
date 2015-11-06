@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockDoublePlant.java
-+++b/net/minecraft/block/BlockDoublePlant.java
-@@ -1,13 +1,12 @@
+--- decompiled\net\minecraft\block\BlockDoublePlant.java
++++ src\main\java\net\minecraft\block\BlockDoublePlant.java
+@@ -1,15 +1,14 @@
  package net.minecraft.block;
  
 -import java.util.List;
@@ -15,7 +15,11 @@
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.init.Blocks;
-@@ -20,19 +20,14 @@
+ import net.minecraft.init.Items;
+ import net.minecraft.item.Item;
+@@ -18,306 +17,220 @@
+ import net.minecraft.tileentity.TileEntity;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.IStringSerializable;
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.World;
@@ -38,7 +42,7 @@
          super(Material.vine);
          this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockDoublePlant.EnumPlantType.SUNFLOWER).withProperty(HALF, BlockDoublePlant.EnumBlockHalf.LOWER));
          this.setHardness(0.0F);
-@@ -39,185 +39,136 @@
+         this.setStepSound(soundTypeGrass);
          this.setUnlocalizedName("doublePlant");
      }
  
@@ -276,7 +280,7 @@
              player.triggerAchievement(StatList.mineBlockStatArray[Block.getIdFromBlock(this)]);
              int i = (enumplanttype == BlockDoublePlant.EnumPlantType.GRASS ? BlockTallGrass.EnumType.GRASS : BlockTallGrass.EnumType.FERN).getMeta();
              spawnAsEntity(worldIn, pos, new ItemStack(Blocks.tallgrass, 2, i));
-@@ -226,66 +226,32 @@
+             return true;
          }
      }
  
@@ -338,7 +342,7 @@
                  state = state.withProperty(VARIANT, iblockstate1.getValue(VARIANT));
              }
          }
-@@ -280,43 +280,31 @@
+ 
          return state;
      }
  
@@ -389,7 +393,11 @@
          SUNFLOWER(0, "sunflower"),
          SYRINGA(1, "syringa"),
          GRASS(2, "double_grass", "grass"),
-@@ -329,59 +329,48 @@
+         FERN(3, "double_fern", "fern"),
+         ROSE(4, "double_rose", "rose"),
+@@ -327,59 +240,49 @@
+         private final String name;
+         private final String unlocalizedName;
  
          private static final String __OBFID = "CL_00002121";
  
@@ -457,5 +465,3 @@
              }
          }
      }
--}
-+}

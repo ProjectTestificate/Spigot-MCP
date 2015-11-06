@@ -1,6 +1,8 @@
----a/net/minecraft/entity/item/EntityEnderEye.java
-+++b/net/minecraft/entity/item/EntityEnderEye.java
-@@ -8,11 +8,7 @@
+--- decompiled\net\minecraft\entity\item\EntityEnderEye.java
++++ src\main\java\net\minecraft\entity\item\EntityEnderEye.java
+@@ -6,199 +6,145 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
@@ -15,7 +17,7 @@
      private double targetX;
      private double targetY;
      private double targetZ;
-@@ -20,50 +20,36 @@
+     private int despawnTimer;
      private boolean shatterOrDrop;
      private static final String __OBFID = "CL_00001716";
  
@@ -76,7 +78,7 @@
              this.targetZ = d1;
          }
  
-@@ -70,23 +70,7 @@
+         this.despawnTimer = 0;
          this.shatterOrDrop = this.rand.nextInt(5) > 0;
      }
  
@@ -101,7 +103,8 @@
          this.lastTickPosX = this.posX;
          this.lastTickPosY = this.posY;
          this.lastTickPosZ = this.posZ;
-@@ -95,110 +95,86 @@
+         super.onUpdate();
+         this.posX += this.motionX;
          this.posY += this.motionY;
          this.posZ += this.motionZ;
          float f = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
@@ -240,5 +243,4 @@
 +    public boolean canAttackWithItem() {
          return false;
      }
--}
-+}
+ }

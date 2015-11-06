@@ -1,6 +1,6 @@
----a/net/minecraft/entity/passive/EntityVillager.java
-+++b/net/minecraft/entity/passive/EntityVillager.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\entity\passive\EntityVillager.java
++++ src\main\java\net\minecraft\entity\passive\EntityVillager.java
+@@ -1,10 +1,10 @@
  package net.minecraft.entity.passive;
  
 -import com.google.common.base.Predicate;
@@ -10,7 +10,11 @@
  import net.minecraft.enchantment.Enchantment;
  import net.minecraft.enchantment.EnchantmentData;
  import net.minecraft.enchantment.EnchantmentHelper;
-@@ -53,7 +53,6 @@
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.EntityAgeable;
+@@ -51,24 +51,25 @@
+ import net.minecraft.stats.StatList;
+ import net.minecraft.util.BlockPos;
  import net.minecraft.util.ChatComponentText;
  import net.minecraft.util.ChatComponentTranslation;
  import net.minecraft.util.DamageSource;
@@ -18,7 +22,8 @@
  import net.minecraft.util.IChatComponent;
  import net.minecraft.util.MathHelper;
  import net.minecraft.util.Tuple;
-@@ -62,11 +62,7 @@
+ import net.minecraft.village.MerchantRecipe;
+ import net.minecraft.village.MerchantRecipeList;
  import net.minecraft.village.Village;
  import net.minecraft.world.DifficultyInstance;
  import net.minecraft.world.World;
@@ -36,7 +41,11 @@
      private int randomTickDivider;
      private boolean isMating;
      private boolean isPlaying;
-@@ -82,33 +82,173 @@
+     Village villageObj;
+     private EntityPlayer buyingPlayer;
+@@ -80,38 +81,107 @@
+     private String lastBuyingPlayer;
+     private int careerId;
      private int careerLevel;
      private boolean isLookingForHome;
      private boolean field_175564_by;
@@ -156,7 +165,11 @@
              }
          }, 8.0F, 0.6D, 0.6D));
          this.tasks.addTask(1, new EntityAITradePlayer(this));
-@@ -127,83 +127,63 @@
+         this.tasks.addTask(1, new EntityAILookAtTradePlayer(this));
+         this.tasks.addTask(2, new EntityAIMoveIndoors(this));
+@@ -125,95 +195,75 @@
+         this.tasks.addTask(9, new EntityAIWander(this, 0.6D));
+         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
          this.setCanPickUpLoot(true);
      }
  
@@ -257,7 +270,7 @@
                              merchantrecipe.increaseMaxTradeUses(this.rand.nextInt(6) + this.rand.nextInt(6) + 2);
                          }
                      }
-@@ -209,9 +209,8 @@
+ 
                      this.populateBuyingList();
                      this.needsInitilization = false;
  
@@ -269,7 +282,11 @@
                          this.villageObj.setReputationForPlayer(this.lastBuyingPlayer, 1);
                      }
                  }
-@@ -223,36 +223,29 @@
+ 
+                 this.addPotionEffect(new PotionEffect(Potion.regeneration.id, 200, 0));
+@@ -221,399 +271,312 @@
+         }
+ 
          super.updateAITasks();
      }
  
@@ -312,7 +329,7 @@
          super.writeEntityToNBT(tagCompound);
          tagCompound.setInteger("Profession", this.getProfession());
          tagCompound.setInteger("Riches", this.wealth);
-@@ -260,19 +260,16 @@
+         tagCompound.setInteger("Career", this.careerId);
          tagCompound.setInteger("CareerLevel", this.careerLevel);
          tagCompound.setBoolean("Willing", this.isWillingToTrade);
  
@@ -335,7 +352,7 @@
                  nbttaglist.appendTag(itemstack.writeToNBT(new NBTTagCompound()));
              }
          }
-@@ -280,8 +280,7 @@
+ 
          tagCompound.setTag("Inventory", nbttaglist);
      }
  
@@ -345,7 +362,7 @@
          super.readEntityFromNBT(tagCompund);
          this.setProfession(tagCompund.getInteger("Profession"));
          this.wealth = tagCompund.getInteger("Riches");
-@@ -289,20 +289,17 @@
+         this.careerId = tagCompund.getInteger("Career");
          this.careerLevel = tagCompund.getInteger("CareerLevel");
          this.isWillingToTrade = tagCompund.getBoolean("Willing");
  
@@ -369,7 +386,8 @@
                  this.villagerInventory.func_174894_a(itemstack);
              }
          }
-@@ -311,106 +311,82 @@
+ 
+         this.setCanPickUpLoot(true);
          this.func_175552_ct();
      }
  
@@ -499,7 +517,8 @@
                      this.villageObj.endMatingSeason();
                  }
              }
-@@ -419,47 +419,36 @@
+         }
+ 
          super.onDeath(cause);
      }
  
@@ -559,7 +578,9 @@
                      this.isWillingToTrade = true;
                      break;
                  }
-@@ -470,90 +470,70 @@
+             }
+         }
+ 
          return this.isWillingToTrade;
      }
  
@@ -667,7 +688,7 @@
              this.buyingList = new MerchantRecipeList();
          }
  
-@@ -561,56 +561,39 @@
+         int i = this.careerId - 1;
          int j = this.careerLevel - 1;
          EntityVillager.ITradeList[][] aitradelist1 = aitradelist[i];
  
@@ -736,7 +757,11 @@
                          s1 = "fletcher";
                      }
  
-@@ -623,190 +623,123 @@
+                     break;
+                 case 1:
+@@ -621,413 +584,314 @@
+                     break;
+                 case 2:
                      s1 = "cleric";
                      break;
                  case 3:
@@ -959,7 +984,8 @@
                      return true;
                  }
              }
-@@ -815,16 +815,12 @@
+         }
+ 
          return false;
      }
  
@@ -977,7 +1003,7 @@
                  return true;
              }
          }
-@@ -830,207 +830,171 @@
+ 
          return false;
      }
  
@@ -1289,10 +1315,9 @@
 +        public PriceInfo(int p_i45810_1_, int p_i45810_2_) {
 +            super(Integer.valueOf(p_i45810_1_), Integer.valueOf(p_i45810_2_));
          }
--}
 +
 +        public int func_179412_a(Random p_179412_1_) {
 +            return ((Integer) this.getFirst()).intValue() >= ((Integer) this.getSecond()).intValue() ? ((Integer) this.getFirst()).intValue() : ((Integer) this.getFirst()).intValue() + p_179412_1_.nextInt(((Integer) this.getSecond()).intValue() - ((Integer) this.getFirst()).intValue() + 1);
 +        }
 +    }
-+}
+ }

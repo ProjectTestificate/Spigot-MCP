@@ -1,6 +1,8 @@
----a/net/minecraft/command/CommandDebug.java
-+++b/net/minecraft/command/CommandDebug.java
-@@ -5,39 +5,37 @@
+--- decompiled\net\minecraft\command\CommandDebug.java
++++ src\main\java\net\minecraft\command\CommandDebug.java
+@@ -3,170 +3,153 @@
+ import java.io.File;
+ import java.io.FileWriter;
  import java.text.SimpleDateFormat;
  import java.util.Date;
  import java.util.List;
@@ -59,7 +61,7 @@
                      throw new WrongUsageException("commands.debug.usage", new Object[0]);
                  }
  
-@@ -52,19 +52,13 @@
+                 notifyOperators(sender, this, "commands.debug.start", new Object[0]);
                  MinecraftServer.getServer().enableProfiling();
                  this.field_147206_b = MinecraftServer.getCurrentTimeMillis();
                  this.field_147207_c = MinecraftServer.getServer().getTickCounter();
@@ -79,7 +81,9 @@
                      throw new CommandException("commands.debug.notStarted", new Object[0]);
                  }
  
-@@ -71,12 +71,9 @@
+                 long i = MinecraftServer.getCurrentTimeMillis();
+                 int j = MinecraftServer.getServer().getTickCounter();
+                 long k = i - this.field_147206_b;
                  int l = j - this.field_147207_c;
                  this.func_147205_a(k, l);
                  MinecraftServer.getServer().theProfiler.profilingEnabled = false;
@@ -95,7 +99,8 @@
                      throw new WrongUsageException("commands.debug.usage", new Object[0]);
                  }
  
-@@ -85,25 +85,20 @@
+                 func_175757_a(sender, args, 1, true);
+             }
          }
      }
  
@@ -125,7 +130,7 @@
          StringBuilder stringbuilder = new StringBuilder();
          stringbuilder.append("---- Minecraft Profiler Results ----\n");
          stringbuilder.append("// ");
-@@ -111,37 +111,31 @@
+         stringbuilder.append(func_147203_d());
          stringbuilder.append("\n\n");
          stringbuilder.append("Time span: ").append(p_147204_1_).append(" ms\n");
          stringbuilder.append("Tick span: ").append(p_147204_3_).append(" ticks\n");
@@ -176,7 +181,7 @@
                          p_147202_3_.append("[[ EXCEPTION ").append(exception).append(" ]]");
                      }
                  }
-@@ -151,24 +151,48 @@
+             }
          }
      }
  
@@ -220,5 +225,4 @@
 +    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
 +        return args.length == 1 ? getListOfStringsMatchingLastWord(args, new String[]{"start", "stop"}) : null;
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/block/BlockSourceImpl.java
-+++b/net/minecraft/block/BlockSourceImpl.java
-@@ -6,57 +6,48 @@
+--- decompiled\net\minecraft\block\BlockSourceImpl.java
++++ src\main\java\net\minecraft\block\BlockSourceImpl.java
+@@ -4,58 +4,49 @@
+ import net.minecraft.dispenser.IBlockSource;
+ import net.minecraft.tileentity.TileEntity;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
@@ -70,5 +72,4 @@
 +    public TileEntity getBlockTileEntity() {
          return this.worldObj.getTileEntity(this.pos);
      }
--}
-+}
+ }

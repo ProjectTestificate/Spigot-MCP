@@ -1,6 +1,6 @@
----a/net/minecraft/util/EnumChatFormatting.java
-+++b/net/minecraft/util/EnumChatFormatting.java
-@@ -1,16 +1,10 @@
+--- decompiled\net\minecraft\util\EnumChatFormatting.java
++++ src\main\java\net\minecraft\util\EnumChatFormatting.java
+@@ -1,18 +1,16 @@
  package net.minecraft.util;
  
 -import com.google.common.collect.Lists;
@@ -21,7 +21,11 @@
      BLACK("BLACK", '0', 0),
      DARK_BLUE("DARK_BLUE", '1', 1),
      DARK_GREEN("DARK_GREEN", '2', 2),
-@@ -43,23 +43,19 @@
+     DARK_AQUA("DARK_AQUA", '3', 3),
+     DARK_RED("DARK_RED", '4', 4),
+@@ -41,121 +39,94 @@
+     private final String controlString;
+     private final int colorIndex;
  
      private static final String __OBFID = "CL_00000342";
  
@@ -49,7 +53,7 @@
          this.name = formattingName;
          this.formattingCode = formattingCodeIn;
          this.fancyStyling = fancyStylingIn;
-@@ -67,59 +67,41 @@
+         this.colorIndex = colorIndex;
          this.controlString = "\u00a7" + formattingCodeIn;
      }
  
@@ -121,7 +125,8 @@
                      return enumchatformatting;
                  }
              }
-@@ -128,18 +128,15 @@
+ 
+             return null;
          }
      }
  
@@ -143,7 +148,7 @@
                  arraylist.add(enumchatformatting.getFriendlyName());
              }
          }
-@@ -147,16 +147,13 @@
+ 
          return arraylist;
      }
  
@@ -160,5 +165,4 @@
              nameMapping.put(func_175745_c(var3.name), var3);
          }
      }
--}
-+}
+ }

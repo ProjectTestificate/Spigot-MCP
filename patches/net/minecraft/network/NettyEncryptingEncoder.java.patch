@@ -1,6 +1,6 @@
----a/net/minecraft/network/NettyEncryptingEncoder.java
-+++b/net/minecraft/network/NettyEncryptingEncoder.java
-@@ -1,27 +1,28 @@
+--- decompiled\net\minecraft\network\NettyEncryptingEncoder.java
++++ src\main\java\net\minecraft\network\NettyEncryptingEncoder.java
+@@ -1,28 +1,26 @@
  package net.minecraft.network;
  
 +import javax.crypto.Cipher;
@@ -37,5 +37,4 @@
 +    protected void encode(ChannelHandlerContext p_encode_1_, Object p_encode_2_, ByteBuf p_encode_3_) throws ShortBufferException {
 +        this.encode(p_encode_1_, (ByteBuf) p_encode_2_, p_encode_3_);
      }
--}
-+}
+ }

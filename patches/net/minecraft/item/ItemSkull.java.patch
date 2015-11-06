@@ -1,6 +1,6 @@
----a/net/minecraft/item/ItemSkull.java
-+++b/net/minecraft/item/ItemSkull.java
-@@ -1,10 +1,6 @@
+--- decompiled\net\minecraft\item\ItemSkull.java
++++ src\main\java\net\minecraft\item\ItemSkull.java
+@@ -1,10 +1,9 @@
  package net.minecraft.item;
  
 -import com.mojang.authlib.GameProfile;
@@ -10,7 +10,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockSkull;
  import net.minecraft.block.state.IBlockState;
-@@ -18,90 +18,74 @@
+ import net.minecraft.creativetab.CreativeTabs;
+ import net.minecraft.entity.player.EntityPlayer;
+@@ -16,95 +15,79 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.MathHelper;
  import net.minecraft.util.StatCollector;
  import net.minecraft.world.World;
@@ -133,7 +137,11 @@
                              tileentityskull.setType(stack.getMetadata());
                          }
  
-@@ -118,56 +118,30 @@
+                         tileentityskull.setSkullRotation(i);
+                         Blocks.skull.checkWitherSpawn(worldIn, pos, tileentityskull);
+@@ -116,71 +99,60 @@
+                 return true;
+             }
          }
      }
  
@@ -192,7 +200,7 @@
                  }
              }
          }
-@@ -167,21 +167,26 @@
+ 
          return super.getItemStackDisplayName(stack);
      }
  
@@ -227,5 +235,4 @@
              return false;
          }
      }
--}
-+}
+ }

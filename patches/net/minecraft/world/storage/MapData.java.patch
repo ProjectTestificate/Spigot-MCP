@@ -1,6 +1,6 @@
----a/net/minecraft/world/storage/MapData.java
-+++b/net/minecraft/world/storage/MapData.java
-@@ -1,12 +1,12 @@
+--- decompiled\net\minecraft\world\storage\MapData.java
++++ src\main\java\net\minecraft\world\storage\MapData.java
+@@ -1,12 +1,14 @@
  package net.minecraft.world.storage;
  
 -import com.google.common.collect.Lists;
@@ -15,7 +15,11 @@
  import net.minecraft.entity.item.EntityItemFrame;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.item.ItemStack;
-@@ -18,65 +18,109 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.nbt.NBTTagList;
+@@ -16,272 +18,301 @@
+ import net.minecraft.util.MathHelper;
+ import net.minecraft.util.Vec4b;
  import net.minecraft.world.World;
  import net.minecraft.world.WorldSavedData;
  
@@ -140,7 +144,8 @@
                              this.colors[j1 + l * 128] = abyte[i1 + k * short1];
                          }
                      }
-@@ -85,94 +85,115 @@
+                 }
+             }
          }
      }
  
@@ -286,7 +291,7 @@
                  this.playersVisibleOnMap.remove(p_82567_3_);
                  return;
              }
-@@ -183,55 +183,46 @@
+ 
              p_82567_1_ = 6;
              b2 = 0;
  
@@ -358,7 +363,8 @@
              mapinfo = new MapData.MapInfo(p_82568_1_);
              this.playersHashMap.put(p_82568_1_, mapinfo);
              this.playersArrayList.add(mapinfo);
-@@ -239,8 +239,8 @@
+         }
+ 
          return mapinfo;
      }
  
@@ -369,7 +375,10 @@
          public final EntityPlayer entityplayerObj;
          private boolean field_176105_d = true;
          private int minX = 0;
-@@ -251,34 +251,40 @@
+         private int minY = 0;
+         private int maxX = 127;
+         private int maxY = 127;
+         private int field_176109_i;
          public int field_82569_d;
          private static final String __OBFID = "CL_00000578";
  
@@ -428,9 +437,5 @@
                  this.field_176105_d = true;
                  this.minX = p_176102_1_;
                  this.minY = p_176102_2_;
-@@ -288,4 +288,4 @@
-             }
-         }
-     }
--}
-+}
+                 this.maxX = p_176102_1_;
+                 this.maxY = p_176102_2_;

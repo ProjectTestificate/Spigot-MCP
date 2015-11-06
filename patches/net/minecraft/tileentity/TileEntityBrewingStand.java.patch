@@ -1,6 +1,6 @@
----a/net/minecraft/tileentity/TileEntityBrewingStand.java
-+++b/net/minecraft/tileentity/TileEntityBrewingStand.java
-@@ -1,7 +1,9 @@
+--- decompiled\net\minecraft\tileentity\TileEntityBrewingStand.java
++++ src\main\java\net\minecraft\tileentity\TileEntityBrewingStand.java
+@@ -1,9 +1,11 @@
  package net.minecraft.tileentity;
  
 +import java.util.ArrayList;
@@ -10,7 +10,11 @@
  import net.minecraft.block.BlockBrewingStand;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.entity.player.EntityPlayer;
-@@ -16,82 +16,103 @@
+ import net.minecraft.entity.player.InventoryPlayer;
+ import net.minecraft.init.Items;
+@@ -14,372 +16,342 @@
+ import net.minecraft.item.ItemPotion;
+ import net.minecraft.item.ItemStack;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.nbt.NBTTagList;
  import net.minecraft.potion.PotionHelper;
@@ -151,7 +155,8 @@
                      iblockstate = iblockstate.withProperty(BlockBrewingStand.HAS_BOTTLE[i], Boolean.valueOf(aboolean[i]));
                  }
  
-@@ -102,31 +102,22 @@
+                 this.worldObj.setBlockState(this.pos, iblockstate, 2);
+             }
          }
      }
  
@@ -188,7 +193,7 @@
                              flag = true;
                              break;
                          }
-@@ -132,8 +132,7 @@
+ 
                          List list = Items.potionitem.getEffects(j);
                          List list1 = Items.potionitem.getEffects(k);
  
@@ -198,7 +203,8 @@
                              flag = true;
                              break;
                          }
-@@ -142,102 +142,88 @@
+                     }
+                 }
  
                  return flag;
              }
@@ -330,7 +336,7 @@
                  this.brewingItemStacks[i].writeToNBT(nbttagcompound1);
                  nbttaglist.appendTag(nbttagcompound1);
              }
-@@ -243,78 +243,63 @@
+         }
  
          compound.setTag("Items", nbttaglist);
  
@@ -433,7 +439,7 @@
                  aboolean[i] = true;
              }
          }
-@@ -324,33 +324,27 @@
+ 
          return aboolean;
      }
  
@@ -476,7 +482,7 @@
              case 0:
                  return this.brewTime;
              default:
-@@ -360,29 +360,22 @@
+                 return 0;
          }
      }
  
@@ -507,5 +513,4 @@
              this.brewingItemStacks[i] = null;
          }
      }
--}
-+}
+ }

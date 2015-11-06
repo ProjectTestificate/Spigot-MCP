@@ -1,6 +1,6 @@
----a/net/minecraft/util/StatCollector.java
-+++b/net/minecraft/util/StatCollector.java
-@@ -1,34 +1,29 @@
+--- decompiled\net\minecraft\util\StatCollector.java
++++ src\main\java\net\minecraft\util\StatCollector.java
+@@ -1,33 +1,28 @@
  package net.minecraft.util;
  
 -public class StatCollector
@@ -40,5 +40,4 @@
 +    public static long getLastTranslationUpdateTimeInMilliseconds() {
          return localizedName.getLastUpdateTimeInMilliseconds();
      }
--}
-+}
+ }

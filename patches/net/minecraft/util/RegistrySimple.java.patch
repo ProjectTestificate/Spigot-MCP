@@ -1,6 +1,6 @@
----a/net/minecraft/util/RegistrySimple.java
-+++b/net/minecraft/util/RegistrySimple.java
-@@ -1,55 +1,49 @@
+--- decompiled\net\minecraft\util\RegistrySimple.java
++++ src\main\java\net\minecraft\util\RegistrySimple.java
+@@ -1,55 +1,50 @@
  package net.minecraft.util;
  
 -import com.google.common.collect.Maps;
@@ -67,5 +67,4 @@
 +    public Iterator iterator() {
          return this.registryObjects.values().iterator();
      }
--}
-+}
+ }

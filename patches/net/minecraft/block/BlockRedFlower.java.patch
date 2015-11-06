@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockRedFlower.java
-+++b/net/minecraft/block/BlockRedFlower.java
-@@ -1,12 +1,11 @@
+--- decompiled\net\minecraft\block\BlockRedFlower.java
++++ src\main\java\net\minecraft\block\BlockRedFlower.java
+@@ -1,11 +1,10 @@
  package net.minecraft.block;
  
 -public class BlockRedFlower extends BlockFlower
@@ -14,5 +14,4 @@
 +    public BlockFlower.EnumFlowerColor getBlockType() {
          return BlockFlower.EnumFlowerColor.RED;
      }
--}
-+}
+ }

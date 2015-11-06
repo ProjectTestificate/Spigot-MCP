@@ -1,6 +1,6 @@
----a/net/minecraft/world/storage/SaveFormatOld.java
-+++b/net/minecraft/world/storage/SaveFormatOld.java
-@@ -1,101 +1,59 @@
+--- decompiled\net\minecraft\world\storage\SaveFormatOld.java
++++ src\main\java\net\minecraft\world\storage\SaveFormatOld.java
+@@ -1,250 +1,127 @@
  package net.minecraft.world.storage;
  
 -import com.google.common.collect.Lists;
@@ -121,7 +121,8 @@
                      logger.error("Exception reading " + file2, exception);
                  }
              }
-@@ -106,138 +106,27 @@
+ 
+             return null;
          }
      }
  
@@ -218,7 +219,9 @@
                          ;
                      }
                  }
-@@ -197,23 +197,18 @@
+             }
+ 
+             return file1.delete();
          }
      }
  
@@ -244,7 +247,8 @@
                  logger.warn("Couldn\'t delete file " + file1);
                  return false;
              }
-@@ -220,21 +220,16 @@
+         }
+ 
          return true;
      }
  
@@ -278,5 +282,4 @@
 -        File file1 = new File(this.savesDirectory, p_90033_1_);
 -        return file1.isDirectory();
 -    }
--}
-+}
+ }

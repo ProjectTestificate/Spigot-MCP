@@ -1,6 +1,8 @@
----a/net/minecraft/item/crafting/RecipesCrafting.java
-+++b/net/minecraft/item/crafting/RecipesCrafting.java
-@@ -15,45 +15,44 @@
+--- decompiled\net\minecraft\item\crafting\RecipesCrafting.java
++++ src\main\java\net\minecraft\item\crafting\RecipesCrafting.java
+@@ -13,46 +13,45 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.init.Items;
  import net.minecraft.item.EnumDyeColor;
  import net.minecraft.item.ItemStack;
  
@@ -80,5 +82,4 @@
 +        p_77589_1_.addRecipe(new ItemStack(Blocks.prismarine, 1, BlockPrismarine.DARK_META), new Object[]{"SSS", "SIS", "SSS", 'S', Items.prismarine_shard, 'I', new ItemStack(Items.dye, 1, EnumDyeColor.BLACK.getDyeDamage())});
 +        p_77589_1_.addRecipe(new ItemStack(Blocks.sea_lantern, 1, 0), new Object[]{"SCS", "CCC", "SCS", 'S', Items.prismarine_shard, 'C', Items.prismarine_crystals});
      }
--}
-+}
+ }

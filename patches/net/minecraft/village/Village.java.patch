@@ -1,6 +1,6 @@
----a/net/minecraft/village/Village.java
-+++b/net/minecraft/village/Village.java
-@@ -1,10 +1,8 @@
+--- decompiled\net\minecraft\village\Village.java
++++ src\main\java\net\minecraft\village\Village.java
+@@ -1,11 +1,11 @@
  package net.minecraft.village;
  
 -import com.google.common.collect.Lists;
@@ -11,7 +11,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockDoor;
  import net.minecraft.block.material.Material;
-@@ -19,8 +19,12 @@
+ import net.minecraft.entity.EntityLivingBase;
+ import net.minecraft.entity.monster.EntityIronGolem;
+@@ -17,12 +17,16 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.MathHelper;
  import net.minecraft.util.Vec3;
  import net.minecraft.world.World;
  
@@ -26,7 +30,11 @@
      private World worldObj;
      private final List villageDoorInfoList = Lists.newArrayList();
      private BlockPos centerHelper;
-@@ -35,16 +35,14 @@
+     private BlockPos center;
+     private int villageRadius;
+@@ -33,444 +37,364 @@
+     private TreeMap playerReputation;
+     private List villageAgressors;
      private int numIronGolems;
      private static final String __OBFID = "CL_00001631";
  
@@ -45,7 +53,7 @@
          this.centerHelper = BlockPos.ORIGIN;
          this.center = BlockPos.ORIGIN;
          this.playerReputation = new TreeMap();
-@@ -52,71 +52,57 @@
+         this.villageAgressors = Lists.newArrayList();
          this.worldObj = worldIn;
      }
  
@@ -141,7 +149,10 @@
                              return false;
                          }
                      }
-@@ -133,72 +133,59 @@
+                 }
+             }
+ 
+             return true;
          }
      }
  
@@ -230,7 +241,8 @@
                  villagedoorinfo = villagedoorinfo1;
                  i = j;
              }
-@@ -206,28 +206,22 @@
+         }
+ 
          return villagedoorinfo;
      }
  
@@ -265,7 +277,8 @@
                  villagedoorinfo = villagedoorinfo1;
                  i = j;
              }
-@@ -236,79 +236,62 @@
+         }
+ 
          return villagedoorinfo;
      }
  
@@ -361,7 +374,8 @@
                  villageaggressor = villageaggressor1;
                  d0 = d1;
              }
-@@ -315,26 +315,21 @@
+         }
+ 
          return villageaggressor != null ? villageaggressor.agressor : null;
      }
  
@@ -394,7 +408,10 @@
                          entityplayer = entityplayer1;
                          d0 = d1;
                      }
-@@ -345,38 +345,31 @@
+                 }
+             }
+         }
+ 
          return entityplayer;
      }
  
@@ -442,7 +459,7 @@
                  this.centerHelper = this.centerHelper.add(villagedoorinfo.getDoorBlockPos().multiply(-1));
                  flag = true;
                  villagedoorinfo.func_179853_a(true);
-@@ -384,63 +384,52 @@
+                 iterator.remove();
              }
          }
  
@@ -519,7 +536,10 @@
          this.numVillagers = p_82690_1_.getInteger("PopSize");
          this.villageRadius = p_82690_1_.getInteger("Radius");
          this.numIronGolems = p_82690_1_.getInteger("Golems");
-@@ -451,8 +451,7 @@
+         this.lastAddDoorTimestamp = p_82690_1_.getInteger("Stable");
+         this.tickCounter = p_82690_1_.getInteger("Tick");
+         this.noBreedTicks = p_82690_1_.getInteger("MTick");
+         this.center = new BlockPos(p_82690_1_.getInteger("CX"), p_82690_1_.getInteger("CY"), p_82690_1_.getInteger("CZ"));
          this.centerHelper = new BlockPos(p_82690_1_.getInteger("ACX"), p_82690_1_.getInteger("ACY"), p_82690_1_.getInteger("ACZ"));
          NBTTagList nbttaglist = p_82690_1_.getTagList("Doors", 10);
  
@@ -529,7 +549,7 @@
              NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
              VillageDoorInfo villagedoorinfo = new VillageDoorInfo(new BlockPos(nbttagcompound1.getInteger("X"), nbttagcompound1.getInteger("Y"), nbttagcompound1.getInteger("Z")), nbttagcompound1.getInteger("IDX"), nbttagcompound1.getInteger("IDZ"), nbttagcompound1.getInteger("TS"));
              this.villageDoorInfoList.add(villagedoorinfo);
-@@ -460,15 +460,13 @@
+         }
  
          NBTTagList nbttaglist1 = p_82690_1_.getTagList("Players", 10);
  
@@ -547,7 +567,11 @@
          p_82689_1_.setInteger("PopSize", this.numVillagers);
          p_82689_1_.setInteger("Radius", this.villageRadius);
          p_82689_1_.setInteger("Golems", this.numIronGolems);
-@@ -484,9 +484,8 @@
+         p_82689_1_.setInteger("Stable", this.lastAddDoorTimestamp);
+         p_82689_1_.setInteger("Tick", this.tickCounter);
+@@ -482,13 +406,12 @@
+         p_82689_1_.setInteger("ACY", this.centerHelper.getY());
+         p_82689_1_.setInteger("ACZ", this.centerHelper.getZ());
          NBTTagList nbttaglist = new NBTTagList();
          Iterator iterator = this.villageDoorInfoList.iterator();
  
@@ -559,7 +583,11 @@
              NBTTagCompound nbttagcompound1 = new NBTTagCompound();
              nbttagcompound1.setInteger("X", villagedoorinfo.getDoorBlockPos().getX());
              nbttagcompound1.setInteger("Y", villagedoorinfo.getDoorBlockPos().getY());
-@@ -501,51 +501,44 @@
+             nbttagcompound1.setInteger("Z", villagedoorinfo.getDoorBlockPos().getZ());
+             nbttagcompound1.setInteger("IDX", villagedoorinfo.getInsideOffsetX());
+@@ -499,51 +422,45 @@
+ 
+         p_82689_1_.setTag("Doors", nbttaglist);
          NBTTagList nbttaglist1 = new NBTTagList();
          Iterator iterator1 = this.playerReputation.keySet().iterator();
  
@@ -619,5 +647,4 @@
              this.agressionTime = p_i1674_3_;
          }
      }
--}
-+}
+ }

@@ -1,6 +1,8 @@
----a/net/minecraft/item/crafting/RecipesIngots.java
-+++b/net/minecraft/item/crafting/RecipesIngots.java
-@@ -6,28 +6,35 @@
+--- decompiled\net\minecraft\item\crafting\RecipesIngots.java
++++ src\main\java\net\minecraft\item\crafting\RecipesIngots.java
+@@ -4,29 +4,36 @@
+ import net.minecraft.init.Blocks;
+ import net.minecraft.init.Items;
  import net.minecraft.item.EnumDyeColor;
  import net.minecraft.item.ItemStack;
  
@@ -49,5 +51,4 @@
 +        p_77590_1_.addRecipe(new ItemStack(Items.gold_ingot), new Object[]{"###", "###", "###", '#', Items.gold_nugget});
 +        p_77590_1_.addRecipe(new ItemStack(Items.gold_nugget, 9), new Object[]{"#", '#', Items.gold_ingot});
      }
--}
-+}
+ }

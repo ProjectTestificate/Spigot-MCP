@@ -1,6 +1,6 @@
----a/net/minecraft/block/properties/PropertyEnum.java
-+++b/net/minecraft/block/properties/PropertyEnum.java
-@@ -1,33 +1,39 @@
+--- decompiled\net\minecraft\block\properties\PropertyEnum.java
++++ src\main\java\net\minecraft\block\properties\PropertyEnum.java
+@@ -1,74 +1,66 @@
  package net.minecraft.block.properties;
  
 +import java.util.Collection;
@@ -49,7 +49,7 @@
                  throw new IllegalArgumentException("Multiple values have the same name \'" + s1 + "\'");
              }
  
-@@ -37,39 +37,31 @@
+             this.nameToValue.put(s1, oenum);
          }
      }
  
@@ -96,5 +96,4 @@
 +    public String getName(Comparable value) {
 +        return this.getName((Enum) value);
      }
--}
-+}
+ }

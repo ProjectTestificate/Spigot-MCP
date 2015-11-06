@@ -1,6 +1,7 @@
----a/net/minecraft/network/play/server/S1CPacketEntityMetadata.java
-+++b/net/minecraft/network/play/server/S1CPacketEntityMetadata.java
-@@ -2,56 +2,49 @@
+--- decompiled\net\minecraft\network\play\server\S1CPacketEntityMetadata.java
++++ src\main\java\net\minecraft\network\play\server\S1CPacketEntityMetadata.java
+@@ -1,68 +1,50 @@
+ package net.minecraft.network.play.server;
  
  import java.io.IOException;
  import java.util.List;
@@ -81,5 +82,4 @@
 -    {
 -        return this.field_149379_a;
 -    }
--}
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockFlowerPot.java
-+++b/net/minecraft/block/BlockFlowerPot.java
-@@ -1,6 +1,7 @@
+--- decompiled\net\minecraft\block\BlockFlowerPot.java
++++ src\main\java\net\minecraft\block\BlockFlowerPot.java
+@@ -1,8 +1,9 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -8,7 +8,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
  import net.minecraft.block.properties.PropertyEnum;
-@@ -17,193 +17,129 @@
+ import net.minecraft.block.properties.PropertyInteger;
+ import net.minecraft.block.state.BlockState;
+@@ -15,198 +16,134 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.tileentity.TileEntity;
  import net.minecraft.tileentity.TileEntityFlowerPot;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -238,7 +242,11 @@
              case 1:
                  object = Blocks.red_flower;
                  j = BlockFlower.EnumFlowerType.POPPY.getMeta();
-@@ -253,35 +253,30 @@
+                 break;
+             case 2:
+@@ -251,42 +188,35 @@
+             case 13:
+                 object = Blocks.sapling;
                  j = BlockPlanks.EnumType.DARK_OAK.getMetadata();
          }
  
@@ -288,7 +296,11 @@
                          case 1:
                              enumflowertype = BlockFlowerPot.EnumFlowerType.OAK_SAPLING;
                              break;
-@@ -306,11 +306,8 @@
+                         case 2:
+                             enumflowertype = BlockFlowerPot.EnumFlowerType.SPRUCE_SAPLING;
+@@ -304,33 +234,25 @@
+                             enumflowertype = BlockFlowerPot.EnumFlowerType.DARK_OAK_SAPLING;
+                             break;
                          default:
                              enumflowertype = BlockFlowerPot.EnumFlowerType.EMPTY;
                      }
@@ -302,7 +314,9 @@
                          case 0:
                              enumflowertype = BlockFlowerPot.EnumFlowerType.DEAD_BUSH;
                              break;
-@@ -320,13 +320,9 @@
+                         case 2:
+                             enumflowertype = BlockFlowerPot.EnumFlowerType.FERN;
+                             break;
                          default:
                              enumflowertype = BlockFlowerPot.EnumFlowerType.EMPTY;
                      }
@@ -321,7 +335,11 @@
                          case 1:
                              enumflowertype = BlockFlowerPot.EnumFlowerType.POPPY;
                              break;
-@@ -359,21 +359,13 @@
+                         case 2:
+                             enumflowertype = BlockFlowerPot.EnumFlowerType.BLUE_ORCHID;
+@@ -357,41 +279,26 @@
+                             enumflowertype = BlockFlowerPot.EnumFlowerType.OXEYE_DAISY;
+                             break;
                          default:
                              enumflowertype = BlockFlowerPot.EnumFlowerType.EMPTY;
                      }
@@ -347,7 +365,8 @@
                      enumflowertype = BlockFlowerPot.EnumFlowerType.CACTUS;
                  }
              }
-@@ -382,14 +382,7 @@
+         }
+ 
          return state.withProperty(CONTENTS, enumflowertype);
      }
  
@@ -363,7 +382,11 @@
          EMPTY("empty"),
          POPPY("rose"),
          BLUE_ORCHID("blue_orchid"),
-@@ -416,168 +416,117 @@
+         ALLIUM("allium"),
+         HOUSTONIA("houstonia"),
+@@ -414,169 +321,120 @@
+         CACTUS("cactus");
+         private final String name;
  
          private static final String __OBFID = "CL_00002115";
  
@@ -614,6 +637,5 @@
 +                ;
 +            }
          }
--}
 +    }
-+}
+ }

@@ -1,6 +1,6 @@
----a/net/minecraft/inventory/InventoryCrafting.java
-+++b/net/minecraft/inventory/InventoryCrafting.java
-@@ -1,19 +1,30 @@
+--- decompiled\net\minecraft\inventory\InventoryCrafting.java
++++ src\main\java\net\minecraft\inventory\InventoryCrafting.java
+@@ -1,158 +1,183 @@
  package net.minecraft.inventory;
  
 +import java.util.ArrayList;
@@ -75,7 +75,7 @@
          int k = width * height;
          this.stackList = new ItemStack[k];
          this.eventHandler = p_i1807_1_;
-@@ -23,137 +23,112 @@
+         this.inventoryWidth = width;
          this.inventoryHeight = height;
      }
  
@@ -245,5 +245,4 @@
 +    public int getWidth() {
          return this.inventoryWidth;
      }
--}
-+}
+ }

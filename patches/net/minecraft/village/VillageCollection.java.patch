@@ -1,6 +1,6 @@
----a/net/minecraft/village/VillageCollection.java
-+++b/net/minecraft/village/VillageCollection.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\village\VillageCollection.java
++++ src\main\java\net\minecraft\village\VillageCollection.java
+@@ -1,10 +1,10 @@
  package net.minecraft.village;
  
 -import com.google.common.collect.Lists;
@@ -10,7 +10,11 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.BlockDoor;
  import net.minecraft.block.material.Material;
-@@ -14,8 +14,10 @@
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.nbt.NBTTagList;
+@@ -12,139 +12,118 @@
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.world.World;
  import net.minecraft.world.WorldProvider;
  import net.minecraft.world.WorldSavedData;
  
@@ -23,7 +27,7 @@
      private World worldObj;
      private final List villagerPositionsList = Lists.newArrayList();
      private final List newDoors = Lists.newArrayList();
-@@ -23,48 +23,39 @@
+     private final List villageList = Lists.newArrayList();
      private int tickCounter;
      private static final String __OBFID = "CL_00001635";
  
@@ -84,7 +88,7 @@
              village.tick(this.tickCounter);
          }
  
-@@ -73,50 +73,41 @@
+         this.removeAnnihilatedVillages();
          this.dropOldestVillagerPosition();
          this.addNewDoorsToVillageOrCreateVillage();
  
@@ -147,7 +151,9 @@
                      village = village1;
                      d0 = d1;
                  }
-@@ -126,26 +126,20 @@
+             }
+         }
+ 
          return village;
      }
  
@@ -178,7 +184,11 @@
                  village = new Village(this.worldObj);
                  this.villageList.add(village);
                  this.markDirty();
-@@ -154,29 +154,22 @@
+             }
+ 
+@@ -152,165 +131,134 @@
+         }
+ 
          this.newDoors.clear();
      }
  
@@ -216,7 +226,8 @@
                              villagedoorinfo.func_179849_a(this.tickCounter);
                          }
                      }
-@@ -186,65 +186,52 @@
+                 }
+             }
          }
      }
  
@@ -297,7 +308,8 @@
                      return j;
                  }
              }
-@@ -253,38 +253,31 @@
+         }
+ 
          return j;
      }
  
@@ -344,7 +356,7 @@
              NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
              Village village = new Village();
              village.readVillageDataFromNBT(nbttagcompound1);
-@@ -292,14 +292,12 @@
+             this.villageList.add(village);
          }
      }
  
@@ -363,7 +375,8 @@
              NBTTagCompound nbttagcompound1 = new NBTTagCompound();
              village.writeVillageDataToNBT(nbttagcompound1);
              nbttaglist.appendTag(nbttagcompound1);
-@@ -309,9 +309,7 @@
+         }
+ 
          nbt.setTag("Villages", nbttaglist);
      }
  
@@ -372,5 +385,4 @@
 +    public static String fileNameForProvider(WorldProvider provider) {
          return "villages" + provider.getInternalNameSuffix();
      }
--}
-+}
+ }

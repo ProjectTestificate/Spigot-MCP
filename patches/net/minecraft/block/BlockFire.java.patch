@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockFire.java
-+++b/net/minecraft/block/BlockFire.java
-@@ -1,9 +1,7 @@
+--- decompiled\net\minecraft\block\BlockFire.java
++++ src\main\java\net\minecraft\block\BlockFire.java
+@@ -1,10 +1,10 @@
  package net.minecraft.block;
  
 -import com.google.common.collect.Maps;
@@ -10,7 +10,11 @@
  import net.minecraft.block.material.MapColor;
  import net.minecraft.block.material.Material;
  import net.minecraft.block.properties.IProperty;
-@@ -14,16 +14,10 @@
+ import net.minecraft.block.properties.PropertyBool;
+ import net.minecraft.block.properties.PropertyInteger;
+@@ -12,20 +12,23 @@
+ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.init.Blocks;
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -36,7 +40,11 @@
      public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
      public static final PropertyBool FLIP = PropertyBool.create("flip");
      public static final PropertyBool ALT = PropertyBool.create("alt");
-@@ -36,40 +36,33 @@
+     public static final PropertyBool NORTH = PropertyBool.create("north");
+     public static final PropertyBool EAST = PropertyBool.create("east");
+@@ -34,44 +37,37 @@
+     public static final PropertyInteger UPPER = PropertyInteger.create("upper", 0, 2);
+     private final Map encouragements = Maps.newIdentityHashMap();
      private final Map flammabilities = Maps.newIdentityHashMap();
      private static final String __OBFID = "CL_00000245";
  
@@ -83,7 +91,11 @@
          Blocks.fire.setFireInfo(Blocks.planks, 5, 20);
          Blocks.fire.setFireInfo(Blocks.double_wooden_slab, 5, 20);
          Blocks.fire.setFireInfo(Blocks.wooden_slab, 5, 20);
-@@ -107,84 +107,66 @@
+         Blocks.fire.setFireInfo(Blocks.oak_fence_gate, 5, 20);
+         Blocks.fire.setFireInfo(Blocks.spruce_fence_gate, 5, 20);
+@@ -105,389 +101,278 @@
+         Blocks.fire.setFireInfo(Blocks.coal_block, 5, 5);
+         Blocks.fire.setFireInfo(Blocks.hay_block, 60, 20);
          Blocks.fire.setFireInfo(Blocks.carpet, 60, 20);
      }
  
@@ -191,7 +203,7 @@
                          return;
                      }
                  }
-@@ -193,8 +193,7 @@
+ 
                  boolean flag1 = worldIn.isBlockinHighHumidity(pos);
                  byte b0 = 0;
  
@@ -201,7 +213,10 @@
                      b0 = -50;
                  }
  
-@@ -205,50 +205,37 @@
+                 this.catchOnFire(worldIn, pos.east(), 300 + b0, rand, i);
+                 this.catchOnFire(worldIn, pos.west(), 300 + b0, rand, i);
+                 this.catchOnFire(worldIn, pos.down(), 250 + b0, rand, i);
+                 this.catchOnFire(worldIn, pos.up(), 250 + b0, rand, i);
                  this.catchOnFire(worldIn, pos.north(), 300 + b0, rand, i);
                  this.catchOnFire(worldIn, pos.south(), 300 + b0, rand, i);
  
@@ -274,7 +289,10 @@
                                      }
                                  }
                              }
-@@ -252,70 +252,67 @@
+                         }
+                     }
+                 }
+             }
          }
      }
  
@@ -372,7 +390,7 @@
                  return true;
              }
          }
-@@ -323,22 +323,16 @@
+ 
          return false;
      }
  
@@ -397,7 +415,8 @@
                  EnumFacing enumfacing = aenumfacing[k];
                  i = Math.max(this.getEncouragement(worldIn.getBlockState(pos.offset(enumfacing)).getBlock()), i);
              }
-@@ -345,150 +345,54 @@
+ 
+             return i;
          }
      }
  
@@ -569,6 +588,5 @@
 +            world.setBlockToAir(position);
 +        }
      }
--}
 +    // CraftBukkit end
-+}
+ }

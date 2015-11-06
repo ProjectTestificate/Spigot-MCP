@@ -1,6 +1,8 @@
----a/net/minecraft/util/EntityDamageSourceIndirect.java
-+++b/net/minecraft/util/EntityDamageSourceIndirect.java
-@@ -4,34 +4,30 @@
+--- decompiled\net\minecraft\util\EntityDamageSourceIndirect.java
++++ src\main\java\net\minecraft\util\EntityDamageSourceIndirect.java
+@@ -2,35 +2,38 @@
+ 
+ import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.item.ItemStack;
  
@@ -41,7 +43,6 @@
 -        return itemstack != null && itemstack.hasDisplayName() && StatCollector.canTranslate(s1) ? new ChatComponentTranslation(s1, new Object[] {p_151519_1_.getDisplayName(), ichatcomponent, itemstack.getChatComponent()}): new ChatComponentTranslation(s, new Object[] {p_151519_1_.getDisplayName(), ichatcomponent});
 +        return itemstack != null && itemstack.hasDisplayName() && StatCollector.canTranslate(s1) ? new ChatComponentTranslation(s1, new Object[]{p_151519_1_.getDisplayName(), ichatcomponent, itemstack.getChatComponent()}) : new ChatComponentTranslation(s, new Object[]{p_151519_1_.getDisplayName(), ichatcomponent});
      }
--}
 +
 +
 +    // CraftBukkit start
@@ -49,4 +50,4 @@
 +        return super.getEntity();
 +    }
 +    // CraftBukkit end
-+}
+ }

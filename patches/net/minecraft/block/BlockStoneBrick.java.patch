@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockStoneBrick.java
-+++b/net/minecraft/block/BlockStoneBrick.java
-@@ -1,19 +1,13 @@
+--- decompiled\net\minecraft\block\BlockStoneBrick.java
++++ src\main\java\net\minecraft\block\BlockStoneBrick.java
+@@ -1,71 +1,48 @@
  package net.minecraft.block;
  
 -import java.util.List;
@@ -24,7 +24,7 @@
      public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockStoneBrick.EnumType.class);
      public static final int DEFAULT_META = BlockStoneBrick.EnumType.DEFAULT.getMetadata();
      public static final int MOSSY_META = BlockStoneBrick.EnumType.MOSSY.getMetadata();
-@@ -22,48 +22,29 @@
+     public static final int CRACKED_META = BlockStoneBrick.EnumType.CRACKED.getMetadata();
      public static final int CHISELED_META = BlockStoneBrick.EnumType.CHISELED.getMetadata();
      private static final String __OBFID = "CL_00000318";
  
@@ -82,7 +82,11 @@
          DEFAULT(0, "stonebrick", "default"),
          MOSSY(1, "mossy_stonebrick", "mossy"),
          CRACKED(2, "cracked_stonebrick", "cracked"),
-@@ -75,54 +75,44 @@
+         CHISELED(3, "chiseled_stonebrick", "chiseled");
+         private static final BlockStoneBrick.EnumType[] META_LOOKUP = new BlockStoneBrick.EnumType[values().length];
+@@ -73,54 +50,45 @@
+         private final String name;
+         private final String unlocalizedName;
  
          private static final String __OBFID = "CL_00002057";
  
@@ -144,5 +148,3 @@
              }
          }
      }
--}
-+}

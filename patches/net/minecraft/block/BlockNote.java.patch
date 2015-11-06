@@ -1,6 +1,6 @@
----a/net/minecraft/block/BlockNote.java
-+++b/net/minecraft/block/BlockNote.java
-@@ -1,8 +1,6 @@
+--- decompiled\net\minecraft\block\BlockNote.java
++++ src\main\java\net\minecraft\block\BlockNote.java
+@@ -1,9 +1,9 @@
  package net.minecraft.block;
  
 -import com.google.common.collect.Lists;
@@ -9,7 +9,11 @@
  import net.minecraft.block.material.Material;
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.creativetab.CreativeTabs;
-@@ -13,29 +13,30 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.tileentity.TileEntity;
+@@ -11,99 +11,83 @@
+ import net.minecraft.util.BlockPos;
+ import net.minecraft.util.EnumFacing;
  import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.world.World;
  
@@ -51,7 +55,8 @@
                      tileentitynote.triggerNote(worldIn, pos);
                  }
  
-@@ -45,20 +45,14 @@
+                 tileentitynote.previousRedstoneState = flag;
+             }
          }
      }
  
@@ -76,7 +81,8 @@
                  tileentitynote.changePitch();
                  tileentitynote.triggerNote(worldIn, pos);
              }
-@@ -66,47 +66,37 @@
+ 
+             return true;
          }
      }
  
@@ -133,5 +139,4 @@
 +    public int getRenderType() {
          return 3;
      }
--}
-+}
+ }

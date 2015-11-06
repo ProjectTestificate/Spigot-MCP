@@ -1,6 +1,7 @@
----a/net/minecraft/util/IJsonSerializable.java
-+++b/net/minecraft/util/IJsonSerializable.java
-@@ -2,10 +2,10 @@
+--- decompiled\net\minecraft\util\IJsonSerializable.java
++++ src\main\java\net\minecraft\util\IJsonSerializable.java
+@@ -1,10 +1,10 @@
+ package net.minecraft.util;
  
  import com.google.gson.JsonElement;
  
@@ -11,5 +12,4 @@
      void func_152753_a(JsonElement p_152753_1_);
  
      JsonElement getSerializableElement();
--}
-+}
+ }

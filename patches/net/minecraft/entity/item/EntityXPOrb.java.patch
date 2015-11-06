@@ -1,6 +1,7 @@
----a/net/minecraft/entity/item/EntityXPOrb.java
-+++b/net/minecraft/entity/item/EntityXPOrb.java
-@@ -2,73 +2,58 @@
+--- decompiled\net\minecraft\entity\item\EntityXPOrb.java
++++ src\main\java\net\minecraft\entity\item\EntityXPOrb.java
+@@ -1,230 +1,212 @@
+ package net.minecraft.entity.item;
  
  import net.minecraft.block.material.Material;
  import net.minecraft.entity.Entity;
@@ -96,7 +97,8 @@
              --this.field_70532_c;
          }
  
-@@ -79,98 +79,94 @@
+         this.prevPosX = this.posX;
+         this.prevPosY = this.posY;
          this.prevPosZ = this.posZ;
          this.motionY -= 0.029999999329447746D;
  
@@ -237,7 +239,7 @@
                  this.setDead();
              }
  
-@@ -178,57 +178,59 @@
+             return false;
          }
      }
  
@@ -320,5 +322,4 @@
 +    public boolean canAttackWithItem() {
          return false;
      }
--}
-+}
+ }

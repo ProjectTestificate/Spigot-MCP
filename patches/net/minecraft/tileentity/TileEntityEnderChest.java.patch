@@ -1,6 +1,8 @@
----a/net/minecraft/tileentity/TileEntityEnderChest.java
-+++b/net/minecraft/tileentity/TileEntityEnderChest.java
-@@ -4,16 +4,16 @@
+--- decompiled\net\minecraft\tileentity\TileEntityEnderChest.java
++++ src\main\java\net\minecraft\tileentity\TileEntityEnderChest.java
+@@ -2,104 +2,86 @@
+ 
+ import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.init.Blocks;
  import net.minecraft.server.gui.IUpdatePlayerListBox;
  
@@ -23,7 +25,10 @@
              this.worldObj.addBlockEvent(this.pos, Blocks.ender_chest, 1, this.field_145973_j);
          }
  
-@@ -26,84 +26,67 @@
+         this.prevLidAngle = this.field_145972_a;
+         int i = this.pos.getX();
+         int j = this.pos.getY();
+         int k = this.pos.getZ();
          float f = 0.1F;
          double d1;
  
@@ -124,5 +129,4 @@
 +    public boolean func_145971_a(EntityPlayer p_145971_1_) {
 +        return this.worldObj.getTileEntity(this.pos) != this ? false : p_145971_1_.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
      }
--}
-+}
+ }
