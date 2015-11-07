@@ -27,7 +27,7 @@
  import net.minecraft.network.login.client.C00PacketLoginStart;
  import net.minecraft.network.login.client.C01PacketEncryptionResponse;
  import net.minecraft.network.login.server.S00PacketDisconnect;
-@@ -25,16 +23,30 @@
+@@ -25,16 +23,31 @@
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.server.gui.IUpdatePlayerListBox;
  import net.minecraft.util.ChatComponentText;
@@ -42,8 +42,6 @@
 +import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 +import org.bukkit.event.player.PlayerPreLoginEvent;
  
--public class NetHandlerLoginServer implements INetHandlerLoginServer, IUpdatePlayerListBox
--{
 +import com.google.common.base.Charsets;
 +import com.mojang.authlib.GameProfile;
 +import com.mojang.authlib.exceptions.AuthenticationUnavailableException;
@@ -53,14 +51,15 @@
 +import io.netty.channel.ChannelFutureListener;
 +import io.netty.util.concurrent.GenericFutureListener;
 +
-+public class NetHandlerLoginServer implements INetHandlerLoginServer, IUpdatePlayerListBox {
+ public class NetHandlerLoginServer implements INetHandlerLoginServer, IUpdatePlayerListBox
+ {
 +
      private static final AtomicInteger AUTHENTICATOR_THREAD_ID = new AtomicInteger(0);
      private static final Logger logger = LogManager.getLogger();
      private static final Random RANDOM = new Random();
      private final byte[] verifyToken = new byte[4];
      private final MinecraftServer server;
-@@ -43,182 +55,237 @@
+@@ -43,10 +56,11 @@
      private int connectionTimer;
      private GameProfile loginGameProfile;
      private String serverId;
@@ -68,81 +67,48 @@
      private static final String __OBFID = "CL_00001458";
 +    public String hostname = ""; // CraftBukkit - add field
  
--    public NetHandlerLoginServer(MinecraftServer p_i45298_1_, NetworkManager p_i45298_2_)
--    {
-+    public NetHandlerLoginServer(MinecraftServer p_i45298_1_, NetworkManager p_i45298_2_) {
+     public NetHandlerLoginServer(MinecraftServer p_i45298_1_, NetworkManager p_i45298_2_)
+     {
          this.currentLoginState = NetHandlerLoginServer.LoginState.HELLO;
          this.serverId = "";
-         this.server = p_i45298_1_;
-         this.networkManager = p_i45298_2_;
-         RANDOM.nextBytes(this.verifyToken);
-     }
- 
--    public void update()
--    {
--        if (this.currentLoginState == NetHandlerLoginServer.LoginState.READY_TO_ACCEPT)
--        {
-+    public void update() {
-+        if (this.currentLoginState == NetHandlerLoginServer.LoginState.READY_TO_ACCEPT) {
-             this.tryAcceptPlayer();
-         }
- 
--        if (this.connectionTimer++ == 600)
--        {
-+        if (this.connectionTimer++ == 600) {
-             this.closeConnection("Took too long to log in");
-         }
-     }
- 
--    public void closeConnection(String reason)
--    {
--        try
--        {
-+    public void closeConnection(String reason) {
-+        try {
-             logger.info("Disconnecting " + this.getConnectionInfo() + ": " + reason);
-             ChatComponentText chatcomponenttext = new ChatComponentText(reason);
-             this.networkManager.sendPacket(new S00PacketDisconnect(chatcomponenttext));
-             this.networkManager.closeChannel(chatcomponenttext);
--        }
--        catch (Exception exception)
--        {
-+        } catch (Exception exception) {
+@@ -81,22 +95,52 @@
+         {
              logger.error("Error whilst disconnecting player", exception);
          }
      }
  
 -    public void tryAcceptPlayer()
--    {
--        if (!this.loginGameProfile.isComplete())
--        {
--            this.loginGameProfile = this.getOfflineProfile(this.loginGameProfile);
 +    // Spigot start
-+    public void initUUID() {
++    public void initUUID()
+     {
+-        if (!this.loginGameProfile.isComplete())
 +        UUID uuid;
-+        if (networkManager.spoofedUUID != null) {
++
++        if (networkManager.spoofedUUID != null)
+         {
+-            this.loginGameProfile = this.getOfflineProfile(this.loginGameProfile);
 +            uuid = networkManager.spoofedUUID;
-+        } else {
-+            uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + this.loginGameProfile.getName()).getBytes(Charsets.UTF_8));
          }
++        else
++        {
++            uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + this.loginGameProfile.getName()).getBytes(Charsets.UTF_8));
++        }
  
 -        String s = this.server.getConfigurationManager().allowUserToConnect(this.networkManager.getRemoteAddress(), this.loginGameProfile);
 +        this.loginGameProfile = new GameProfile(uuid, this.loginGameProfile.getName());
  
--        if (s != null)
--        {
--            this.closeConnection(s);
-+        if (networkManager.spoofedProfile != null) {
-+            for (Property property : networkManager.spoofedProfile) {
++        if (networkManager.spoofedProfile != null)
++        {
++            for (Property property : networkManager.spoofedProfile)
++            {
 +                this.loginGameProfile.getProperties().put(property.getName(), property);
 +            }
-         }
--        else
--        {
++        }
 +    }
 +    // Spigot end
 +
-+    public void tryAcceptPlayer() {
++    public void tryAcceptPlayer()
++    {
 +        // Spigot start - Moved to initUUID
 +        /*
 +        if (!this.loginGameProfile.isComplete()) {
@@ -150,29 +116,20 @@
 +        }
 +        */
 +        // Spigot end
-+
 +        // CraftBukkit start - fire PlayerLoginEvent
 +        EntityPlayerMP s = this.server.getConfigurationManager().attemptLogin(this, this.loginGameProfile, hostname);
 +
-+        if (s != null) {
+         if (s != null)
+         {
+-            this.closeConnection(s);
 +            // this.closeConnection(s);
 +            // CraftBukkit end
-+        } else {
+         }
+         else
+         {
              this.currentLoginState = NetHandlerLoginServer.LoginState.ACCEPTED;
  
--            if (this.server.getNetworkCompressionTreshold() >= 0 && !this.networkManager.isLocalChannel())
--            {
--                this.networkManager.sendPacket(new S03PacketEnableCompression(this.server.getNetworkCompressionTreshold()), new ChannelFutureListener()
--                {
-+            if (this.server.getNetworkCompressionTreshold() >= 0 && !this.networkManager.isLocalChannel()) {
-+                this.networkManager.sendPacket(new S03PacketEnableCompression(this.server.getNetworkCompressionTreshold()), new ChannelFutureListener() {
-+
-                     private static final String __OBFID = "CL_00001459";
--                    public void operationComplete(ChannelFuture p_operationComplete_1_)
--                    {
-+
-+                    public void operationComplete(ChannelFuture p_operationComplete_1_) {
-                         NetHandlerLoginServer.this.networkManager.setCompressionTreshold(NetHandlerLoginServer.this.server.getNetworkCompressionTreshold());
+@@ -111,11 +155,11 @@
                      }
                  }, new GenericFutureListener[0]);
              }
@@ -183,52 +140,24 @@
          }
      }
  
--    public void onDisconnect(IChatComponent reason)
--    {
-+    public void onDisconnect(IChatComponent reason) {
-         logger.info(this.getConnectionInfo() + " lost connection: " + reason.getUnformattedText());
-     }
- 
--    public String getConnectionInfo()
--    {
-+    public String getConnectionInfo() {
-         return this.loginGameProfile != null ? this.loginGameProfile.toString() + " (" + this.networkManager.getRemoteAddress().toString() + ")" : String.valueOf(this.networkManager.getRemoteAddress());
-     }
- 
--    public void processLoginStart(C00PacketLoginStart packetIn)
--    {
-+    public void processLoginStart(C00PacketLoginStart packetIn) {
-         Validate.validState(this.currentLoginState == NetHandlerLoginServer.LoginState.HELLO, "Unexpected hello packet", new Object[0]);
-         this.loginGameProfile = packetIn.getProfile();
- 
--        if (this.server.isServerInOnlineMode() && !this.networkManager.isLocalChannel())
--        {
-+        if (this.server.isServerInOnlineMode() && !this.networkManager.isLocalChannel()) {
+     public void onDisconnect(IChatComponent reason)
+     {
+@@ -137,11 +181,11 @@
              this.currentLoginState = NetHandlerLoginServer.LoginState.KEY;
              this.networkManager.sendPacket(new S01PacketEncryptionRequest(this.serverId, this.server.getKeyPair().getPublic(), this.verifyToken));
-+        } else {
+         }
+         else
+         {
+-            this.currentLoginState = NetHandlerLoginServer.LoginState.READY_TO_ACCEPT;
 +            new ThreadPlayerLookupUUID("User Authenticator #" + AUTHENTICATOR_THREAD_ID.incrementAndGet()); // Spigot // SpigotMCP -- Use regular inner classes
          }
--        else
--        {
--            this.currentLoginState = NetHandlerLoginServer.LoginState.READY_TO_ACCEPT;
--        }
      }
  
--    public void processEncryptionResponse(C01PacketEncryptionResponse packetIn)
--    {
-+    public void processEncryptionResponse(C01PacketEncryptionResponse packetIn) {
-         Validate.validState(this.currentLoginState == NetHandlerLoginServer.LoginState.KEY, "Unexpected key packet", new Object[0]);
-         PrivateKey privatekey = this.server.getKeyPair().getPrivate();
- 
--        if (!Arrays.equals(this.verifyToken, packetIn.getVerifyToken(privatekey)))
--        {
-+        if (!Arrays.equals(this.verifyToken, packetIn.getVerifyToken(privatekey))) {
-             throw new IllegalStateException("Invalid nonce!");
--        }
--        else
--        {
-+        } else {
+     public void processEncryptionResponse(C01PacketEncryptionResponse packetIn)
+     {
+@@ -155,55 +199,11 @@
+         else
+         {
              this.secretKey = packetIn.getSecretKey(privatekey);
              this.currentLoginState = NetHandlerLoginServer.LoginState.AUTHENTICATING;
              this.networkManager.enableEncryption(this.secretKey);
@@ -281,19 +210,9 @@
          }
      }
  
--    protected GameProfile getOfflineProfile(GameProfile original)
--    {
-+    protected GameProfile getOfflineProfile(GameProfile original) {
-         UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + original.getName()).getBytes(Charsets.UTF_8));
-         return new GameProfile(uuid, original.getName());
-     }
- 
--    static enum LoginState
--    {
-+    static enum LoginState {
-         HELLO,
-         KEY,
-         AUTHENTICATING,
+     protected GameProfile getOfflineProfile(GameProfile original)
+     {
+@@ -219,6 +219,134 @@
          READY_TO_ACCEPT,
          ACCEPTED;
  
@@ -301,49 +220,68 @@
      }
 +
 +    // SpigotMCP Start -- Convert anonomous inner class to inner class
-+    public class ThreadPlayerLookupUUID extends Thread {
++    public class ThreadPlayerLookupUUID extends Thread
++    {
 +
 +        private static final String __OBFID = "CL_00002268";
 +
-+        public ThreadPlayerLookupUUID(String s) {
++        public ThreadPlayerLookupUUID(String s)
++        {
 +            super(s);
 +        }
 +
-+        public void run() {
++        public void run()
++        {
 +            GameProfile gameprofile = NetHandlerLoginServer.this.loginGameProfile;
 +
-+            try {
++            try
++            {
 +                // Spigot Start
-+                if (!NetHandlerLoginServer.this.server.isServerInOnlineMode()) {
++                if (!NetHandlerLoginServer.this.server.isServerInOnlineMode())
++                {
 +                    NetHandlerLoginServer.this.initUUID();
 +                    fireLoginEvents();
 +                    return;
 +                }
++
 +                // Spigot End
 +                String s = (new BigInteger(CryptManager.getServerIdHash(NetHandlerLoginServer.this.serverId, NetHandlerLoginServer.this.server.getKeyPair().getPublic(), NetHandlerLoginServer.this.secretKey))).toString(16);
-+                NetHandlerLoginServer.this.loginGameProfile = NetHandlerLoginServer.this.server.getMinecraftSessionService().hasJoinedServer(new GameProfile((UUID) null, gameprofile.getName()), s);
++                NetHandlerLoginServer.this.loginGameProfile = NetHandlerLoginServer.this.server.getMinecraftSessionService().hasJoinedServer(new GameProfile((UUID)null, gameprofile.getName()), s);
 +
-+                if (NetHandlerLoginServer.this.loginGameProfile != null) {
++                if (NetHandlerLoginServer.this.loginGameProfile != null)
++                {
 +                    fireLoginEvents(); // Spigot
-+                } else if (NetHandlerLoginServer.this.server.isSinglePlayer()) {
++                }
++                else if (NetHandlerLoginServer.this.server.isSinglePlayer())
++                {
 +                    NetHandlerLoginServer.logger.warn("Failed to verify username but will let them in anyway!");
 +                    NetHandlerLoginServer.this.loginGameProfile = NetHandlerLoginServer.this.getOfflineProfile(gameprofile);
 +                    NetHandlerLoginServer.this.currentLoginState = NetHandlerLoginServer.LoginState.READY_TO_ACCEPT;
-+                } else {
++                }
++                else
++                {
 +                    NetHandlerLoginServer.this.closeConnection("Failed to verify username!");
 +                    NetHandlerLoginServer.logger.error("Username \'" + gameprofile.getName() + "\' tried to join with an invalid session"); // CraftBukkit - fix null pointer
 +                }
-+            } catch (AuthenticationUnavailableException authenticationunavailableexception) {
-+                if (NetHandlerLoginServer.this.server.isSinglePlayer()) {
++            }
++            catch (AuthenticationUnavailableException authenticationunavailableexception)
++            {
++                if (NetHandlerLoginServer.this.server.isSinglePlayer())
++                {
 +                    NetHandlerLoginServer.logger.warn("Authentication servers are down but will let them in anyway!");
 +                    NetHandlerLoginServer.this.loginGameProfile = NetHandlerLoginServer.this.getOfflineProfile(gameprofile);
 +                    NetHandlerLoginServer.this.currentLoginState = NetHandlerLoginServer.LoginState.READY_TO_ACCEPT;
-+                } else {
++                }
++                else
++                {
 +                    NetHandlerLoginServer.this.closeConnection("Authentication servers are down. Please try again later, sorry!");
 +                    NetHandlerLoginServer.logger.error("Couldn\'t verify username because servers are unavailable");
 +                }
++
 +                // CraftBukkit start - catch all exceptions
-+            } catch (Exception exception) {
++            }
++            catch (Exception exception)
++            {
 +                NetHandlerLoginServer.this.closeConnection("Failed to verify username!");
 +                NetHandlerLoginServer.this.server.server.getLogger().log(java.util.logging.Level.WARNING, "Exception verifying " + gameprofile.getName(), exception);
 +                // CraftBukkit end
@@ -351,47 +289,57 @@
 +        }
 +
 +        // Spigot start -- refractor login logic to seperate method
-+        private void fireLoginEvents() throws Exception {
++        private void fireLoginEvents() throws Exception
++        {
 +            // CraftBukkit start - fire PlayerPreLoginEvent
-+            if (!NetHandlerLoginServer.this.networkManager.isChannelOpen()) {
++            if (!NetHandlerLoginServer.this.networkManager.isChannelOpen())
++            {
 +                return;
 +            }
 +
 +            String playerName = NetHandlerLoginServer.this.loginGameProfile.getName();
-+            InetAddress address = ((InetSocketAddress) NetHandlerLoginServer.this.networkManager.getRemoteAddress()).getAddress();
++            InetAddress address = ((InetSocketAddress)NetHandlerLoginServer.this.networkManager.getRemoteAddress()).getAddress();
 +            UUID uniqueId = NetHandlerLoginServer.this.loginGameProfile.getId();
 +            final CraftServer server = NetHandlerLoginServer.this.server.server;
-+
 +            AsyncPlayerPreLoginEvent asyncEvent = new AsyncPlayerPreLoginEvent(playerName, address, uniqueId);
 +            server.getPluginManager().callEvent(asyncEvent);
 +
-+            if (PlayerPreLoginEvent.getHandlerList().getRegisteredListeners().length != 0) {
++            if (PlayerPreLoginEvent.getHandlerList().getRegisteredListeners().length != 0)
++            {
 +                final PlayerPreLoginEvent event = new PlayerPreLoginEvent(playerName, address, uniqueId);
-+                if (asyncEvent.getResult() != PlayerPreLoginEvent.Result.ALLOWED) {
++
++                if (asyncEvent.getResult() != PlayerPreLoginEvent.Result.ALLOWED)
++                {
 +                    event.disallow(asyncEvent.getResult(), asyncEvent.getKickMessage());
 +                }
-+                Waitable<PlayerPreLoginEvent.Result> waitable = new Waitable<PlayerPreLoginEvent.Result>() {
 +
++                Waitable<PlayerPreLoginEvent.Result> waitable = new Waitable<PlayerPreLoginEvent.Result>()
++                {
 +                    @Override
-+                    protected PlayerPreLoginEvent.Result evaluate() {
++                    protected PlayerPreLoginEvent.Result evaluate()
++                    {
 +                        server.getPluginManager().callEvent(event);
 +                        return event.getResult();
 +                    }
 +                };
++                NetHandlerLoginServer.this.server.processQueue.add(waitable);
 +
-+                    NetHandlerLoginServer.this.server.processQueue.add(waitable);
-+                if (waitable.get() != PlayerPreLoginEvent.Result.ALLOWED) {
++                if (waitable.get() != PlayerPreLoginEvent.Result.ALLOWED)
++                {
 +                    NetHandlerLoginServer.this.closeConnection(event.getKickMessage());
 +                    return;
 +                }
-+            } else {
-+                if (asyncEvent.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) {
++            }
++            else
++            {
++                if (asyncEvent.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED)
++                {
 +                    NetHandlerLoginServer.this.closeConnection(asyncEvent.getKickMessage());
 +                    return;
 +                }
 +            }
-+            // CraftBukkit end
 +
++            // CraftBukkit end
 +            NetHandlerLoginServer.logger.info("UUID of player " + NetHandlerLoginServer.this.loginGameProfile.getName() + " is " + NetHandlerLoginServer.this.loginGameProfile.getId());
 +            NetHandlerLoginServer.this.currentLoginState = LoginState.READY_TO_ACCEPT;
 +        }

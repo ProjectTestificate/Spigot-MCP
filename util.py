@@ -41,7 +41,7 @@ class BuildInfo:
 JDIFF_URL = 'https://github.com/Techcable/JDiff/releases/download/v1.0.0/JDiff.jar'
 JDIFF_VERSION = "1.0.0"
 
-def get_jdiff():
+def download_jdiff():
     version_file = "jdiff-version.txt"
     if os.path.exists(version_file) and open(version_file).read() == JDIFF_VERSION:
         return
@@ -53,5 +53,9 @@ def run_jdiff(*args):
     if not shutil.which("java"):
         echo("Java not installed")
         exit(1)
-    get_jdiff()
-    subprocess.check_call(["java", "-jar", "JDiff.jar"] + list(args), stdout=sys.stdout, stderr=sys.stderr)
+    if shutil.which("jdiff"):
+        cmd = ["jdiff"]
+        download_jdiff()
+    else:
+        cmd = ["java", "-jar", "JDiff.jar"]
+    subprocess.check_call(cmd + list(args), stdout=sys.stdout, stderr=sys.stderr)

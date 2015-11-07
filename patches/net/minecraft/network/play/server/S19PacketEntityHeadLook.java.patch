@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S19PacketEntityHeadLook.java
 +++ src\main\java\net\minecraft\network\play\server\S19PacketEntityHeadLook.java
-@@ -1,60 +1,43 @@
+@@ -1,24 +1,26 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -14,43 +14,26 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S19PacketEntityHeadLook implements Packet
--{
 +
-+public class S19PacketEntityHeadLook implements Packet {
+ public class S19PacketEntityHeadLook implements Packet
+ {
 +
      private int field_149384_a;
      private byte field_149383_b;
      private static final String __OBFID = "CL_00001323";
  
 -    public S19PacketEntityHeadLook() {}
-+    public S19PacketEntityHeadLook() {
++    public S19PacketEntityHeadLook()
++    {
 +    }
  
--    public S19PacketEntityHeadLook(Entity p_i45214_1_, byte p_i45214_2_)
--    {
-+    public S19PacketEntityHeadLook(Entity p_i45214_1_, byte p_i45214_2_) {
+     public S19PacketEntityHeadLook(Entity p_i45214_1_, byte p_i45214_2_)
+     {
          this.field_149384_a = p_i45214_1_.getEntityId();
          this.field_149383_b = p_i45214_2_;
-     }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.field_149384_a = buf.readVarIntFromBuffer();
-         this.field_149383_b = buf.readByte();
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeVarIntToBuffer(this.field_149384_a);
-         buf.writeByte(this.field_149383_b);
-     }
- 
--    public void func_180745_a(INetHandlerPlayClient p_180745_1_)
--    {
-+    public void func_180745_a(INetHandlerPlayClient p_180745_1_) {
+@@ -39,22 +41,10 @@
+     public void func_180745_a(INetHandlerPlayClient p_180745_1_)
+     {
          p_180745_1_.handleEntityHeadLook(this);
      }
  
@@ -58,9 +41,7 @@
 -    public Entity func_149381_a(World worldIn)
 -    {
 -        return worldIn.getEntityByID(this.field_149384_a);
-+    public void processPacket(INetHandler handler) {
-+        this.func_180745_a((INetHandlerPlayClient) handler);
-     }
+-    }
 -
 -    @SideOnly(Side.CLIENT)
 -    public byte func_149380_c()
@@ -68,8 +49,9 @@
 -        return this.field_149383_b;
 -    }
 -
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.func_180745_a((INetHandlerPlayClient)handler);
--    }
++        this.func_180745_a((INetHandlerPlayClient) handler);
+     }
  }

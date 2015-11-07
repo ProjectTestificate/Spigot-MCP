@@ -1,15 +1,14 @@
 --- decompiled\net\minecraft\inventory\ICrafting.java
 +++ src\main\java\net\minecraft\inventory\ICrafting.java
-@@ -1,12 +1,13 @@
+@@ -1,12 +1,14 @@
  package net.minecraft.inventory;
  
  import java.util.List;
 +
  import net.minecraft.item.ItemStack;
  
--public interface ICrafting
--{
-+public interface ICrafting {
+ public interface ICrafting
+ {
 +
      void sendContainerAndContentsToPlayer(Container containerToSend, List itemsList);
  

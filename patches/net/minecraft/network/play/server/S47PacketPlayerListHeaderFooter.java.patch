@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S47PacketPlayerListHeaderFooter.java
 +++ src\main\java\net\minecraft\network\play\server\S47PacketPlayerListHeaderFooter.java
-@@ -1,58 +1,43 @@
+@@ -1,23 +1,26 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -13,42 +13,26 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S47PacketPlayerListHeaderFooter implements Packet
--{
 +
-+public class S47PacketPlayerListHeaderFooter implements Packet {
+ public class S47PacketPlayerListHeaderFooter implements Packet
+ {
 +
      private IChatComponent field_179703_a;
      private IChatComponent field_179702_b;
      private static final String __OBFID = "CL_00002285";
  
 -    public S47PacketPlayerListHeaderFooter() {}
-+    public S47PacketPlayerListHeaderFooter() {
++    public S47PacketPlayerListHeaderFooter()
++    {
 +    }
  
--    public S47PacketPlayerListHeaderFooter(IChatComponent p_i45950_1_)
--    {
-+    public S47PacketPlayerListHeaderFooter(IChatComponent p_i45950_1_) {
+     public S47PacketPlayerListHeaderFooter(IChatComponent p_i45950_1_)
+     {
          this.field_179703_a = p_i45950_1_;
      }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.field_179703_a = buf.readChatComponent();
-         this.field_179702_b = buf.readChatComponent();
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeChatComponent(this.field_179703_a);
-         buf.writeChatComponent(this.field_179702_b);
-     }
- 
--    public void func_179699_a(INetHandlerPlayClient p_179699_1_)
--    {
-+    public void func_179699_a(INetHandlerPlayClient p_179699_1_) {
+@@ -37,22 +40,11 @@
+     public void func_179699_a(INetHandlerPlayClient p_179699_1_)
+     {
          p_179699_1_.handlePlayerListHeaderFooter(this);
      }
  
@@ -58,10 +42,9 @@
 -        return this.field_179703_a;
 -    }
  
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.func_179699_a((INetHandlerPlayClient)handler);
-+    public void processPacket(INetHandler handler) {
 +        this.func_179699_a((INetHandlerPlayClient) handler);
      }
 -

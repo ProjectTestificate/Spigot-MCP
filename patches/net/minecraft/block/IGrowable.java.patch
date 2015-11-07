@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\block\IGrowable.java
 +++ src\main\java\net\minecraft\block\IGrowable.java
-@@ -1,14 +1,15 @@
+@@ -1,14 +1,16 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -9,9 +9,8 @@
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
--public interface IGrowable
--{
-+public interface IGrowable {
+ public interface IGrowable
+ {
 +
      boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient);
  

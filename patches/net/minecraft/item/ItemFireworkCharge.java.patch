@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\item\ItemFireworkCharge.java
 +++ src\main\java\net\minecraft\item\ItemFireworkCharge.java
-@@ -1,206 +1,7 @@
+@@ -1,206 +1,8 @@
  package net.minecraft.item;
  
 -import java.util.List;
@@ -11,10 +11,10 @@
 -import net.minecraft.util.StatCollector;
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
-+public class ItemFireworkCharge extends Item {
- 
--public class ItemFireworkCharge extends Item
--{
+-
+ public class ItemFireworkCharge extends Item
+ {
++
      private static final String __OBFID = "CL_00000030";
  
 -    @SideOnly(Side.CLIENT)

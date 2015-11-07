@@ -1,26 +1,14 @@
 --- decompiled\net\minecraft\item\ItemMapBase.java
 +++ src\main\java\net\minecraft\item\ItemMapBase.java
-@@ -2,19 +2,17 @@
- 
- import net.minecraft.entity.player.EntityPlayer;
+@@ -4,10 +4,11 @@
  import net.minecraft.network.Packet;
  import net.minecraft.world.World;
  
--public class ItemMapBase extends Item
--{
-+public class ItemMapBase extends Item {
+ public class ItemMapBase extends Item
+ {
 +
      private static final String __OBFID = "CL_00000004";
  
--    public boolean isMap()
--    {
-+    public boolean isMap() {
+     public boolean isMap()
+     {
          return true;
-     }
- 
--    public Packet createMapDataPacket(ItemStack stack, World worldIn, EntityPlayer player)
--    {
-+    public Packet createMapDataPacket(ItemStack stack, World worldIn, EntityPlayer player) {
-         return null;
-     }
- }

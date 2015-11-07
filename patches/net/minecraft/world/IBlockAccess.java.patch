@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\world\IBlockAccess.java
 +++ src\main\java\net\minecraft\world\IBlockAccess.java
-@@ -2,31 +2,17 @@
+@@ -2,31 +2,18 @@
  
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.tileentity.TileEntity;
@@ -10,16 +10,15 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public interface IBlockAccess
--{
--    TileEntity getTileEntity(BlockPos pos);
++
+ public interface IBlockAccess
+ {
++
+     TileEntity getTileEntity(BlockPos pos);
  
 -    @SideOnly(Side.CLIENT)
 -    int getCombinedLight(BlockPos pos, int p_175626_2_);
-+public interface IBlockAccess {
- 
-+    TileEntity getTileEntity(BlockPos pos);
-+
+-
      IBlockState getBlockState(BlockPos pos);
  
      boolean isAirBlock(BlockPos pos);

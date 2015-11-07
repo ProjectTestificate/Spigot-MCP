@@ -1,14 +1,11 @@
 --- decompiled\net\minecraft\network\status\INetHandlerStatusServer.java
 +++ src\main\java\net\minecraft\network\status\INetHandlerStatusServer.java
-@@ -2,11 +2,11 @@
- 
- import net.minecraft.network.INetHandler;
+@@ -4,9 +4,10 @@
  import net.minecraft.network.status.client.C00PacketServerQuery;
  import net.minecraft.network.status.client.C01PacketPing;
  
--public interface INetHandlerStatusServer extends INetHandler
--{
-+public interface INetHandlerStatusServer extends INetHandler {
+ public interface INetHandlerStatusServer extends INetHandler
+ {
 +
      void processPing(C01PacketPing packetIn);
  

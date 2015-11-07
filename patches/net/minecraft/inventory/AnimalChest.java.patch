@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\inventory\AnimalChest.java
 +++ src\main\java\net\minecraft\inventory\AnimalChest.java
-@@ -1,21 +1,64 @@
+@@ -1,21 +1,74 @@
  package net.minecraft.inventory;
  
 -import net.minecraft.util.IChatComponent;
@@ -9,69 +9,74 @@
 +import java.util.ArrayList;
 +import java.util.List;
  
--public class AnimalChest extends InventoryBasic
--{
 +import net.minecraft.entity.passive.EntityHorse;
 +
 +import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 +import org.bukkit.inventory.InventoryHolder;
 +
-+public class AnimalChest extends InventoryBasic {
+ public class AnimalChest extends InventoryBasic
+ {
 +
      private static final String __OBFID = "CL_00001731";
  
--    public AnimalChest(String inventoryName, int slotCount)
--    {
-+    public AnimalChest(String inventoryName, int slotCount) {
+     public AnimalChest(String inventoryName, int slotCount)
+     {
          super(inventoryName, false, slotCount);
      }
  
 -    @SideOnly(Side.CLIENT)
 -    public AnimalChest(IChatComponent invTitle, int slotCount)
--    {
--        super(invTitle, slotCount);
 +    // CraftBukkit start - add fields and methods
 +    public List transaction = new ArrayList();
 +    private EntityHorse horse;
 +    private int maxStack = 64; // Use '64'
 +
-+    public AnimalChest(String s, int i, EntityHorse horse) {
-+        super(s, false, i, (org.bukkit.craftbukkit.entity.CraftHorse) horse.getBukkitEntity());
++    public AnimalChest(String s, int i, EntityHorse horse)
+     {
+-        super(invTitle, slotCount);
++        super(s, false, i, (org.bukkit.craftbukkit.entity.CraftHorse)horse.getBukkitEntity());
 +        this.horse = horse;
      }
 +
 +    @Override
-+    public net.minecraft.item.ItemStack[] getContents() {
++    public net.minecraft.item.ItemStack[] getContents()
++    {
 +        return this.inventoryContents;
 +    }
 +
 +    @Override
-+    public void onOpen(CraftHumanEntity who) {
++    public void onOpen(CraftHumanEntity who)
++    {
 +        transaction.add(who);
 +    }
 +
 +    @Override
-+    public void onClose(CraftHumanEntity who) {
++    public void onClose(CraftHumanEntity who)
++    {
 +        transaction.remove(who);
 +    }
 +
 +    @Override
-+    public java.util.List getViewers() {
++    public java.util.List getViewers()
++    {
 +        return transaction;
 +    }
 +
 +    @Override
-+    public InventoryHolder getOwner() {
-+        return (org.bukkit.entity.Horse) this.horse.getBukkitEntity();
++    public InventoryHolder getOwner()
++    {
++        return (org.bukkit.entity.Horse)this.horse.getBukkitEntity();
 +    }
 +
 +    @Override
-+    public void setMaxStackSize(int size) {
++    public void setMaxStackSize(int size)
++    {
 +        maxStack = size;
 +    }
 +
 +    @Override
-+    public int getInventoryStackLimit() {
++    public int getInventoryStackLimit()
++    {
 +        return maxStack;
 +    }
 +    // CraftBukkit end

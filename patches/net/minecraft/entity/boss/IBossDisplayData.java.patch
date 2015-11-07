@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\entity\boss\IBossDisplayData.java
 +++ src\main\java\net\minecraft\entity\boss\IBossDisplayData.java
-@@ -1,14 +1,12 @@
+@@ -1,14 +1,13 @@
  package net.minecraft.entity.boss;
  
  import net.minecraft.util.IChatComponent;
@@ -8,10 +8,9 @@
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
 -@SideOnly(Side.CLIENT)
--public interface IBossDisplayData
--{
 +// SpigotMCP NOTE -- This is really client sided, but FML needs it
-+public interface IBossDisplayData {
+ public interface IBossDisplayData
+ {
 +
      float getMaxHealth();
  

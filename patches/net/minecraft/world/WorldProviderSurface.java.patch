@@ -1,23 +1,13 @@
 --- decompiled\net\minecraft\world\WorldProviderSurface.java
 +++ src\main\java\net\minecraft\world\WorldProviderSurface.java
-@@ -1,16 +1,14 @@
+@@ -1,9 +1,10 @@
  package net.minecraft.world;
  
--public class WorldProviderSurface extends WorldProvider
--{
-+public class WorldProviderSurface extends WorldProvider {
+ public class WorldProviderSurface extends WorldProvider
+ {
 +
      private static final String __OBFID = "CL_00000388";
  
--    public String getDimensionName()
--    {
-+    public String getDimensionName() {
+     public String getDimensionName()
+     {
          return "Overworld";
-     }
- 
--    public String getInternalNameSuffix()
--    {
-+    public String getInternalNameSuffix() {
-         return "";
-     }
- }

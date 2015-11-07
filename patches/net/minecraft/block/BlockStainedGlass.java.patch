@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\block\BlockStainedGlass.java
 +++ src\main\java\net\minecraft\block\BlockStainedGlass.java
-@@ -1,107 +1,71 @@
+@@ -1,27 +1,24 @@
  package net.minecraft.block;
  
 -import java.util.List;
@@ -22,27 +22,19 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class BlockStainedGlass extends BlockBreakable
--{
 +
-+public class BlockStainedGlass extends BlockBreakable {
+ public class BlockStainedGlass extends BlockBreakable
+ {
 +
      public static final PropertyEnum COLOR = PropertyEnum.create("color", EnumDyeColor.class);
      private static final String __OBFID = "CL_00000312";
  
--    public BlockStainedGlass(Material p_i45427_1_)
--    {
-+    public BlockStainedGlass(Material p_i45427_1_) {
-         super(p_i45427_1_, false);
-         this.setDefaultState(this.blockState.getBaseState().withProperty(COLOR, EnumDyeColor.WHITE));
-         this.setCreativeTab(CreativeTabs.tabBlock);
-     }
- 
--    public int damageDropped(IBlockState state)
--    {
--        return ((EnumDyeColor)state.getValue(COLOR)).getMetadata();
-+    public int damageDropped(IBlockState state) {
-+        return ((EnumDyeColor) state.getValue(COLOR)).getMetadata();
+     public BlockStainedGlass(Material p_i45427_1_)
+     {
+@@ -33,40 +30,21 @@
+     public int damageDropped(IBlockState state)
+     {
+         return ((EnumDyeColor)state.getValue(COLOR)).getMetadata();
      }
  
 -    @SideOnly(Side.CLIENT)
@@ -56,76 +48,28 @@
 -            EnumDyeColor enumdyecolor = aenumdyecolor[j];
 -            list.add(new ItemStack(itemIn, 1, enumdyecolor.getMetadata()));
 -        }
-+    public MapColor getMapColor(IBlockState state) {
-+        return ((EnumDyeColor) state.getValue(COLOR)).getMapColor();
-     }
- 
--    public MapColor getMapColor(IBlockState state)
--    {
--        return ((EnumDyeColor)state.getValue(COLOR)).getMapColor();
 -    }
 -
+     public MapColor getMapColor(IBlockState state)
+     {
+         return ((EnumDyeColor)state.getValue(COLOR)).getMapColor();
+     }
+ 
 -    @SideOnly(Side.CLIENT)
 -    public EnumWorldBlockLayer getBlockLayer()
 -    {
 -        return EnumWorldBlockLayer.TRANSLUCENT;
 -    }
 -
--    public int quantityDropped(Random random)
--    {
-+    public int quantityDropped(Random random) {
+     public int quantityDropped(Random random)
+     {
          return 0;
      }
  
 -    protected boolean canSilkHarvest()
--    {
-+    public boolean canSilkHarvest() { // SpigotMCP -- Make public as bukkit assumes in the same package
++    public boolean canSilkHarvest()   // SpigotMCP -- Make public as bukkit assumes in the same package
+     {
          return true;
      }
  
--    public boolean isFullCube()
--    {
-+    public boolean isFullCube() {
-         return false;
-     }
- 
--    public IBlockState getStateFromMeta(int meta)
--    {
-+    public IBlockState getStateFromMeta(int meta) {
-         return this.getDefaultState().withProperty(COLOR, EnumDyeColor.byMetadata(meta));
-     }
- 
--    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
--    {
--        if (!worldIn.isRemote)
--        {
-+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-+        if (!worldIn.isRemote) {
-             BlockBeacon.updateColorAsync(worldIn, pos);
-         }
-     }
- 
--    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
--    {
--        if (!worldIn.isRemote)
--        {
-+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-+        if (!worldIn.isRemote) {
-             BlockBeacon.updateColorAsync(worldIn, pos);
-         }
-     }
- 
--    public int getMetaFromState(IBlockState state)
--    {
--        return ((EnumDyeColor)state.getValue(COLOR)).getMetadata();
-+    public int getMetaFromState(IBlockState state) {
-+        return ((EnumDyeColor) state.getValue(COLOR)).getMetadata();
-     }
- 
--    protected BlockState createBlockState()
--    {
--        return new BlockState(this, new IProperty[] {COLOR});
-+    protected BlockState createBlockState() {
-+        return new BlockState(this, new IProperty[]{COLOR});
-     }
- }
+     public boolean isFullCube()

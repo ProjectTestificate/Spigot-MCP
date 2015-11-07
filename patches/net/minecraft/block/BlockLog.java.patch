@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\block\BlockLog.java
 +++ src\main\java\net\minecraft\block\BlockLog.java
-@@ -1,82 +1,72 @@
+@@ -1,8 +1,9 @@
  package net.minecraft.block;
  
  import java.util.Iterator;
@@ -10,160 +10,27 @@
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.creativetab.CreativeTabs;
  import net.minecraft.entity.EntityLivingBase;
- import net.minecraft.util.BlockPos;
- import net.minecraft.util.EnumFacing;
+@@ -11,10 +12,11 @@
  import net.minecraft.util.IStringSerializable;
  import net.minecraft.world.World;
  
--public abstract class BlockLog extends BlockRotatedPillar
--{
-+public abstract class BlockLog extends BlockRotatedPillar {
+ public abstract class BlockLog extends BlockRotatedPillar
+ {
 +
      public static final PropertyEnum LOG_AXIS = PropertyEnum.create("axis", BlockLog.EnumAxis.class);
      private static final String __OBFID = "CL_00000266";
  
--    public BlockLog()
--    {
-+    public BlockLog() {
-         super(Material.wood);
-         this.setCreativeTab(CreativeTabs.tabBlock);
-         this.setHardness(2.0F);
-         this.setStepSound(soundTypeWood);
-     }
- 
--    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
--    {
-+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-         byte b0 = 4;
-         int i = b0 + 1;
- 
--        if (worldIn.isAreaLoaded(pos.add(-i, -i, -i), pos.add(i, i, i)))
--        {
-+        if (worldIn.isAreaLoaded(pos.add(-i, -i, -i), pos.add(i, i, i))) {
-             Iterator iterator = BlockPos.getAllInBox(pos.add(-b0, -b0, -b0), pos.add(b0, b0, b0)).iterator();
- 
--            while (iterator.hasNext())
--            {
--                BlockPos blockpos1 = (BlockPos)iterator.next();
-+            while (iterator.hasNext()) {
-+                BlockPos blockpos1 = (BlockPos) iterator.next();
-                 IBlockState iblockstate1 = worldIn.getBlockState(blockpos1);
- 
--                if (iblockstate1.getBlock().getMaterial() == Material.leaves && !((Boolean)iblockstate1.getValue(BlockLeaves.CHECK_DECAY)).booleanValue())
--                {
-+                if (iblockstate1.getBlock().getMaterial() == Material.leaves && !((Boolean) iblockstate1.getValue(BlockLeaves.CHECK_DECAY)).booleanValue()) {
-                     worldIn.setBlockState(blockpos1, iblockstate1.withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(true)), 4);
-                 }
-             }
+     public BlockLog()
+     {
+@@ -92,10 +94,11 @@
          }
      }
  
--    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
--    {
-+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-         return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(LOG_AXIS, BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()));
-     }
- 
--    public static enum EnumAxis implements IStringSerializable
--    {
-+    public static enum EnumAxis implements IStringSerializable {
-         X("x"),
-         Y("y"),
-         Z("z"),
-         NONE("none");
-         private final String name;
- 
-         private static final String __OBFID = "CL_00002100";
- 
--        private EnumAxis(String name)
--        {
-+        private EnumAxis(String name) {
-             this.name = name;
-         }
- 
--        public String toString()
--        {
-+        public String toString() {
-             return this.name;
-         }
- 
--        public static BlockLog.EnumAxis fromFacingAxis(EnumFacing.Axis axis)
--        {
--            switch (BlockLog.SwitchAxis.AXIS_LOOKUP[axis.ordinal()])
--            {
-+        public static BlockLog.EnumAxis fromFacingAxis(EnumFacing.Axis axis) {
-+            switch (BlockLog.SwitchAxis.AXIS_LOOKUP[axis.ordinal()]) {
-                 case 1:
-                     return X;
-                 case 2:
-                     return Y;
-                 case 3:
-@@ -84,47 +74,36 @@
-                 default:
-                     return NONE;
-             }
-         }
- 
--        public String getName()
--        {
-+        public String getName() {
-             return this.name;
-         }
-     }
- 
--    static final class SwitchAxis
--        {
--            static final int[] AXIS_LOOKUP = new int[EnumFacing.Axis.values().length];
--            private static final String __OBFID = "CL_00002101";
-+    static final class SwitchAxis {
- 
--            static
--            {
--                try
--                {
--                    AXIS_LOOKUP[EnumFacing.Axis.X.ordinal()] = 1;
--                }
--                catch (NoSuchFieldError var3)
--                {
--                    ;
--                }
-+        static final int[] AXIS_LOOKUP = new int[EnumFacing.Axis.values().length];
-+        private static final String __OBFID = "CL_00002101";
- 
--                try
--                {
--                    AXIS_LOOKUP[EnumFacing.Axis.Y.ordinal()] = 2;
--                }
--                catch (NoSuchFieldError var2)
--                {
--                    ;
--                }
-+        static {
-+            try {
-+                AXIS_LOOKUP[EnumFacing.Axis.X.ordinal()] = 1;
-+            } catch (NoSuchFieldError var3) {
-+                ;
-+            }
- 
--                try
--                {
--                    AXIS_LOOKUP[EnumFacing.Axis.Z.ordinal()] = 3;
--                }
--                catch (NoSuchFieldError var1)
--                {
--                    ;
--                }
-+            try {
-+                AXIS_LOOKUP[EnumFacing.Axis.Y.ordinal()] = 2;
-+            } catch (NoSuchFieldError var2) {
-+                ;
-             }
+     static final class SwitchAxis
+         {
 +
-+            try {
-+                AXIS_LOOKUP[EnumFacing.Axis.Z.ordinal()] = 3;
-+            } catch (NoSuchFieldError var1) {
-+                ;
-+            }
-         }
-+    }
- }
+             static final int[] AXIS_LOOKUP = new int[EnumFacing.Axis.values().length];
+             private static final String __OBFID = "CL_00002101";
+ 
+             static
+             {

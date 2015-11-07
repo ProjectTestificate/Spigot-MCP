@@ -1,28 +1,14 @@
 --- decompiled\net\minecraft\item\ItemSoup.java
 +++ src\main\java\net\minecraft\item\ItemSoup.java
-@@ -2,21 +2,19 @@
- 
- import net.minecraft.entity.player.EntityPlayer;
+@@ -4,10 +4,11 @@
  import net.minecraft.init.Items;
  import net.minecraft.world.World;
  
--public class ItemSoup extends ItemFood
--{
-+public class ItemSoup extends ItemFood {
+ public class ItemSoup extends ItemFood
+ {
 +
      private static final String __OBFID = "CL_00001778";
  
--    public ItemSoup(int healAmount)
--    {
-+    public ItemSoup(int healAmount) {
+     public ItemSoup(int healAmount)
+     {
          super(healAmount, false);
-         this.setMaxStackSize(1);
-     }
- 
--    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn)
--    {
-+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn) {
-         super.onItemUseFinish(stack, worldIn, playerIn);
-         return new ItemStack(Items.bowl);
-     }
- }

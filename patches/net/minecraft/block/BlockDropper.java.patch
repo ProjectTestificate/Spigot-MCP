@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\block\BlockDropper.java
 +++ src\main\java\net\minecraft\block\BlockDropper.java
-@@ -1,82 +1,81 @@
+@@ -1,21 +1,27 @@
  package net.minecraft.block;
  
  import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
@@ -16,103 +16,71 @@
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
--public class BlockDropper extends BlockDispenser
--{
 +import org.bukkit.craftbukkit.inventory.CraftInventoryDoubleChest;
 +import org.bukkit.craftbukkit.inventory.CraftItemStack;
 +import org.bukkit.event.inventory.InventoryMoveItemEvent;
 +
-+public class BlockDropper extends BlockDispenser {
+ public class BlockDropper extends BlockDispenser
+ {
 +
      private final IBehaviorDispenseItem dropBehavior = new BehaviorDefaultDispenseItem();
      private static final String __OBFID = "CL_00000233";
  
--    protected IBehaviorDispenseItem getBehavior(ItemStack stack)
--    {
-+    protected IBehaviorDispenseItem getBehavior(ItemStack stack) {
-         return this.dropBehavior;
-     }
- 
--    public TileEntity createNewTileEntity(World worldIn, int meta)
--    {
-+    public TileEntity createNewTileEntity(World worldIn, int meta) {
+     protected IBehaviorDispenseItem getBehavior(ItemStack stack)
+     {
+@@ -25,11 +31,11 @@
+     public TileEntity createNewTileEntity(World worldIn, int meta)
+     {
          return new TileEntityDropper();
      }
  
 -    protected void dispense(World worldIn, BlockPos pos)
--    {
-+    public void dispense(World worldIn, BlockPos pos) { // SpigotMCP -- Apply access transformation
++    public void dispense(World worldIn, BlockPos pos)   // SpigotMCP -- Apply access transformation
+     {
          BlockSourceImpl blocksourceimpl = new BlockSourceImpl(worldIn, pos);
--        TileEntityDispenser tileentitydispenser = (TileEntityDispenser)blocksourceimpl.getBlockTileEntity();
-+        TileEntityDispenser tileentitydispenser = (TileEntityDispenser) blocksourceimpl.getBlockTileEntity();
+         TileEntityDispenser tileentitydispenser = (TileEntityDispenser)blocksourceimpl.getBlockTileEntity();
  
--        if (tileentitydispenser != null)
--        {
-+        if (tileentitydispenser != null) {
-             int i = tileentitydispenser.getDispenseSlot();
- 
--            if (i < 0)
--            {
-+            if (i < 0) {
-                 worldIn.playAuxSFX(1001, pos, 0);
--            }
--            else
--            {
-+            } else {
-                 ItemStack itemstack = tileentitydispenser.getStackInSlot(i);
- 
--                if (itemstack != null)
--                {
--                    EnumFacing enumfacing = (EnumFacing)worldIn.getBlockState(pos).getValue(FACING);
-+                if (itemstack != null) {
-+                    EnumFacing enumfacing = (EnumFacing) worldIn.getBlockState(pos).getValue(FACING);
-                     BlockPos blockpos1 = pos.offset(enumfacing);
--                    IInventory iinventory = TileEntityHopper.func_145893_b(worldIn, (double)blockpos1.getX(), (double)blockpos1.getY(), (double)blockpos1.getZ());
-+                    IInventory iinventory = TileEntityHopper.func_145893_b(worldIn, (double) blockpos1.getX(), (double) blockpos1.getY(), (double) blockpos1.getZ());
-                     ItemStack itemstack1;
- 
--                    if (iinventory == null)
--                    {
-+                    if (iinventory == null) {
-                         itemstack1 = this.dropBehavior.dispense(blocksourceimpl, itemstack);
- 
--                        if (itemstack1 != null && itemstack1.stackSize == 0)
--                        {
-+                        if (itemstack1 != null && itemstack1.stackSize == 0) {
+         if (tileentitydispenser != null)
+@@ -60,23 +66,37 @@
                              itemstack1 = null;
                          }
--                    }
--                    else
--                    {
+                     }
+                     else
+                     {
 -                        itemstack1 = TileEntityHopper.func_174918_a(iinventory, itemstack.copy().splitStack(1), enumfacing.getOpposite());
-+                    } else {
 +                        // CraftBukkit start - Fire event when pushing items into other inventories
 +                        CraftItemStack oitemstack = CraftItemStack.asCraftMirror(itemstack.copy().splitStack(1));
++                        org.bukkit.inventory.Inventory destinationInventory;
  
 -                        if (itemstack1 == null)
--                        {
--                            itemstack1 = itemstack.copy();
-+                        org.bukkit.inventory.Inventory destinationInventory;
 +                        // Have to special case large chests as they work oddly
-+                        if (iinventory instanceof InventoryLargeChest) {
-+                            destinationInventory = new CraftInventoryDoubleChest((InventoryLargeChest) iinventory);
-+                        } else {
-+                            destinationInventory = iinventory.getOwner().getInventory();
-+                        }
- 
++                        if (iinventory instanceof InventoryLargeChest)
+                         {
+-                            itemstack1 = itemstack.copy();
+-
 -                            if (--itemstack1.stackSize == 0)
 -                            {
 -                                itemstack1 = null;
 -                            }
++                            destinationInventory = new CraftInventoryDoubleChest((InventoryLargeChest)iinventory);
+                         }
+                         else
+                         {
++                            destinationInventory = iinventory.getOwner().getInventory();
++                        }
++
 +                        InventoryMoveItemEvent event = new InventoryMoveItemEvent(tileentitydispenser.getOwner().getInventory(), oitemstack.clone(), destinationInventory, true);
 +                        worldIn.getServer().getPluginManager().callEvent(event);
-+                        if (event.isCancelled()) {
++
++                        if (event.isCancelled())
++                        {
 +                            return;
-                         }
--                        else
--                        {
++                        }
++
 +                        itemstack1 = TileEntityHopper.func_174918_a(iinventory, CraftItemStack.asNMSCopy(event.getItem()), enumfacing.getOpposite());
-+                        if (event.getItem().equals(oitemstack) && itemstack1 == null) {
++
++                        if (event.getItem().equals(oitemstack) && itemstack1 == null)
++                        {
 +                            // CraftBukkit end
                              itemstack1 = itemstack.copy();
                          }

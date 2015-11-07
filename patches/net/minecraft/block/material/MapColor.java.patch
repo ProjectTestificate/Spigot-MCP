@@ -1,39 +1,22 @@
 --- decompiled\net\minecraft\block\material\MapColor.java
 +++ src\main\java\net\minecraft\block\material\MapColor.java
-@@ -1,12 +1,10 @@
+@@ -1,12 +1,11 @@
  package net.minecraft.block.material;
  
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class MapColor
--{
-+public class MapColor {
+ public class MapColor
+ {
 +
      public static final MapColor[] mapColorArray = new MapColor[64];
      public static final MapColor airColor = new MapColor(0, 0);
      public static final MapColor grassColor = new MapColor(1, 8368696);
      public static final MapColor sandColor = new MapColor(2, 16247203);
      public static final MapColor clothColor = new MapColor(3, 10987431);
-@@ -44,50 +42,15 @@
-     public static final MapColor netherrackColor = new MapColor(35, 7340544);
-     public final int colorValue;
-     public final int colorIndex;
-     private static final String __OBFID = "CL_00000544";
- 
--    private MapColor(int index, int color)
--    {
--        if (index >= 0 && index <= 63)
--        {
-+    private MapColor(int index, int color) {
-+        if (index >= 0 && index <= 63) {
-             this.colorIndex = index;
-             this.colorValue = color;
-             mapColorArray[index] = this;
--        }
--        else
--        {
-+        } else {
+@@ -57,37 +56,6 @@
+         else
+         {
              throw new IndexOutOfBoundsException("Map colour ID must be between 0 and 63 (inclusive)");
          }
      }

@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\block\state\IBlockState.java
 +++ src\main\java\net\minecraft\block\state\IBlockState.java
-@@ -1,14 +1,16 @@
+@@ -1,14 +1,17 @@
  package net.minecraft.block.state;
  
 -import com.google.common.collect.ImmutableMap;
@@ -9,11 +9,10 @@
  import net.minecraft.block.Block;
  import net.minecraft.block.properties.IProperty;
  
--public interface IBlockState
--{
 +import com.google.common.collect.ImmutableMap;
 +
-+public interface IBlockState {
+ public interface IBlockState
+ {
 +
      Collection getPropertyNames();
  

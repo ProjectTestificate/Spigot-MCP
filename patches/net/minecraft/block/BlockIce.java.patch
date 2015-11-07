@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\block\BlockIce.java
 +++ src\main\java\net\minecraft\block\BlockIce.java
-@@ -1,96 +1,80 @@
+@@ -1,42 +1,36 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -21,16 +21,14 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class BlockIce extends BlockBreakable
--{
 +
-+public class BlockIce extends BlockBreakable {
+ public class BlockIce extends BlockBreakable
+ {
 +
      private static final String __OBFID = "CL_00000259";
  
--    public BlockIce()
--    {
-+    public BlockIce() {
+     public BlockIce()
+     {
          super(Material.ice, false);
          this.slipperiness = 0.98F;
          this.setTickRandomly(true);
@@ -43,80 +41,27 @@
 -        return EnumWorldBlockLayer.TRANSLUCENT;
 -    }
 -
--    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te)
--    {
-+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te) {
+     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te)
+     {
          player.triggerAchievement(StatList.mineBlockStatArray[Block.getIdFromBlock(this)]);
          player.addExhaustion(0.025F);
  
--        if (this.canSilkHarvest() && EnchantmentHelper.getSilkTouchModifier(player))
--        {
-+        if (this.canSilkHarvest() && EnchantmentHelper.getSilkTouchModifier(player)) {
-             ItemStack itemstack = this.createStackedBlock(state);
+@@ -75,10 +69,18 @@
  
--            if (itemstack != null)
--            {
-+            if (itemstack != null) {
-                 spawnAsEntity(worldIn, pos, itemstack);
-             }
--        }
--        else
--        {
--            if (worldIn.provider.doesWaterVaporize())
--            {
-+        } else {
-+            if (worldIn.provider.doesWaterVaporize()) {
-                 worldIn.setBlockToAir(pos);
-                 return;
-             }
- 
-             int i = EnchantmentHelper.getFortuneModifier(player);
-             this.dropBlockAsItem(worldIn, pos, state, i);
-             Material material = worldIn.getBlockState(pos.down()).getBlock().getMaterial();
- 
--            if (material.blocksMovement() || material.isLiquid())
--            {
-+            if (material.blocksMovement() || material.isLiquid()) {
-                 worldIn.setBlockState(pos, Blocks.flowing_water.getDefaultState());
-             }
-         }
-     }
- 
--    public int quantityDropped(Random random)
--    {
-+    public int quantityDropped(Random random) {
-         return 0;
-     }
- 
--    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
--    {
--        if (worldIn.getLightFor(EnumSkyBlock.BLOCK, pos) > 11 - this.getLightOpacity())
--        {
--            if (worldIn.provider.doesWaterVaporize())
--            {
--                worldIn.setBlockToAir(pos);
-+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-+        if (worldIn.getLightFor(EnumSkyBlock.BLOCK, pos) > 11 - this.getLightOpacity()) {
+     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+     {
+         if (worldIn.getLightFor(EnumSkyBlock.BLOCK, pos) > 11 - this.getLightOpacity())
+         {
 +            // CraftBukkit start
-+            if (org.bukkit.craftbukkit.event.CraftEventFactory.callBlockFadeEvent(worldIn.getWorld().getBlockAt(pos.getX(), pos.getY(), pos.getZ()), worldIn.provider.doesWaterVaporize() ? Blocks.air : Blocks.water).isCancelled()) {
++            if (org.bukkit.craftbukkit.event.CraftEventFactory.callBlockFadeEvent(worldIn.getWorld().getBlockAt(pos.getX(), pos.getY(), pos.getZ()), worldIn.provider.doesWaterVaporize() ? Blocks.air : Blocks.water).isCancelled())
++            {
 +                return;
-             }
--            else
--            {
++            }
++
 +            // CraftBukkit end
 +
-+            if (worldIn.provider.doesWaterVaporize()) {
-+                worldIn.setBlockToAir(pos);
-+            } else {
-                 this.dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 0);
-                 worldIn.setBlockState(pos, Blocks.water.getDefaultState());
+             if (worldIn.provider.doesWaterVaporize())
+             {
+                 worldIn.setBlockToAir(pos);
              }
-         }
-     }
- 
--    public int getMobilityFlag()
--    {
-+    public int getMobilityFlag() {
-         return 0;
-     }
- }
+             else

@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\status\client\C00PacketServerQuery.java
 +++ src\main\java\net\minecraft\network\status\client\C00PacketServerQuery.java
-@@ -1,26 +1,27 @@
+@@ -1,26 +1,32 @@
  package net.minecraft.network.status.client;
  
  import java.io.IOException;
@@ -10,30 +10,29 @@
  import net.minecraft.network.PacketBuffer;
  import net.minecraft.network.status.INetHandlerStatusServer;
  
--public class C00PacketServerQuery implements Packet
--{
-+public class C00PacketServerQuery implements Packet {
+ public class C00PacketServerQuery implements Packet
+ {
 +
      private static final String __OBFID = "CL_00001393";
  
 -    public void readPacketData(PacketBuffer buf) throws IOException {}
-+    public void readPacketData(PacketBuffer buf) throws IOException {
++    public void readPacketData(PacketBuffer buf) throws IOException
++    {
 +    }
  
 -    public void writePacketData(PacketBuffer buf) throws IOException {}
-+    public void writePacketData(PacketBuffer buf) throws IOException {
++    public void writePacketData(PacketBuffer buf) throws IOException
++    {
 +    }
  
--    public void processPacket(INetHandlerStatusServer handler)
--    {
-+    public void processPacket(INetHandlerStatusServer handler) {
+     public void processPacket(INetHandlerStatusServer handler)
+     {
          handler.processServerQuery(this);
      }
  
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.processPacket((INetHandlerStatusServer)handler);
-+    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerStatusServer) handler);
      }
  }

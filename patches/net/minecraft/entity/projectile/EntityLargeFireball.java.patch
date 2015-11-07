@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\entity\projectile\EntityLargeFireball.java
 +++ src\main\java\net\minecraft\entity\projectile\EntityLargeFireball.java
-@@ -1,64 +1,60 @@
+@@ -1,32 +1,26 @@
  package net.minecraft.entity.projectile;
  
 -import net.minecraft.entity.Entity;
@@ -12,18 +12,16 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class EntityLargeFireball extends EntityFireball
--{
 +import org.bukkit.event.entity.ExplosionPrimeEvent;
 +
-+public class EntityLargeFireball extends EntityFireball {
+ public class EntityLargeFireball extends EntityFireball
+ {
 +
      public int explosionPower = 1;
      private static final String __OBFID = "CL_00001719";
  
--    public EntityLargeFireball(World worldIn)
--    {
-+    public EntityLargeFireball(World worldIn) {
+     public EntityLargeFireball(World worldIn)
+     {
          super(worldIn);
      }
  
@@ -33,58 +31,41 @@
 -        super(worldIn, p_i1768_2_, p_i1768_4_, p_i1768_6_, p_i1768_8_, p_i1768_10_, p_i1768_12_);
 -    }
 -
--    public EntityLargeFireball(World worldIn, EntityLivingBase p_i1769_2_, double p_i1769_3_, double p_i1769_5_, double p_i1769_7_)
--    {
-+    public EntityLargeFireball(World worldIn, EntityLivingBase p_i1769_2_, double p_i1769_3_, double p_i1769_5_, double p_i1769_7_) {
+     public EntityLargeFireball(World worldIn, EntityLivingBase p_i1769_2_, double p_i1769_3_, double p_i1769_5_, double p_i1769_7_)
+     {
          super(worldIn, p_i1769_2_, p_i1769_3_, p_i1769_5_, p_i1769_7_);
      }
  
--    protected void onImpact(MovingObjectPosition movingObject)
--    {
--        if (!this.worldObj.isRemote)
--        {
--            if (movingObject.entityHit != null)
--            {
-+    protected void onImpact(MovingObjectPosition movingObject) {
-+        if (!this.worldObj.isRemote) {
-+            if (movingObject.entityHit != null) {
+@@ -39,11 +33,21 @@
                  movingObject.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 6.0F);
                  this.func_174815_a(this.shootingEntity, movingObject.entityHit);
              }
  
              boolean flag = this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing");
 -            this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, (float)this.explosionPower, flag, flag);
-+
 +            // CraftBukkit start - fire ExplosionPrimeEvent
-+            ExplosionPrimeEvent event = new ExplosionPrimeEvent((org.bukkit.entity.Explosive) org.bukkit.craftbukkit.entity.CraftEntity.getEntity(this.worldObj.getServer(), this));
++            ExplosionPrimeEvent event = new ExplosionPrimeEvent((org.bukkit.entity.Explosive)org.bukkit.craftbukkit.entity.CraftEntity.getEntity(this.worldObj.getServer(), this));
 +            this.worldObj.getServer().getPluginManager().callEvent(event);
 +
-+            if (!event.isCancelled()) {
++            if (!event.isCancelled())
++            {
 +                // give 'this' instead of (Entity) null so we know what causes the damage
 +                this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, event.getRadius(), event.getFire(), flag);
 +            }
-+            // CraftBukkit end
 +
++            // CraftBukkit end
              this.setDead();
          }
      }
  
--    public void writeEntityToNBT(NBTTagCompound tagCompound)
--    {
-+    public void writeEntityToNBT(NBTTagCompound tagCompound) {
-         super.writeEntityToNBT(tagCompound);
-         tagCompound.setInteger("ExplosionPower", this.explosionPower);
-     }
- 
--    public void readEntityFromNBT(NBTTagCompound tagCompund)
--    {
-+    public void readEntityFromNBT(NBTTagCompound tagCompund) {
+     public void writeEntityToNBT(NBTTagCompound tagCompound)
+@@ -56,9 +60,10 @@
+     {
          super.readEntityFromNBT(tagCompund);
  
--        if (tagCompund.hasKey("ExplosionPower", 99))
--        {
+         if (tagCompund.hasKey("ExplosionPower", 99))
+         {
 -            this.explosionPower = tagCompund.getInteger("ExplosionPower");
-+        if (tagCompund.hasKey("ExplosionPower", 99)) {
 +            // CraftBukkit - set bukkitYield when setting explosionpower
 +            bukkitYield = this.explosionPower = tagCompund.getInteger("ExplosionPower");
          }

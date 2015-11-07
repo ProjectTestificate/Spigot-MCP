@@ -1,22 +1,14 @@
 --- decompiled\net\minecraft\world\biome\BiomeGenMushroomIsland.java
 +++ src\main\java\net\minecraft\world\biome\BiomeGenMushroomIsland.java
-@@ -1,16 +1,15 @@
- package net.minecraft.world.biome;
- 
+@@ -3,10 +3,11 @@
  import net.minecraft.entity.passive.EntityMooshroom;
  import net.minecraft.init.Blocks;
  
--public class BiomeGenMushroomIsland extends BiomeGenBase
--{
-+public class BiomeGenMushroomIsland extends BiomeGenBase {
+ public class BiomeGenMushroomIsland extends BiomeGenBase
+ {
 +
      private static final String __OBFID = "CL_00000177";
  
--    public BiomeGenMushroomIsland(int p_i1984_1_)
--    {
-+    public BiomeGenMushroomIsland(int p_i1984_1_) {
+     public BiomeGenMushroomIsland(int p_i1984_1_)
+     {
          super(p_i1984_1_);
-         this.theBiomeDecorator.treesPerChunk = -100;
-         this.theBiomeDecorator.flowersPerChunk = -100;
-         this.theBiomeDecorator.grassPerChunk = -100;
-         this.theBiomeDecorator.mushroomsPerChunk = 1;

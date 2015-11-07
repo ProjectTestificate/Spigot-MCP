@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\world\chunk\storage\RegionFileCache.java
 +++ src\main\java\net\minecraft\world\chunk\storage\RegionFileCache.java
-@@ -1,79 +1,66 @@
+@@ -1,25 +1,27 @@
  package net.minecraft.world.chunk.storage;
  
 -import com.google.common.collect.Maps;
@@ -11,91 +11,36 @@
  import java.util.Iterator;
  import java.util.Map;
  
--public class RegionFileCache
--{
--    private static final Map regionsByFilename = Maps.newHashMap();
 +import com.google.common.collect.Maps;
 +
-+public class RegionFileCache {
+ public class RegionFileCache
+ {
+-    private static final Map regionsByFilename = Maps.newHashMap();
 +
 +    public static final Map regionsByFilename = Maps.newHashMap(); // Spigot - private -> public
      private static final String __OBFID = "CL_00000383";
  
--    public static synchronized RegionFile createOrLoadRegionFile(File worldDir, int chunkX, int chunkZ)
--    {
-+    public static synchronized RegionFile createOrLoadRegionFile(File worldDir, int chunkX, int chunkZ) {
+     public static synchronized RegionFile createOrLoadRegionFile(File worldDir, int chunkX, int chunkZ)
+     {
          File file2 = new File(worldDir, "region");
          File file3 = new File(file2, "r." + (chunkX >> 5) + "." + (chunkZ >> 5) + ".mca");
 -        RegionFile regionfile = (RegionFile)regionsByFilename.get(file3);
 +        RegionFile regionfile = (RegionFile) regionsByFilename.get(file3);
  
--        if (regionfile != null)
--        {
-+        if (regionfile != null) {
+         if (regionfile != null)
+         {
              return regionfile;
--        }
--        else
--        {
--            if (!file2.exists())
--            {
-+        } else {
-+            if (!file2.exists()) {
-                 file2.mkdirs();
-             }
- 
--            if (regionsByFilename.size() >= 256)
--            {
-+            if (regionsByFilename.size() >= 256) {
-                 clearRegionFileReferences();
-             }
- 
-             RegionFile regionfile1 = new RegionFile(file3);
-             regionsByFilename.put(file3, regionfile1);
-             return regionfile1;
          }
-     }
- 
--    public static synchronized void clearRegionFileReferences()
--    {
-+    public static synchronized void clearRegionFileReferences() {
+@@ -45,11 +47,11 @@
+     {
          Iterator iterator = regionsByFilename.values().iterator();
  
--        while (iterator.hasNext())
--        {
+         while (iterator.hasNext())
+         {
 -            RegionFile regionfile = (RegionFile)iterator.next();
-+        while (iterator.hasNext()) {
 +            RegionFile regionfile = (RegionFile) iterator.next();
  
--            try
--            {
--                if (regionfile != null)
--                {
-+            try {
-+                if (regionfile != null) {
-                     regionfile.close();
-                 }
--            }
--            catch (IOException ioexception)
--            {
-+            } catch (IOException ioexception) {
-                 ioexception.printStackTrace();
-             }
-         }
- 
-         regionsByFilename.clear();
-     }
- 
--    public static DataInputStream getChunkInputStream(File worldDir, int chunkX, int chunkZ)
--    {
-+    public static DataInputStream getChunkInputStream(File worldDir, int chunkX, int chunkZ) {
-         RegionFile regionfile = createOrLoadRegionFile(worldDir, chunkX, chunkZ);
-         return regionfile.getChunkDataInputStream(chunkX & 31, chunkZ & 31);
-     }
- 
--    public static DataOutputStream getChunkOutputStream(File worldDir, int chunkX, int chunkZ)
--    {
-+    public static DataOutputStream getChunkOutputStream(File worldDir, int chunkX, int chunkZ) {
-         RegionFile regionfile = createOrLoadRegionFile(worldDir, chunkX, chunkZ);
-         return regionfile.getChunkDataOutputStream(chunkX & 31, chunkZ & 31);
-     }
- }
+             try
+             {
+                 if (regionfile != null)
+                 {

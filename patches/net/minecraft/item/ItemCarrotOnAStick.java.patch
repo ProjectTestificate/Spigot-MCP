@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\item\ItemCarrotOnAStick.java
 +++ src\main\java\net\minecraft\item\ItemCarrotOnAStick.java
-@@ -4,49 +4,31 @@
+@@ -4,36 +4,24 @@
  import net.minecraft.entity.passive.EntityPig;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.init.Items;
@@ -9,16 +9,14 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class ItemCarrotOnAStick extends Item
--{
 +
-+public class ItemCarrotOnAStick extends Item {
+ public class ItemCarrotOnAStick extends Item
+ {
 +
      private static final String __OBFID = "CL_00000001";
  
--    public ItemCarrotOnAStick()
--    {
-+    public ItemCarrotOnAStick() {
+     public ItemCarrotOnAStick()
+     {
          this.setCreativeTab(CreativeTabs.tabTransport);
          this.setMaxStackSize(1);
          this.setMaxDamage(25);
@@ -29,33 +27,15 @@
 -    {
 -        return true;
 -    }
-+    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
-+        if (playerIn.isRiding() && playerIn.ridingEntity instanceof EntityPig) {
-+            EntityPig entitypig = (EntityPig) playerIn.ridingEntity;
- 
+-
 -    @SideOnly(Side.CLIENT)
 -    public boolean shouldRotateAroundWhenRendering()
 -    {
 -        return true;
 -    }
 -
--    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
--    {
--        if (playerIn.isRiding() && playerIn.ridingEntity instanceof EntityPig)
--        {
--            EntityPig entitypig = (EntityPig)playerIn.ridingEntity;
--
--            if (entitypig.getAIControlledByPlayer().isControlledByPlayer() && itemStackIn.getMaxDamage() - itemStackIn.getMetadata() >= 7)
--            {
-+            if (entitypig.getAIControlledByPlayer().isControlledByPlayer() && itemStackIn.getMaxDamage() - itemStackIn.getMetadata() >= 7) {
-                 entitypig.getAIControlledByPlayer().boostSpeed();
-                 itemStackIn.damageItem(7, playerIn);
- 
--                if (itemStackIn.stackSize == 0)
--                {
-+                if (itemStackIn.stackSize == 0) {
-                     ItemStack itemstack1 = new ItemStack(Items.fishing_rod);
-                     itemstack1.setTagCompound(itemStackIn.getTagCompound());
-                     return itemstack1;
-                 }
-             }
+     public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
+     {
+         if (playerIn.isRiding() && playerIn.ridingEntity instanceof EntityPig)
+         {
+             EntityPig entitypig = (EntityPig)playerIn.ridingEntity;

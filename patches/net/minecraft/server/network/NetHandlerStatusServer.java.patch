@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\server\network\NetHandlerStatusServer.java
 +++ src\main\java\net\minecraft\server\network\NetHandlerStatusServer.java
-@@ -1,35 +1,166 @@
+@@ -1,35 +1,195 @@
  package net.minecraft.server.network;
  
 +import java.net.InetSocketAddress;
@@ -23,8 +23,6 @@
 +import net.minecraft.util.ChatComponentText;
  import net.minecraft.util.IChatComponent;
  
--public class NetHandlerStatusServer implements INetHandlerStatusServer
--{
 +import org.bukkit.craftbukkit.util.CraftIconCache;
 +import org.bukkit.entity.Player;
 +import org.bukkit.event.server.ServerListPingEvent;
@@ -34,26 +32,24 @@
 +
 +import io.netty.channel.ChannelFutureListener;
 +
-+public class NetHandlerStatusServer implements INetHandlerStatusServer {
+ public class NetHandlerStatusServer implements INetHandlerStatusServer
+ {
 +
      private final MinecraftServer server;
      private final NetworkManager networkManager;
      private static final String __OBFID = "CL_00001464";
  
--    public NetHandlerStatusServer(MinecraftServer serverIn, NetworkManager netManager)
--    {
-+    public NetHandlerStatusServer(MinecraftServer serverIn, NetworkManager netManager) {
+     public NetHandlerStatusServer(MinecraftServer serverIn, NetworkManager netManager)
+     {
          this.server = serverIn;
          this.networkManager = netManager;
      }
  
 -    public void onDisconnect(IChatComponent reason) {}
-+    public void onDisconnect(IChatComponent reason) {
++    public void onDisconnect(IChatComponent reason)
++    {
 +    }
  
--    public void processServerQuery(C00PacketServerQuery packetIn)
--    {
--        this.networkManager.sendPacket(new S00PacketServerInfo(this.server.getServerStatusResponse()));
 +    // CraftBukkit start
 +    private static final int WAITING = 0;
 +    private static final int PING = 1;
@@ -61,118 +57,143 @@
 +    private int state = WAITING;
 +    // CraftBukkit end
 +
-+    public void processServerQuery(C00PacketServerQuery packetIn) {
+     public void processServerQuery(C00PacketServerQuery packetIn)
+     {
+-        this.networkManager.sendPacket(new S00PacketServerInfo(this.server.getServerStatusResponse()));
 +        // CraftBukkit start - fire ping event
 +        // this.networkManager.sendPacket(new S00PacketServerInfo(this.server.getServerStatusResponse()));
-+        if (state != WAITING) {
++        if (state != WAITING)
++        {
 +            networkManager.closeChannel(null);
 +            return;
 +        }
++
 +        state = PING;
 +        final Object[] players = server.getConfigurationManager().playerEntityList.toArray();
-+        class PacketStatusListenerServerListPingEvent extends ServerListPingEvent {
++        class PacketStatusListenerServerListPingEvent extends ServerListPingEvent
++        {
 +
 +            CraftIconCache icon = server.server.getServerIcon();
 +
-+            PacketStatusListenerServerListPingEvent() {
-+                super(((InetSocketAddress) networkManager.getRemoteAddress()).getAddress(), server.getMOTD(), server.getConfigurationManager().getMaxPlayers());
++            PacketStatusListenerServerListPingEvent()
++            {
++                super(((InetSocketAddress)networkManager.getRemoteAddress()).getAddress(), server.getMOTD(), server.getConfigurationManager().getMaxPlayers());
 +            }
 +
 +            @Override
-+            public void setServerIcon(CachedServerIcon icon) {
-+                if (!(icon instanceof CraftIconCache)) {
++            public void setServerIcon(CachedServerIcon icon)
++            {
++                if (!(icon instanceof CraftIconCache))
++                {
 +                    throw new IllegalArgumentException(icon + " was not created by " + org.bukkit.craftbukkit.CraftServer.class);
 +                }
-+                this.icon = (CraftIconCache) icon;
++
++                this.icon = (CraftIconCache)icon;
 +            }
 +
 +            @Override
-+            public Iterator iterator() throws UnsupportedOperationException {
-+                return new Iterator() {
-+
++            public Iterator iterator() throws UnsupportedOperationException
++            {
++                return new Iterator()
++                {
 +                    int i;
 +                    int ret = Integer.MIN_VALUE;
 +                    EntityPlayerMP player;
-+
 +                    @Override
-+                    public boolean hasNext() {
-+                        if (player != null) {
++                    public boolean hasNext()
++                    {
++                        if (player != null)
++                        {
 +                            return true;
 +                        }
++
 +                        final Object[] currentPlayers = players;
-+                        for (int length = currentPlayers.length, i = this.i; i < length; i++) {
-+                            final EntityPlayerMP player = (EntityPlayerMP) currentPlayers[i];
-+                            if (player != null) {
++
++                        for (int length = currentPlayers.length, i = this.i; i < length; i++)
++                        {
++                            final EntityPlayerMP player = (EntityPlayerMP)currentPlayers[i];
++
++                            if (player != null)
++                            {
 +                                this.i = i + 1;
 +                                this.player = player;
 +                                return true;
 +                            }
 +                        }
++
 +                        return false;
 +                    }
-+
 +                    @Override
-+                    public Player next() {
-+                        if (!hasNext()) {
++                    public Player next()
++                    {
++                        if (!hasNext())
++                        {
 +                            throw new NoSuchElementException();
 +                        }
++
 +                        final EntityPlayerMP player = this.player;
 +                        this.player = null;
 +                        this.ret = this.i - 1;
 +                        return player.getBukkitEntity();
 +                    }
-+
 +                    @Override
-+                    public void remove() {
++                    public void remove()
++                    {
 +                        final Object[] currentPlayers = players;
 +                        final int i = this.ret;
-+                        if (i < 0 || currentPlayers[i] == null) {
++
++                        if (i < 0 || currentPlayers[i] == null)
++                        {
 +                            throw new IllegalStateException();
 +                        }
++
 +                        currentPlayers[i] = null;
 +                    }
 +                };
 +            }
 +        }
-+
 +        PacketStatusListenerServerListPingEvent event = new PacketStatusListenerServerListPingEvent();
 +        this.server.server.getPluginManager().callEvent(event);
-+
 +        List<GameProfile> profiles = new ArrayList(players.length);
-+        for (Object player : players) {
-+            if (player != null) {
-+                profiles.add(((EntityPlayerMP) player).getGameProfile());
++
++        for (Object player : players)
++        {
++            if (player != null)
++            {
++                profiles.add(((EntityPlayerMP)player).getGameProfile());
 +            }
 +        }
 +
 +        PlayerCountData playerSample = new PlayerCountData(event.getMaxPlayers(), profiles.size());
++
 +        // Spigot Start
-+        if (!profiles.isEmpty()) {
++        if (!profiles.isEmpty())
++        {
 +            java.util.Collections.shuffle(profiles); // This sucks, its inefficient but we have no simple way of doing it differently
 +            profiles = profiles.subList(0, Math.min(profiles.size(), org.spigotmc.SpigotConfig.playerSample)); // Cap the sample to n (or less) displayed players, ie: Vanilla behaviour
 +        }
++
 +        // Spigot End
 +        playerSample.setPlayers(profiles.toArray(new GameProfile[profiles.size()]));
-+
 +        ServerStatusResponse ping = new ServerStatusResponse();
 +        ping.setFavicon(event.icon.value);
 +        ping.setServerDescription(new ChatComponentText(event.getMotd()));
 +        ping.setPlayerCountData(playerSample);
 +        ping.setProtocolVersionInfo(new MinecraftProtocolVersionIdentifier(server.getServerModName() + " " + server.getMinecraftVersion(), 47)); // TODO: Update when protocol changes
-+
 +        this.networkManager.sendPacket(new S00PacketServerInfo(ping));
 +        // CraftBukkit end
      }
  
--    public void processPing(C01PacketPing packetIn)
--    {
+     public void processPing(C01PacketPing packetIn)
+     {
 -        this.networkManager.sendPacket(new S01PacketPong(packetIn.getClientTime()));
-+    public void processPing(C01PacketPing packetIn) {
 +        // CraftBukkit start
-+        if (state != PING) {
++        if (state != PING)
++        {
 +            networkManager.closeChannel(null);
 +            return;
 +        }
++
 +        state = DONE;
 +        this.networkManager.sendPacket(new S01PacketPong(packetIn.getClientTime()), ChannelFutureListener.CLOSE); // Close on completion
 +        // CraftBukkit end

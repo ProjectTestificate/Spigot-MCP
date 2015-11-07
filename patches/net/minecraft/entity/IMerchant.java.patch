@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\entity\IMerchant.java
 +++ src\main\java\net\minecraft\entity\IMerchant.java
-@@ -3,24 +3,20 @@
+@@ -3,24 +3,21 @@
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.item.ItemStack;
  import net.minecraft.util.IChatComponent;
@@ -9,10 +9,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public interface IMerchant
--{
 +
-+public interface IMerchant {
+ public interface IMerchant
+ {
 +
      void setCustomer(EntityPlayer p_70932_1_);
  

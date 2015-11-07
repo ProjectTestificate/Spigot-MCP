@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S25PacketBlockBreakAnim.java
 +++ src\main\java\net\minecraft\network\play\server\S25PacketBlockBreakAnim.java
-@@ -1,69 +1,47 @@
+@@ -1,24 +1,27 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -13,10 +13,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S25PacketBlockBreakAnim implements Packet
--{
 +
-+public class S25PacketBlockBreakAnim implements Packet {
+ public class S25PacketBlockBreakAnim implements Packet
+ {
 +
      private int breakerId;
      private BlockPos position;
@@ -24,36 +23,17 @@
      private static final String __OBFID = "CL_00001284";
  
 -    public S25PacketBlockBreakAnim() {}
-+    public S25PacketBlockBreakAnim() {
++    public S25PacketBlockBreakAnim()
++    {
 +    }
  
--    public S25PacketBlockBreakAnim(int breakerId, BlockPos pos, int progress)
--    {
-+    public S25PacketBlockBreakAnim(int breakerId, BlockPos pos, int progress) {
+     public S25PacketBlockBreakAnim(int breakerId, BlockPos pos, int progress)
+     {
          this.breakerId = breakerId;
          this.position = pos;
-         this.progress = progress;
-     }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.breakerId = buf.readVarIntFromBuffer();
-         this.position = buf.readBlockPos();
-         this.progress = buf.readUnsignedByte();
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeVarIntToBuffer(this.breakerId);
-         buf.writeBlockPos(this.position);
-         buf.writeByte(this.progress);
-     }
- 
--    public void handle(INetHandlerPlayClient handler)
--    {
-+    public void handle(INetHandlerPlayClient handler) {
+@@ -42,28 +45,10 @@
+     public void handle(INetHandlerPlayClient handler)
+     {
          handler.handleBlockBreakAnim(this);
      }
  
@@ -61,14 +41,13 @@
 -    public int func_148845_c()
 -    {
 -        return this.breakerId;
-+    public void processPacket(INetHandler handler) {
+-    }
+-
+     public void processPacket(INetHandler handler)
+     {
+-        this.handle((INetHandlerPlayClient)handler);
 +        this.handle((INetHandlerPlayClient) handler);
      }
--
--    public void processPacket(INetHandler handler)
--    {
--        this.handle((INetHandlerPlayClient)handler);
--    }
 -
 -    @SideOnly(Side.CLIENT)
 -    public BlockPos func_179821_b()

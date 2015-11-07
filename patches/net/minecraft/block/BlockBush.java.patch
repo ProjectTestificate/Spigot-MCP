@@ -13,7 +13,7 @@
      private static final String __OBFID = "CL_00000208";
  
      protected BlockBush(Material materialIn)
-@@ -53,10 +55,20 @@
+@@ -53,10 +55,21 @@
  
      protected void checkAndDropBlock(World worldIn, BlockPos pos, IBlockState state)
      {
@@ -28,6 +28,7 @@
 +            {
 +                return;
 +            }
++
 +            // CraftBukkit end
              this.dropBlockAsItem(worldIn, pos, state, 0);
              worldIn.setBlockState(pos, Blocks.air.getDefaultState(), 3);

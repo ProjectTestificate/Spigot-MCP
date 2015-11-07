@@ -1,61 +1,14 @@
 --- decompiled\net\minecraft\command\server\CommandSaveOff.java
 +++ src\main\java\net\minecraft\command\server\CommandSaveOff.java
-@@ -4,48 +4,39 @@
- import net.minecraft.command.CommandException;
- import net.minecraft.command.ICommandSender;
+@@ -6,10 +6,11 @@
  import net.minecraft.server.MinecraftServer;
  import net.minecraft.world.WorldServer;
  
--public class CommandSaveOff extends CommandBase
--{
-+public class CommandSaveOff extends CommandBase {
+ public class CommandSaveOff extends CommandBase
+ {
 +
      private static final String __OBFID = "CL_00000847";
  
--    public String getName()
--    {
-+    public String getName() {
+     public String getName()
+     {
          return "save-off";
-     }
- 
--    public String getCommandUsage(ICommandSender sender)
--    {
-+    public String getCommandUsage(ICommandSender sender) {
-         return "commands.save-off.usage";
-     }
- 
--    public void execute(ICommandSender sender, String[] args) throws CommandException
--    {
-+    public void execute(ICommandSender sender, String[] args) throws CommandException {
-         MinecraftServer minecraftserver = MinecraftServer.getServer();
-         boolean flag = false;
- 
--        for (int i = 0; i < minecraftserver.worldServers.length; ++i)
--        {
--            if (minecraftserver.worldServers[i] != null)
--            {
-+        for (int i = 0; i < minecraftserver.worldServers.length; ++i) {
-+            if (minecraftserver.worldServers[i] != null) {
-                 WorldServer worldserver = minecraftserver.worldServers[i];
- 
--                if (!worldserver.disableLevelSaving)
--                {
-+                if (!worldserver.disableLevelSaving) {
-                     worldserver.disableLevelSaving = true;
-                     flag = true;
-                 }
-             }
-         }
- 
--        if (flag)
--        {
-+        if (flag) {
-             notifyOperators(sender, this, "commands.save.disabled", new Object[0]);
--        }
--        else
--        {
-+        } else {
-             throw new CommandException("commands.save-off.alreadyOff", new Object[0]);
-         }
-     }
- }

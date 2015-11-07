@@ -1,65 +1,59 @@
 --- decompiled\net\minecraft\item\ItemFlintAndSteel.java
 +++ src\main\java\net\minecraft\item\ItemFlintAndSteel.java
-@@ -6,35 +6,51 @@
+@@ -6,12 +6,16 @@
  import net.minecraft.init.Blocks;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
--public class ItemFlintAndSteel extends Item
--{
 +import org.bukkit.craftbukkit.block.CraftBlockState;
 +import org.bukkit.craftbukkit.event.CraftEventFactory;
 +
-+public class ItemFlintAndSteel extends Item {
+ public class ItemFlintAndSteel extends Item
+ {
 +
      private static final String __OBFID = "CL_00000035";
  
--    public ItemFlintAndSteel()
--    {
-+    public ItemFlintAndSteel() {
+     public ItemFlintAndSteel()
+     {
          this.maxStackSize = 1;
-         this.setMaxDamage(64);
+@@ -19,22 +23,42 @@
          this.setCreativeTab(CreativeTabs.tabTools);
      }
  
--    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
--    {
-+    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+     public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+     {
 +        BlockPos clicked = pos; // CraftBukkit
          pos = pos.offset(side);
  
--        if (!playerIn.canPlayerEdit(pos, side, stack))
--        {
-+        if (!playerIn.canPlayerEdit(pos, side, stack)) {
+         if (!playerIn.canPlayerEdit(pos, side, stack))
+         {
              return false;
--        }
--        else
--        {
--            if (worldIn.getBlockState(pos).getBlock().getMaterial() == Material.air)
--            {
--                worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "fire.ignite", 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
-+        } else {
-+            if (worldIn.getBlockState(pos).getBlock().getMaterial() == Material.air) {
+         }
+         else
+         {
+             if (worldIn.getBlockState(pos).getBlock().getMaterial() == Material.air)
+             {
 +                // CraftBukkit start - Store the clicked block
-+                if (CraftEventFactory.callBlockIgniteEvent(worldIn, pos.getX(), pos.getY(), pos.getZ(), org.bukkit.event.block.BlockIgniteEvent.IgniteCause.FLINT_AND_STEEL, playerIn).isCancelled()) {
++                if (CraftEventFactory.callBlockIgniteEvent(worldIn, pos.getX(), pos.getY(), pos.getZ(), org.bukkit.event.block.BlockIgniteEvent.IgniteCause.FLINT_AND_STEEL, playerIn).isCancelled())
++                {
 +                    stack.damageItem(1, playerIn);
 +                    return false;
 +                }
 +
 +                CraftBlockState blockState = CraftBlockState.getBlockState(worldIn, pos.getX(), pos.getY(), pos.getZ());
 +                // CraftBukkit end
-+
-+                worldIn.playSoundEffect((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, "fire.ignite", 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
+                 worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "fire.ignite", 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
                  worldIn.setBlockState(pos, Blocks.fire.getDefaultState());
-+
 +                // CraftBukkit start
 +                org.bukkit.event.block.BlockPlaceEvent placeEvent = CraftEventFactory.callBlockPlaceEvent(worldIn, playerIn, blockState, clicked.getX(), clicked.getY(), clicked.getZ());
 +
-+                if (placeEvent.isCancelled() || !placeEvent.canBuild()) {
-+                    placeEvent.getBlockPlaced().setTypeIdAndData(0, (byte) 0, false);
++                if (placeEvent.isCancelled() || !placeEvent.canBuild())
++                {
++                    placeEvent.getBlockPlaced().setTypeIdAndData(0, (byte)0, false);
 +                    return false;
 +                }
++
 +                // CraftBukkit end
              }
  

@@ -1,14 +1,11 @@
 --- decompiled\net\minecraft\entity\IEntityMultiPart.java
 +++ src\main\java\net\minecraft\entity\IEntityMultiPart.java
-@@ -2,11 +2,11 @@
- 
- import net.minecraft.entity.boss.EntityDragonPart;
+@@ -4,9 +4,10 @@
  import net.minecraft.util.DamageSource;
  import net.minecraft.world.World;
  
--public interface IEntityMultiPart
--{
-+public interface IEntityMultiPart {
+ public interface IEntityMultiPart
+ {
 +
      World getWorld();
  

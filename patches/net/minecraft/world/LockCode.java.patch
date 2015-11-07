@@ -1,55 +1,14 @@
 --- decompiled\net\minecraft\world\LockCode.java
 +++ src\main\java\net\minecraft\world\LockCode.java
-@@ -1,43 +1,35 @@
- package net.minecraft.world;
+@@ -2,10 +2,11 @@
  
  import net.minecraft.nbt.NBTTagCompound;
  
--public class LockCode
--{
-+public class LockCode {
+ public class LockCode
+ {
 +
      public static final LockCode EMPTY_CODE = new LockCode("");
      private final String lock;
      private static final String __OBFID = "CL_00002260";
  
--    public LockCode(String p_i45903_1_)
--    {
-+    public LockCode(String p_i45903_1_) {
-         this.lock = p_i45903_1_;
-     }
- 
--    public boolean isEmpty()
--    {
-+    public boolean isEmpty() {
-         return this.lock == null || this.lock.isEmpty();
-     }
- 
--    public String getLock()
--    {
-+    public String getLock() {
-         return this.lock;
-     }
- 
--    public void toNBT(NBTTagCompound nbt)
--    {
-+    public void toNBT(NBTTagCompound nbt) {
-         nbt.setString("Lock", this.lock);
-     }
- 
--    public static LockCode fromNBT(NBTTagCompound nbt)
--    {
--        if (nbt.hasKey("Lock", 8))
--        {
-+    public static LockCode fromNBT(NBTTagCompound nbt) {
-+        if (nbt.hasKey("Lock", 8)) {
-             String s = nbt.getString("Lock");
-             return new LockCode(s);
--        }
--        else
--        {
-+        } else {
-             return EMPTY_CODE;
-         }
-     }
- }
+     public LockCode(String p_i45903_1_)

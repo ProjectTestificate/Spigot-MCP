@@ -1,38 +1,14 @@
 --- decompiled\net\minecraft\enchantment\EnchantmentFishingSpeed.java
 +++ src\main\java\net\minecraft\enchantment\EnchantmentFishingSpeed.java
-@@ -1,29 +1,25 @@
- package net.minecraft.enchantment;
+@@ -2,10 +2,11 @@
  
  import net.minecraft.util.ResourceLocation;
  
--public class EnchantmentFishingSpeed extends Enchantment
--{
-+public class EnchantmentFishingSpeed extends Enchantment {
+ public class EnchantmentFishingSpeed extends Enchantment
+ {
 +
      private static final String __OBFID = "CL_00000117";
  
--    protected EnchantmentFishingSpeed(int enchID, ResourceLocation enchName, int enchWeight, EnumEnchantmentType enchType)
--    {
-+    protected EnchantmentFishingSpeed(int enchID, ResourceLocation enchName, int enchWeight, EnumEnchantmentType enchType) {
+     protected EnchantmentFishingSpeed(int enchID, ResourceLocation enchName, int enchWeight, EnumEnchantmentType enchType)
+     {
          super(enchID, enchName, enchWeight, enchType);
-         this.setName("fishingSpeed");
-     }
- 
--    public int getMinEnchantability(int enchantmentLevel)
--    {
-+    public int getMinEnchantability(int enchantmentLevel) {
-         return 15 + (enchantmentLevel - 1) * 9;
-     }
- 
--    public int getMaxEnchantability(int enchantmentLevel)
--    {
-+    public int getMaxEnchantability(int enchantmentLevel) {
-         return super.getMinEnchantability(enchantmentLevel) + 50;
-     }
- 
--    public int getMaxLevel()
--    {
-+    public int getMaxLevel() {
-         return 3;
-     }
- }

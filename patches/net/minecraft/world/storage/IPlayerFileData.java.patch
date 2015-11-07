@@ -1,14 +1,11 @@
 --- decompiled\net\minecraft\world\storage\IPlayerFileData.java
 +++ src\main\java\net\minecraft\world\storage\IPlayerFileData.java
-@@ -1,12 +1,12 @@
- package net.minecraft.world.storage;
- 
+@@ -3,10 +3,11 @@
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.nbt.NBTTagCompound;
  
--public interface IPlayerFileData
--{
-+public interface IPlayerFileData {
+ public interface IPlayerFileData
+ {
 +
      void writePlayerData(EntityPlayer p_75753_1_);
  

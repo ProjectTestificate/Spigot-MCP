@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\item\ItemHoe.java
 +++ src\main\java\net\minecraft\item\ItemHoe.java
-@@ -8,48 +8,38 @@
+@@ -8,15 +8,15 @@
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.init.Blocks;
  import net.minecraft.util.BlockPos;
@@ -9,78 +9,16 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class ItemHoe extends Item
--{
 +
-+public class ItemHoe extends Item {
+ public class ItemHoe extends Item
+ {
 +
      protected Item.ToolMaterial theToolMaterial;
      private static final String __OBFID = "CL_00000039";
  
--    public ItemHoe(Item.ToolMaterial material)
--    {
-+    public ItemHoe(Item.ToolMaterial material) {
-         this.theToolMaterial = material;
-         this.maxStackSize = 1;
-         this.setMaxDamage(material.getMaxUses());
-         this.setCreativeTab(CreativeTabs.tabTools);
-     }
- 
--    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
--    {
--        if (!playerIn.canPlayerEdit(pos.offset(side), side, stack))
--        {
-+    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
-+        if (!playerIn.canPlayerEdit(pos.offset(side), side, stack)) {
-             return false;
--        }
--        else
--        {
-+        } else {
-             IBlockState iblockstate = worldIn.getBlockState(pos);
-             Block block = iblockstate.getBlock();
- 
--            if (side != EnumFacing.DOWN && worldIn.getBlockState(pos.up()).getBlock().getMaterial() == Material.air)
--            {
--                if (block == Blocks.grass)
--                {
-+            if (side != EnumFacing.DOWN && worldIn.getBlockState(pos.up()).getBlock().getMaterial() == Material.air) {
-+                if (block == Blocks.grass) {
-                     return this.useHoe(stack, playerIn, worldIn, pos, Blocks.farmland.getDefaultState());
-                 }
- 
--                if (block == Blocks.dirt)
--                {
--                    switch (ItemHoe.SwitchDirtType.TYPE_LOOKUP[((BlockDirt.DirtType)iblockstate.getValue(BlockDirt.VARIANT)).ordinal()])
--                    {
-+                if (block == Blocks.dirt) {
-+                    switch (ItemHoe.SwitchDirtType.TYPE_LOOKUP[((BlockDirt.DirtType) iblockstate.getValue(BlockDirt.VARIANT)).ordinal()]) {
-                         case 1:
-                             return this.useHoe(stack, playerIn, worldIn, pos, Blocks.farmland.getDefaultState());
-                         case 2:
-                             return this.useHoe(stack, playerIn, worldIn, pos, Blocks.dirt.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT));
-                     }
-@@ -58,59 +48,41 @@
- 
-             return false;
-         }
-     }
- 
--    protected boolean useHoe(ItemStack stack, EntityPlayer player, World worldIn, BlockPos target, IBlockState newState)
--    {
--        worldIn.playSoundEffect((double)((float)target.getX() + 0.5F), (double)((float)target.getY() + 0.5F), (double)((float)target.getZ() + 0.5F), newState.getBlock().stepSound.getStepSound(), (newState.getBlock().stepSound.getVolume() + 1.0F) / 2.0F, newState.getBlock().stepSound.getFrequency() * 0.8F);
-+    protected boolean useHoe(ItemStack stack, EntityPlayer player, World worldIn, BlockPos target, IBlockState newState) {
-+        worldIn.playSoundEffect((double) ((float) target.getX() + 0.5F), (double) ((float) target.getY() + 0.5F), (double) ((float) target.getZ() + 0.5F), newState.getBlock().stepSound.getStepSound(), (newState.getBlock().stepSound.getVolume() + 1.0F) / 2.0F, newState.getBlock().stepSound.getFrequency() * 0.8F);
- 
--        if (worldIn.isRemote)
--        {
-+        if (worldIn.isRemote) {
-             return true;
--        }
--        else
--        {
-+        } else {
-             worldIn.setBlockState(target, newState);
+     public ItemHoe(Item.ToolMaterial material)
+     {
+@@ -74,23 +74,18 @@
              stack.damageItem(1, player);
              return true;
          }
@@ -92,51 +30,16 @@
 -        return true;
 -    }
 -
--    public String getMaterialName()
--    {
-+    public String getMaterialName() {
+     public String getMaterialName()
+     {
          return this.theToolMaterial.toString();
      }
  
--    static final class SwitchDirtType
--        {
--            static final int[] TYPE_LOOKUP = new int[BlockDirt.DirtType.values().length];
--            private static final String __OBFID = "CL_00002179";
-+    static final class SwitchDirtType {
- 
--            static
--            {
--                try
--                {
--                    TYPE_LOOKUP[BlockDirt.DirtType.DIRT.ordinal()] = 1;
--                }
--                catch (NoSuchFieldError var2)
--                {
--                    ;
--                }
-+        static final int[] TYPE_LOOKUP = new int[BlockDirt.DirtType.values().length];
-+        private static final String __OBFID = "CL_00002179";
- 
--                try
--                {
--                    TYPE_LOOKUP[BlockDirt.DirtType.COARSE_DIRT.ordinal()] = 2;
--                }
--                catch (NoSuchFieldError var1)
--                {
--                    ;
--                }
-+        static {
-+            try {
-+                TYPE_LOOKUP[BlockDirt.DirtType.DIRT.ordinal()] = 1;
-+            } catch (NoSuchFieldError var2) {
-+                ;
-             }
+     static final class SwitchDirtType
+         {
 +
-+            try {
-+                TYPE_LOOKUP[BlockDirt.DirtType.COARSE_DIRT.ordinal()] = 2;
-+            } catch (NoSuchFieldError var1) {
-+                ;
-+            }
-         }
-+    }
- }
+             static final int[] TYPE_LOOKUP = new int[BlockDirt.DirtType.values().length];
+             private static final String __OBFID = "CL_00002179";
+ 
+             static
+             {

@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S40PacketDisconnect.java
 +++ src\main\java\net\minecraft\network\play\server\S40PacketDisconnect.java
-@@ -1,49 +1,39 @@
+@@ -1,22 +1,25 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -13,39 +13,25 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S40PacketDisconnect implements Packet
--{
 +
-+public class S40PacketDisconnect implements Packet {
+ public class S40PacketDisconnect implements Packet
+ {
 +
      private IChatComponent reason;
      private static final String __OBFID = "CL_00001298";
  
 -    public S40PacketDisconnect() {}
-+    public S40PacketDisconnect() {
++    public S40PacketDisconnect()
++    {
 +    }
  
--    public S40PacketDisconnect(IChatComponent reasonIn)
--    {
-+    public S40PacketDisconnect(IChatComponent reasonIn) {
+     public S40PacketDisconnect(IChatComponent reasonIn)
+     {
          this.reason = reasonIn;
      }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.reason = buf.readChatComponent();
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeChatComponent(this.reason);
-     }
- 
--    public void processPacket(INetHandlerPlayClient handler)
--    {
-+    public void processPacket(INetHandlerPlayClient handler) {
+@@ -34,16 +37,10 @@
+     public void processPacket(INetHandlerPlayClient handler)
+     {
          handler.handleDisconnect(this);
      }
  
@@ -53,12 +39,11 @@
 -    public IChatComponent func_149165_c()
 -    {
 -        return this.reason;
-+    public void processPacket(INetHandler handler) {
+-    }
+-
+     public void processPacket(INetHandler handler)
+     {
+-        this.processPacket((INetHandlerPlayClient)handler);
 +        this.processPacket((INetHandlerPlayClient) handler);
      }
--
--    public void processPacket(INetHandler handler)
--    {
--        this.processPacket((INetHandlerPlayClient)handler);
--    }
  }

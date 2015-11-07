@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\world\storage\ISaveFormat.java
 +++ src\main\java\net\minecraft\world\storage\ISaveFormat.java
-@@ -1,41 +1,17 @@
+@@ -1,41 +1,18 @@
  package net.minecraft.world.storage;
  
 -import java.util.List;
@@ -9,13 +9,12 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public interface ISaveFormat
--{
++
+ public interface ISaveFormat
+ {
 -    @SideOnly(Side.CLIENT)
 -    String getName();
  
-+public interface ISaveFormat {
-+
      ISaveHandler getSaveLoader(String p_75804_1_, boolean p_75804_2_);
  
 -    @SideOnly(Side.CLIENT)

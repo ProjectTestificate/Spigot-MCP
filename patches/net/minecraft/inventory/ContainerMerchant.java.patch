@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\inventory\ContainerMerchant.java
 +++ src\main\java\net\minecraft\inventory\ContainerMerchant.java
-@@ -3,155 +3,137 @@
+@@ -3,28 +3,47 @@
  import net.minecraft.entity.IMerchant;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.entity.player.InventoryPlayer;
@@ -9,34 +9,35 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class ContainerMerchant extends Container
--{
 +import org.bukkit.craftbukkit.inventory.CraftInventoryMerchant;
 +import org.bukkit.craftbukkit.inventory.CraftInventoryView;
 +
-+public class ContainerMerchant extends Container {
+ public class ContainerMerchant extends Container
+ {
 +
      private IMerchant theMerchant;
      private InventoryMerchant merchantInventory;
      private final World theWorld;
      private static final String __OBFID = "CL_00001757";
  
--    public ContainerMerchant(InventoryPlayer playerInventory, IMerchant merchant, World worldIn)
--    {
 +    // CraftBukkit start
 +    private CraftInventoryView bukkitEntity = null;
 +    private InventoryPlayer player;
 +
 +    @Override
-+    public org.bukkit.craftbukkit.inventory.CraftInventoryView getBukkitView() {
-+        if (bukkitEntity == null) {
-+            bukkitEntity = new CraftInventoryView(this.player.player.getBukkitEntity(), new CraftInventoryMerchant((InventoryMerchant) merchantInventory), this);
++    public org.bukkit.craftbukkit.inventory.CraftInventoryView getBukkitView()
++    {
++        if (bukkitEntity == null)
++        {
++            bukkitEntity = new CraftInventoryView(this.player.player.getBukkitEntity(), new CraftInventoryMerchant((InventoryMerchant)merchantInventory), this);
 +        }
++
 +        return bukkitEntity;
 +    }
 +    // CraftBukkit end
 +
-+    public ContainerMerchant(InventoryPlayer playerInventory, IMerchant merchant, World worldIn) {
+     public ContainerMerchant(InventoryPlayer playerInventory, IMerchant merchant, World worldIn)
+     {
          this.theMerchant = merchant;
          this.theWorld = worldIn;
          this.merchantInventory = new InventoryMerchant(playerInventory.player, merchant);
@@ -46,161 +47,20 @@
 +        this.player = playerInventory; // CraftBukkit - save player
          int i;
  
--        for (i = 0; i < 3; ++i)
--        {
--            for (int j = 0; j < 9; ++j)
--            {
-+        for (i = 0; i < 3; ++i) {
-+            for (int j = 0; j < 9; ++j) {
-                 this.addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-             }
-         }
- 
--        for (i = 0; i < 9; ++i)
--        {
-+        for (i = 0; i < 9; ++i) {
-             this.addSlotToContainer(new Slot(playerInventory, i, 8 + i * 18, 142));
-         }
-     }
- 
--    public InventoryMerchant getMerchantInventory()
--    {
-+    public InventoryMerchant getMerchantInventory() {
-         return this.merchantInventory;
-     }
- 
--    public void addCraftingToCrafters(ICrafting listener)
--    {
-+    public void addCraftingToCrafters(ICrafting listener) {
-         super.addCraftingToCrafters(listener);
-     }
- 
--    public void detectAndSendChanges()
--    {
-+    public void detectAndSendChanges() {
-         super.detectAndSendChanges();
-     }
- 
--    public void onCraftMatrixChanged(IInventory inventoryIn)
--    {
-+    public void onCraftMatrixChanged(IInventory inventoryIn) {
-         this.merchantInventory.resetRecipeAndSlots();
-         super.onCraftMatrixChanged(inventoryIn);
-     }
- 
--    public void setCurrentRecipeIndex(int p_75175_1_)
--    {
-+    public void setCurrentRecipeIndex(int p_75175_1_) {
+         for (i = 0; i < 3; ++i)
+         {
+             for (int j = 0; j < 9; ++j)
+@@ -63,13 +82,10 @@
+     public void setCurrentRecipeIndex(int p_75175_1_)
+     {
          this.merchantInventory.setCurrentRecipeIndex(p_75175_1_);
      }
  
 -    @SideOnly(Side.CLIENT)
 -    public void updateProgressBar(int id, int data) {}
 -
--    public boolean canInteractWith(EntityPlayer playerIn)
--    {
-+    public boolean canInteractWith(EntityPlayer playerIn) {
+     public boolean canInteractWith(EntityPlayer playerIn)
+     {
          return this.theMerchant.getCustomer() == playerIn;
      }
  
--    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
--    {
-+    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
-         ItemStack itemstack = null;
--        Slot slot = (Slot)this.inventorySlots.get(index);
-+        Slot slot = (Slot) this.inventorySlots.get(index);
- 
--        if (slot != null && slot.getHasStack())
--        {
-+        if (slot != null && slot.getHasStack()) {
-             ItemStack itemstack1 = slot.getStack();
-             itemstack = itemstack1.copy();
- 
--            if (index == 2)
--            {
--                if (!this.mergeItemStack(itemstack1, 3, 39, true))
--                {
-+            if (index == 2) {
-+                if (!this.mergeItemStack(itemstack1, 3, 39, true)) {
-                     return null;
-                 }
- 
-                 slot.onSlotChange(itemstack1, itemstack);
--            }
--            else if (index != 0 && index != 1)
--            {
--                if (index >= 3 && index < 30)
--                {
--                    if (!this.mergeItemStack(itemstack1, 30, 39, false))
--                    {
-+            } else if (index != 0 && index != 1) {
-+                if (index >= 3 && index < 30) {
-+                    if (!this.mergeItemStack(itemstack1, 30, 39, false)) {
-                         return null;
-                     }
--                }
--                else if (index >= 30 && index < 39 && !this.mergeItemStack(itemstack1, 3, 30, false))
--                {
-+                } else if (index >= 30 && index < 39 && !this.mergeItemStack(itemstack1, 3, 30, false)) {
-                     return null;
-                 }
--            }
--            else if (!this.mergeItemStack(itemstack1, 3, 39, false))
--            {
-+            } else if (!this.mergeItemStack(itemstack1, 3, 39, false)) {
-                 return null;
-             }
- 
--            if (itemstack1.stackSize == 0)
--            {
--                slot.putStack((ItemStack)null);
--            }
--            else
--            {
-+            if (itemstack1.stackSize == 0) {
-+                slot.putStack((ItemStack) null);
-+            } else {
-                 slot.onSlotChanged();
-             }
- 
--            if (itemstack1.stackSize == itemstack.stackSize)
--            {
-+            if (itemstack1.stackSize == itemstack.stackSize) {
-                 return null;
-             }
- 
-             slot.onPickupFromSlot(playerIn, itemstack1);
-         }
- 
-         return itemstack;
-     }
- 
--    public void onContainerClosed(EntityPlayer playerIn)
--    {
-+    public void onContainerClosed(EntityPlayer playerIn) {
-         super.onContainerClosed(playerIn);
--        this.theMerchant.setCustomer((EntityPlayer)null);
-+        this.theMerchant.setCustomer((EntityPlayer) null);
-         super.onContainerClosed(playerIn);
- 
--        if (!this.theWorld.isRemote)
--        {
-+        if (!this.theWorld.isRemote) {
-             ItemStack itemstack = this.merchantInventory.getStackInSlotOnClosing(0);
- 
--            if (itemstack != null)
--            {
-+            if (itemstack != null) {
-                 playerIn.dropPlayerItemWithRandomChoice(itemstack, false);
-             }
- 
-             itemstack = this.merchantInventory.getStackInSlotOnClosing(1);
- 
--            if (itemstack != null)
--            {
-+            if (itemstack != null) {
-                 playerIn.dropPlayerItemWithRandomChoice(itemstack, false);
-             }
-         }
-     }
- }

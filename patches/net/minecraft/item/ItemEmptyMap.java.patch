@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\item\ItemEmptyMap.java
 +++ src\main\java\net\minecraft\item\ItemEmptyMap.java
-@@ -3,41 +3,42 @@
+@@ -3,31 +3,37 @@
  import net.minecraft.creativetab.CreativeTabs;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.init.Items;
@@ -9,24 +9,21 @@
 +import net.minecraft.world.WorldServer;
  import net.minecraft.world.storage.MapData;
  
--public class ItemEmptyMap extends ItemMapBase
--{
 +import org.bukkit.event.server.MapInitializeEvent;
 +
-+public class ItemEmptyMap extends ItemMapBase {
+ public class ItemEmptyMap extends ItemMapBase
+ {
 +
      private static final String __OBFID = "CL_00000024";
  
--    protected ItemEmptyMap()
--    {
-+    protected ItemEmptyMap() {
+     protected ItemEmptyMap()
+     {
          this.setCreativeTab(CreativeTabs.tabMisc);
      }
  
--    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
--    {
+     public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
+     {
 -        ItemStack itemstack1 = new ItemStack(Items.filled_map, 1, worldIn.getUniqueDataId("map"));
-+    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
 +        World worldMain = worldIn.getServer().getServer().worlds.get(0); // CraftBukkit - store reference to primary world
 +        ItemStack itemstack1 = new ItemStack(Items.filled_map, 1, worldMain.getUniqueDataId("map")); // CraftBukkit - use primary world for maps
          String s = "map_" + itemstack1.getMetadata();
@@ -35,26 +32,11 @@
          mapdata.scale = 0;
          mapdata.func_176054_a(playerIn.posX, playerIn.posZ, mapdata.scale);
 -        mapdata.dimension = (byte)worldIn.provider.getDimensionId();
-+        mapdata.dimension = (byte) ((WorldServer) worldIn).dimension; // CraftBukkit - use bukkit dimension
++        mapdata.dimension = (byte)((WorldServer)worldIn).dimension;  // CraftBukkit - use bukkit dimension
          mapdata.markDirty();
-+
 +        org.bukkit.craftbukkit.event.CraftEventFactory.callEvent(new MapInitializeEvent(mapdata.mapView)); // CraftBukkit
-+
          --itemStackIn.stackSize;
  
--        if (itemStackIn.stackSize <= 0)
--        {
-+        if (itemStackIn.stackSize <= 0) {
+         if (itemStackIn.stackSize <= 0)
+         {
              return itemstack1;
--        }
--        else
--        {
--            if (!playerIn.inventory.addItemStackToInventory(itemstack1.copy()))
--            {
-+        } else {
-+            if (!playerIn.inventory.addItemStackToInventory(itemstack1.copy())) {
-                 playerIn.dropPlayerItemWithRandomChoice(itemstack1, false);
-             }
- 
-             playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
-             return itemStackIn;

@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\server\dedicated\PropertyManager.java
 +++ src\main\java\net\minecraft\server\dedicated\PropertyManager.java
-@@ -3,158 +3,142 @@
+@@ -3,20 +3,21 @@
  import java.io.File;
  import java.io.FileInputStream;
  import java.io.FileOutputStream;
@@ -13,11 +13,10 @@
  import org.apache.logging.log4j.Logger;
  
 -@SideOnly(Side.SERVER)
--public class PropertyManager
--{
 +import joptsimple.OptionSet;
 +
-+public class PropertyManager {
+ public class PropertyManager
+ {
 +
      private static final Logger LOGGER = LogManager.getLogger();
 -    private final Properties serverProperties = new Properties();
@@ -25,135 +24,58 @@
      private final File serverPropertiesFile;
      private static final String __OBFID = "CL_00001782";
  
--    public PropertyManager(File propertiesFile)
--    {
-+    public PropertyManager(File propertiesFile) {
-         this.serverPropertiesFile = propertiesFile;
- 
--        if (propertiesFile.exists())
--        {
-+        if (propertiesFile.exists()) {
-             FileInputStream fileinputstream = null;
- 
--            try
--            {
-+            try {
-                 fileinputstream = new FileInputStream(propertiesFile);
-                 this.serverProperties.load(fileinputstream);
--            }
--            catch (Exception exception)
--            {
-+            } catch (Exception exception) {
-                 LOGGER.warn("Failed to load " + propertiesFile, exception);
-                 this.generateNewProperties();
--            }
--            finally
--            {
--                if (fileinputstream != null)
--                {
--                    try
--                    {
-+            } finally {
-+                if (fileinputstream != null) {
-+                    try {
-                         fileinputstream.close();
--                    }
--                    catch (IOException ioexception)
--                    {
-+                    } catch (IOException ioexception) {
-                         ;
-                     }
-                 }
-             }
--        }
--        else
--        {
-+        } else {
+     public PropertyManager(File propertiesFile)
+     {
+@@ -56,10 +57,30 @@
              LOGGER.warn(propertiesFile + " does not exist");
              this.generateNewProperties();
          }
      }
  
--    public void generateNewProperties()
--    {
 +    // CraftBukkit start
 +    private OptionSet options = null;
 +
-+    public PropertyManager(final OptionSet options) {
-+        this((File) options.valueOf("config"));
-+
++    public PropertyManager(final OptionSet options)
++    {
++        this((File)options.valueOf("config"));
 +        this.options = options;
 +    }
 +
-+    private <T> T getOverride(String name, T value) {
-+        if ((this.options != null) && (this.options.has(name)) && !name.equals("online-mode")) { // Spigot
-+            return (T) this.options.valueOf(name);
++    private <T> T getOverride(String name, T value)
++    {
++        if ((this.options != null) && (this.options.has(name)) && !name.equals("online-mode"))   // Spigot
++        {
++            return (T)this.options.valueOf(name);
 +        }
 +
 +        return value;
 +    }
 +    // CraftBukkit end
 +
-+    public void generateNewProperties() {
+     public void generateNewProperties()
+     {
          LOGGER.info("Generating new properties file");
          this.saveProperties();
      }
- 
--    public void saveProperties()
--    {
-+    public void saveProperties() {
+@@ -68,10 +89,17 @@
+     {
          FileOutputStream fileoutputstream = null;
  
--        try
--        {
-+        try {
+         try
+         {
 +            // CraftBukkit start - Don't attempt writing to file if it's read only
-+            if (this.serverPropertiesFile.exists() && !this.serverPropertiesFile.canWrite()) {
++            if (this.serverPropertiesFile.exists() && !this.serverPropertiesFile.canWrite())
++            {
 +                return;
 +            }
-+            // CraftBukkit end
 +
++            // CraftBukkit end
              fileoutputstream = new FileOutputStream(this.serverPropertiesFile);
              this.serverProperties.store(fileoutputstream, "Minecraft server properties");
--        }
--        catch (Exception exception)
--        {
-+        } catch (Exception exception) {
-             LOGGER.warn("Failed to save " + this.serverPropertiesFile, exception);
-             this.generateNewProperties();
--        }
--        finally
--        {
--            if (fileoutputstream != null)
--            {
--                try
--                {
-+        } finally {
-+            if (fileoutputstream != null) {
-+                try {
-                     fileoutputstream.close();
--                }
--                catch (IOException ioexception)
--                {
-+                } catch (IOException ioexception) {
-                     ;
-                 }
-             }
          }
-     }
- 
--    public File getPropertiesFile()
--    {
-+    public File getPropertiesFile() {
-         return this.serverPropertiesFile;
-     }
- 
--    public String getStringProperty(String key, String defaultValue)
--    {
--        if (!this.serverProperties.containsKey(key))
--        {
-+    public String getStringProperty(String key, String defaultValue) {
-+        if (!this.serverProperties.containsKey(key)) {
+         catch (Exception exception)
+         {
+@@ -106,52 +134,52 @@
              this.serverProperties.setProperty(key, defaultValue);
              this.saveProperties();
              this.saveProperties();
@@ -163,18 +85,15 @@
 +        return getOverride(key, this.serverProperties.getProperty(key, defaultValue)); // CraftBukkit
      }
  
--    public int getIntProperty(String key, int defaultValue)
--    {
--        try
--        {
+     public int getIntProperty(String key, int defaultValue)
+     {
+         try
+         {
 -            return Integer.parseInt(this.getStringProperty(key, "" + defaultValue));
--        }
--        catch (Exception exception)
--        {
-+    public int getIntProperty(String key, int defaultValue) {
-+        try {
 +            return getOverride(key, Integer.parseInt(this.getStringProperty(key, "" + defaultValue))); // CraftBukkit
-+        } catch (Exception exception) {
+         }
+         catch (Exception exception)
+         {
              this.serverProperties.setProperty(key, "" + defaultValue);
              this.saveProperties();
 -            return defaultValue;
@@ -182,18 +101,15 @@
          }
      }
  
--    public long getLongProperty(String key, long defaultValue)
--    {
--        try
--        {
+     public long getLongProperty(String key, long defaultValue)
+     {
+         try
+         {
 -            return Long.parseLong(this.getStringProperty(key, "" + defaultValue));
--        }
--        catch (Exception exception)
--        {
-+    public long getLongProperty(String key, long defaultValue) {
-+        try {
 +            return getOverride(key, Long.parseLong(this.getStringProperty(key, "" + defaultValue))); // CraftBukkit
-+        } catch (Exception exception) {
+         }
+         catch (Exception exception)
+         {
              this.serverProperties.setProperty(key, "" + defaultValue);
              this.saveProperties();
 -            return defaultValue;
@@ -201,18 +117,15 @@
          }
      }
  
--    public boolean getBooleanProperty(String key, boolean defaultValue)
--    {
--        try
--        {
+     public boolean getBooleanProperty(String key, boolean defaultValue)
+     {
+         try
+         {
 -            return Boolean.parseBoolean(this.getStringProperty(key, "" + defaultValue));
--        }
--        catch (Exception exception)
--        {
-+    public boolean getBooleanProperty(String key, boolean defaultValue) {
-+        try {
 +            return getOverride(key, Boolean.parseBoolean(this.getStringProperty(key, "" + defaultValue))); // CraftBukkit
-+        } catch (Exception exception) {
+         }
+         catch (Exception exception)
+         {
              this.serverProperties.setProperty(key, "" + defaultValue);
              this.saveProperties();
 -            return defaultValue;
@@ -220,9 +133,5 @@
          }
      }
  
--    public void setProperty(String key, Object value)
--    {
-+    public void setProperty(String key, Object value) {
-         this.serverProperties.setProperty(key, "" + value);
-     }
- }
+     public void setProperty(String key, Object value)
+     {

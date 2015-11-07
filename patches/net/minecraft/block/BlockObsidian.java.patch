@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\block\BlockObsidian.java
 +++ src\main\java\net\minecraft\block\BlockObsidian.java
-@@ -1,30 +1,28 @@
+@@ -1,17 +1,19 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -12,28 +12,11 @@
  import net.minecraft.init.Blocks;
  import net.minecraft.item.Item;
  
--public class BlockObsidian extends Block
--{
-+public class BlockObsidian extends Block {
+ public class BlockObsidian extends Block
+ {
 +
      private static final String __OBFID = "CL_00000279";
  
--    public BlockObsidian()
--    {
-+    public BlockObsidian() {
+     public BlockObsidian()
+     {
          super(Material.rock);
-         this.setCreativeTab(CreativeTabs.tabBlock);
-     }
- 
--    public Item getItemDropped(IBlockState state, Random rand, int fortune)
--    {
-+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-         return Item.getItemFromBlock(Blocks.obsidian);
-     }
- 
--    public MapColor getMapColor(IBlockState state)
--    {
-+    public MapColor getMapColor(IBlockState state) {
-         return MapColor.obsidianColor;
-     }
- }

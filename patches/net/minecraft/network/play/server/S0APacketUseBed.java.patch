@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S0APacketUseBed.java
 +++ src\main\java\net\minecraft\network\play\server\S0APacketUseBed.java
-@@ -1,61 +1,44 @@
+@@ -1,25 +1,27 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -15,43 +15,26 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S0APacketUseBed implements Packet
--{
 +
-+public class S0APacketUseBed implements Packet {
+ public class S0APacketUseBed implements Packet
+ {
 +
      private int playerID;
      private BlockPos bedPos;
      private static final String __OBFID = "CL_00001319";
  
 -    public S0APacketUseBed() {}
-+    public S0APacketUseBed() {
++    public S0APacketUseBed()
++    {
 +    }
  
--    public S0APacketUseBed(EntityPlayer p_i45964_1_, BlockPos p_i45964_2_)
--    {
-+    public S0APacketUseBed(EntityPlayer p_i45964_1_, BlockPos p_i45964_2_) {
+     public S0APacketUseBed(EntityPlayer p_i45964_1_, BlockPos p_i45964_2_)
+     {
          this.playerID = p_i45964_1_.getEntityId();
          this.bedPos = p_i45964_2_;
-     }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.playerID = buf.readVarIntFromBuffer();
-         this.bedPos = buf.readBlockPos();
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeVarIntToBuffer(this.playerID);
-         buf.writeBlockPos(this.bedPos);
-     }
- 
--    public void func_180744_a(INetHandlerPlayClient p_180744_1_)
--    {
-+    public void func_180744_a(INetHandlerPlayClient p_180744_1_) {
+@@ -40,22 +42,10 @@
+     public void func_180744_a(INetHandlerPlayClient p_180744_1_)
+     {
          p_180744_1_.handleUseBed(this);
      }
  
@@ -59,9 +42,7 @@
 -    public EntityPlayer getPlayer(World worldIn)
 -    {
 -        return (EntityPlayer)worldIn.getEntityByID(this.playerID);
-+    public void processPacket(INetHandler handler) {
-+        this.func_180744_a((INetHandlerPlayClient) handler);
-     }
+-    }
 -
 -    @SideOnly(Side.CLIENT)
 -    public BlockPos func_179798_a()
@@ -69,8 +50,9 @@
 -        return this.bedPos;
 -    }
 -
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.func_180744_a((INetHandlerPlayClient)handler);
--    }
++        this.func_180744_a((INetHandlerPlayClient) handler);
+     }
  }

@@ -1,54 +1,37 @@
 --- decompiled\net\minecraft\entity\monster\EntityGolem.java
 +++ src\main\java\net\minecraft\entity\monster\EntityGolem.java
-@@ -2,41 +2,36 @@
- 
- import net.minecraft.entity.EntityCreature;
+@@ -4,18 +4,21 @@
  import net.minecraft.entity.passive.IAnimals;
  import net.minecraft.world.World;
  
--public abstract class EntityGolem extends EntityCreature implements IAnimals
--{
-+public abstract class EntityGolem extends EntityCreature implements IAnimals {
+ public abstract class EntityGolem extends EntityCreature implements IAnimals
+ {
 +
      private static final String __OBFID = "CL_00001644";
  
--    public EntityGolem(World worldIn)
--    {
-+    public EntityGolem(World worldIn) {
+     public EntityGolem(World worldIn)
+     {
          super(worldIn);
      }
  
 -    public void fall(float distance, float damageMultiplier) {}
-+    public void fall(float distance, float damageMultiplier) {
++    public void fall(float distance, float damageMultiplier)
++    {
 +    }
  
--    protected String getLivingSound()
--    {
-+    protected String getLivingSound() {
+     protected String getLivingSound()
+     {
          return "none";
      }
- 
--    protected String getHurtSound()
--    {
-+    protected String getHurtSound() {
-         return "none";
-     }
- 
--    protected String getDeathSound()
--    {
-+    protected String getDeathSound() {
-         return "none";
-     }
- 
--    public int getTalkInterval()
--    {
-+    public int getTalkInterval() {
+@@ -33,10 +36,10 @@
+     public int getTalkInterval()
+     {
          return 120;
      }
  
 -    protected boolean canDespawn()
--    {
-+    public boolean canDespawn() { // SpigotMCP -- Make public as bukkit assumes in same package
++    public boolean canDespawn()   // SpigotMCP -- Make public as bukkit assumes in same package
+     {
          return false;
      }
  }

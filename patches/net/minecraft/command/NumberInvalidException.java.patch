@@ -1,23 +1,21 @@
 --- decompiled\net\minecraft\command\NumberInvalidException.java
 +++ src\main\java\net\minecraft\command\NumberInvalidException.java
-@@ -1,16 +1,14 @@
+@@ -1,16 +1,17 @@
  package net.minecraft.command;
  
--public class NumberInvalidException extends CommandException
--{
-+public class NumberInvalidException extends CommandException {
+ public class NumberInvalidException extends CommandException
+ {
 +
      private static final String __OBFID = "CL_00001188";
  
--    public NumberInvalidException()
--    {
-+    public NumberInvalidException() {
+     public NumberInvalidException()
+     {
          this("commands.generic.num.invalid", new Object[0]);
      }
  
 -    public NumberInvalidException(String message, Object ... replacements)
--    {
-+    public NumberInvalidException(String message, Object... replacements) {
++    public NumberInvalidException(String message, Object... replacements)
+     {
          super(message, replacements);
      }
  }

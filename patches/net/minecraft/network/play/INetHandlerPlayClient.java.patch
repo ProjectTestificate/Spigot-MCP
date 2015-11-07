@@ -1,14 +1,11 @@
 --- decompiled\net\minecraft\network\play\INetHandlerPlayClient.java
 +++ src\main\java\net\minecraft\network\play\INetHandlerPlayClient.java
-@@ -71,12 +71,12 @@
- import net.minecraft.network.play.server.S46PacketSetCompressionLevel;
- import net.minecraft.network.play.server.S47PacketPlayerListHeaderFooter;
+@@ -73,10 +73,11 @@
  import net.minecraft.network.play.server.S48PacketResourcePackSend;
  import net.minecraft.network.play.server.S49PacketUpdateEntityNBT;
  
--public interface INetHandlerPlayClient extends INetHandler
--{
-+public interface INetHandlerPlayClient extends INetHandler {
+ public interface INetHandlerPlayClient extends INetHandler
+ {
 +
      void handleSpawnObject(S0EPacketSpawnObject packetIn);
  

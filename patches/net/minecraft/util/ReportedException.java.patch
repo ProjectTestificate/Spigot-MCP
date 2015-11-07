@@ -1,38 +1,14 @@
 --- decompiled\net\minecraft\util\ReportedException.java
 +++ src\main\java\net\minecraft\util\ReportedException.java
-@@ -1,29 +1,25 @@
- package net.minecraft.util;
+@@ -2,10 +2,11 @@
  
  import net.minecraft.crash.CrashReport;
  
--public class ReportedException extends RuntimeException
--{
-+public class ReportedException extends RuntimeException {
+ public class ReportedException extends RuntimeException
+ {
 +
      private final CrashReport theReportedExceptionCrashReport;
      private static final String __OBFID = "CL_00001579";
  
--    public ReportedException(CrashReport report)
--    {
-+    public ReportedException(CrashReport report) {
-         this.theReportedExceptionCrashReport = report;
-     }
- 
--    public CrashReport getCrashReport()
--    {
-+    public CrashReport getCrashReport() {
-         return this.theReportedExceptionCrashReport;
-     }
- 
--    public Throwable getCause()
--    {
-+    public Throwable getCause() {
-         return this.theReportedExceptionCrashReport.getCrashCause();
-     }
- 
--    public String getMessage()
--    {
-+    public String getMessage() {
-         return this.theReportedExceptionCrashReport.getDescription();
-     }
- }
+     public ReportedException(CrashReport report)
+     {

@@ -1,23 +1,21 @@
 --- decompiled\net\minecraft\command\SyntaxErrorException.java
 +++ src\main\java\net\minecraft\command\SyntaxErrorException.java
-@@ -1,16 +1,14 @@
+@@ -1,16 +1,17 @@
  package net.minecraft.command;
  
--public class SyntaxErrorException extends CommandException
--{
-+public class SyntaxErrorException extends CommandException {
+ public class SyntaxErrorException extends CommandException
+ {
 +
      private static final String __OBFID = "CL_00001189";
  
--    public SyntaxErrorException()
--    {
-+    public SyntaxErrorException() {
+     public SyntaxErrorException()
+     {
          this("commands.generic.snytax", new Object[0]);
      }
  
 -    public SyntaxErrorException(String message, Object ... replacements)
--    {
-+    public SyntaxErrorException(String message, Object... replacements) {
++    public SyntaxErrorException(String message, Object... replacements)
+     {
          super(message, replacements);
      }
  }

@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\world\gen\structure\StructureStart.java
 +++ src\main\java\net\minecraft\world\gen\structure\StructureStart.java
-@@ -1,177 +1,157 @@
+@@ -1,24 +1,28 @@
  package net.minecraft.world.gen.structure;
  
  import java.util.Iterator;
@@ -12,9 +12,8 @@
  import net.minecraft.world.ChunkCoordIntPair;
  import net.minecraft.world.World;
  
--public abstract class StructureStart
--{
-+public abstract class StructureStart {
+ public abstract class StructureStart
+ {
 +
      protected LinkedList components = new LinkedList();
      protected StructureBoundingBox boundingBox;
@@ -23,198 +22,56 @@
      private static final String __OBFID = "CL_00000513";
  
 -    public StructureStart() {}
-+    public StructureStart() {
++    public StructureStart()
++    {
 +    }
  
--    public StructureStart(int p_i43002_1_, int p_i43002_2_)
--    {
-+    public StructureStart(int p_i43002_1_, int p_i43002_2_) {
+     public StructureStart(int p_i43002_1_, int p_i43002_2_)
+     {
          this.field_143024_c = p_i43002_1_;
          this.field_143023_d = p_i43002_2_;
-     }
- 
--    public StructureBoundingBox getBoundingBox()
--    {
-+    public StructureBoundingBox getBoundingBox() {
-         return this.boundingBox;
-     }
- 
--    public LinkedList getComponents()
--    {
-+    public LinkedList getComponents() {
-         return this.components;
-     }
- 
--    public void generateStructure(World worldIn, Random p_75068_2_, StructureBoundingBox p_75068_3_)
--    {
-+    public void generateStructure(World worldIn, Random p_75068_2_, StructureBoundingBox p_75068_3_) {
-         Iterator iterator = this.components.iterator();
- 
--        while (iterator.hasNext())
--        {
--            StructureComponent structurecomponent = (StructureComponent)iterator.next();
-+        while (iterator.hasNext()) {
-+            StructureComponent structurecomponent = (StructureComponent) iterator.next();
- 
--            if (structurecomponent.getBoundingBox().intersectsWith(p_75068_3_) && !structurecomponent.addComponentParts(worldIn, p_75068_2_, p_75068_3_))
--            {
-+            if (structurecomponent.getBoundingBox().intersectsWith(p_75068_3_) && !structurecomponent.addComponentParts(worldIn, p_75068_2_, p_75068_3_)) {
-                 iterator.remove();
-             }
-         }
-     }
- 
--    protected void updateBoundingBox()
--    {
-+    protected void updateBoundingBox() {
-         this.boundingBox = StructureBoundingBox.getNewBoundingBox();
-         Iterator iterator = this.components.iterator();
- 
--        while (iterator.hasNext())
--        {
--            StructureComponent structurecomponent = (StructureComponent)iterator.next();
-+        while (iterator.hasNext()) {
-+            StructureComponent structurecomponent = (StructureComponent) iterator.next();
-             this.boundingBox.expandTo(structurecomponent.getBoundingBox());
-         }
-     }
- 
--    public NBTTagCompound func_143021_a(int p_143021_1_, int p_143021_2_)
--    {
-+    public NBTTagCompound func_143021_a(int p_143021_1_, int p_143021_2_) {
-         NBTTagCompound nbttagcompound = new NBTTagCompound();
-         nbttagcompound.setString("id", MapGenStructureIO.func_143033_a(this));
-         nbttagcompound.setInteger("ChunkX", p_143021_1_);
-         nbttagcompound.setInteger("ChunkZ", p_143021_2_);
-         nbttagcompound.setTag("BB", this.boundingBox.func_151535_h());
-         NBTTagList nbttaglist = new NBTTagList();
-         Iterator iterator = this.components.iterator();
- 
--        while (iterator.hasNext())
--        {
--            StructureComponent structurecomponent = (StructureComponent)iterator.next();
-+        while (iterator.hasNext()) {
-+            StructureComponent structurecomponent = (StructureComponent) iterator.next();
-             nbttaglist.appendTag(structurecomponent.func_143010_b());
-         }
- 
+@@ -80,11 +84,13 @@
          nbttagcompound.setTag("Children", nbttaglist);
          this.func_143022_a(nbttagcompound);
          return nbttagcompound;
      }
  
 -    public void func_143022_a(NBTTagCompound p_143022_1_) {}
-+    public void func_143022_a(NBTTagCompound p_143022_1_) {
++    public void func_143022_a(NBTTagCompound p_143022_1_)
++    {
 +    }
  
--    public void func_143020_a(World worldIn, NBTTagCompound p_143020_2_)
--    {
-+    public void func_143020_a(World worldIn, NBTTagCompound p_143020_2_) {
+     public void func_143020_a(World worldIn, NBTTagCompound p_143020_2_)
+     {
          this.field_143024_c = p_143020_2_.getInteger("ChunkX");
          this.field_143023_d = p_143020_2_.getInteger("ChunkZ");
- 
--        if (p_143020_2_.hasKey("BB"))
--        {
-+        if (p_143020_2_.hasKey("BB")) {
-             this.boundingBox = new StructureBoundingBox(p_143020_2_.getIntArray("BB"));
-         }
- 
-         NBTTagList nbttaglist = p_143020_2_.getTagList("Children", 10);
- 
--        for (int i = 0; i < nbttaglist.tagCount(); ++i)
--        {
-+        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-             this.components.add(MapGenStructureIO.func_143032_b(nbttaglist.getCompoundTagAt(i), worldIn));
+@@ -102,11 +108,13 @@
          }
  
          this.func_143017_b(p_143020_2_);
      }
  
 -    public void func_143017_b(NBTTagCompound p_143017_1_) {}
-+    public void func_143017_b(NBTTagCompound p_143017_1_) {
++    public void func_143017_b(NBTTagCompound p_143017_1_)
++    {
 +    }
  
--    protected void markAvailableHeight(World worldIn, Random p_75067_2_, int p_75067_3_)
--    {
-+    protected void markAvailableHeight(World worldIn, Random p_75067_2_, int p_75067_3_) {
+     protected void markAvailableHeight(World worldIn, Random p_75067_2_, int p_75067_3_)
+     {
          int j = 63 - p_75067_3_;
          int k = this.boundingBox.getYSize() + 1;
- 
--        if (k < j)
--        {
-+        if (k < j) {
-             k += p_75067_2_.nextInt(j - k);
-         }
- 
-         int l = k - this.boundingBox.maxY;
-         this.boundingBox.offset(0, l, 0);
-         Iterator iterator = this.components.iterator();
- 
--        while (iterator.hasNext())
--        {
--            StructureComponent structurecomponent = (StructureComponent)iterator.next();
-+        while (iterator.hasNext()) {
-+            StructureComponent structurecomponent = (StructureComponent) iterator.next();
-             structurecomponent.getBoundingBox().offset(0, l, 0);
-         }
-     }
- 
--    protected void setRandomHeight(World worldIn, Random p_75070_2_, int p_75070_3_, int p_75070_4_)
--    {
-+    protected void setRandomHeight(World worldIn, Random p_75070_2_, int p_75070_3_, int p_75070_4_) {
-         int k = p_75070_4_ - p_75070_3_ + 1 - this.boundingBox.getYSize();
-         boolean flag = true;
-         int i1;
- 
--        if (k > 1)
--        {
-+        if (k > 1) {
-             i1 = p_75070_3_ + p_75070_2_.nextInt(k);
--        }
--        else
--        {
-+        } else {
-             i1 = p_75070_3_;
-         }
- 
-         int l = i1 - this.boundingBox.minY;
-         this.boundingBox.offset(0, l, 0);
-         Iterator iterator = this.components.iterator();
- 
--        while (iterator.hasNext())
--        {
--            StructureComponent structurecomponent = (StructureComponent)iterator.next();
-+        while (iterator.hasNext()) {
-+            StructureComponent structurecomponent = (StructureComponent) iterator.next();
-             structurecomponent.getBoundingBox().offset(0, l, 0);
-         }
-     }
- 
--    public boolean isSizeableStructure()
--    {
-+    public boolean isSizeableStructure() {
-         return true;
-     }
- 
--    public boolean func_175788_a(ChunkCoordIntPair p_175788_1_)
--    {
-+    public boolean func_175788_a(ChunkCoordIntPair p_175788_1_) {
+@@ -161,11 +169,13 @@
+     public boolean func_175788_a(ChunkCoordIntPair p_175788_1_)
+     {
          return true;
      }
  
 -    public void func_175787_b(ChunkCoordIntPair p_175787_1_) {}
-+    public void func_175787_b(ChunkCoordIntPair p_175787_1_) {
++    public void func_175787_b(ChunkCoordIntPair p_175787_1_)
++    {
 +    }
  
--    public int func_143019_e()
--    {
-+    public int func_143019_e() {
+     public int func_143019_e()
+     {
          return this.field_143024_c;
      }
- 
--    public int func_143018_f()
--    {
-+    public int func_143018_f() {
-         return this.field_143023_d;
-     }
- }

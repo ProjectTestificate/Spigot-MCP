@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S2DPacketOpenWindow.java
 +++ src\main\java\net\minecraft\network\play\server\S2DPacketOpenWindow.java
-@@ -1,113 +1,69 @@
+@@ -1,26 +1,29 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -13,10 +13,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S2DPacketOpenWindow implements Packet
--{
 +
-+public class S2DPacketOpenWindow implements Packet {
+ public class S2DPacketOpenWindow implements Packet
+ {
 +
      private int windowId;
      private String inventoryType;
@@ -26,63 +25,16 @@
      private static final String __OBFID = "CL_00001293";
  
 -    public S2DPacketOpenWindow() {}
-+    public S2DPacketOpenWindow() {
++    public S2DPacketOpenWindow()
++    {
 +    }
  
--    public S2DPacketOpenWindow(int incomingWindowId, String incomingWindowTitle, IChatComponent windowTitleIn)
--    {
-+    public S2DPacketOpenWindow(int incomingWindowId, String incomingWindowTitle, IChatComponent windowTitleIn) {
+     public S2DPacketOpenWindow(int incomingWindowId, String incomingWindowTitle, IChatComponent windowTitleIn)
+     {
          this(incomingWindowId, incomingWindowTitle, windowTitleIn, 0);
      }
- 
--    public S2DPacketOpenWindow(int windowIdIn, String guiId, IChatComponent windowTitleIn, int slotCountIn)
--    {
-+    public S2DPacketOpenWindow(int windowIdIn, String guiId, IChatComponent windowTitleIn, int slotCountIn) {
-         this.windowId = windowIdIn;
-         this.inventoryType = guiId;
-         this.windowTitle = windowTitleIn;
-         this.slotCount = slotCountIn;
-     }
- 
--    public S2DPacketOpenWindow(int windowIdIn, String guiId, IChatComponent windowTitleIn, int slotCountIn, int incomingEntityId)
--    {
-+    public S2DPacketOpenWindow(int windowIdIn, String guiId, IChatComponent windowTitleIn, int slotCountIn, int incomingEntityId) {
-         this(windowIdIn, guiId, windowTitleIn, slotCountIn);
-         this.entityId = incomingEntityId;
-     }
- 
--    public void processPacket(INetHandlerPlayClient handler)
--    {
-+    public void processPacket(INetHandlerPlayClient handler) {
-         handler.handleOpenWindow(this);
-     }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.windowId = buf.readUnsignedByte();
-         this.inventoryType = buf.readStringFromBuffer(32);
-         this.windowTitle = buf.readChatComponent();
-         this.slotCount = buf.readUnsignedByte();
- 
--        if (this.inventoryType.equals("EntityHorse"))
--        {
-+        if (this.inventoryType.equals("EntityHorse")) {
-             this.entityId = buf.readInt();
-         }
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeByte(this.windowId);
-         buf.writeString(this.inventoryType);
-         buf.writeChatComponent(this.windowTitle);
-         buf.writeByte(this.slotCount);
- 
--        if (this.inventoryType.equals("EntityHorse"))
--        {
-+        if (this.inventoryType.equals("EntityHorse")) {
+@@ -68,46 +71,10 @@
+         {
              buf.writeInt(this.entityId);
          }
      }
@@ -91,14 +43,13 @@
 -    public int getWindowId()
 -    {
 -        return this.windowId;
-+    public void processPacket(INetHandler handler) {
+-    }
+-
+     public void processPacket(INetHandler handler)
+     {
+-        this.processPacket((INetHandlerPlayClient)handler);
 +        this.processPacket((INetHandlerPlayClient) handler);
      }
--
--    public void processPacket(INetHandler handler)
--    {
--        this.processPacket((INetHandlerPlayClient)handler);
--    }
 -
 -    @SideOnly(Side.CLIENT)
 -    public String getGuiId()

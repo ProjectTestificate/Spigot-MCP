@@ -1,22 +1,14 @@
 --- decompiled\net\minecraft\world\biome\BiomeGenHell.java
 +++ src\main\java\net\minecraft\world\biome\BiomeGenHell.java
-@@ -2,16 +2,15 @@
- 
- import net.minecraft.entity.monster.EntityGhast;
+@@ -4,10 +4,11 @@
  import net.minecraft.entity.monster.EntityMagmaCube;
  import net.minecraft.entity.monster.EntityPigZombie;
  
--public class BiomeGenHell extends BiomeGenBase
--{
-+public class BiomeGenHell extends BiomeGenBase {
+ public class BiomeGenHell extends BiomeGenBase
+ {
 +
      private static final String __OBFID = "CL_00000173";
  
--    public BiomeGenHell(int p_i1981_1_)
--    {
-+    public BiomeGenHell(int p_i1981_1_) {
+     public BiomeGenHell(int p_i1981_1_)
+     {
          super(p_i1981_1_);
-         this.spawnableMonsterList.clear();
-         this.spawnableCreatureList.clear();
-         this.spawnableWaterCreatureList.clear();
-         this.spawnableCaveCreatureList.clear();

@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\client\C00PacketKeepAlive.java
 +++ src\main\java\net\minecraft\network\play\client\C00PacketKeepAlive.java
-@@ -1,48 +1,38 @@
+@@ -1,26 +1,23 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -12,10 +12,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class C00PacketKeepAlive implements Packet
--{
 +
-+public class C00PacketKeepAlive implements Packet {
+ public class C00PacketKeepAlive implements Packet
+ {
 +
      private int key;
      private static final String __OBFID = "CL_00001359";
@@ -24,39 +23,21 @@
 -
 -    @SideOnly(Side.CLIENT)
 -    public C00PacketKeepAlive(int key)
--    {
++    public C00PacketKeepAlive()
+     {
 -        this.key = key;
-+    public C00PacketKeepAlive() {
      }
  
--    public void processPacket(INetHandlerPlayServer handler)
--    {
-+    public void processPacket(INetHandlerPlayServer handler) {
+     public void processPacket(INetHandlerPlayServer handler)
+     {
          handler.processKeepAlive(this);
-     }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.key = buf.readVarIntFromBuffer();
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeVarIntToBuffer(this.key);
-     }
- 
--    public int getKey()
--    {
-+    public int getKey() {
+@@ -41,8 +38,8 @@
          return this.key;
      }
  
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.processPacket((INetHandlerPlayServer)handler);
-+    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
  }

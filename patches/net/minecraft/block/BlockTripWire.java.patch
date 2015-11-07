@@ -12,7 +12,7 @@
  import net.minecraft.block.properties.PropertyBool;
  import net.minecraft.block.state.BlockState;
  import net.minecraft.block.state.IBlockState;
-@@ -14,155 +15,115 @@
+@@ -14,18 +15,18 @@
  import net.minecraft.init.Items;
  import net.minecraft.item.Item;
  import net.minecraft.util.AxisAlignedBB;
@@ -24,52 +24,19 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class BlockTripWire extends Block
--{
 +import org.bukkit.event.entity.EntityInteractEvent;
 +
-+public class BlockTripWire extends Block {
+ public class BlockTripWire extends Block
+ {
 +
      public static final PropertyBool POWERED = PropertyBool.create("powered");
      public static final PropertyBool SUSPENDED = PropertyBool.create("suspended");
      public static final PropertyBool ATTACHED = PropertyBool.create("attached");
      public static final PropertyBool DISARMED = PropertyBool.create("disarmed");
      public static final PropertyBool NORTH = PropertyBool.create("north");
-     public static final PropertyBool EAST = PropertyBool.create("east");
-     public static final PropertyBool SOUTH = PropertyBool.create("south");
-     public static final PropertyBool WEST = PropertyBool.create("west");
-     private static final String __OBFID = "CL_00000328";
- 
--    public BlockTripWire()
--    {
-+    public BlockTripWire() {
-         super(Material.circuits);
-         this.setDefaultState(this.blockState.getBaseState().withProperty(POWERED, Boolean.valueOf(false)).withProperty(SUSPENDED, Boolean.valueOf(false)).withProperty(ATTACHED, Boolean.valueOf(false)).withProperty(DISARMED, Boolean.valueOf(false)).withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)));
-         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.15625F, 1.0F);
-         this.setTickRandomly(true);
-     }
- 
--    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
--    {
-+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-         return state.withProperty(NORTH, Boolean.valueOf(isConnectedTo(worldIn, pos, state, EnumFacing.NORTH))).withProperty(EAST, Boolean.valueOf(isConnectedTo(worldIn, pos, state, EnumFacing.EAST))).withProperty(SOUTH, Boolean.valueOf(isConnectedTo(worldIn, pos, state, EnumFacing.SOUTH))).withProperty(WEST, Boolean.valueOf(isConnectedTo(worldIn, pos, state, EnumFacing.WEST)));
-     }
- 
--    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
--    {
-+    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) {
-         return null;
-     }
- 
--    public boolean isOpaqueCube()
--    {
-+    public boolean isOpaqueCube() {
-         return false;
-     }
- 
--    public boolean isFullCube()
--    {
-+    public boolean isFullCube() {
+@@ -60,16 +61,10 @@
+     public boolean isFullCube()
+     {
          return false;
      }
  
@@ -79,49 +46,13 @@
 -        return EnumWorldBlockLayer.TRANSLUCENT;
 -    }
 -
--    public Item getItemDropped(IBlockState state, Random rand, int fortune)
--    {
-+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+     public Item getItemDropped(IBlockState state, Random rand, int fortune)
+     {
          return Items.string;
      }
  
--    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
--    {
--        boolean flag = ((Boolean)state.getValue(SUSPENDED)).booleanValue();
-+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
-+        boolean flag = ((Boolean) state.getValue(SUSPENDED)).booleanValue();
-         boolean flag1 = !World.doesBlockHaveSolidTopSurface(worldIn, pos.down());
- 
--        if (flag != flag1)
--        {
-+        if (flag != flag1) {
-             this.dropBlockAsItem(worldIn, pos, state, 0);
-             worldIn.setBlockToAir(pos);
-         }
-     }
- 
--    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
--    {
-+    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) {
-         IBlockState iblockstate = worldIn.getBlockState(pos);
--        boolean flag = ((Boolean)iblockstate.getValue(ATTACHED)).booleanValue();
--        boolean flag1 = ((Boolean)iblockstate.getValue(SUSPENDED)).booleanValue();
-+        boolean flag = ((Boolean) iblockstate.getValue(ATTACHED)).booleanValue();
-+        boolean flag1 = ((Boolean) iblockstate.getValue(SUSPENDED)).booleanValue();
- 
--        if (!flag1)
--        {
-+        if (!flag1) {
-             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.09375F, 1.0F);
--        }
--        else if (!flag)
--        {
-+        } else if (!flag) {
-             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
--        }
--        else
--        {
-+        } else {
+@@ -103,16 +98,10 @@
+         {
              this.setBlockBounds(0.0F, 0.0625F, 0.0F, 1.0F, 0.15625F, 1.0F);
          }
      }
@@ -132,262 +63,79 @@
 -        return Items.string;
 -    }
 -
--    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
--    {
-+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+     {
          state = state.withProperty(SUSPENDED, Boolean.valueOf(!World.doesBlockHaveSolidTopSurface(worldIn, pos.down())));
          worldIn.setBlockState(pos, state, 3);
          this.notifyHook(worldIn, pos, state);
-     }
- 
--    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
--    {
-+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-         this.notifyHook(worldIn, pos, state.withProperty(POWERED, Boolean.valueOf(true)));
-     }
- 
--    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
--    {
--        if (!worldIn.isRemote)
--        {
--            if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == Items.shears)
--            {
-+    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
-+        if (!worldIn.isRemote) {
-+            if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == Items.shears) {
-                 worldIn.setBlockState(pos, state.withProperty(DISARMED, Boolean.valueOf(true)), 4);
-             }
-         }
-     }
- 
--    private void notifyHook(World worldIn, BlockPos pos, IBlockState state)
--    {
--        EnumFacing[] aenumfacing = new EnumFacing[] {EnumFacing.SOUTH, EnumFacing.WEST};
-+    private void notifyHook(World worldIn, BlockPos pos, IBlockState state) {
-+        EnumFacing[] aenumfacing = new EnumFacing[]{EnumFacing.SOUTH, EnumFacing.WEST};
-         int i = aenumfacing.length;
-         int j = 0;
- 
--        while (j < i)
--        {
-+        while (j < i) {
-             EnumFacing enumfacing = aenumfacing[j];
-             int k = 1;
- 
--            while (true)
--            {
--                if (k < 42)
--                {
-+            while (true) {
-+                if (k < 42) {
-                     BlockPos blockpos1 = pos.offset(enumfacing, k);
-                     IBlockState iblockstate1 = worldIn.getBlockState(blockpos1);
- 
--                    if (iblockstate1.getBlock() == Blocks.tripwire_hook)
--                    {
--                        if (iblockstate1.getValue(BlockTripWireHook.FACING) == enumfacing.getOpposite())
--                        {
-+                    if (iblockstate1.getBlock() == Blocks.tripwire_hook) {
-+                        if (iblockstate1.getValue(BlockTripWireHook.FACING) == enumfacing.getOpposite()) {
-                             Blocks.tripwire_hook.func_176260_a(worldIn, blockpos1, iblockstate1, false, true, k, state);
-                         }
--                    }
--                    else if (iblockstate1.getBlock() == Blocks.tripwire)
--                    {
-+                    } else if (iblockstate1.getBlock() == Blocks.tripwire) {
-                         ++k;
-                         continue;
-                     }
-                 }
- 
-@@ -170,125 +131,135 @@
-                 break;
-             }
-         }
-     }
- 
--    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
--    {
--        if (!worldIn.isRemote)
--        {
--            if (!((Boolean)state.getValue(POWERED)).booleanValue())
--            {
-+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-+        if (!worldIn.isRemote) {
-+            if (!((Boolean) state.getValue(POWERED)).booleanValue()) {
+@@ -181,11 +170,13 @@
                  this.updateState(worldIn, pos);
              }
          }
      }
  
 -    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {}
-+    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
++    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
++    {
 +    }
  
--    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
--    {
--        if (!worldIn.isRemote)
--        {
--            if (((Boolean)worldIn.getBlockState(pos).getValue(POWERED)).booleanValue())
--            {
-+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-+        if (!worldIn.isRemote) {
-+            if (((Boolean) worldIn.getBlockState(pos).getValue(POWERED)).booleanValue()) {
-                 this.updateState(worldIn, pos);
-             }
-         }
-     }
- 
--    private void updateState(World worldIn, BlockPos pos)
--    {
-+    private void updateState(World worldIn, BlockPos pos) {
-         IBlockState iblockstate = worldIn.getBlockState(pos);
--        boolean flag = ((Boolean)iblockstate.getValue(POWERED)).booleanValue();
-+        boolean flag = ((Boolean) iblockstate.getValue(POWERED)).booleanValue();
-         boolean flag1 = false;
--        List list = worldIn.getEntitiesWithinAABBExcludingEntity((Entity)null, new AxisAlignedBB((double)pos.getX() + this.minX, (double)pos.getY() + this.minY, (double)pos.getZ() + this.minZ, (double)pos.getX() + this.maxX, (double)pos.getY() + this.maxY, (double)pos.getZ() + this.maxZ));
-+        List list = worldIn.getEntitiesWithinAABBExcludingEntity((Entity) null, new AxisAlignedBB((double) pos.getX() + this.minX, (double) pos.getY() + this.minY, (double) pos.getZ() + this.minZ, (double) pos.getX() + this.maxX, (double) pos.getY() + this.maxY, (double) pos.getZ() + this.maxZ));
- 
--        if (!list.isEmpty())
--        {
-+        if (!list.isEmpty()) {
-             Iterator iterator = list.iterator();
- 
--            while (iterator.hasNext())
--            {
--                Entity entity = (Entity)iterator.next();
-+            while (iterator.hasNext()) {
-+                Entity entity = (Entity) iterator.next();
- 
--                if (!entity.doesEntityNotTriggerPressurePlate())
--                {
-+                if (!entity.doesEntityNotTriggerPressurePlate()) {
-                     flag1 = true;
+     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+     {
+         if (!worldIn.isRemote)
+         {
+@@ -217,10 +208,55 @@
                      break;
                  }
              }
          }
  
--        if (flag1 != flag)
--        {
 +        // CraftBukkit start - Call interact even when triggering connected tripwire
-+        if (flag != flag1 && flag1 && (Boolean) iblockstate.getValue(ATTACHED)) {
++        if (flag != flag1 && flag1 && (Boolean)iblockstate.getValue(ATTACHED))
++        {
 +            org.bukkit.World bworld = worldIn.getWorld();
 +            org.bukkit.plugin.PluginManager manager = worldIn.getServer().getPluginManager();
 +            org.bukkit.block.Block block = bworld.getBlockAt(pos.getX(), pos.getY(), pos.getZ());
 +            boolean allowed = false;
 +
 +            // If all of the events are cancelled block the tripwire trigger, else allow
-+            for (Object object : list) {
-+                if (object != null) {
++            for (Object object : list)
++            {
++                if (object != null)
++                {
 +                    org.bukkit.event.Cancellable cancellable;
 +
-+                    if (object instanceof EntityPlayer) {
-+                        cancellable = org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerInteractEvent((EntityPlayer) object, org.bukkit.event.block.Action.PHYSICAL, pos, null, null);
-+                    } else if (object instanceof Entity) {
-+                        cancellable = new EntityInteractEvent(((Entity) object).getBukkitEntity(), block);
-+                        manager.callEvent((EntityInteractEvent) cancellable);
-+                    } else {
++                    if (object instanceof EntityPlayer)
++                    {
++                        cancellable = org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerInteractEvent((EntityPlayer)object, org.bukkit.event.block.Action.PHYSICAL, pos, null, null);
++                    }
++                    else if (object instanceof Entity)
++                    {
++                        cancellable = new EntityInteractEvent(((Entity)object).getBukkitEntity(), block);
++                        manager.callEvent((EntityInteractEvent)cancellable);
++                    }
++                    else
++                    {
 +                        continue;
 +                    }
 +
-+                    if (!cancellable.isCancelled()) {
++                    if (!cancellable.isCancelled())
++                    {
 +                        allowed = true;
 +                        break;
 +                    }
 +                }
 +            }
 +
-+            if (!allowed) {
++            if (!allowed)
++            {
 +                return;
 +            }
 +        }
++
 +        // CraftBukkit end
 +
-+        if (flag1 != flag) {
+         if (flag1 != flag)
+         {
              iblockstate = iblockstate.withProperty(POWERED, Boolean.valueOf(flag1));
              worldIn.setBlockState(pos, iblockstate, 3);
              this.notifyHook(worldIn, pos, iblockstate);
-         }
- 
--        if (flag1)
--        {
-+        if (flag1) {
-             worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
-         }
-     }
- 
--    public static boolean isConnectedTo(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing direction)
--    {
-+    public static boolean isConnectedTo(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing direction) {
-         BlockPos blockpos1 = pos.offset(direction);
-         IBlockState iblockstate1 = worldIn.getBlockState(blockpos1);
-         Block block = iblockstate1.getBlock();
- 
--        if (block == Blocks.tripwire_hook)
--        {
-+        if (block == Blocks.tripwire_hook) {
-             EnumFacing enumfacing1 = direction.getOpposite();
-             return iblockstate1.getValue(BlockTripWireHook.FACING) == enumfacing1;
--        }
--        else if (block == Blocks.tripwire)
--        {
--            boolean flag = ((Boolean)state.getValue(SUSPENDED)).booleanValue();
--            boolean flag1 = ((Boolean)iblockstate1.getValue(SUSPENDED)).booleanValue();
-+        } else if (block == Blocks.tripwire) {
-+            boolean flag = ((Boolean) state.getValue(SUSPENDED)).booleanValue();
-+            boolean flag1 = ((Boolean) iblockstate1.getValue(SUSPENDED)).booleanValue();
-             return flag == flag1;
--        }
--        else
--        {
-+        } else {
-             return false;
-         }
-     }
- 
--    public IBlockState getStateFromMeta(int meta)
--    {
-+    public IBlockState getStateFromMeta(int meta) {
-         return this.getDefaultState().withProperty(POWERED, Boolean.valueOf((meta & 1) > 0)).withProperty(SUSPENDED, Boolean.valueOf((meta & 2) > 0)).withProperty(ATTACHED, Boolean.valueOf((meta & 4) > 0)).withProperty(DISARMED, Boolean.valueOf((meta & 8) > 0));
-     }
- 
--    public int getMetaFromState(IBlockState state)
--    {
-+    public int getMetaFromState(IBlockState state) {
-         int i = 0;
- 
--        if (((Boolean)state.getValue(POWERED)).booleanValue())
--        {
-+        if (((Boolean) state.getValue(POWERED)).booleanValue()) {
-             i |= 1;
-         }
- 
--        if (((Boolean)state.getValue(SUSPENDED)).booleanValue())
--        {
-+        if (((Boolean) state.getValue(SUSPENDED)).booleanValue()) {
-             i |= 2;
-         }
- 
--        if (((Boolean)state.getValue(ATTACHED)).booleanValue())
--        {
-+        if (((Boolean) state.getValue(ATTACHED)).booleanValue()) {
-             i |= 4;
-         }
- 
--        if (((Boolean)state.getValue(DISARMED)).booleanValue())
--        {
-+        if (((Boolean) state.getValue(DISARMED)).booleanValue()) {
-             i |= 8;
-         }
- 
-         return i;
-     }
- 
--    protected BlockState createBlockState()
--    {
--        return new BlockState(this, new IProperty[] {POWERED, SUSPENDED, ATTACHED, DISARMED, NORTH, EAST, WEST, SOUTH});
-+    protected BlockState createBlockState() {
-+        return new BlockState(this, new IProperty[]{POWERED, SUSPENDED, ATTACHED, DISARMED, NORTH, EAST, WEST, SOUTH});
-     }
- }

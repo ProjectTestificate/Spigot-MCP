@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\inventory\InventoryCraftResult.java
 +++ src\main\java\net\minecraft\inventory\InventoryCraftResult.java
-@@ -1,112 +1,128 @@
+@@ -1,18 +1,58 @@
  package net.minecraft.inventory;
  
 +import java.util.ArrayList;
@@ -12,168 +12,99 @@
  import net.minecraft.util.ChatComponentTranslation;
  import net.minecraft.util.IChatComponent;
  
--public class InventoryCraftResult implements IInventory
--{
 +import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 +import org.bukkit.inventory.InventoryHolder;
 +
-+public class InventoryCraftResult implements IInventory {
+ public class InventoryCraftResult implements IInventory
+ {
 +
      private ItemStack[] stackResult = new ItemStack[1];
      private static final String __OBFID = "CL_00001760";
  
--    public int getSizeInventory()
--    {
 +    // CraftBukkit start
 +    private int maxStack = MAX_STACK;
 +
-+    public net.minecraft.item.ItemStack[] getContents() {
++    public net.minecraft.item.ItemStack[] getContents()
++    {
 +        return this.stackResult;
 +    }
 +
-+    public InventoryHolder getOwner() {
++    public InventoryHolder getOwner()
++    {
 +        return null; // Result slots don't get an owner
 +    }
 +
 +    // Don't need a transaction; the InventoryCrafting keeps track of it for us
-+    public void onOpen(CraftHumanEntity who) {
++    public void onOpen(CraftHumanEntity who)
++    {
 +    }
 +
-+    public void onClose(CraftHumanEntity who) {
++    public void onClose(CraftHumanEntity who)
++    {
 +    }
 +
-+    public List getViewers() {
++    public List getViewers()
++    {
 +        return new ArrayList();
 +    }
 +
-+    public void setMaxStackSize(int size) {
++    public void setMaxStackSize(int size)
++    {
 +        maxStack = size;
 +    }
 +    // CraftBukkit end
 +
-+    public int getSizeInventory() {
+     public int getSizeInventory()
+     {
          return 1;
      }
  
--    public ItemStack getStackInSlot(int index)
--    {
-+    public ItemStack getStackInSlot(int index) {
-         return this.stackResult[0];
-     }
- 
--    public String getName()
--    {
-+    public String getName() {
-         return "Result";
-     }
- 
--    public boolean hasCustomName()
--    {
-+    public boolean hasCustomName() {
-         return false;
-     }
- 
--    public IChatComponent getDisplayName()
--    {
--        return (IChatComponent)(this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
-+    public IChatComponent getDisplayName() {
-+        return (IChatComponent) (this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
-     }
- 
--    public ItemStack decrStackSize(int index, int count)
--    {
--        if (this.stackResult[0] != null)
--        {
-+    public ItemStack decrStackSize(int index, int count) {
-+        if (this.stackResult[0] != null) {
-             ItemStack itemstack = this.stackResult[0];
-             this.stackResult[0] = null;
-             return itemstack;
--        }
--        else
--        {
-+        } else {
-             return null;
-         }
-     }
- 
--    public ItemStack getStackInSlotOnClosing(int index)
--    {
--        if (this.stackResult[0] != null)
--        {
-+    public ItemStack getStackInSlotOnClosing(int index) {
-+        if (this.stackResult[0] != null) {
-             ItemStack itemstack = this.stackResult[0];
-             this.stackResult[0] = null;
-             return itemstack;
--        }
--        else
--        {
-+        } else {
-             return null;
-         }
-     }
- 
--    public void setInventorySlotContents(int index, ItemStack stack)
--    {
-+    public void setInventorySlotContents(int index, ItemStack stack) {
+@@ -69,23 +109,29 @@
          this.stackResult[0] = stack;
      }
  
--    public int getInventoryStackLimit()
--    {
+     public int getInventoryStackLimit()
+     {
 -        return 64;
-+    public int getInventoryStackLimit() {
 +        return maxStack; // CraftBukkit
      }
  
 -    public void markDirty() {}
-+    public void markDirty() {
++    public void markDirty()
++    {
 +    }
  
--    public boolean isUseableByPlayer(EntityPlayer player)
--    {
-+    public boolean isUseableByPlayer(EntityPlayer player) {
+     public boolean isUseableByPlayer(EntityPlayer player)
+     {
          return true;
      }
  
 -    public void openInventory(EntityPlayer player) {}
-+    public void openInventory(EntityPlayer player) {
++    public void openInventory(EntityPlayer player)
++    {
 +    }
  
 -    public void closeInventory(EntityPlayer player) {}
-+    public void closeInventory(EntityPlayer player) {
++    public void closeInventory(EntityPlayer player)
++    {
 +    }
  
--    public boolean isItemValidForSlot(int index, ItemStack stack)
--    {
-+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+     public boolean isItemValidForSlot(int index, ItemStack stack)
+     {
          return true;
      }
- 
--    public int getField(int id)
--    {
-+    public int getField(int id) {
+@@ -93,11 +139,13 @@
+     public int getField(int id)
+     {
          return 0;
      }
  
 -    public void setField(int id, int value) {}
-+    public void setField(int id, int value) {
++    public void setField(int id, int value)
++    {
 +    }
  
--    public int getFieldCount()
--    {
-+    public int getFieldCount() {
+     public int getFieldCount()
+     {
          return 0;
      }
- 
--    public void clear()
--    {
--        for (int i = 0; i < this.stackResult.length; ++i)
--        {
-+    public void clear() {
-+        for (int i = 0; i < this.stackResult.length; ++i) {
-             this.stackResult[i] = null;
-         }
-     }
- }

@@ -1,28 +1,26 @@
 --- decompiled\net\minecraft\world\demo\DemoWorldServer.java
 +++ src\main\java\net\minecraft\world\demo\DemoWorldServer.java
-@@ -6,17 +6,21 @@
+@@ -6,17 +6,23 @@
  import net.minecraft.world.WorldSettings;
  import net.minecraft.world.WorldType;
  import net.minecraft.world.storage.ISaveHandler;
  import net.minecraft.world.storage.WorldInfo;
  
--public class DemoWorldServer extends WorldServer
--{
--    private static final long demoWorldSeed = (long)"North Carolina".hashCode();
 +import org.bukkit.World.Environment;
 +import org.bukkit.generator.ChunkGenerator;
 +
-+public class DemoWorldServer extends WorldServer {
+ public class DemoWorldServer extends WorldServer
+ {
 +
-+    private static final long demoWorldSeed = (long) "North Carolina".hashCode();
+     private static final long demoWorldSeed = (long)"North Carolina".hashCode();
      public static final WorldSettings demoWorldSettings = (new WorldSettings(demoWorldSeed, WorldSettings.GameType.SURVIVAL, true, false, WorldType.DEFAULT)).enableBonusChest();
      private static final String __OBFID = "CL_00001428";
  
 -    public DemoWorldServer(MinecraftServer server, ISaveHandler saveHandlerIn, WorldInfo worldInfoIn, int dimensionId, Profiler profilerIn)
--    {
--        super(server, saveHandlerIn, worldInfoIn, dimensionId, profilerIn);
 +    // SpigotMCP Start -- Add enviroment and chunk generator
-+    public DemoWorldServer(MinecraftServer server, ISaveHandler saveHandlerIn, WorldInfo worldInfoIn, int dimensionId, Profiler profilerIn, Environment environment, ChunkGenerator generator) {
++    public DemoWorldServer(MinecraftServer server, ISaveHandler saveHandlerIn, WorldInfo worldInfoIn, int dimensionId, Profiler profilerIn, Environment environment, ChunkGenerator generator)
+     {
+-        super(server, saveHandlerIn, worldInfoIn, dimensionId, profilerIn);
 +        super(server, saveHandlerIn, worldInfoIn, dimensionId, profilerIn, environment, generator);
 +        // SpigotMCP End
          this.worldInfo.populateFromWorldSettings(demoWorldSettings);

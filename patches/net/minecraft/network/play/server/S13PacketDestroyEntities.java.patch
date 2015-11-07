@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S13PacketDestroyEntities.java
 +++ src\main\java\net\minecraft\network\play\server\S13PacketDestroyEntities.java
-@@ -1,58 +1,46 @@
+@@ -1,23 +1,26 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -12,51 +12,28 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S13PacketDestroyEntities implements Packet
--{
 +
-+public class S13PacketDestroyEntities implements Packet {
+ public class S13PacketDestroyEntities implements Packet
+ {
 +
      private int[] field_149100_a;
      private static final String __OBFID = "CL_00001320";
  
 -    public S13PacketDestroyEntities() {}
-+    public S13PacketDestroyEntities() {
++    public S13PacketDestroyEntities()
++    {
 +    }
  
 -    public S13PacketDestroyEntities(int ... p_i45211_1_)
--    {
-+    public S13PacketDestroyEntities(int... p_i45211_1_) {
++    public S13PacketDestroyEntities(int... p_i45211_1_)
+     {
          this.field_149100_a = p_i45211_1_;
      }
  
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.field_149100_a = new int[buf.readVarIntFromBuffer()];
- 
--        for (int i = 0; i < this.field_149100_a.length; ++i)
--        {
-+        for (int i = 0; i < this.field_149100_a.length; ++i) {
-             this.field_149100_a[i] = buf.readVarIntFromBuffer();
-         }
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeVarIntToBuffer(this.field_149100_a.length);
- 
--        for (int i = 0; i < this.field_149100_a.length; ++i)
--        {
-+        for (int i = 0; i < this.field_149100_a.length; ++i) {
-             buf.writeVarIntToBuffer(this.field_149100_a[i]);
-         }
-     }
- 
--    public void processPacket(INetHandlerPlayClient handler)
--    {
-+    public void processPacket(INetHandlerPlayClient handler) {
+     public void readPacketData(PacketBuffer buf) throws IOException
+@@ -43,16 +46,10 @@
+     public void processPacket(INetHandlerPlayClient handler)
+     {
          handler.handleDestroyEntities(this);
      }
  
@@ -64,12 +41,11 @@
 -    public int[] func_149098_c()
 -    {
 -        return this.field_149100_a;
-+    public void processPacket(INetHandler handler) {
+-    }
+-
+     public void processPacket(INetHandler handler)
+     {
+-        this.processPacket((INetHandlerPlayClient)handler);
 +        this.processPacket((INetHandlerPlayClient) handler);
      }
--
--    public void processPacket(INetHandler handler)
--    {
--        this.processPacket((INetHandlerPlayClient)handler);
--    }
  }

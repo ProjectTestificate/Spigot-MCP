@@ -1,23 +1,14 @@
 --- decompiled\net\minecraft\enchantment\EnchantmentData.java
 +++ src\main\java\net\minecraft\enchantment\EnchantmentData.java
-@@ -1,17 +1,16 @@
- package net.minecraft.enchantment;
+@@ -2,10 +2,11 @@
  
  import net.minecraft.util.WeightedRandom;
  
--public class EnchantmentData extends WeightedRandom.Item
--{
-+public class EnchantmentData extends WeightedRandom.Item {
+ public class EnchantmentData extends WeightedRandom.Item
+ {
 +
      public final Enchantment enchantmentobj;
      public final int enchantmentLevel;
      private static final String __OBFID = "CL_00000115";
  
--    public EnchantmentData(Enchantment enchantmentObj, int enchLevel)
--    {
-+    public EnchantmentData(Enchantment enchantmentObj, int enchLevel) {
-         super(enchantmentObj.getWeight());
-         this.enchantmentobj = enchantmentObj;
-         this.enchantmentLevel = enchLevel;
-     }
- }
+     public EnchantmentData(Enchantment enchantmentObj, int enchLevel)

@@ -1,30 +1,22 @@
 --- decompiled\net\minecraft\item\ItemColored.java
 +++ src\main\java\net\minecraft\item\ItemColored.java
-@@ -1,54 +1,39 @@
+@@ -1,13 +1,13 @@
  package net.minecraft.item;
  
  import net.minecraft.block.Block;
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class ItemColored extends ItemBlock
--{
 +
-+public class ItemColored extends ItemBlock {
+ public class ItemColored extends ItemBlock
+ {
 +
      private final Block coloredBlock;
      private String[] subtypeNames;
      private static final String __OBFID = "CL_00000003";
  
--    public ItemColored(Block block, boolean hasSubtypes)
--    {
-+    public ItemColored(Block block, boolean hasSubtypes) {
-         super(block);
-         this.coloredBlock = block;
- 
--        if (hasSubtypes)
--        {
-+        if (hasSubtypes) {
+     public ItemColored(Block block, boolean hasSubtypes)
+@@ -20,16 +20,10 @@
              this.setMaxDamage(0);
              this.setHasSubtypes(true);
          }
@@ -36,32 +28,8 @@
 -        return this.coloredBlock.getRenderColor(this.coloredBlock.getStateFromMeta(stack.getMetadata()));
 -    }
 -
--    public int getMetadata(int damage)
--    {
-+    public int getMetadata(int damage) {
+     public int getMetadata(int damage)
+     {
          return damage;
      }
  
--    public ItemColored setSubtypeNames(String[] names)
--    {
-+    public ItemColored setSubtypeNames(String[] names) {
-         this.subtypeNames = names;
-         return this;
-     }
- 
--    public String getUnlocalizedName(ItemStack stack)
--    {
--        if (this.subtypeNames == null)
--        {
-+    public String getUnlocalizedName(ItemStack stack) {
-+        if (this.subtypeNames == null) {
-             return super.getUnlocalizedName(stack);
--        }
--        else
--        {
-+        } else {
-             int i = stack.getMetadata();
-             return i >= 0 && i < this.subtypeNames.length ? super.getUnlocalizedName(stack) + "." + this.subtypeNames[i] : super.getUnlocalizedName(stack);
-         }
-     }
- }

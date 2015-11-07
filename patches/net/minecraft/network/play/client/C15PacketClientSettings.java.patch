@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\client\C15PacketClientSettings.java
 +++ src\main\java\net\minecraft\network\play\client\C15PacketClientSettings.java
-@@ -1,80 +1,63 @@
+@@ -1,35 +1,28 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -13,10 +13,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class C15PacketClientSettings implements Packet
--{
 +
-+public class C15PacketClientSettings implements Packet {
+ public class C15PacketClientSettings implements Packet
+ {
 +
      private String lang;
      private int view;
@@ -29,69 +28,25 @@
 -
 -    @SideOnly(Side.CLIENT)
 -    public C15PacketClientSettings(String p_i45946_1_, int p_i45946_2_, EntityPlayer.EnumChatVisibility p_i45946_3_, boolean p_i45946_4_, int p_i45946_5_)
--    {
++    public C15PacketClientSettings()
+     {
 -        this.lang = p_i45946_1_;
 -        this.view = p_i45946_2_;
 -        this.chatVisibility = p_i45946_3_;
 -        this.enableColors = p_i45946_4_;
 -        this.modelPartFlags = p_i45946_5_;
-+    public C15PacketClientSettings() {
      }
  
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
+     public void readPacketData(PacketBuffer buf) throws IOException
+     {
          this.lang = buf.readStringFromBuffer(7);
-         this.view = buf.readByte();
-         this.chatVisibility = EntityPlayer.EnumChatVisibility.getEnumChatVisibility(buf.readByte());
-         this.enableColors = buf.readBoolean();
-         this.modelPartFlags = buf.readUnsignedByte();
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeString(this.lang);
-         buf.writeByte(this.view);
-         buf.writeByte(this.chatVisibility.getChatVisibility());
-         buf.writeBoolean(this.enableColors);
-         buf.writeByte(this.modelPartFlags);
-     }
- 
--    public void processPacket(INetHandlerPlayServer handler)
--    {
-+    public void processPacket(INetHandlerPlayServer handler) {
-         handler.processClientSettings(this);
-     }
- 
--    public String getLang()
--    {
-+    public String getLang() {
-         return this.lang;
-     }
- 
--    public EntityPlayer.EnumChatVisibility getChatVisibility()
--    {
-+    public EntityPlayer.EnumChatVisibility getChatVisibility() {
-         return this.chatVisibility;
-     }
- 
--    public boolean isColorsEnabled()
--    {
-+    public boolean isColorsEnabled() {
-         return this.enableColors;
-     }
- 
--    public int getModelPartFlags()
--    {
-+    public int getModelPartFlags() {
+@@ -73,8 +66,8 @@
          return this.modelPartFlags;
      }
  
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.processPacket((INetHandlerPlayServer)handler);
-+    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
  }

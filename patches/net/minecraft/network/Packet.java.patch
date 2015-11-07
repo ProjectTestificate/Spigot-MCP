@@ -1,14 +1,12 @@
 --- decompiled\net\minecraft\network\Packet.java
 +++ src\main\java\net\minecraft\network\Packet.java
-@@ -1,12 +1,12 @@
- package net.minecraft.network;
+@@ -2,11 +2,12 @@
  
  import java.io.IOException;
  
--public interface Packet
--{
+ public interface Packet
+ {
 -    void readPacketData(PacketBuffer buf) throws IOException;
-+public interface Packet {
  
 -    void writePacketData(PacketBuffer buf) throws IOException;
 +    void readPacketData(PacketBuffer buf) throws IOException; // CraftBukkit - added throws // SpigotMCP NOTE -- MCP added this for us

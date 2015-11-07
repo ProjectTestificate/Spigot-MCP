@@ -1,14 +1,11 @@
 --- decompiled\net\minecraft\network\login\INetHandlerLoginClient.java
 +++ src\main\java\net\minecraft\network\login\INetHandlerLoginClient.java
-@@ -4,12 +4,12 @@
- import net.minecraft.network.login.server.S00PacketDisconnect;
- import net.minecraft.network.login.server.S01PacketEncryptionRequest;
+@@ -6,10 +6,11 @@
  import net.minecraft.network.login.server.S02PacketLoginSuccess;
  import net.minecraft.network.login.server.S03PacketEnableCompression;
  
--public interface INetHandlerLoginClient extends INetHandler
--{
-+public interface INetHandlerLoginClient extends INetHandler {
+ public interface INetHandlerLoginClient extends INetHandler
+ {
 +
      void handleEncryptionRequest(S01PacketEncryptionRequest packetIn);
  

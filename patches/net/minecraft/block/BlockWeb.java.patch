@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\block\BlockWeb.java
 +++ src\main\java\net\minecraft\block\BlockWeb.java
-@@ -1,62 +1,49 @@
+@@ -1,23 +1,23 @@
  package net.minecraft.block;
  
  import java.util.Random;
@@ -18,53 +18,24 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class BlockWeb extends Block
--{
 +
-+public class BlockWeb extends Block {
+ public class BlockWeb extends Block
+ {
 +
      private static final String __OBFID = "CL_00000333";
  
--    public BlockWeb()
--    {
-+    public BlockWeb() {
+     public BlockWeb()
+     {
          super(Material.web);
-         this.setCreativeTab(CreativeTabs.tabDecorations);
-     }
- 
--    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
--    {
-+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-         entityIn.setInWeb();
-     }
- 
--    public boolean isOpaqueCube()
--    {
-+    public boolean isOpaqueCube() {
-         return false;
-     }
- 
--    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
--    {
-+    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) {
-         return null;
-     }
- 
--    public boolean isFullCube()
--    {
-+    public boolean isFullCube() {
-         return false;
-     }
- 
--    public Item getItemDropped(IBlockState state, Random rand, int fortune)
--    {
-+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+@@ -47,16 +47,11 @@
+     public Item getItemDropped(IBlockState state, Random rand, int fortune)
+     {
          return Items.string;
      }
  
 -    protected boolean canSilkHarvest()
--    {
-+    public boolean canSilkHarvest() { // SpigotMCP -- Make public as bukkit assumes in the same package
++    public boolean canSilkHarvest()   // SpigotMCP -- Make public as bukkit assumes in the same package
+     {
          return true;
      }
  

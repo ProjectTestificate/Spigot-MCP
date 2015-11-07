@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\command\server\CommandBlockLogic.java
 +++ src\main\java\net\minecraft\command\server\CommandBlockLogic.java
-@@ -1,223 +1,322 @@
+@@ -1,35 +1,45 @@
  package net.minecraft.command.server;
  
 -import io.netty.buffer.ByteBuf;
@@ -28,14 +28,13 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public abstract class CommandBlockLogic implements ICommandSender
--{
 +import org.bukkit.command.CommandSender;
 +import org.bukkit.craftbukkit.command.VanillaCommandWrapper;
 +
 +import com.google.common.base.Joiner;
 +
-+public abstract class CommandBlockLogic implements ICommandSender {
+ public abstract class CommandBlockLogic implements ICommandSender
+ {
 +
      private static final SimpleDateFormat timestampFormat = new SimpleDateFormat("HH:mm:ss");
      private int successCount;
@@ -47,225 +46,139 @@
 +    public CommandSender sender; // CraftBukkit - add sender /// SpigotMCP -- Make public as bukkit assumes in ssame package
      private static final String __OBFID = "CL_00000128";
  
--    public int getSuccessCount()
--    {
-+    public int getSuccessCount() {
+     public int getSuccessCount()
+     {
          return this.successCount;
-     }
- 
--    public IChatComponent getLastOutput()
--    {
-+    public IChatComponent getLastOutput() {
-         return this.lastOutput;
-     }
- 
--    public void writeDataToNBT(NBTTagCompound tagCompound)
--    {
-+    public void writeDataToNBT(NBTTagCompound tagCompound) {
-         tagCompound.setString("Command", this.commandStored);
-         tagCompound.setInteger("SuccessCount", this.successCount);
-         tagCompound.setString("CustomName", this.customName);
-         tagCompound.setBoolean("TrackOutput", this.trackOutput);
- 
--        if (this.lastOutput != null && this.trackOutput)
--        {
-+        if (this.lastOutput != null && this.trackOutput) {
-             tagCompound.setString("LastOutput", IChatComponent.Serializer.componentToJson(this.lastOutput));
-         }
- 
-         this.resultStats.func_179670_b(tagCompound);
-     }
- 
--    public void readDataFromNBT(NBTTagCompound nbt)
--    {
-+    public void readDataFromNBT(NBTTagCompound nbt) {
-         this.commandStored = nbt.getString("Command");
-         this.successCount = nbt.getInteger("SuccessCount");
- 
--        if (nbt.hasKey("CustomName", 8))
--        {
-+        if (nbt.hasKey("CustomName", 8)) {
-             this.customName = nbt.getString("CustomName");
-         }
- 
--        if (nbt.hasKey("TrackOutput", 1))
--        {
-+        if (nbt.hasKey("TrackOutput", 1)) {
-             this.trackOutput = nbt.getBoolean("TrackOutput");
-         }
- 
--        if (nbt.hasKey("LastOutput", 8) && this.trackOutput)
--        {
-+        if (nbt.hasKey("LastOutput", 8) && this.trackOutput) {
-             this.lastOutput = IChatComponent.Serializer.jsonToComponent(nbt.getString("LastOutput"));
-         }
- 
-         this.resultStats.func_179668_a(nbt);
-     }
- 
--    public boolean canUseCommand(int permLevel, String commandName)
--    {
-+    public boolean canUseCommand(int permLevel, String commandName) {
-         return permLevel <= 2;
-     }
- 
--    public void setCommand(String command)
--    {
-+    public void setCommand(String command) {
-         this.commandStored = command;
-         this.successCount = 0;
-     }
- 
--    public String getCustomName()
--    {
-+    public String getCustomName() {
-         return this.commandStored;
-     }
- 
--    public void trigger(World worldIn)
--    {
--        if (worldIn.isRemote)
--        {
-+    public void trigger(World worldIn) {
-+        if (worldIn.isRemote) {
-             this.successCount = 0;
-         }
- 
-         MinecraftServer minecraftserver = MinecraftServer.getServer();
- 
--        if (minecraftserver != null && minecraftserver.func_175578_N() && minecraftserver.isCommandBlockEnabled())
--        {
-+        if (minecraftserver != null && minecraftserver.func_175578_N() && minecraftserver.isCommandBlockEnabled()) {
+@@ -108,11 +118,14 @@
              ICommandManager icommandmanager = minecraftserver.getCommandManager();
  
--            try
--            {
-+            try {
+             try
+             {
                  this.lastOutput = null;
 -                this.successCount = icommandmanager.executeCommand(this, this.commandStored);
--            }
--            catch (Throwable throwable)
--            {
 +                // CraftBukkit start - Handle command block commands using Bukkit dispatcher
 +                // this.successCount = icommandmanager.executeCommand(this, this.commandStored);
 +                this.successCount = executeCommand(this, sender, this.commandStored);
 +                // CraftBukkit end
-+            } catch (Throwable throwable) {
+             }
+             catch (Throwable throwable)
+             {
                  CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Executing command block");
                  CrashReportCategory crashreportcategory = crashreport.makeCategory("Command to be executed");
--                crashreportcategory.addCrashSectionCallable("Command", new Callable()
--                {
-+                crashreportcategory.addCrashSectionCallable("Command", new Callable() {
-+
-                     private static final String __OBFID = "CL_00002154";
--                    public String call()
--                    {
-+
-+                    public String call() {
-                         return CommandBlockLogic.this.getCustomName();
-                     }
-                 });
--                crashreportcategory.addCrashSectionCallable("Name", new Callable()
--                {
-+                crashreportcategory.addCrashSectionCallable("Name", new Callable() {
-+
-                     private static final String __OBFID = "CL_00002153";
--                    public String call()
--                    {
-+
-+                    public String call() {
-                         return CommandBlockLogic.this.getName();
-                     }
-                 });
-                 throw new ReportedException(crashreport);
-             }
--        }
--        else
--        {
-+        } else {
+@@ -139,10 +152,184 @@
+         {
              this.successCount = 0;
          }
      }
  
--    public String getName()
--    {
 +    // CraftBukkit start
 +
-+    public static int executeCommand(ICommandSender sender, CommandSender bSender, String command) {
++    public static int executeCommand(ICommandSender sender, CommandSender bSender, String command)
++    {
 +        org.bukkit.command.SimpleCommandMap commandMap = sender.getEntityWorld().getServer().getCommandMap();
 +        Joiner joiner = Joiner.on(" ");
-+        if (command.startsWith("/")) {
++
++        if (command.startsWith("/"))
++        {
 +            command = command.substring(1);
 +        }
++
 +        String[] args = command.split(" ");
 +        ArrayList<String[]> commands = new ArrayList();
-+
 +        String cmd = args[0];
++
 +        if (cmd.startsWith("minecraft:")) cmd = cmd.substring("minecraft:".length());
++
 +        if (cmd.startsWith("bukkit:")) cmd = cmd.substring("bukkit:".length());
 +
 +        // Block disallowed commands
-+        if (cmd.equalsIgnoreCase("stop") || cmd.equalsIgnoreCase("kick") || cmd.equalsIgnoreCase("op") || cmd.equalsIgnoreCase("deop") || cmd.equalsIgnoreCase("ban") || cmd.equalsIgnoreCase("ban-ip") || cmd.equalsIgnoreCase("pardon") || cmd.equalsIgnoreCase("pardon-ip") || cmd.equalsIgnoreCase("reload")) {
++        if (cmd.equalsIgnoreCase("stop") || cmd.equalsIgnoreCase("kick") || cmd.equalsIgnoreCase("op") || cmd.equalsIgnoreCase("deop") || cmd.equalsIgnoreCase("ban") || cmd.equalsIgnoreCase("ban-ip") || cmd.equalsIgnoreCase("pardon") || cmd.equalsIgnoreCase("pardon-ip") || cmd.equalsIgnoreCase("reload"))
++        {
 +            return 0;
 +        }
 +
 +        // If the world has no players don't run
-+        if (sender.getEntityWorld().playerEntities.isEmpty()) {
++        if (sender.getEntityWorld().playerEntities.isEmpty())
++        {
 +            return 0;
 +        }
 +
 +        // Handle vanilla commands;
 +        org.bukkit.command.Command commandBlockCommand = commandMap.getCommand(args[0]);
-+        if (sender.getEntityWorld().getServer().getCommandBlockOverride(args[0])) {
++
++        if (sender.getEntityWorld().getServer().getCommandBlockOverride(args[0]))
++        {
 +            commandBlockCommand = commandMap.getCommand("minecraft:" + args[0]);
 +        }
-+        if (commandBlockCommand instanceof VanillaCommandWrapper) {
++
++        if (commandBlockCommand instanceof VanillaCommandWrapper)
++        {
 +            command = command.trim();
-+            if (command.startsWith("/")) {
++
++            if (command.startsWith("/"))
++            {
 +                command = command.substring(1);
 +            }
++
 +            String as[] = command.split(" ");
 +            as = VanillaCommandWrapper.dropFirstArgument(as);
-+            if (!((VanillaCommandWrapper) commandBlockCommand).testPermission(bSender)) {
++
++            if (!((VanillaCommandWrapper)commandBlockCommand).testPermission(bSender))
++            {
 +                return 0;
 +            }
-+            return ((VanillaCommandWrapper) commandBlockCommand).dispatchVanillaCommand(bSender, sender, as);
++
++            return ((VanillaCommandWrapper)commandBlockCommand).dispatchVanillaCommand(bSender, sender, as);
 +        }
 +
 +        // Make sure this is a valid command
-+        if (commandMap.getCommand(args[0]) == null) {
++        if (commandMap.getCommand(args[0]) == null)
++        {
 +            return 0;
 +        }
 +
 +        // testfor command requires special handling
-+        if (args[0].equalsIgnoreCase("testfor")) {
-+            if (args.length < 2) {
++        if (args[0].equalsIgnoreCase("testfor"))
++        {
++            if (args.length < 2)
++            {
 +                return 0;
 +            }
 +
-+            EntityPlayer[] players = ((java.util.List<EntityPlayer>) PlayerSelector.matchEntities(sender, args[1], net.minecraft.entity.player.EntityPlayerMP.class)).toArray(new EntityPlayer[0]);
++            EntityPlayer[] players = ((java.util.List<EntityPlayer>)PlayerSelector.matchEntities(sender, args[1], net.minecraft.entity.player.EntityPlayerMP.class)).toArray(new EntityPlayer[0]);
 +
-+            if (players != null && players.length > 0) {
++            if (players != null && players.length > 0)
++            {
 +                return players.length;
-+            } else {
++            }
++            else
++            {
 +                EntityPlayer player = MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(args[1]);
-+                if (player == null) {
++
++                if (player == null)
++                {
 +                    return 0;
-+                } else {
++                }
++                else
++                {
 +                    return 1;
 +                }
 +            }
 +        }
 +
 +        commands.add(args);
-+
 +        // Find positions of command block syntax, if any
 +        ArrayList<String[]> newCommands = new ArrayList();
-+        for (int i = 0; i < args.length; i++) {
-+            if (PlayerSelector.hasArguments(args[i])) {
-+                for (int j = 0; j < commands.size(); j++) {
++
++        for (int i = 0; i < args.length; i++)
++        {
++            if (PlayerSelector.hasArguments(args[i]))
++            {
++                for (int j = 0; j < commands.size(); j++)
++                {
 +                    newCommands.addAll(buildCommands(sender, commands.get(j), i));
 +                }
++
 +                ArrayList<String[]> temp = commands;
 +                commands = newCommands;
 +                newCommands = temp;
@@ -276,19 +189,29 @@
 +        int completed = 0;
 +
 +        // Now dispatch all of the commands we ended up with
-+        for (int i = 0; i < commands.size(); i++) {
-+            try {
-+                if (commandMap.dispatch(bSender, joiner.join(java.util.Arrays.asList(commands.get(i))))) {
++        for (int i = 0; i < commands.size(); i++)
++        {
++            try
++            {
++                if (commandMap.dispatch(bSender, joiner.join(java.util.Arrays.asList(commands.get(i)))))
++                {
 +                    completed++;
 +                }
-+            } catch (Throwable exception) {
-+                if (sender instanceof TileEntityCommandListener) {
++            }
++            catch (Throwable exception)
++            {
++                if (sender instanceof TileEntityCommandListener)
++                {
 +                    BlockPos position = sender.getPosition();
 +                    MinecraftServer.getServer().logWarning(String.format("CommandBlock at (%d,%d,%d) failed to handle command", position.getX(), position.getY(), position.getZ(), exception));
-+                } else if (sender.getClass().getName().equals("net.minecraft.entity.EntityMinecartCommandBlock$1")) {
++                }
++                else if (sender.getClass().getName().equals("net.minecraft.entity.EntityMinecartCommandBlock$1"))
++                {
 +                    BlockPos position = sender.getPosition();
 +                    MinecraftServer.getServer().logWarning(String.format("MinecartCommandBlock at (%d,%d,%d) failed to handle command", position.getX(), position.getY(), position.getZ(), exception)); //SpigotMCP -- Remove access$000 stuff
-+                } else {
++                }
++                else
++                {
 +                    MinecraftServer.getServer().logWarning(String.format("Unknown CommandBlock failed to handle command", exception)); //SpigotMCP -- Remove access$000 stuff
 +                }
 +            }
@@ -297,15 +220,20 @@
 +        return completed;
 +    }
 +
-+    private static java.util.ArrayList buildCommands(ICommandSender sender, String[] args, int pos) {
++    private static java.util.ArrayList buildCommands(ICommandSender sender, String[] args, int pos)
++    {
 +        ArrayList<String[]> commands = new ArrayList();
 +        java.util.List<EntityPlayerMP> players = PlayerSelector.matchEntities(sender, args[pos], net.minecraft.entity.player.EntityPlayerMP.class); // SpigotMCP - fix fernflower stupidity
 +
-+        if (players != null) {
-+            for (EntityPlayerMP player : players) {
-+                if (player.worldObj != sender.getEntityWorld()) {
++        if (players != null)
++        {
++            for (EntityPlayerMP player : players)
++            {
++                if (player.worldObj != sender.getEntityWorld())
++                {
 +                    continue;
 +                }
++
 +                String[] command = args.clone();
 +                command[pos] = player.getName();
 +                commands.add(command);
@@ -317,43 +245,12 @@
 +
 +    // CraftBukkit end
 +
-+    public String getName() {
+     public String getName()
+     {
          return this.customName;
      }
  
--    public IChatComponent getDisplayName()
--    {
-+    public IChatComponent getDisplayName() {
-         return new ChatComponentText(this.getName());
-     }
- 
--    public void setName(String p_145754_1_)
--    {
-+    public void setName(String p_145754_1_) {
-         this.customName = p_145754_1_;
-     }
- 
--    public void addChatMessage(IChatComponent message)
--    {
--        if (this.trackOutput && this.getEntityWorld() != null && !this.getEntityWorld().isRemote)
--        {
-+    public void addChatMessage(IChatComponent message) {
-+        if (this.trackOutput && this.getEntityWorld() != null && !this.getEntityWorld().isRemote) {
-             this.lastOutput = (new ChatComponentText("[" + timestampFormat.format(new Date()) + "] ")).appendSibling(message);
-             this.func_145756_e();
-         }
-     }
- 
--    public boolean sendCommandFeedback()
--    {
-+    public boolean sendCommandFeedback() {
-         MinecraftServer minecraftserver = MinecraftServer.getServer();
-         return minecraftserver == null || !minecraftserver.func_175578_N() || minecraftserver.worldServers[0].getGameRules().getGameRuleBooleanValue("commandBlockOutput");
-     }
- 
--    public void setCommandStat(CommandResultStats.Type type, int amount)
--    {
-+    public void setCommandStat(CommandResultStats.Type type, int amount) {
+@@ -176,16 +363,10 @@
          this.resultStats.func_179672_a(this, type, amount);
      }
  
@@ -365,48 +262,8 @@
 -    @SideOnly(Side.CLIENT)
 -    public abstract void func_145757_a(ByteBuf p_145757_1_);
 -
--    public void setLastOutput(IChatComponent lastOutputMessage)
--    {
-+    public void setLastOutput(IChatComponent lastOutputMessage) {
+     public void setLastOutput(IChatComponent lastOutputMessage)
+     {
          this.lastOutput = lastOutputMessage;
      }
  
--    public void setTrackOutput(boolean shouldTrackOutput)
--    {
-+    public void setTrackOutput(boolean shouldTrackOutput) {
-         this.trackOutput = shouldTrackOutput;
-     }
- 
--    public boolean shouldTrackOutput()
--    {
-+    public boolean shouldTrackOutput() {
-         return this.trackOutput;
-     }
- 
--    public boolean func_175574_a(EntityPlayer p_175574_1_)
--    {
--        if (!p_175574_1_.capabilities.isCreativeMode)
--        {
-+    public boolean func_175574_a(EntityPlayer p_175574_1_) {
-+        if (!p_175574_1_.capabilities.isCreativeMode) {
-             return false;
--        }
--        else
--        {
--            if (p_175574_1_.getEntityWorld().isRemote)
--            {
-+        } else {
-+            if (p_175574_1_.getEntityWorld().isRemote) {
-                 p_175574_1_.openEditCommandBlock(this);
-             }
- 
-             return true;
-         }
-     }
- 
--    public CommandResultStats getCommandResultStats()
--    {
-+    public CommandResultStats getCommandResultStats() {
-         return this.resultStats;
-     }
- }

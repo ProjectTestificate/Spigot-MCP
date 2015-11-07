@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S24PacketBlockAction.java
 +++ src\main\java\net\minecraft\network\play\server\S24PacketBlockAction.java
-@@ -1,80 +1,53 @@
+@@ -1,26 +1,29 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -14,10 +14,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S24PacketBlockAction implements Packet
--{
 +
-+public class S24PacketBlockAction implements Packet {
+ public class S24PacketBlockAction implements Packet
+ {
 +
      private BlockPos field_179826_a;
      private int field_148872_d;
@@ -26,39 +25,17 @@
      private static final String __OBFID = "CL_00001286";
  
 -    public S24PacketBlockAction() {}
-+    public S24PacketBlockAction() {
++    public S24PacketBlockAction()
++    {
 +    }
  
--    public S24PacketBlockAction(BlockPos p_i45989_1_, Block p_i45989_2_, int p_i45989_3_, int p_i45989_4_)
--    {
-+    public S24PacketBlockAction(BlockPos p_i45989_1_, Block p_i45989_2_, int p_i45989_3_, int p_i45989_4_) {
+     public S24PacketBlockAction(BlockPos p_i45989_1_, Block p_i45989_2_, int p_i45989_3_, int p_i45989_4_)
+     {
          this.field_179826_a = p_i45989_1_;
          this.field_148872_d = p_i45989_3_;
-         this.field_148873_e = p_i45989_4_;
-         this.field_148871_f = p_i45989_2_;
-     }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.field_179826_a = buf.readBlockPos();
-         this.field_148872_d = buf.readUnsignedByte();
-         this.field_148873_e = buf.readUnsignedByte();
-         this.field_148871_f = Block.getBlockById(buf.readVarIntFromBuffer() & 4095);
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeBlockPos(this.field_179826_a);
-         buf.writeByte(this.field_148872_d);
-         buf.writeByte(this.field_148873_e);
-         buf.writeVarIntToBuffer(Block.getIdFromBlock(this.field_148871_f) & 4095);
-     }
- 
--    public void func_180726_a(INetHandlerPlayClient p_180726_1_)
--    {
-+    public void func_180726_a(INetHandlerPlayClient p_180726_1_) {
+@@ -47,34 +50,11 @@
+     public void func_180726_a(INetHandlerPlayClient p_180726_1_)
+     {
          p_180726_1_.handleBlockAction(this);
      }
  
@@ -66,15 +43,14 @@
 -    public BlockPos func_179825_a()
 -    {
 -        return this.field_179826_a;
-+    public void processPacket(INetHandler handler) {
+-    }
+-
+     public void processPacket(INetHandler handler)
+     {
+-        this.func_180726_a((INetHandlerPlayClient)handler);
 +        this.func_180726_a((INetHandlerPlayClient) handler);
      }
  
--    public void processPacket(INetHandler handler)
--    {
--        this.func_180726_a((INetHandlerPlayClient)handler);
--    }
--
 -    @SideOnly(Side.CLIENT)
 -    public int getData1()
 -    {

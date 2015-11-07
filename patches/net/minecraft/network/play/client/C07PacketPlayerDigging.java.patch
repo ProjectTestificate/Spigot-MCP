@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\client\C07PacketPlayerDigging.java
 +++ src\main\java\net\minecraft\network\play\client\C07PacketPlayerDigging.java
-@@ -1,75 +1,60 @@
+@@ -1,37 +1,32 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -14,10 +14,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class C07PacketPlayerDigging implements Packet
--{
 +
-+public class C07PacketPlayerDigging implements Packet {
+ public class C07PacketPlayerDigging implements Packet
+ {
 +
      private BlockPos position;
      private EnumFacing facing;
@@ -28,66 +27,32 @@
 -
 -    @SideOnly(Side.CLIENT)
 -    public C07PacketPlayerDigging(C07PacketPlayerDigging.Action statusIn, BlockPos posIn, EnumFacing facingIn)
--    {
++    public C07PacketPlayerDigging()
+     {
 -        this.status = statusIn;
 -        this.position = posIn;
 -        this.facing = facingIn;
-+    public C07PacketPlayerDigging() {
      }
  
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
+     public void readPacketData(PacketBuffer buf) throws IOException
+     {
 -        this.status = (C07PacketPlayerDigging.Action)buf.readEnumValue(C07PacketPlayerDigging.Action.class);
-+    public void readPacketData(PacketBuffer buf) throws IOException {
 +        this.status = (C07PacketPlayerDigging.Action) buf.readEnumValue(C07PacketPlayerDigging.Action.class);
          this.position = buf.readBlockPos();
          this.facing = EnumFacing.getFront(buf.readUnsignedByte());
      }
  
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeEnumValue(this.status);
-         buf.writeBlockPos(this.position);
-         buf.writeByte(this.facing.getIndex());
-     }
- 
--    public void processPacket(INetHandlerPlayServer handler)
--    {
-+    public void processPacket(INetHandlerPlayServer handler) {
-         handler.processPlayerDigging(this);
-     }
- 
--    public BlockPos func_179715_a()
--    {
-+    public BlockPos func_179715_a() {
-         return this.position;
-     }
- 
--    public EnumFacing getFacing()
--    {
-+    public EnumFacing getFacing() {
-         return this.facing;
-     }
- 
--    public C07PacketPlayerDigging.Action getStatus()
--    {
-+    public C07PacketPlayerDigging.Action getStatus() {
+     public void writePacketData(PacketBuffer buf) throws IOException
+@@ -61,11 +56,11 @@
          return this.status;
      }
  
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.processPacket((INetHandlerPlayServer)handler);
-+    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
  
--    public static enum Action
--    {
-+    public static enum Action {
+     public static enum Action
+     {
          START_DESTROY_BLOCK,
-         ABORT_DESTROY_BLOCK,
-         STOP_DESTROY_BLOCK,
-         DROP_ALL_ITEMS,
-         DROP_ITEM,

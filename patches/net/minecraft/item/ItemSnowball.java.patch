@@ -1,40 +1,14 @@
 --- decompiled\net\minecraft\item\ItemSnowball.java
 +++ src\main\java\net\minecraft\item\ItemSnowball.java
-@@ -4,31 +4,27 @@
- import net.minecraft.entity.player.EntityPlayer;
- import net.minecraft.entity.projectile.EntitySnowball;
+@@ -6,10 +6,11 @@
  import net.minecraft.stats.StatList;
  import net.minecraft.world.World;
  
--public class ItemSnowball extends Item
--{
-+public class ItemSnowball extends Item {
+ public class ItemSnowball extends Item
+ {
 +
      private static final String __OBFID = "CL_00000069";
  
--    public ItemSnowball()
--    {
-+    public ItemSnowball() {
+     public ItemSnowball()
+     {
          this.maxStackSize = 16;
-         this.setCreativeTab(CreativeTabs.tabMisc);
-     }
- 
--    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
--    {
--        if (!playerIn.capabilities.isCreativeMode)
--        {
-+    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
-+        if (!playerIn.capabilities.isCreativeMode) {
-             --itemStackIn.stackSize;
-         }
- 
-         worldIn.playSoundAtEntity(playerIn, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
- 
--        if (!worldIn.isRemote)
--        {
-+        if (!worldIn.isRemote) {
-             worldIn.spawnEntityInWorld(new EntitySnowball(worldIn, playerIn));
-         }
- 
-         playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
-         return itemStackIn;

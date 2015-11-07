@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\stats\StatFileWriter.java
 +++ src\main\java\net\minecraft\stats\StatFileWriter.java
-@@ -1,89 +1,68 @@
+@@ -1,17 +1,21 @@
  package net.minecraft.stats;
  
 -import com.google.common.collect.Maps;
@@ -12,45 +12,30 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class StatFileWriter
--{
 +import org.bukkit.craftbukkit.event.CraftEventFactory;
 +import org.bukkit.event.Cancellable;
 +
 +import com.google.common.collect.Maps;
 +
-+public class StatFileWriter {
+ public class StatFileWriter
+ {
 +
      protected final Map statsData = Maps.newConcurrentMap();
      private static final String __OBFID = "CL_00001481";
  
--    public boolean hasAchievementUnlocked(Achievement p_77443_1_)
--    {
-+    public boolean hasAchievementUnlocked(Achievement p_77443_1_) {
-         return this.readStat(p_77443_1_) > 0;
-     }
+     public boolean hasAchievementUnlocked(Achievement p_77443_1_)
+     {
+@@ -25,31 +29,20 @@
  
--    public boolean canUnlockAchievement(Achievement p_77442_1_)
--    {
-+    public boolean canUnlockAchievement(Achievement p_77442_1_) {
-         return p_77442_1_.parentAchievement == null || this.hasAchievementUnlocked(p_77442_1_.parentAchievement);
-     }
- 
--    public void func_150871_b(EntityPlayer p_150871_1_, StatBase p_150871_2_, int p_150871_3_)
--    {
--        if (!p_150871_2_.isAchievement() || this.canUnlockAchievement((Achievement)p_150871_2_))
--        {
-+    public void func_150871_b(EntityPlayer p_150871_1_, StatBase p_150871_2_, int p_150871_3_) {
-+        if (!p_150871_2_.isAchievement() || this.canUnlockAchievement((Achievement) p_150871_2_)) {
+     public void func_150871_b(EntityPlayer p_150871_1_, StatBase p_150871_2_, int p_150871_3_)
+     {
+         if (!p_150871_2_.isAchievement() || this.canUnlockAchievement((Achievement)p_150871_2_))
+         {
+-            this.func_150873_a(p_150871_1_, p_150871_2_, this.readStat(p_150871_2_) + p_150871_3_);
+-        }
+-    }
 +            // CraftBukkit start - fire Statistic events
 +            Cancellable cancellable = CraftEventFactory.handleStatisticsIncrease(p_150871_1_, p_150871_2_, this.readStat(p_150871_2_), p_150871_3_);
-+            if (cancellable != null && cancellable.isCancelled()) {
-+                return;
-+            }
-+            // CraftBukkit end
-             this.func_150873_a(p_150871_1_, p_150871_2_, this.readStat(p_150871_2_) + p_150871_3_);
-         }
-     }
  
 -    @SideOnly(Side.CLIENT)
 -    public int func_150874_c(Achievement p_150874_1_)
@@ -62,59 +47,19 @@
 -        else
 -        {
 -            int i = 0;
-+    public void func_150873_a(EntityPlayer p_150873_1_, StatBase p_150873_2_, int p_150873_3_) {
-+        TupleIntJsonSerializable tupleintjsonserializable = (TupleIntJsonSerializable) this.statsData.get(p_150873_2_);
- 
+-
 -            for (Achievement achievement1 = p_150874_1_.parentAchievement; achievement1 != null && !this.hasAchievementUnlocked(achievement1); ++i)
--            {
++            if (cancellable != null && cancellable.isCancelled())
+             {
 -                achievement1 = achievement1.parentAchievement;
--            }
--
++                return;
+             }
+ 
 -            return i;
--        }
--    }
--
--    public void func_150873_a(EntityPlayer p_150873_1_, StatBase p_150873_2_, int p_150873_3_)
--    {
--        TupleIntJsonSerializable tupleintjsonserializable = (TupleIntJsonSerializable)this.statsData.get(p_150873_2_);
--
--        if (tupleintjsonserializable == null)
--        {
-+        if (tupleintjsonserializable == null) {
-             tupleintjsonserializable = new TupleIntJsonSerializable();
-             this.statsData.put(p_150873_2_, tupleintjsonserializable);
++            // CraftBukkit end
++            this.func_150873_a(p_150871_1_, p_150871_2_, this.readStat(p_150871_2_) + p_150871_3_);
          }
- 
-         tupleintjsonserializable.setIntegerValue(p_150873_3_);
      }
  
--    public int readStat(StatBase stat)
--    {
--        TupleIntJsonSerializable tupleintjsonserializable = (TupleIntJsonSerializable)this.statsData.get(stat);
-+    public int readStat(StatBase stat) {
-+        TupleIntJsonSerializable tupleintjsonserializable = (TupleIntJsonSerializable) this.statsData.get(stat);
-         return tupleintjsonserializable == null ? 0 : tupleintjsonserializable.getIntegerValue();
-     }
- 
--    public IJsonSerializable func_150870_b(StatBase p_150870_1_)
--    {
--        TupleIntJsonSerializable tupleintjsonserializable = (TupleIntJsonSerializable)this.statsData.get(p_150870_1_);
-+    public IJsonSerializable func_150870_b(StatBase p_150870_1_) {
-+        TupleIntJsonSerializable tupleintjsonserializable = (TupleIntJsonSerializable) this.statsData.get(p_150870_1_);
-         return tupleintjsonserializable != null ? tupleintjsonserializable.getJsonSerializableValue() : null;
-     }
- 
--    public IJsonSerializable func_150872_a(StatBase p_150872_1_, IJsonSerializable p_150872_2_)
--    {
--        TupleIntJsonSerializable tupleintjsonserializable = (TupleIntJsonSerializable)this.statsData.get(p_150872_1_);
-+    public IJsonSerializable func_150872_a(StatBase p_150872_1_, IJsonSerializable p_150872_2_) {
-+        TupleIntJsonSerializable tupleintjsonserializable = (TupleIntJsonSerializable) this.statsData.get(p_150872_1_);
- 
--        if (tupleintjsonserializable == null)
--        {
-+        if (tupleintjsonserializable == null) {
-             tupleintjsonserializable = new TupleIntJsonSerializable();
-             this.statsData.put(p_150872_1_, tupleintjsonserializable);
-         }
- 
-         tupleintjsonserializable.setJsonSerializableValue(p_150872_2_);
+     public void func_150873_a(EntityPlayer p_150873_1_, StatBase p_150873_2_, int p_150873_3_)
+     {

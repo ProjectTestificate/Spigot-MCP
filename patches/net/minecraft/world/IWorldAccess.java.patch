@@ -1,14 +1,11 @@
 --- decompiled\net\minecraft\world\IWorldAccess.java
 +++ src\main\java\net\minecraft\world\IWorldAccess.java
-@@ -2,23 +2,23 @@
- 
- import net.minecraft.entity.Entity;
+@@ -4,21 +4,22 @@
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.util.BlockPos;
  
--public interface IWorldAccess
--{
-+public interface IWorldAccess {
+ public interface IWorldAccess
+ {
 +
      void markBlockForUpdate(BlockPos pos);
  

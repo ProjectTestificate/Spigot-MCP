@@ -13,7 +13,7 @@
      public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
      private static final String __OBFID = "CL_00000210";
  
-@@ -47,14 +49,16 @@
+@@ -47,14 +49,15 @@
  
              if (i < 3)
              {
@@ -25,14 +25,13 @@
 -                    worldIn.setBlockState(blockpos1, this.getDefaultState());
 +                    // worldIn.setBlockState(blockpos1, this.getDefaultState()); // CraftBukkit
                      IBlockState iblockstate1 = state.withProperty(AGE, Integer.valueOf(0));
-+
 +                    CraftEventFactory.handleBlockGrowEvent(worldIn, blockpos1.getX(), blockpos1.getY(), blockpos1.getZ(), this, 0); // CraftBukkit
                      worldIn.setBlockState(pos, iblockstate1, 4);
                      this.onNeighborBlockChange(worldIn, blockpos1, iblockstate1, this);
                  }
                  else
                  {
-@@ -118,11 +122,13 @@
+@@ -118,11 +121,13 @@
          return block == Blocks.cactus || block == Blocks.sand;
      }
  

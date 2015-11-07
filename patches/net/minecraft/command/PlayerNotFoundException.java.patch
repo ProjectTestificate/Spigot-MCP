@@ -1,23 +1,21 @@
 --- decompiled\net\minecraft\command\PlayerNotFoundException.java
 +++ src\main\java\net\minecraft\command\PlayerNotFoundException.java
-@@ -1,16 +1,14 @@
+@@ -1,16 +1,17 @@
  package net.minecraft.command;
  
--public class PlayerNotFoundException extends CommandException
--{
-+public class PlayerNotFoundException extends CommandException {
+ public class PlayerNotFoundException extends CommandException
+ {
 +
      private static final String __OBFID = "CL_00001190";
  
--    public PlayerNotFoundException()
--    {
-+    public PlayerNotFoundException() {
+     public PlayerNotFoundException()
+     {
          this("commands.generic.player.notFound", new Object[0]);
      }
  
 -    public PlayerNotFoundException(String message, Object ... replacements)
--    {
-+    public PlayerNotFoundException(String message, Object... replacements) {
++    public PlayerNotFoundException(String message, Object... replacements)
+     {
          super(message, replacements);
      }
  }

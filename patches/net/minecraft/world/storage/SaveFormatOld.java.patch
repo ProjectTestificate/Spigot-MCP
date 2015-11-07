@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\world\storage\SaveFormatOld.java
 +++ src\main\java\net\minecraft\world\storage\SaveFormatOld.java
-@@ -1,250 +1,127 @@
+@@ -1,26 +1,22 @@
  package net.minecraft.world.storage;
  
 -import com.google.common.collect.Lists;
@@ -20,22 +20,18 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  
--public class SaveFormatOld implements ISaveFormat
--{
-+public class SaveFormatOld implements ISaveFormat {
+ public class SaveFormatOld implements ISaveFormat
+ {
 +
      private static final Logger logger = LogManager.getLogger();
 -    protected final File savesDirectory;
 +    public final File savesDirectory;
      private static final String __OBFID = "CL_00000586";
  
--    public SaveFormatOld(File p_i2147_1_)
--    {
--        if (!p_i2147_1_.exists())
--        {
-+    public SaveFormatOld(File p_i2147_1_) {
-+        if (!p_i2147_1_.exists()) {
-             p_i2147_1_.mkdirs();
+     public SaveFormatOld(File p_i2147_1_)
+     {
+         if (!p_i2147_1_.exists())
+@@ -29,37 +25,14 @@
          }
  
          this.savesDirectory = p_i2147_1_;
@@ -43,9 +39,9 @@
  
 -    @SideOnly(Side.CLIENT)
 -    public String getName()
--    {
++    public void flushCache()
+     {
 -        return "Old Format";
-+    public void flushCache() {
      }
  
 -    @SideOnly(Side.CLIENT)
@@ -69,58 +65,12 @@
 -
 -    public void flushCache() {}
 -
--    public WorldInfo getWorldInfo(String saveName)
--    {
-+    public WorldInfo getWorldInfo(String saveName) {
+     public WorldInfo getWorldInfo(String saveName)
+     {
          File file1 = new File(this.savesDirectory, saveName);
  
--        if (!file1.exists())
--        {
-+        if (!file1.exists()) {
-             return null;
--        }
--        else
--        {
-+        } else {
-             File file2 = new File(file1, "level.dat");
-             NBTTagCompound nbttagcompound;
-             NBTTagCompound nbttagcompound1;
- 
--            if (file2.exists())
--            {
--                try
--                {
-+            if (file2.exists()) {
-+                try {
-                     nbttagcompound = CompressedStreamTools.readCompressed(new FileInputStream(file2));
-                     nbttagcompound1 = nbttagcompound.getCompoundTag("Data");
-                     return new WorldInfo(nbttagcompound1);
--                }
--                catch (Exception exception1)
--                {
-+                } catch (Exception exception1) {
-                     logger.error("Exception reading " + file2, exception1);
-                 }
-             }
- 
-             file2 = new File(file1, "level.dat_old");
- 
--            if (file2.exists())
--            {
--                try
--                {
-+            if (file2.exists()) {
-+                try {
-                     nbttagcompound = CompressedStreamTools.readCompressed(new FileInputStream(file2));
-                     nbttagcompound1 = nbttagcompound.getCompoundTag("Data");
-                     return new WorldInfo(nbttagcompound1);
--                }
--                catch (Exception exception)
--                {
-+                } catch (Exception exception) {
-                     logger.error("Exception reading " + file2, exception);
-                 }
-             }
+         if (!file1.exists())
+@@ -104,61 +77,10 @@
  
              return null;
          }
@@ -177,105 +127,33 @@
 -        }
 -    }
 -
--    public boolean deleteWorldDirectory(String p_75802_1_)
--    {
-+    public boolean deleteWorldDirectory(String p_75802_1_) {
+     public boolean deleteWorldDirectory(String p_75802_1_)
+     {
          File file1 = new File(this.savesDirectory, p_75802_1_);
  
--        if (!file1.exists())
--        {
-+        if (!file1.exists()) {
-             return true;
--        }
--        else
--        {
-+        } else {
-             logger.info("Deleting level " + p_75802_1_);
- 
--            for (int i = 1; i <= 5; ++i)
--            {
-+            for (int i = 1; i <= 5; ++i) {
-                 logger.info("Attempt " + i + "...");
- 
--                if (deleteFiles(file1.listFiles()))
--                {
-+                if (deleteFiles(file1.listFiles())) {
-                     break;
-                 }
- 
-                 logger.warn("Unsuccessful in deleting contents.");
- 
--                if (i < 5)
--                {
--                    try
--                    {
-+                if (i < 5) {
-+                    try {
-                         Thread.sleep(500L);
--                    }
--                    catch (InterruptedException interruptedexception)
--                    {
-+                    } catch (InterruptedException interruptedexception) {
-                         ;
-                     }
-                 }
-             }
- 
-             return file1.delete();
-         }
-     }
- 
--    protected static boolean deleteFiles(File[] p_75807_0_)
--    {
--        for (int i = 0; i < p_75807_0_.length; ++i)
--        {
-+    protected static boolean deleteFiles(File[] p_75807_0_) {
-+        for (int i = 0; i < p_75807_0_.length; ++i) {
-             File file1 = p_75807_0_[i];
-             logger.debug("Deleting " + file1);
- 
--            if (file1.isDirectory() && !deleteFiles(file1.listFiles()))
--            {
-+            if (file1.isDirectory() && !deleteFiles(file1.listFiles())) {
-                 logger.warn("Couldn\'t delete directory " + file1);
-                 return false;
-             }
- 
--            if (!file1.delete())
--            {
-+            if (!file1.delete()) {
-                 logger.warn("Couldn\'t delete file " + file1);
-                 return false;
-             }
-         }
- 
-         return true;
-     }
- 
--    public ISaveHandler getSaveLoader(String p_75804_1_, boolean p_75804_2_)
--    {
-+    public ISaveHandler getSaveLoader(String p_75804_1_, boolean p_75804_2_) {
+         if (!file1.exists())
+@@ -223,28 +145,16 @@
+     public ISaveHandler getSaveLoader(String p_75804_1_, boolean p_75804_2_)
+     {
          return new SaveHandler(this.savesDirectory, p_75804_1_, p_75804_2_);
      }
  
 -    @SideOnly(Side.CLIENT)
 -    public boolean func_154334_a(String saveName)
 -    {
-+    public boolean isOldMapFormat(String saveName) {
-         return false;
-     }
- 
--    public boolean isOldMapFormat(String saveName)
--    {
-+    public boolean convertMapFormat(String filename, IProgressUpdate p_75805_2_) {
-         return false;
-     }
- 
--    public boolean convertMapFormat(String filename, IProgressUpdate p_75805_2_)
--    {
 -        return false;
 -    }
 -
+     public boolean isOldMapFormat(String saveName)
+     {
+         return false;
+     }
+ 
+     public boolean convertMapFormat(String filename, IProgressUpdate p_75805_2_)
+     {
+         return false;
+     }
+ 
 -    @SideOnly(Side.CLIENT)
 -    public boolean canLoadWorld(String p_90033_1_)
 -    {

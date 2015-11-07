@@ -1,11 +1,10 @@
 --- decompiled\net\minecraft\inventory\IInvBasic.java
 +++ src\main\java\net\minecraft\inventory\IInvBasic.java
-@@ -1,6 +1,6 @@
+@@ -1,6 +1,7 @@
  package net.minecraft.inventory;
  
--public interface IInvBasic
--{
-+public interface IInvBasic {
+ public interface IInvBasic
+ {
 +
      void onInventoryChanged(InventoryBasic p_76316_1_);
  }

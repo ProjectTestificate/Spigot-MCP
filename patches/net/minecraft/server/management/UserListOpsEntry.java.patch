@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\server\management\UserListOpsEntry.java
 +++ src\main\java\net\minecraft\server\management\UserListOpsEntry.java
-@@ -1,63 +1,52 @@
+@@ -1,13 +1,15 @@
  package net.minecraft.server.management;
  
 +import java.util.UUID;
@@ -9,74 +9,11 @@
  import com.mojang.authlib.GameProfile;
 -import java.util.UUID;
  
--public class UserListOpsEntry extends UserListEntry
--{
-+public class UserListOpsEntry extends UserListEntry {
+ public class UserListOpsEntry extends UserListEntry
+ {
 +
      private final int field_152645_a;
      private static final String __OBFID = "CL_00001878";
  
--    public UserListOpsEntry(GameProfile profile, int p_i46328_2_)
--    {
-+    public UserListOpsEntry(GameProfile profile, int p_i46328_2_) {
-         super(profile);
-         this.field_152645_a = p_i46328_2_;
-     }
- 
--    public UserListOpsEntry(JsonObject p_i1150_1_)
--    {
-+    public UserListOpsEntry(JsonObject p_i1150_1_) {
-         super(func_152643_b(p_i1150_1_), p_i1150_1_);
-         this.field_152645_a = p_i1150_1_.has("level") ? p_i1150_1_.get("level").getAsInt() : 0;
-     }
- 
--    public int getPermissionLevel()
--    {
-+    public int getPermissionLevel() {
-         return this.field_152645_a;
-     }
- 
--    protected void onSerialization(JsonObject data)
--    {
--        if (this.getValue() != null)
--        {
--            data.addProperty("uuid", ((GameProfile)this.getValue()).getId() == null ? "" : ((GameProfile)this.getValue()).getId().toString());
--            data.addProperty("name", ((GameProfile)this.getValue()).getName());
-+    protected void onSerialization(JsonObject data) {
-+        if (this.getValue() != null) {
-+            data.addProperty("uuid", ((GameProfile) this.getValue()).getId() == null ? "" : ((GameProfile) this.getValue()).getId().toString());
-+            data.addProperty("name", ((GameProfile) this.getValue()).getName());
-             super.onSerialization(data);
-             data.addProperty("level", Integer.valueOf(this.field_152645_a));
-         }
-     }
- 
--    private static GameProfile func_152643_b(JsonObject p_152643_0_)
--    {
--        if (p_152643_0_.has("uuid") && p_152643_0_.has("name"))
--        {
-+    private static GameProfile func_152643_b(JsonObject p_152643_0_) {
-+        if (p_152643_0_.has("uuid") && p_152643_0_.has("name")) {
-             String s = p_152643_0_.get("uuid").getAsString();
-             UUID uuid;
- 
--            try
--            {
-+            try {
-                 uuid = UUID.fromString(s);
--            }
--            catch (Throwable throwable)
--            {
-+            } catch (Throwable throwable) {
-                 return null;
-             }
- 
-             return new GameProfile(uuid, p_152643_0_.get("name").getAsString());
--        }
--        else
--        {
-+        } else {
-             return null;
-         }
-     }
- }
+     public UserListOpsEntry(GameProfile profile, int p_i46328_2_)
+     {

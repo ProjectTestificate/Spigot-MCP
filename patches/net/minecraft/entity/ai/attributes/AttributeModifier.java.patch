@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\entity\ai\attributes\AttributeModifier.java
 +++ src\main\java\net\minecraft\entity\ai\attributes\AttributeModifier.java
-@@ -1,103 +1,86 @@
+@@ -1,14 +1,18 @@
  package net.minecraft.entity.ai.attributes;
  
 -import io.netty.util.internal.ThreadLocalRandom;
@@ -10,29 +10,17 @@
 +
  import org.apache.commons.lang3.Validate;
  
--public class AttributeModifier
--{
 +import io.netty.util.internal.ThreadLocalRandom;
 +
-+public class AttributeModifier {
+ public class AttributeModifier
+ {
 +
      private final double amount;
      private final int operation;
      private final String name;
      private final UUID id;
      private boolean isSaved;
-     private static final String __OBFID = "CL_00001564";
- 
--    public AttributeModifier(String p_i1605_1_, double p_i1605_2_, int p_i1605_4_)
--    {
-+    public AttributeModifier(String p_i1605_1_, double p_i1605_2_, int p_i1605_4_) {
-         this(MathHelper.getRandomUuid(ThreadLocalRandom.current()), p_i1605_1_, p_i1605_2_, p_i1605_4_);
-     }
- 
--    public AttributeModifier(UUID p_i1606_1_, String p_i1606_2_, double p_i1606_3_, int p_i1606_5_)
--    {
-+    public AttributeModifier(UUID p_i1606_1_, String p_i1606_2_, double p_i1606_3_, int p_i1606_5_) {
-         this.isSaved = true;
+@@ -25,11 +29,11 @@
          this.id = p_i1606_1_;
          this.name = p_i1606_2_;
          this.amount = p_i1606_3_;
@@ -42,90 +30,19 @@
 +        Validate.inclusiveBetween(0L, 2L, (long) p_i1606_5_, "Invalid operation");
      }
  
--    public UUID getID()
--    {
-+    public UUID getID() {
+     public UUID getID()
+     {
          return this.id;
-     }
- 
--    public String getName()
--    {
-+    public String getName() {
-         return this.name;
-     }
- 
--    public int getOperation()
--    {
-+    public int getOperation() {
-         return this.operation;
-     }
- 
--    public double getAmount()
--    {
-+    public double getAmount() {
-         return this.amount;
-     }
- 
--    public boolean isSaved()
--    {
-+    public boolean isSaved() {
-         return this.isSaved;
-     }
- 
--    public AttributeModifier setSaved(boolean p_111168_1_)
--    {
-+    public AttributeModifier setSaved(boolean p_111168_1_) {
-         this.isSaved = p_111168_1_;
-         return this;
-     }
- 
--    public boolean equals(Object p_equals_1_)
--    {
--        if (this == p_equals_1_)
--        {
-+    public boolean equals(Object p_equals_1_) {
-+        if (this == p_equals_1_) {
+@@ -67,11 +71,11 @@
+         {
              return true;
--        }
--        else if (p_equals_1_ != null && this.getClass() == p_equals_1_.getClass())
--        {
+         }
+         else if (p_equals_1_ != null && this.getClass() == p_equals_1_.getClass())
+         {
 -            AttributeModifier attributemodifier = (AttributeModifier)p_equals_1_;
-+        } else if (p_equals_1_ != null && this.getClass() == p_equals_1_.getClass()) {
 +            AttributeModifier attributemodifier = (AttributeModifier) p_equals_1_;
  
--            if (this.id != null)
--            {
--                if (!this.id.equals(attributemodifier.id))
--                {
-+            if (this.id != null) {
-+                if (!this.id.equals(attributemodifier.id)) {
-                     return false;
-                 }
--            }
--            else if (attributemodifier.id != null)
--            {
-+            } else if (attributemodifier.id != null) {
-                 return false;
-             }
- 
-             return true;
--        }
--        else
--        {
-+        } else {
-             return false;
-         }
-     }
- 
--    public int hashCode()
--    {
-+    public int hashCode() {
-         return this.id != null ? this.id.hashCode() : 0;
-     }
- 
--    public String toString()
--    {
-+    public String toString() {
-         return "AttributeModifier{amount=" + this.amount + ", operation=" + this.operation + ", name=\'" + this.name + '\'' + ", id=" + this.id + ", serialize=" + this.isSaved + '}';
-     }
- }
+             if (this.id != null)
+             {
+                 if (!this.id.equals(attributemodifier.id))
+                 {

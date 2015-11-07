@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\client\C18PacketSpectate.java
 +++ src\main\java\net\minecraft\network\play\client\C18PacketSpectate.java
-@@ -1,48 +1,44 @@
+@@ -1,22 +1,26 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -13,51 +13,28 @@
  import net.minecraft.network.play.INetHandlerPlayServer;
  import net.minecraft.world.WorldServer;
  
--public class C18PacketSpectate implements Packet
--{
-+public class C18PacketSpectate implements Packet {
+ public class C18PacketSpectate implements Packet
+ {
 +
      private UUID id;
      private static final String __OBFID = "CL_00002280";
  
 -    public C18PacketSpectate() {}
-+    public C18PacketSpectate() {
++    public C18PacketSpectate()
++    {
 +    }
  
--    public C18PacketSpectate(UUID id)
--    {
-+    public C18PacketSpectate(UUID id) {
+     public C18PacketSpectate(UUID id)
+     {
          this.id = id;
      }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.id = buf.readUuid();
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeUuid(this.id);
-     }
- 
--    public void handle(INetHandlerPlayServer handler)
--    {
-+    public void handle(INetHandlerPlayServer handler) {
-         handler.handleSpectate(this);
-     }
- 
--    public Entity getEntity(WorldServer worldIn)
--    {
-+    public Entity getEntity(WorldServer worldIn) {
+@@ -41,8 +45,8 @@
          return worldIn.getEntityFromUuid(this.id);
      }
  
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.handle((INetHandlerPlayServer)handler);
-+    public void processPacket(INetHandler handler) {
 +        this.handle((INetHandlerPlayServer) handler);
      }
  }

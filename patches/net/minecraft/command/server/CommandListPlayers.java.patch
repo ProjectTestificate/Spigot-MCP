@@ -1,42 +1,14 @@
 --- decompiled\net\minecraft\command\server\CommandListPlayers.java
 +++ src\main\java\net\minecraft\command\server\CommandListPlayers.java
-@@ -6,32 +6,28 @@
- import net.minecraft.command.ICommandSender;
- import net.minecraft.server.MinecraftServer;
+@@ -8,10 +8,11 @@
  import net.minecraft.util.ChatComponentText;
  import net.minecraft.util.ChatComponentTranslation;
  
--public class CommandListPlayers extends CommandBase
--{
-+public class CommandListPlayers extends CommandBase {
+ public class CommandListPlayers extends CommandBase
+ {
 +
      private static final String __OBFID = "CL_00000615";
  
--    public String getName()
--    {
-+    public String getName() {
+     public String getName()
+     {
          return "list";
-     }
- 
--    public int getRequiredPermissionLevel()
--    {
-+    public int getRequiredPermissionLevel() {
-         return 0;
-     }
- 
--    public String getCommandUsage(ICommandSender sender)
--    {
-+    public String getCommandUsage(ICommandSender sender) {
-         return "commands.players.usage";
-     }
- 
--    public void execute(ICommandSender sender, String[] args) throws CommandException
--    {
-+    public void execute(ICommandSender sender, String[] args) throws CommandException {
-         int i = MinecraftServer.getServer().getCurrentPlayerCount();
--        sender.addChatMessage(new ChatComponentTranslation("commands.players.list", new Object[] {Integer.valueOf(i), Integer.valueOf(MinecraftServer.getServer().getMaxPlayers())}));
-+        sender.addChatMessage(new ChatComponentTranslation("commands.players.list", new Object[]{Integer.valueOf(i), Integer.valueOf(MinecraftServer.getServer().getMaxPlayers())}));
-         sender.addChatMessage(new ChatComponentText(MinecraftServer.getServer().getConfigurationManager().func_180602_f()));
-         sender.setCommandStat(CommandResultStats.Type.QUERY_RESULT, i);
-     }
- }

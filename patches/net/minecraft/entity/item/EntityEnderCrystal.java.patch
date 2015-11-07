@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\entity\item\EntityEnderCrystal.java
 +++ src\main\java\net\minecraft\entity\item\EntityEnderCrystal.java
-@@ -6,90 +6,90 @@
+@@ -6,15 +6,17 @@
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.DamageSource;
  import net.minecraft.util.MathHelper;
@@ -9,22 +9,18 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class EntityEnderCrystal extends Entity
--{
 +import org.bukkit.craftbukkit.event.CraftEventFactory;
 +import org.bukkit.event.entity.ExplosionPrimeEvent;
 +
-+public class EntityEnderCrystal extends Entity {
+ public class EntityEnderCrystal extends Entity
+ {
 +
      public int innerRotation;
      public int health;
      private static final String __OBFID = "CL_00001658";
  
--    public EntityEnderCrystal(World worldIn)
--    {
-+    public EntityEnderCrystal(World worldIn) {
-         super(worldIn);
-         this.preventEntitySpawning = true;
+     public EntityEnderCrystal(World worldIn)
+@@ -24,17 +26,10 @@
          this.setSize(2.0F, 2.0F);
          this.health = 5;
          this.innerRotation = this.rand.nextInt(100000);
@@ -37,93 +33,74 @@
 -        this.setPosition(p_i1699_2_, p_i1699_4_, p_i1699_6_);
 -    }
 -
--    protected boolean canTriggerWalking()
--    {
-+    protected boolean canTriggerWalking() {
+     protected boolean canTriggerWalking()
+     {
          return false;
      }
  
--    protected void entityInit()
--    {
-+    protected void entityInit() {
-         this.dataWatcher.addObject(8, Integer.valueOf(this.health));
-     }
- 
--    public void onUpdate()
--    {
-+    public void onUpdate() {
-         this.prevPosX = this.posX;
-         this.prevPosY = this.posY;
-         this.prevPosZ = this.posZ;
-         ++this.innerRotation;
-         this.dataWatcher.updateObject(8, Integer.valueOf(this.health));
-         int i = MathHelper.floor_double(this.posX);
+@@ -54,17 +49,27 @@
          int j = MathHelper.floor_double(this.posY);
          int k = MathHelper.floor_double(this.posZ);
  
--        if (this.worldObj.provider instanceof WorldProviderEnd && this.worldObj.getBlockState(new BlockPos(i, j, k)).getBlock() != Blocks.fire)
--        {
+         if (this.worldObj.provider instanceof WorldProviderEnd && this.worldObj.getBlockState(new BlockPos(i, j, k)).getBlock() != Blocks.fire)
+         {
 -            this.worldObj.setBlockState(new BlockPos(i, j, k), Blocks.fire.getDefaultState());
-+        if (this.worldObj.provider instanceof WorldProviderEnd && this.worldObj.getBlockState(new BlockPos(i, j, k)).getBlock() != Blocks.fire) {
 +            // CraftBukkit start
-+            if (!CraftEventFactory.callBlockIgniteEvent(this.worldObj, i, j, k, this).isCancelled()) {
++            if (!CraftEventFactory.callBlockIgniteEvent(this.worldObj, i, j, k, this).isCancelled())
++            {
 +                this.worldObj.setBlockState(new BlockPos(i, j, k), Blocks.fire.getDefaultState());
 +            }
++
 +            // CraftBukkit end
          }
      }
  
 -    protected void writeEntityToNBT(NBTTagCompound tagCompound) {}
-+    protected void writeEntityToNBT(NBTTagCompound tagCompound) {
++    protected void writeEntityToNBT(NBTTagCompound tagCompound)
++    {
 +    }
  
 -    protected void readEntityFromNBT(NBTTagCompound tagCompund) {}
-+    protected void readEntityFromNBT(NBTTagCompound tagCompund) {
++    protected void readEntityFromNBT(NBTTagCompound tagCompund)
++    {
 +    }
  
--    public boolean canBeCollidedWith()
--    {
-+    public boolean canBeCollidedWith() {
+     public boolean canBeCollidedWith()
+     {
          return true;
      }
- 
--    public boolean attackEntityFrom(DamageSource source, float amount)
--    {
--        if (this.isEntityInvulnerable(source))
--        {
-+    public boolean attackEntityFrom(DamageSource source, float amount) {
-+        if (this.isEntityInvulnerable(source)) {
-             return false;
--        }
--        else
--        {
--            if (!this.isDead && !this.worldObj.isRemote)
--            {
-+        } else {
-+            if (!this.isDead && !this.worldObj.isRemote) {
+@@ -77,19 +82,37 @@
+         }
+         else
+         {
+             if (!this.isDead && !this.worldObj.isRemote)
+             {
 +                // CraftBukkit start - All non-living entities need this
-+                if (CraftEventFactory.handleNonLivingEntityDamageEvent(this, source, amount)) {
++                if (CraftEventFactory.handleNonLivingEntityDamageEvent(this, source, amount))
++                {
 +                    return false;
 +                }
++
 +                // CraftBukkit end
                  this.health = 0;
  
--                if (this.health <= 0)
--                {
-+                if (this.health <= 0) {
+                 if (this.health <= 0)
+                 {
                      this.setDead();
  
--                    if (!this.worldObj.isRemote)
--                    {
+                     if (!this.worldObj.isRemote)
+                     {
 -                        this.worldObj.createExplosion((Entity)null, this.posX, this.posY, this.posZ, 6.0F, true);
-+                    if (!this.worldObj.isRemote) {
 +                        // CraftBukkit start
 +                        ExplosionPrimeEvent event = new ExplosionPrimeEvent(this.getBukkitEntity(), 6.0F, false);
 +                        this.worldObj.getServer().getPluginManager().callEvent(event);
-+                        if (event.isCancelled()) {
++
++                        if (event.isCancelled())
++                        {
 +                            this.isDead = false;
 +                            return false;
 +                        }
++
 +                        this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, event.getRadius(), event.getFire(), true);
 +                        // CraftBukkit end
                      }

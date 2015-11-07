@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S0EPacketSpawnObject.java
 +++ src\main\java\net\minecraft\network\play\server\S0EPacketSpawnObject.java
-@@ -1,19 +1,19 @@
+@@ -1,19 +1,20 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -14,142 +14,33 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S0EPacketSpawnObject implements Packet
--{
 +
-+public class S0EPacketSpawnObject implements Packet {
+ public class S0EPacketSpawnObject implements Packet
+ {
 +
      private int field_149018_a;
      private int field_149016_b;
      private int field_149017_c;
      private int field_149014_d;
      private int field_149015_e;
-@@ -23,216 +23,125 @@
+@@ -23,11 +24,13 @@
      private int field_149022_i;
      private int field_149019_j;
      private int field_149020_k;
      private static final String __OBFID = "CL_00001276";
  
 -    public S0EPacketSpawnObject() {}
-+    public S0EPacketSpawnObject() {
++    public S0EPacketSpawnObject()
++    {
 +    }
  
--    public S0EPacketSpawnObject(Entity p_i45165_1_, int p_i45165_2_)
--    {
-+    public S0EPacketSpawnObject(Entity p_i45165_1_, int p_i45165_2_) {
+     public S0EPacketSpawnObject(Entity p_i45165_1_, int p_i45165_2_)
+     {
          this(p_i45165_1_, p_i45165_2_, 0);
      }
- 
--    public S0EPacketSpawnObject(Entity p_i45166_1_, int p_i45166_2_, int p_i45166_3_)
--    {
-+    public S0EPacketSpawnObject(Entity p_i45166_1_, int p_i45166_2_, int p_i45166_3_) {
-         this.field_149018_a = p_i45166_1_.getEntityId();
-         this.field_149016_b = MathHelper.floor_double(p_i45166_1_.posX * 32.0D);
-         this.field_149017_c = MathHelper.floor_double(p_i45166_1_.posY * 32.0D);
-         this.field_149014_d = MathHelper.floor_double(p_i45166_1_.posZ * 32.0D);
-         this.field_149021_h = MathHelper.floor_float(p_i45166_1_.rotationPitch * 256.0F / 360.0F);
-         this.field_149022_i = MathHelper.floor_float(p_i45166_1_.rotationYaw * 256.0F / 360.0F);
-         this.field_149019_j = p_i45166_2_;
-         this.field_149020_k = p_i45166_3_;
- 
--        if (p_i45166_3_ > 0)
--        {
-+        if (p_i45166_3_ > 0) {
-             double d0 = p_i45166_1_.motionX;
-             double d1 = p_i45166_1_.motionY;
-             double d2 = p_i45166_1_.motionZ;
-             double d3 = 3.9D;
- 
--            if (d0 < -d3)
--            {
-+            if (d0 < -d3) {
-                 d0 = -d3;
-             }
- 
--            if (d1 < -d3)
--            {
-+            if (d1 < -d3) {
-                 d1 = -d3;
-             }
- 
--            if (d2 < -d3)
--            {
-+            if (d2 < -d3) {
-                 d2 = -d3;
-             }
- 
--            if (d0 > d3)
--            {
-+            if (d0 > d3) {
-                 d0 = d3;
-             }
- 
--            if (d1 > d3)
--            {
-+            if (d1 > d3) {
-                 d1 = d3;
-             }
- 
--            if (d2 > d3)
--            {
-+            if (d2 > d3) {
-                 d2 = d3;
-             }
- 
--            this.field_149015_e = (int)(d0 * 8000.0D);
--            this.field_149012_f = (int)(d1 * 8000.0D);
--            this.field_149013_g = (int)(d2 * 8000.0D);
-+            this.field_149015_e = (int) (d0 * 8000.0D);
-+            this.field_149012_f = (int) (d1 * 8000.0D);
-+            this.field_149013_g = (int) (d2 * 8000.0D);
-         }
-     }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.field_149018_a = buf.readVarIntFromBuffer();
-         this.field_149019_j = buf.readByte();
-         this.field_149016_b = buf.readInt();
-         this.field_149017_c = buf.readInt();
-         this.field_149014_d = buf.readInt();
-         this.field_149021_h = buf.readByte();
-         this.field_149022_i = buf.readByte();
-         this.field_149020_k = buf.readInt();
- 
--        if (this.field_149020_k > 0)
--        {
-+        if (this.field_149020_k > 0) {
-             this.field_149015_e = buf.readShort();
-             this.field_149012_f = buf.readShort();
-             this.field_149013_g = buf.readShort();
-         }
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeVarIntToBuffer(this.field_149018_a);
-         buf.writeByte(this.field_149019_j);
-         buf.writeInt(this.field_149016_b);
-         buf.writeInt(this.field_149017_c);
-         buf.writeInt(this.field_149014_d);
-         buf.writeByte(this.field_149021_h);
-         buf.writeByte(this.field_149022_i);
-         buf.writeInt(this.field_149020_k);
- 
--        if (this.field_149020_k > 0)
--        {
-+        if (this.field_149020_k > 0) {
-             buf.writeShort(this.field_149015_e);
-             buf.writeShort(this.field_149012_f);
-             buf.writeShort(this.field_149013_g);
-         }
-     }
- 
--    public void processPacket(INetHandlerPlayClient handler)
--    {
-+    public void processPacket(INetHandlerPlayClient handler) {
+@@ -127,112 +130,41 @@
+     public void processPacket(INetHandlerPlayClient handler)
+     {
          handler.handleSpawnObject(this);
      }
  
@@ -159,9 +50,8 @@
 -        return this.field_149018_a;
 -    }
 -
--    public void func_148996_a(int p_148996_1_)
--    {
-+    public void func_148996_a(int p_148996_1_) {
+     public void func_148996_a(int p_148996_1_)
+     {
          this.field_149016_b = p_148996_1_;
      }
  
@@ -171,9 +61,8 @@
 -        return this.field_149016_b;
 -    }
 -
--    public void func_148995_b(int p_148995_1_)
--    {
-+    public void func_148995_b(int p_148995_1_) {
+     public void func_148995_b(int p_148995_1_)
+     {
          this.field_149017_c = p_148995_1_;
      }
  
@@ -183,9 +72,8 @@
 -        return this.field_149017_c;
 -    }
 -
--    public void func_149005_c(int p_149005_1_)
--    {
-+    public void func_149005_c(int p_149005_1_) {
+     public void func_149005_c(int p_149005_1_)
+     {
          this.field_149014_d = p_149005_1_;
      }
  
@@ -195,9 +83,8 @@
 -        return this.field_149014_d;
 -    }
 -
--    public void func_149003_d(int p_149003_1_)
--    {
-+    public void func_149003_d(int p_149003_1_) {
+     public void func_149003_d(int p_149003_1_)
+     {
          this.field_149015_e = p_149003_1_;
      }
  
@@ -207,9 +94,8 @@
 -        return this.field_149015_e;
 -    }
 -
--    public void func_149000_e(int p_149000_1_)
--    {
-+    public void func_149000_e(int p_149000_1_) {
+     public void func_149000_e(int p_149000_1_)
+     {
          this.field_149012_f = p_149000_1_;
      }
  
@@ -219,9 +105,8 @@
 -        return this.field_149012_f;
 -    }
  
--    public void func_149007_f(int p_149007_1_)
--    {
-+    public void func_149007_f(int p_149007_1_) {
+     public void func_149007_f(int p_149007_1_)
+     {
          this.field_149013_g = p_149007_1_;
      }
  
@@ -229,9 +114,7 @@
 -    public int func_148999_i()
 -    {
 -        return this.field_149013_g;
-+    public void processPacket(INetHandler handler) {
-+        this.processPacket((INetHandlerPlayClient) handler);
-     }
+-    }
 -
 -    @SideOnly(Side.CLIENT)
 -    public int func_149008_j()
@@ -257,10 +140,11 @@
 -        return this.field_149020_k;
 -    }
 -
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.processPacket((INetHandlerPlayClient)handler);
--    }
++        this.processPacket((INetHandlerPlayClient) handler);
+     }
 -
 -    @SideOnly(Side.CLIENT)
 -    public void func_149002_g(int p_149002_1_)

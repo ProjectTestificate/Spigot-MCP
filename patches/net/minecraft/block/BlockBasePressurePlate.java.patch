@@ -13,26 +13,25 @@
      private static final String __OBFID = "CL_00000194";
  
      protected BlockBasePressurePlate(Material materialIn)
-@@ -118,10 +120,25 @@
+@@ -117,11 +119,24 @@
+     protected void updateState(World worldIn, BlockPos pos, IBlockState state, int oldRedstoneStrength)
      {
          int j = this.computeRedstoneStrength(worldIn, pos);
          boolean flag = oldRedstoneStrength > 0;
          boolean flag1 = j > 0;
- 
 +        // CraftBukkit start - Interact Pressure Plate
 +        org.bukkit.World bworld = worldIn.getWorld();
 +        org.bukkit.plugin.PluginManager manager = worldIn.getServer().getPluginManager();
-+
+ 
 +        if (flag != flag1)
 +        {
 +            BlockRedstoneEvent eventRedstone = new BlockRedstoneEvent(bworld.getBlockAt(pos.getX(), pos.getY(), pos.getZ()), oldRedstoneStrength, j);
 +            manager.callEvent(eventRedstone);
-+
 +            flag1 = eventRedstone.getNewCurrent() > 0;
 +            j = eventRedstone.getNewCurrent();
 +        }
-+        // CraftBukkit end
 +
++        // CraftBukkit end
 +
          if (oldRedstoneStrength != j)
          {

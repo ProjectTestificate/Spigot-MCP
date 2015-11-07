@@ -1,17 +1,13 @@
 --- decompiled\net\minecraft\block\BlockHalfStoneSlabNew.java
 +++ src\main\java\net\minecraft\block\BlockHalfStoneSlabNew.java
-@@ -1,11 +1,10 @@
+@@ -1,9 +1,10 @@
  package net.minecraft.block;
  
--public class BlockHalfStoneSlabNew extends BlockStoneSlabNew
--{
-+public class BlockHalfStoneSlabNew extends BlockStoneSlabNew {
+ public class BlockHalfStoneSlabNew extends BlockStoneSlabNew
+ {
 +
      private static final String __OBFID = "CL_00002110";
  
--    public boolean isDouble()
--    {
-+    public boolean isDouble() {
+     public boolean isDouble()
+     {
          return false;
-     }
- }

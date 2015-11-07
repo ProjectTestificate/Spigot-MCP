@@ -1,36 +1,13 @@
 --- decompiled\net\minecraft\block\material\MaterialLogic.java
 +++ src\main\java\net\minecraft\block\material\MaterialLogic.java
-@@ -1,27 +1,23 @@
+@@ -1,9 +1,10 @@
  package net.minecraft.block.material;
  
--public class MaterialLogic extends Material
--{
-+public class MaterialLogic extends Material {
+ public class MaterialLogic extends Material
+ {
 +
      private static final String __OBFID = "CL_00000539";
  
--    public MaterialLogic(MapColor color)
--    {
-+    public MaterialLogic(MapColor color) {
+     public MaterialLogic(MapColor color)
+     {
          super(color);
-         this.setAdventureModeExempt();
-     }
- 
--    public boolean isSolid()
--    {
-+    public boolean isSolid() {
-         return false;
-     }
- 
--    public boolean blocksLight()
--    {
-+    public boolean blocksLight() {
-         return false;
-     }
- 
--    public boolean blocksMovement()
--    {
-+    public boolean blocksMovement() {
-         return false;
-     }
- }

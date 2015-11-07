@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\login\server\S03PacketEnableCompression.java
 +++ src\main\java\net\minecraft\network\login\server\S03PacketEnableCompression.java
-@@ -1,48 +1,38 @@
+@@ -1,21 +1,24 @@
  package net.minecraft.network.login.server;
  
  import java.io.IOException;
@@ -12,39 +12,25 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S03PacketEnableCompression implements Packet
--{
 +
-+public class S03PacketEnableCompression implements Packet {
+ public class S03PacketEnableCompression implements Packet
+ {
 +
      private int compressionTreshold;
      private static final String __OBFID = "CL_00002279";
  
 -    public S03PacketEnableCompression() {}
-+    public S03PacketEnableCompression() {
++    public S03PacketEnableCompression()
++    {
 +    }
  
--    public S03PacketEnableCompression(int compressionTresholdIn)
--    {
-+    public S03PacketEnableCompression(int compressionTresholdIn) {
+     public S03PacketEnableCompression(int compressionTresholdIn)
+     {
          this.compressionTreshold = compressionTresholdIn;
      }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.compressionTreshold = buf.readVarIntFromBuffer();
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeVarIntToBuffer(this.compressionTreshold);
-     }
- 
--    public void processPacket(INetHandlerLoginClient handler)
--    {
-+    public void processPacket(INetHandlerLoginClient handler) {
+@@ -33,16 +36,10 @@
+     public void processPacket(INetHandlerLoginClient handler)
+     {
          handler.handleEnableCompression(this);
      }
  
@@ -52,12 +38,11 @@
 -    public int getCompressionTreshold()
 -    {
 -        return this.compressionTreshold;
-+    public void processPacket(INetHandler handler) {
+-    }
+-
+     public void processPacket(INetHandler handler)
+     {
+-        this.processPacket((INetHandlerLoginClient)handler);
 +        this.processPacket((INetHandlerLoginClient) handler);
      }
--
--    public void processPacket(INetHandler handler)
--    {
--        this.processPacket((INetHandlerLoginClient)handler);
--    }
  }

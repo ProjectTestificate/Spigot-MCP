@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S29PacketSoundEffect.java
 +++ src\main\java\net\minecraft\network\play\server\S29PacketSoundEffect.java
-@@ -1,102 +1,62 @@
+@@ -1,28 +1,31 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -15,9 +15,8 @@
 +
  import org.apache.commons.lang3.Validate;
  
--public class S29PacketSoundEffect implements Packet
--{
-+public class S29PacketSoundEffect implements Packet {
+ public class S29PacketSoundEffect implements Packet
+ {
 +
      private String field_149219_a;
      private int field_149217_b;
@@ -28,43 +27,15 @@
      private static final String __OBFID = "CL_00001309";
  
 -    public S29PacketSoundEffect() {}
-+    public S29PacketSoundEffect() {
++    public S29PacketSoundEffect()
++    {
 +    }
  
--    public S29PacketSoundEffect(String p_i45200_1_, double p_i45200_2_, double p_i45200_4_, double p_i45200_6_, float p_i45200_8_, float p_i45200_9_)
--    {
-+    public S29PacketSoundEffect(String p_i45200_1_, double p_i45200_2_, double p_i45200_4_, double p_i45200_6_, float p_i45200_8_, float p_i45200_9_) {
+     public S29PacketSoundEffect(String p_i45200_1_, double p_i45200_2_, double p_i45200_4_, double p_i45200_6_, float p_i45200_8_, float p_i45200_9_)
+     {
          Validate.notNull(p_i45200_1_, "name", new Object[0]);
          this.field_149219_a = p_i45200_1_;
--        this.field_149217_b = (int)(p_i45200_2_ * 8.0D);
--        this.field_149218_c = (int)(p_i45200_4_ * 8.0D);
--        this.field_149215_d = (int)(p_i45200_6_ * 8.0D);
-+        this.field_149217_b = (int) (p_i45200_2_ * 8.0D);
-+        this.field_149218_c = (int) (p_i45200_4_ * 8.0D);
-+        this.field_149215_d = (int) (p_i45200_6_ * 8.0D);
-         this.field_149216_e = p_i45200_8_;
--        this.field_149214_f = (int)(p_i45200_9_ * 63.0F);
-+        this.field_149214_f = (int) (p_i45200_9_ * 63.0F);
-         p_i45200_9_ = MathHelper.clamp_float(p_i45200_9_, 0.0F, 255.0F);
-     }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.field_149219_a = buf.readStringFromBuffer(256);
-         this.field_149217_b = buf.readInt();
-         this.field_149218_c = buf.readInt();
-         this.field_149215_d = buf.readInt();
-         this.field_149216_e = buf.readFloat();
-         this.field_149214_f = buf.readUnsignedByte();
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeString(this.field_149219_a);
-         buf.writeInt(this.field_149217_b);
-         buf.writeInt(this.field_149218_c);
+@@ -52,51 +55,15 @@
          buf.writeInt(this.field_149215_d);
          buf.writeFloat(this.field_149216_e);
          buf.writeByte(this.field_149214_f);
@@ -76,16 +47,14 @@
 -        return this.field_149219_a;
 -    }
 -
--    public void processPacket(INetHandlerPlayClient handler)
--    {
-+    public void processPacket(INetHandlerPlayClient handler) {
+     public void processPacket(INetHandlerPlayClient handler)
+     {
          handler.handleSoundEffect(this);
      }
  
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.processPacket((INetHandlerPlayClient)handler);
-+    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayClient) handler);
      }
 -

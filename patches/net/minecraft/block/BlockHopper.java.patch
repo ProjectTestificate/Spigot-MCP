@@ -12,7 +12,7 @@
  import net.minecraft.block.properties.PropertyBool;
  import net.minecraft.block.properties.PropertyDirection;
  import net.minecraft.block.state.BlockState;
-@@ -18,48 +19,44 @@
+@@ -18,18 +19,18 @@
  import net.minecraft.tileentity.TileEntity;
  import net.minecraft.tileentity.TileEntityHopper;
  import net.minecraft.util.AxisAlignedBB;
@@ -24,192 +24,46 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class BlockHopper extends BlockContainer
--{
--    public static final PropertyDirection FACING = PropertyDirection.create("facing", new Predicate()
--    {
 +import com.google.common.base.Predicate;
 +
-+public class BlockHopper extends BlockContainer {
+ public class BlockHopper extends BlockContainer
+ {
 +
-+    public static final PropertyDirection FACING = PropertyDirection.create("facing", new Predicate() {
-+
+     public static final PropertyDirection FACING = PropertyDirection.create("facing", new Predicate()
+     {
          private static final String __OBFID = "CL_00002106";
--        public boolean apply(EnumFacing facing)
--        {
-+
-+        public boolean apply(EnumFacing facing) {
-             return facing != EnumFacing.UP;
-         }
--        public boolean apply(Object p_apply_1_)
--        {
--            return this.apply((EnumFacing)p_apply_1_);
-+
-+        public boolean apply(Object p_apply_1_) {
-+            return this.apply((EnumFacing) p_apply_1_);
-         }
-     });
-     public static final PropertyBool ENABLED = PropertyBool.create("enabled");
-     private static final String __OBFID = "CL_00000257";
- 
--    public BlockHopper()
--    {
-+    public BlockHopper() {
-         super(Material.iron);
-         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.DOWN).withProperty(ENABLED, Boolean.valueOf(true)));
-         this.setCreativeTab(CreativeTabs.tabRedstone);
-         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-     }
- 
--    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
--    {
-+    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) {
-         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-     }
- 
--    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
--    {
-+    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity) {
-         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.625F, 1.0F);
-         super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-         float f = 0.125F;
-         this.setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
-         super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-@@ -70,159 +67,144 @@
-         this.setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
-         super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-     }
- 
--    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
--    {
-+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-         EnumFacing enumfacing1 = facing.getOpposite();
- 
--        if (enumfacing1 == EnumFacing.UP)
--        {
-+        if (enumfacing1 == EnumFacing.UP) {
-             enumfacing1 = EnumFacing.DOWN;
-         }
- 
-         return this.getDefaultState().withProperty(FACING, enumfacing1).withProperty(ENABLED, Boolean.valueOf(true));
-     }
- 
--    public TileEntity createNewTileEntity(World worldIn, int meta)
--    {
-+    public TileEntity createNewTileEntity(World worldIn, int meta) {
-         return new TileEntityHopper();
-     }
- 
--    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
--    {
-+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
- 
--        if (stack.hasDisplayName())
--        {
-+        if (stack.hasDisplayName()) {
-             TileEntity tileentity = worldIn.getTileEntity(pos);
- 
--            if (tileentity instanceof TileEntityHopper)
--            {
--                ((TileEntityHopper)tileentity).setCustomName(stack.getDisplayName());
-+            if (tileentity instanceof TileEntityHopper) {
-+                ((TileEntityHopper) tileentity).setCustomName(stack.getDisplayName());
-             }
-         }
-     }
- 
--    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
--    {
-+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-         this.updateState(worldIn, pos, state);
-     }
- 
--    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
--    {
--        if (worldIn.isRemote)
--        {
-+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
-+        if (worldIn.isRemote) {
-             return true;
--        }
--        else
--        {
-+        } else {
-             TileEntity tileentity = worldIn.getTileEntity(pos);
- 
--            if (tileentity instanceof TileEntityHopper)
--            {
--                playerIn.displayGUIChest((TileEntityHopper)tileentity);
-+            if (tileentity instanceof TileEntityHopper) {
-+                playerIn.displayGUIChest((TileEntityHopper) tileentity);
-             }
- 
-             return true;
-         }
-     }
- 
--    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
--    {
-+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
-         this.updateState(worldIn, pos, state);
-     }
- 
--    private void updateState(World worldIn, BlockPos pos, IBlockState state)
--    {
-+    private void updateState(World worldIn, BlockPos pos, IBlockState state) {
+         public boolean apply(EnumFacing facing)
+         {
+@@ -138,10 +139,26 @@
          boolean flag = !worldIn.isBlockPowered(pos);
  
--        if (flag != ((Boolean)state.getValue(ENABLED)).booleanValue())
--        {
-+        if (flag != ((Boolean) state.getValue(ENABLED)).booleanValue()) {
+         if (flag != ((Boolean)state.getValue(ENABLED)).booleanValue())
+         {
              worldIn.setBlockState(pos, state.withProperty(ENABLED, Boolean.valueOf(flag)), 4);
++
 +            // Spigot start - When this hopper becomes unpowered, make it active.
 +            // Called when this block's power level changes. flag1 is the current
 +            // isNotPowered from metadata. flag is the recalculated isNotPowered.
-+            if (worldIn.spigotConfig.altHopperTicking) {
++            if (worldIn.spigotConfig.altHopperTicking)
++            {
 +                // e returns the TileEntityHopper associated with this BlockHopper.
-+                TileEntityHopper hopper = (TileEntityHopper) worldIn.getTileEntity(pos);
-+                if (flag && hopper != null) {
++                TileEntityHopper hopper = (TileEntityHopper)worldIn.getTileEntity(pos);
++
++                if (flag && hopper != null)
++                {
 +                    hopper.makeTick();
 +                }
 +            }
++
 +            // Spigot end
          }
      }
  
--    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
--    {
-+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-         TileEntity tileentity = worldIn.getTileEntity(pos);
- 
--        if (tileentity instanceof TileEntityHopper)
--        {
--            InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityHopper)tileentity);
-+        if (tileentity instanceof TileEntityHopper) {
-+            InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityHopper) tileentity);
-             worldIn.updateComparatorOutputLevel(pos, this);
-         }
- 
-         super.breakBlock(worldIn, pos, state);
-     }
- 
--    public int getRenderType()
--    {
-+    public int getRenderType() {
-         return 3;
-     }
- 
--    public boolean isFullCube()
--    {
-+    public boolean isFullCube() {
-         return false;
-     }
- 
--    public boolean isOpaqueCube()
--    {
-+    public boolean isOpaqueCube() {
+     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+     {
+@@ -169,16 +186,10 @@
+     public boolean isOpaqueCube()
+     {
          return false;
      }
  
@@ -219,27 +73,14 @@
 -        return true;
 -    }
 -
--    public static EnumFacing getFacing(int meta)
--    {
-+    public static EnumFacing getFacing(int meta) {
+     public static EnumFacing getFacing(int meta)
+     {
          return EnumFacing.getFront(meta & 7);
      }
  
--    public static boolean isEnabled(int meta)
--    {
-+    public static boolean isEnabled(int meta) {
-         return (meta & 8) != 8;
-     }
- 
--    public boolean hasComparatorInputOverride()
--    {
-+    public boolean hasComparatorInputOverride() {
-         return true;
-     }
- 
--    public int getComparatorInputOverride(World worldIn, BlockPos pos)
--    {
-+    public int getComparatorInputOverride(World worldIn, BlockPos pos) {
+@@ -195,16 +206,10 @@
+     public int getComparatorInputOverride(World worldIn, BlockPos pos)
+     {
          return Container.calcRedstone(worldIn.getTileEntity(pos));
      }
  
@@ -249,43 +90,30 @@
 -        return EnumWorldBlockLayer.CUTOUT_MIPPED;
 -    }
 -
--    public IBlockState getStateFromMeta(int meta)
--    {
-+    public IBlockState getStateFromMeta(int meta) {
+     public IBlockState getStateFromMeta(int meta)
+     {
          return this.getDefaultState().withProperty(FACING, getFacing(meta)).withProperty(ENABLED, Boolean.valueOf(isEnabled(meta)));
      }
  
--    public int getMetaFromState(IBlockState state)
--    {
-+    public int getMetaFromState(IBlockState state) {
-         byte b0 = 0;
--        int i = b0 | ((EnumFacing)state.getValue(FACING)).getIndex();
-+        int i = b0 | ((EnumFacing) state.getValue(FACING)).getIndex();
+@@ -223,6 +228,24 @@
  
--        if (!((Boolean)state.getValue(ENABLED)).booleanValue())
--        {
-+        if (!((Boolean) state.getValue(ENABLED)).booleanValue()) {
-             i |= 8;
-         }
- 
-         return i;
-     }
- 
--    protected BlockState createBlockState()
--    {
--        return new BlockState(this, new IProperty[] {FACING, ENABLED});
-+    protected BlockState createBlockState() {
-+        return new BlockState(this, new IProperty[]{FACING, ENABLED});
+     protected BlockState createBlockState()
+     {
+         return new BlockState(this, new IProperty[] {FACING, ENABLED});
      }
 +
 +
 +    // Spigot start - Use random block updates to make hoppers active.
 +    @Override
-+    public void randomTick(World world, BlockPos blockposition, IBlockState iblockdata, Random random) {
-+        if (world.spigotConfig.altHopperTicking) {
++    public void randomTick(World world, BlockPos blockposition, IBlockState iblockdata, Random random)
++    {
++        if (world.spigotConfig.altHopperTicking)
++        {
 +            // e returns the TileEntityHopper associated with this BlockHopper.
-+            TileEntityHopper hopper = (TileEntityHopper) world.getTileEntity(blockposition);
-+            if (hopper != null) {
++            TileEntityHopper hopper = (TileEntityHopper)world.getTileEntity(blockposition);
++
++            if (hopper != null)
++            {
 +                hopper.makeTick();
 +            }
 +        }

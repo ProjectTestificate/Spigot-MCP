@@ -1,11 +1,10 @@
 --- decompiled\net\minecraft\profiler\IPlayerUsage.java
 +++ src\main\java\net\minecraft\profiler\IPlayerUsage.java
-@@ -1,9 +1,9 @@
+@@ -1,9 +1,10 @@
  package net.minecraft.profiler;
  
--public interface IPlayerUsage
--{
-+public interface IPlayerUsage {
+ public interface IPlayerUsage
+ {
 +
      void addServerStatsToSnooper(PlayerUsageSnooper playerSnooper);
  

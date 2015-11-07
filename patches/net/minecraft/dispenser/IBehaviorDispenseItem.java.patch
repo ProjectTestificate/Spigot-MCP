@@ -1,25 +1,14 @@
 --- decompiled\net\minecraft\dispenser\IBehaviorDispenseItem.java
 +++ src\main\java\net\minecraft\dispenser\IBehaviorDispenseItem.java
-@@ -1,16 +1,16 @@
- package net.minecraft.dispenser;
+@@ -2,10 +2,11 @@
  
  import net.minecraft.item.ItemStack;
  
--public interface IBehaviorDispenseItem
--{
--    IBehaviorDispenseItem itemDispenseBehaviorProvider = new IBehaviorDispenseItem()
--    {
-+public interface IBehaviorDispenseItem {
+ public interface IBehaviorDispenseItem
+ {
 +
-+    IBehaviorDispenseItem itemDispenseBehaviorProvider = new IBehaviorDispenseItem() {
-+
+     IBehaviorDispenseItem itemDispenseBehaviorProvider = new IBehaviorDispenseItem()
+     {
          private static final String __OBFID = "CL_00001200";
--        public ItemStack dispense(IBlockSource source, ItemStack stack)
--        {
-+
-+        public ItemStack dispense(IBlockSource source, ItemStack stack) {
-             return stack;
-         }
-     };
- 
-     ItemStack dispense(IBlockSource source, ItemStack stack);
+         public ItemStack dispense(IBlockSource source, ItemStack stack)
+         {

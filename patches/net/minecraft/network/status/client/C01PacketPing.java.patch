@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\status\client\C01PacketPing.java
 +++ src\main\java\net\minecraft\network\status\client\C01PacketPing.java
-@@ -1,48 +1,38 @@
+@@ -1,26 +1,23 @@
  package net.minecraft.network.status.client;
  
  import java.io.IOException;
@@ -12,10 +12,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class C01PacketPing implements Packet
--{
 +
-+public class C01PacketPing implements Packet {
+ public class C01PacketPing implements Packet
+ {
 +
      private long clientTime;
      private static final String __OBFID = "CL_00001392";
@@ -24,39 +23,21 @@
 -
 -    @SideOnly(Side.CLIENT)
 -    public C01PacketPing(long ping)
--    {
++    public C01PacketPing()
+     {
 -        this.clientTime = ping;
-+    public C01PacketPing() {
      }
  
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
+     public void readPacketData(PacketBuffer buf) throws IOException
+     {
          this.clientTime = buf.readLong();
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeLong(this.clientTime);
-     }
- 
--    public void processPacket(INetHandlerStatusServer handler)
--    {
-+    public void processPacket(INetHandlerStatusServer handler) {
-         handler.processPing(this);
-     }
- 
--    public long getClientTime()
--    {
-+    public long getClientTime() {
+@@ -41,8 +38,8 @@
          return this.clientTime;
      }
  
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.processPacket((INetHandlerStatusServer)handler);
-+    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerStatusServer) handler);
      }
  }

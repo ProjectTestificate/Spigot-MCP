@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\item\ItemDoublePlant.java
 +++ src\main\java\net\minecraft\item\ItemDoublePlant.java
-@@ -1,25 +1,14 @@
+@@ -1,25 +1,16 @@
  package net.minecraft.item;
  
 -import com.google.common.base.Function;
@@ -10,17 +10,15 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class ItemDoublePlant extends ItemMultiTexture
--{
 +import com.google.common.base.Function;
 +
-+public class ItemDoublePlant extends ItemMultiTexture {
+ public class ItemDoublePlant extends ItemMultiTexture
+ {
 +
      private static final String __OBFID = "CL_00000021";
  
--    public ItemDoublePlant(Block block, Block block2, Function nameFunction)
--    {
-+    public ItemDoublePlant(Block block, Block block2, Function nameFunction) {
+     public ItemDoublePlant(Block block, Block block2, Function nameFunction)
+     {
          super(block, block2, nameFunction);
      }
 -

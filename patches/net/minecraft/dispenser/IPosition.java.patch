@@ -1,11 +1,10 @@
 --- decompiled\net\minecraft\dispenser\IPosition.java
 +++ src\main\java\net\minecraft\dispenser\IPosition.java
-@@ -1,9 +1,9 @@
+@@ -1,9 +1,10 @@
  package net.minecraft.dispenser;
  
--public interface IPosition
--{
-+public interface IPosition {
+ public interface IPosition
+ {
 +
      double getX();
  

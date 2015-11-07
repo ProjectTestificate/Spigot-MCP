@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\world\biome\BiomeGenMutated.java
 +++ src\main\java\net\minecraft\world\biome\BiomeGenMutated.java
-@@ -1,23 +1,22 @@
+@@ -1,18 +1,19 @@
  package net.minecraft.world.biome;
  
 -import com.google.common.collect.Lists;
@@ -13,50 +13,19 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class BiomeGenMutated extends BiomeGenBase
--{
 +import com.google.common.collect.Lists;
 +
-+public class BiomeGenMutated extends BiomeGenBase {
+ public class BiomeGenMutated extends BiomeGenBase
+ {
 +
      protected BiomeGenBase baseBiome;
      private static final String __OBFID = "CL_00000178";
  
--    public BiomeGenMutated(int p_i45381_1_, BiomeGenBase p_i45381_2_)
--    {
-+    public BiomeGenMutated(int p_i45381_1_, BiomeGenBase p_i45381_2_) {
-         super(p_i45381_1_);
-         this.baseBiome = p_i45381_2_;
-         this.func_150557_a(p_i45381_2_.color, true);
-         this.biomeName = p_i45381_2_.biomeName + " M";
-         this.topBlock = p_i45381_2_.topBlock;
-@@ -38,52 +37,33 @@
-         this.rainfall = p_i45381_2_.rainfall;
-         this.minHeight = p_i45381_2_.minHeight + 0.1F;
-         this.maxHeight = p_i45381_2_.maxHeight + 0.2F;
-     }
- 
--    public void decorate(World worldIn, Random p_180624_2_, BlockPos p_180624_3_)
--    {
-+    public void decorate(World worldIn, Random p_180624_2_, BlockPos p_180624_3_) {
-         this.baseBiome.theBiomeDecorator.decorate(worldIn, p_180624_2_, this, p_180624_3_);
-     }
- 
--    public void genTerrainBlocks(World worldIn, Random p_180622_2_, ChunkPrimer p_180622_3_, int p_180622_4_, int p_180622_5_, double p_180622_6_)
--    {
-+    public void genTerrainBlocks(World worldIn, Random p_180622_2_, ChunkPrimer p_180622_3_, int p_180622_4_, int p_180622_5_, double p_180622_6_) {
-         this.baseBiome.genTerrainBlocks(worldIn, p_180622_2_, p_180622_3_, p_180622_4_, p_180622_5_, p_180622_6_);
-     }
- 
--    public float getSpawningChance()
--    {
-+    public float getSpawningChance() {
-         return this.baseBiome.getSpawningChance();
-     }
- 
--    public WorldGenAbstractTree genBigTreeChance(Random p_150567_1_)
--    {
-+    public WorldGenAbstractTree genBigTreeChance(Random p_150567_1_) {
+     public BiomeGenMutated(int p_i45381_1_, BiomeGenBase p_i45381_2_)
+     {
+@@ -58,22 +59,10 @@
+     public WorldGenAbstractTree genBigTreeChance(Random p_150567_1_)
+     {
          return this.baseBiome.genBigTreeChance(p_150567_1_);
      }
  
@@ -72,21 +41,8 @@
 -        return this.baseBiome.getGrassColorAtPos(p_180627_1_);
 -    }
 -
--    public Class getBiomeClass()
--    {
-+    public Class getBiomeClass() {
+     public Class getBiomeClass()
+     {
          return this.baseBiome.getBiomeClass();
      }
  
--    public boolean isEqualTo(BiomeGenBase p_150569_1_)
--    {
-+    public boolean isEqualTo(BiomeGenBase p_150569_1_) {
-         return this.baseBiome.isEqualTo(p_150569_1_);
-     }
- 
--    public BiomeGenBase.TempCategory getTempCategory()
--    {
-+    public BiomeGenBase.TempCategory getTempCategory() {
-         return this.baseBiome.getTempCategory();
-     }
- }

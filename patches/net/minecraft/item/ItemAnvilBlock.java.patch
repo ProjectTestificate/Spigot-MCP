@@ -1,26 +1,14 @@
 --- decompiled\net\minecraft\item\ItemAnvilBlock.java
 +++ src\main\java\net\minecraft\item\ItemAnvilBlock.java
-@@ -1,18 +1,16 @@
- package net.minecraft.item;
+@@ -2,10 +2,11 @@
  
  import net.minecraft.block.Block;
  
--public class ItemAnvilBlock extends ItemMultiTexture
--{
-+public class ItemAnvilBlock extends ItemMultiTexture {
+ public class ItemAnvilBlock extends ItemMultiTexture
+ {
 +
      private static final String __OBFID = "CL_00001764";
  
--    public ItemAnvilBlock(Block block)
--    {
--        super(block, block, new String[] {"intact", "slightlyDamaged", "veryDamaged"});
-+    public ItemAnvilBlock(Block block) {
-+        super(block, block, new String[]{"intact", "slightlyDamaged", "veryDamaged"});
-     }
- 
--    public int getMetadata(int damage)
--    {
-+    public int getMetadata(int damage) {
-         return damage << 2;
-     }
- }
+     public ItemAnvilBlock(Block block)
+     {
+         super(block, block, new String[] {"intact", "slightlyDamaged", "veryDamaged"});

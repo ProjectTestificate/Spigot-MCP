@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S0CPacketSpawnPlayer.java
 +++ src\main\java\net\minecraft\network\play\server\S0CPacketSpawnPlayer.java
-@@ -1,24 +1,24 @@
+@@ -1,24 +1,25 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -19,74 +19,33 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S0CPacketSpawnPlayer implements Packet
--{
 +
-+public class S0CPacketSpawnPlayer implements Packet {
+ public class S0CPacketSpawnPlayer implements Packet
+ {
 +
      private int field_148957_a;
      private UUID field_179820_b;
      private int field_148956_c;
      private int field_148953_d;
      private int field_148954_e;
-@@ -27,28 +27,27 @@
+@@ -27,11 +28,13 @@
      private int field_148959_h;
      private DataWatcher field_148960_i;
      private List field_148958_j;
      private static final String __OBFID = "CL_00001281";
  
 -    public S0CPacketSpawnPlayer() {}
-+    public S0CPacketSpawnPlayer() {
++    public S0CPacketSpawnPlayer()
++    {
 +    }
  
--    public S0CPacketSpawnPlayer(EntityPlayer p_i45171_1_)
--    {
-+    public S0CPacketSpawnPlayer(EntityPlayer p_i45171_1_) {
+     public S0CPacketSpawnPlayer(EntityPlayer p_i45171_1_)
+     {
          this.field_148957_a = p_i45171_1_.getEntityId();
          this.field_179820_b = p_i45171_1_.getGameProfile().getId();
-         this.field_148956_c = MathHelper.floor_double(p_i45171_1_.posX * 32.0D);
-         this.field_148953_d = MathHelper.floor_double(p_i45171_1_.posY * 32.0D);
-         this.field_148954_e = MathHelper.floor_double(p_i45171_1_.posZ * 32.0D);
--        this.field_148951_f = (byte)((int)(p_i45171_1_.rotationYaw * 256.0F / 360.0F));
--        this.field_148952_g = (byte)((int)(p_i45171_1_.rotationPitch * 256.0F / 360.0F));
-+        this.field_148951_f = (byte) ((int) (p_i45171_1_.rotationYaw * 256.0F / 360.0F));
-+        this.field_148952_g = (byte) ((int) (p_i45171_1_.rotationPitch * 256.0F / 360.0F));
-         ItemStack itemstack = p_i45171_1_.inventory.getCurrentItem();
-         this.field_148959_h = itemstack == null ? 0 : Item.getIdFromItem(itemstack.getItem());
-         this.field_148960_i = p_i45171_1_.getDataWatcher();
-     }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.field_148957_a = buf.readVarIntFromBuffer();
-         this.field_179820_b = buf.readUuid();
-         this.field_148956_c = buf.readInt();
-         this.field_148953_d = buf.readInt();
-         this.field_148954_e = buf.readInt();
-@@ -56,12 +55,11 @@
-         this.field_148952_g = buf.readByte();
-         this.field_148959_h = buf.readShort();
-         this.field_148958_j = DataWatcher.readWatchedListFromPacketBuffer(buf);
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeVarIntToBuffer(this.field_148957_a);
-         buf.writeUuid(this.field_179820_b);
-         buf.writeInt(this.field_148956_c);
-         buf.writeInt(this.field_148953_d);
-         buf.writeInt(this.field_148954_e);
-@@ -69,74 +67,13 @@
-         buf.writeByte(this.field_148952_g);
-         buf.writeShort(this.field_148959_h);
-         this.field_148960_i.writeTo(buf);
-     }
- 
--    public void processPacket(INetHandlerPlayClient handler)
--    {
-+    public void processPacket(INetHandlerPlayClient handler) {
+@@ -74,69 +77,10 @@
+     public void processPacket(INetHandlerPlayClient handler)
+     {
          handler.handleSpawnPlayer(this);
      }
  
@@ -99,14 +58,13 @@
 -        }
 -
 -        return this.field_148958_j;
-+    public void processPacket(INetHandler handler) {
+-    }
+-
+     public void processPacket(INetHandler handler)
+     {
+-        this.processPacket((INetHandlerPlayClient)handler);
 +        this.processPacket((INetHandlerPlayClient) handler);
      }
--
--    public void processPacket(INetHandler handler)
--    {
--        this.processPacket((INetHandlerPlayClient)handler);
--    }
 -
 -    @SideOnly(Side.CLIENT)
 -    public int func_148943_d()

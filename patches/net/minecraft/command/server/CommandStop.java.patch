@@ -1,37 +1,14 @@
 --- decompiled\net\minecraft\command\server\CommandStop.java
 +++ src\main\java\net\minecraft\command\server\CommandStop.java
-@@ -3,28 +3,24 @@
- import net.minecraft.command.CommandBase;
- import net.minecraft.command.CommandException;
+@@ -5,10 +5,11 @@
  import net.minecraft.command.ICommandSender;
  import net.minecraft.server.MinecraftServer;
  
--public class CommandStop extends CommandBase
--{
-+public class CommandStop extends CommandBase {
+ public class CommandStop extends CommandBase
+ {
 +
      private static final String __OBFID = "CL_00001132";
  
--    public String getName()
--    {
-+    public String getName() {
+     public String getName()
+     {
          return "stop";
-     }
- 
--    public String getCommandUsage(ICommandSender sender)
--    {
-+    public String getCommandUsage(ICommandSender sender) {
-         return "commands.stop.usage";
-     }
- 
--    public void execute(ICommandSender sender, String[] args) throws CommandException
--    {
--        if (MinecraftServer.getServer().worldServers != null)
--        {
-+    public void execute(ICommandSender sender, String[] args) throws CommandException {
-+        if (MinecraftServer.getServer().worldServers != null) {
-             notifyOperators(sender, this, "commands.stop.start", new Object[0]);
-         }
- 
-         MinecraftServer.getServer().initiateShutdown();
-     }

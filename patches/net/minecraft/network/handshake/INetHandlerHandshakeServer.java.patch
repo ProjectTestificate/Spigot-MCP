@@ -1,14 +1,11 @@
 --- decompiled\net\minecraft\network\handshake\INetHandlerHandshakeServer.java
 +++ src\main\java\net\minecraft\network\handshake\INetHandlerHandshakeServer.java
-@@ -1,9 +1,9 @@
- package net.minecraft.network.handshake;
- 
+@@ -3,7 +3,8 @@
  import net.minecraft.network.INetHandler;
  import net.minecraft.network.handshake.client.C00Handshake;
  
--public interface INetHandlerHandshakeServer extends INetHandler
--{
-+public interface INetHandlerHandshakeServer extends INetHandler {
+ public interface INetHandlerHandshakeServer extends INetHandler
+ {
 +
      void processHandshake(C00Handshake packetIn);
  }

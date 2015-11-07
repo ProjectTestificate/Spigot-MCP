@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\entity\monster\EntityMob.java
 +++ src\main\java\net\minecraft\entity\monster\EntityMob.java
-@@ -1,184 +1,162 @@
+@@ -1,36 +1,38 @@
  package net.minecraft.entity.monster;
  
 -import com.google.common.base.Predicate;
@@ -18,12 +18,11 @@
  import net.minecraft.world.EnumSkyBlock;
  import net.minecraft.world.World;
  
--public abstract class EntityMob extends EntityCreature implements IMob
--{
--    protected final EntityAIBase field_175455_a = new EntityAIAvoidEntity(this, new Predicate()
 +import org.bukkit.event.entity.EntityCombustByEntityEvent;
 +
-+public abstract class EntityMob extends EntityCreature implements IMob {
+ public abstract class EntityMob extends EntityCreature implements IMob
+ {
+-    protected final EntityAIBase field_175455_a = new EntityAIAvoidEntity(this, new Predicate()
 +
 +    protected final EntityAIBase field_175455_a = null; // Spigot -- Removed ->
 +    /* new EntityAIAvoidEntity(this, new Predicate()
@@ -41,192 +40,28 @@
 +    }, 4.0F, 1.0D, 2.0D); */
      private static final String __OBFID = "CL_00001692";
  
--    public EntityMob(World worldIn)
--    {
-+    public EntityMob(World worldIn) {
+     public EntityMob(World worldIn)
+     {
          super(worldIn);
-         this.experienceValue = 5;
-     }
- 
--    public void onLivingUpdate()
--    {
-+    public void onLivingUpdate() {
-         this.updateArmSwingProgress();
-         float f = this.getBrightness(1.0F);
- 
--        if (f > 0.5F)
--        {
-+        if (f > 0.5F) {
-             this.entityAge += 2;
-         }
- 
-         super.onLivingUpdate();
-     }
- 
--    public void onUpdate()
--    {
-+    public void onUpdate() {
-         super.onUpdate();
- 
--        if (!this.worldObj.isRemote && this.worldObj.getDifficulty() == EnumDifficulty.PEACEFUL)
--        {
-+        if (!this.worldObj.isRemote && this.worldObj.getDifficulty() == EnumDifficulty.PEACEFUL) {
-             this.setDead();
-         }
-     }
- 
--    protected String getSwimSound()
--    {
-+    protected String getSwimSound() {
-         return "game.hostile.swim";
-     }
- 
--    protected String getSplashSound()
--    {
-+    protected String getSplashSound() {
-         return "game.hostile.swim.splash";
-     }
- 
--    public boolean attackEntityFrom(DamageSource source, float amount)
--    {
--        if (this.isEntityInvulnerable(source))
--        {
-+    public boolean attackEntityFrom(DamageSource source, float amount) {
-+        if (this.isEntityInvulnerable(source)) {
-             return false;
--        }
--        else if (super.attackEntityFrom(source, amount))
--        {
-+        } else if (super.attackEntityFrom(source, amount)) {
-             Entity entity = source.getEntity();
-             return this.riddenByEntity != entity && this.ridingEntity != entity ? true : true;
--        }
--        else
--        {
-+        } else {
-             return false;
-         }
-     }
- 
--    protected String getHurtSound()
--    {
-+    protected String getHurtSound() {
-         return "game.hostile.hurt";
-     }
- 
--    protected String getDeathSound()
--    {
-+    protected String getDeathSound() {
-         return "game.hostile.die";
-     }
- 
--    protected String getFallSoundString(int damageValue)
--    {
-+    protected String getFallSoundString(int damageValue) {
-         return damageValue > 4 ? "game.hostile.hurt.fall.big" : "game.hostile.hurt.fall.small";
-     }
- 
--    public boolean attackEntityAsMob(Entity p_70652_1_)
--    {
--        float f = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
-+    public boolean attackEntityAsMob(Entity p_70652_1_) {
-+        float f = (float) this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
-         int i = 0;
- 
--        if (p_70652_1_ instanceof EntityLivingBase)
--        {
--            f += EnchantmentHelper.func_152377_a(this.getHeldItem(), ((EntityLivingBase)p_70652_1_).getCreatureAttribute());
-+        if (p_70652_1_ instanceof EntityLivingBase) {
-+            f += EnchantmentHelper.func_152377_a(this.getHeldItem(), ((EntityLivingBase) p_70652_1_).getCreatureAttribute());
-             i += EnchantmentHelper.getKnockbackModifier(this);
-         }
- 
-         boolean flag = p_70652_1_.attackEntityFrom(DamageSource.causeMobDamage(this), f);
- 
--        if (flag)
--        {
--            if (i > 0)
--            {
--                p_70652_1_.addVelocity((double)(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)i * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)i * 0.5F));
-+        if (flag) {
-+            if (i > 0) {
-+                p_70652_1_.addVelocity((double) (-MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F) * (float) i * 0.5F), 0.1D, (double) (MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F) * (float) i * 0.5F));
-                 this.motionX *= 0.6D;
-                 this.motionZ *= 0.6D;
-             }
+@@ -126,11 +128,20 @@
  
              int j = EnchantmentHelper.getFireAspectModifier(this);
  
--            if (j > 0)
--            {
+             if (j > 0)
+             {
 -                p_70652_1_.setFire(j * 4);
-+            if (j > 0) {
 +                // CraftBukkit start - Call a combust event when somebody hits with a fire enchanted item
 +                EntityCombustByEntityEvent combustEvent = new EntityCombustByEntityEvent(this.getBukkitEntity(), p_70652_1_.getBukkitEntity(), j * 4);
 +                org.bukkit.Bukkit.getPluginManager().callEvent(combustEvent);
 +
-+                if (!combustEvent.isCancelled()) {
++                if (!combustEvent.isCancelled())
++                {
 +                    p_70652_1_.setFire(combustEvent.getDuration());
 +                }
++
 +                // CraftBukkit end
              }
  
              this.func_174815_a(this, p_70652_1_);
          }
  
-         return flag;
-     }
- 
--    public float func_180484_a(BlockPos p_180484_1_)
--    {
-+    public float func_180484_a(BlockPos p_180484_1_) {
-         return 0.5F - this.worldObj.getLightBrightness(p_180484_1_);
-     }
- 
--    protected boolean isValidLightLevel()
--    {
-+    protected boolean isValidLightLevel() {
-         BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
- 
--        if (this.worldObj.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32))
--        {
-+        if (this.worldObj.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32)) {
-             return false;
--        }
--        else
--        {
-+        } else {
-             int i = this.worldObj.getLightFromNeighbors(blockpos);
- 
--            if (this.worldObj.isThundering())
--            {
-+            if (this.worldObj.isThundering()) {
-                 int j = this.worldObj.getSkylightSubtracted();
-                 this.worldObj.setSkylightSubtracted(10);
-                 i = this.worldObj.getLightFromNeighbors(blockpos);
-                 this.worldObj.setSkylightSubtracted(j);
-             }
- 
-             return i <= this.rand.nextInt(8);
-         }
-     }
- 
--    public boolean getCanSpawnHere()
--    {
-+    public boolean getCanSpawnHere() {
-         return this.worldObj.getDifficulty() != EnumDifficulty.PEACEFUL && this.isValidLightLevel() && super.getCanSpawnHere();
-     }
- 
--    protected void applyEntityAttributes()
--    {
-+    protected void applyEntityAttributes() {
-         super.applyEntityAttributes();
-         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
-     }
- 
--    protected boolean func_146066_aG()
--    {
-+    protected boolean func_146066_aG() {
-         return true;
-     }
- }

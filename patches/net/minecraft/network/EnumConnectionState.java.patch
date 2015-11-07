@@ -16,7 +16,7 @@
  import net.minecraft.network.login.client.C01PacketEncryptionResponse;
  import net.minecraft.network.login.server.S00PacketDisconnect;
  import net.minecraft.network.login.server.S01PacketEncryptionRequest;
-@@ -110,23 +106,28 @@
+@@ -110,12 +106,20 @@
  import net.minecraft.network.play.server.S49PacketUpdateEntityNBT;
  import net.minecraft.network.status.client.C00PacketServerQuery;
  import net.minecraft.network.status.client.C01PacketPing;
@@ -25,10 +25,6 @@
 +
  import org.apache.logging.log4j.LogManager;
  
--public enum EnumConnectionState
--{
--    HANDSHAKING(-1)
--    {
 +import com.google.common.collect.BiMap;
 +import com.google.common.collect.HashBiMap;
 +import com.google.common.collect.Maps;
@@ -36,173 +32,8 @@
 +import gnu.trove.map.TIntObjectMap;
 +import gnu.trove.map.hash.TIntObjectHashMap;
 +
-+public enum EnumConnectionState {
-+    HANDSHAKING(-1) {
+ public enum EnumConnectionState
+ {
+     HANDSHAKING(-1)
+     {
          private static final String __OBFID = "CL_00001246";
-         {
-             this.registerPacket(EnumPacketDirection.SERVERBOUND, C00Handshake.class);
-         }
-     },
--    PLAY(0)
--    {
-+    PLAY(0) {
-         private static final String __OBFID = "CL_00001250";
-         {
-             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S00PacketKeepAlive.class);
-             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S01PacketJoinGame.class);
-             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S02PacketChat.class);
-@@ -227,22 +228,20 @@
-             this.registerPacket(EnumPacketDirection.SERVERBOUND, C17PacketCustomPayload.class);
-             this.registerPacket(EnumPacketDirection.SERVERBOUND, C18PacketSpectate.class);
-             this.registerPacket(EnumPacketDirection.SERVERBOUND, C19PacketResourcePackStatus.class);
-         }
-     },
--    STATUS(1)
--    {
-+    STATUS(1) {
-         private static final String __OBFID = "CL_00001247";
-         {
-             this.registerPacket(EnumPacketDirection.SERVERBOUND, C00PacketServerQuery.class);
-             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S00PacketServerInfo.class);
-             this.registerPacket(EnumPacketDirection.SERVERBOUND, C01PacketPing.class);
-             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S01PacketPong.class);
-         }
-     },
--    LOGIN(2)
--    {
-+    LOGIN(2) {
-         private static final String __OBFID = "CL_00001249";
-         {
-             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S00PacketDisconnect.class);
-             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S01PacketEncryptionRequest.class);
-             this.registerPacket(EnumPacketDirection.CLIENTBOUND, S02PacketLoginSuccess.class);
-@@ -256,101 +255,81 @@
-     private final int id;
-     private final Map directionMaps;
- 
-     private static final String __OBFID = "CL_00001245";
- 
--    private EnumConnectionState(int protocolId)
--    {
-+    private EnumConnectionState(int protocolId) {
-         this.directionMaps = Maps.newEnumMap(EnumPacketDirection.class);
-         this.id = protocolId;
-     }
- 
--    protected EnumConnectionState registerPacket(EnumPacketDirection direction, Class packetClass)
--    {
--        Object object = (BiMap)this.directionMaps.get(direction);
-+    protected EnumConnectionState registerPacket(EnumPacketDirection direction, Class packetClass) {
-+        Object object = (BiMap) this.directionMaps.get(direction);
- 
--        if (object == null)
--        {
-+        if (object == null) {
-             object = HashBiMap.create();
-             this.directionMaps.put(direction, object);
-         }
- 
--        if (((BiMap)object).containsValue(packetClass))
--        {
--            String s = direction + " packet " + packetClass + " is already known to ID " + ((BiMap)object).inverse().get(packetClass);
-+        if (((BiMap) object).containsValue(packetClass)) {
-+            String s = direction + " packet " + packetClass + " is already known to ID " + ((BiMap) object).inverse().get(packetClass);
-             LogManager.getLogger().fatal(s);
-             throw new IllegalArgumentException(s);
--        }
--        else
--        {
--            ((BiMap)object).put(Integer.valueOf(((BiMap)object).size()), packetClass);
-+        } else {
-+            ((BiMap) object).put(Integer.valueOf(((BiMap) object).size()), packetClass);
-             return this;
-         }
-     }
- 
--    public Integer getPacketId(EnumPacketDirection direction, Packet packetIn)
--    {
--        return (Integer)((BiMap)this.directionMaps.get(direction)).inverse().get(packetIn.getClass());
-+    public Integer getPacketId(EnumPacketDirection direction, Packet packetIn) {
-+        return (Integer) ((BiMap) this.directionMaps.get(direction)).inverse().get(packetIn.getClass());
-     }
- 
--    public Packet getPacket(EnumPacketDirection direction, int packetId) throws InstantiationException, IllegalAccessException
--    {
--        Class oclass = (Class)((BiMap)this.directionMaps.get(direction)).get(Integer.valueOf(packetId));
--        return oclass == null ? null : (Packet)oclass.newInstance();
-+    public Packet getPacket(EnumPacketDirection direction, int packetId) throws InstantiationException, IllegalAccessException {
-+        Class oclass = (Class) ((BiMap) this.directionMaps.get(direction)).get(Integer.valueOf(packetId));
-+        return oclass == null ? null : (Packet) oclass.newInstance();
-     }
- 
--    public int getId()
--    {
-+    public int getId() {
-         return this.id;
-     }
- 
--    public static EnumConnectionState getById(int stateId)
--    {
--        return (EnumConnectionState)STATES_BY_ID.get(stateId);
-+    public static EnumConnectionState getById(int stateId) {
-+        return (EnumConnectionState) STATES_BY_ID.get(stateId);
-     }
- 
--    public static EnumConnectionState getFromPacket(Packet packetIn)
--    {
--        return (EnumConnectionState)STATES_BY_CLASS.get(packetIn.getClass());
-+    public static EnumConnectionState getFromPacket(Packet packetIn) {
-+        return (EnumConnectionState) STATES_BY_CLASS.get(packetIn.getClass());
-     }
- 
--    EnumConnectionState(int p_i46000_3_, Object p_i46000_4_)
--    {
-+    EnumConnectionState(int p_i46000_3_, Object p_i46000_4_) {
-         this(p_i46000_3_);
-     }
- 
--    static
--    {
-+    static {
-         EnumConnectionState[] var0 = values();
-         int var1 = var0.length;
- 
--        for (int var2 = 0; var2 < var1; ++var2)
--        {
-+        for (int var2 = 0; var2 < var1; ++var2) {
-             EnumConnectionState var3 = var0[var2];
-             STATES_BY_ID.put(var3.getId(), var3);
-             Iterator var4 = var3.directionMaps.keySet().iterator();
- 
--            while (var4.hasNext())
--            {
--                EnumPacketDirection var5 = (EnumPacketDirection)var4.next();
-+            while (var4.hasNext()) {
-+                EnumPacketDirection var5 = (EnumPacketDirection) var4.next();
-                 Class var7;
- 
--                for (Iterator var6 = ((BiMap)var3.directionMaps.get(var5)).values().iterator(); var6.hasNext(); STATES_BY_CLASS.put(var7, var3))
--                {
--                    var7 = (Class)var6.next();
-+                for (Iterator var6 = ((BiMap) var3.directionMaps.get(var5)).values().iterator(); var6.hasNext(); STATES_BY_CLASS.put(var7, var3)) {
-+                    var7 = (Class) var6.next();
- 
--                    if (STATES_BY_CLASS.containsKey(var7) && STATES_BY_CLASS.get(var7) != var3)
--                    {
-+                    if (STATES_BY_CLASS.containsKey(var7) && STATES_BY_CLASS.get(var7) != var3) {
-                         throw new Error("Packet " + var7 + " is already assigned to protocol " + STATES_BY_CLASS.get(var7) + " - can\'t reassign to " + var3);
-                     }
- 
--                    try
--                    {
-+                    try {
-                         var7.newInstance();
--                    }
--                    catch (Throwable var9)
--                    {
-+                    } catch (Throwable var9) {
-                         throw new Error("Packet " + var7 + " fails instantiation checks! " + var7);
-                     }
-                 }
-             }
-         }

@@ -11,7 +11,7 @@
  import net.minecraft.block.properties.PropertyBool;
  import net.minecraft.block.state.BlockState;
  import net.minecraft.block.state.IBlockState;
-@@ -11,180 +12,129 @@
+@@ -11,19 +12,17 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.init.Blocks;
  import net.minecraft.item.Item;
@@ -24,48 +24,18 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class BlockPane extends Block
--{
 +
-+public class BlockPane extends Block {
+ public class BlockPane extends Block
+ {
 +
      public static final PropertyBool NORTH = PropertyBool.create("north");
      public static final PropertyBool EAST = PropertyBool.create("east");
      public static final PropertyBool SOUTH = PropertyBool.create("south");
      public static final PropertyBool WEST = PropertyBool.create("west");
      private final boolean canDrop;
-     private static final String __OBFID = "CL_00000322";
- 
--    protected BlockPane(Material materialIn, boolean canDrop)
--    {
-+    protected BlockPane(Material materialIn, boolean canDrop) {
-         super(materialIn);
-         this.setDefaultState(this.blockState.getBaseState().withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)));
-         this.canDrop = canDrop;
-         this.setCreativeTab(CreativeTabs.tabDecorations);
-     }
- 
--    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
--    {
-+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-         return state.withProperty(NORTH, Boolean.valueOf(this.canPaneConnectToBlock(worldIn.getBlockState(pos.north()).getBlock()))).withProperty(SOUTH, Boolean.valueOf(this.canPaneConnectToBlock(worldIn.getBlockState(pos.south()).getBlock()))).withProperty(WEST, Boolean.valueOf(this.canPaneConnectToBlock(worldIn.getBlockState(pos.west()).getBlock()))).withProperty(EAST, Boolean.valueOf(this.canPaneConnectToBlock(worldIn.getBlockState(pos.east()).getBlock())));
-     }
- 
--    public Item getItemDropped(IBlockState state, Random rand, int fortune)
--    {
-+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-         return !this.canDrop ? null : super.getItemDropped(state, rand, fortune);
-     }
- 
--    public boolean isOpaqueCube()
--    {
-+    public boolean isOpaqueCube() {
-         return false;
-     }
- 
--    public boolean isFullCube()
--    {
-+    public boolean isFullCube() {
+@@ -55,16 +54,10 @@
+     public boolean isFullCube()
+     {
          return false;
      }
  
@@ -75,133 +45,20 @@
 -        return worldIn.getBlockState(pos).getBlock() == this ? false : super.shouldSideBeRendered(worldIn, pos, side);
 -    }
 -
--    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
--    {
-+    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity) {
+     public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
+     {
          boolean flag = this.canPaneConnectToBlock(worldIn.getBlockState(pos.north()).getBlock());
          boolean flag1 = this.canPaneConnectToBlock(worldIn.getBlockState(pos.south()).getBlock());
          boolean flag2 = this.canPaneConnectToBlock(worldIn.getBlockState(pos.west()).getBlock());
-         boolean flag3 = this.canPaneConnectToBlock(worldIn.getBlockState(pos.east()).getBlock());
- 
--        if ((!flag2 || !flag3) && (flag2 || flag3 || flag || flag1))
--        {
--            if (flag2)
--            {
-+        if ((!flag2 || !flag3) && (flag2 || flag3 || flag || flag1)) {
-+            if (flag2) {
-                 this.setBlockBounds(0.0F, 0.0F, 0.4375F, 0.5F, 1.0F, 0.5625F);
-                 super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
--            }
--            else if (flag3)
--            {
-+            } else if (flag3) {
-                 this.setBlockBounds(0.5F, 0.0F, 0.4375F, 1.0F, 1.0F, 0.5625F);
-                 super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-             }
--        }
--        else
--        {
-+        } else {
-             this.setBlockBounds(0.0F, 0.0F, 0.4375F, 1.0F, 1.0F, 0.5625F);
-             super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-         }
- 
--        if ((!flag || !flag1) && (flag2 || flag3 || flag || flag1))
--        {
--            if (flag)
--            {
-+        if ((!flag || !flag1) && (flag2 || flag3 || flag || flag1)) {
-+            if (flag) {
-                 this.setBlockBounds(0.4375F, 0.0F, 0.0F, 0.5625F, 1.0F, 0.5F);
-                 super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
--            }
--            else if (flag1)
--            {
-+            } else if (flag1) {
-                 this.setBlockBounds(0.4375F, 0.0F, 0.5F, 0.5625F, 1.0F, 1.0F);
-                 super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-             }
--        }
--        else
--        {
-+        } else {
-             this.setBlockBounds(0.4375F, 0.0F, 0.0F, 0.5625F, 1.0F, 1.0F);
-             super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-         }
-     }
- 
--    public void setBlockBoundsForItemRender()
--    {
-+    public void setBlockBoundsForItemRender() {
-         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-     }
- 
--    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
--    {
-+    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) {
-         float f = 0.4375F;
-         float f1 = 0.5625F;
-         float f2 = 0.4375F;
-         float f3 = 0.5625F;
-         boolean flag = this.canPaneConnectToBlock(worldIn.getBlockState(pos.north()).getBlock());
-         boolean flag1 = this.canPaneConnectToBlock(worldIn.getBlockState(pos.south()).getBlock());
-         boolean flag2 = this.canPaneConnectToBlock(worldIn.getBlockState(pos.west()).getBlock());
-         boolean flag3 = this.canPaneConnectToBlock(worldIn.getBlockState(pos.east()).getBlock());
- 
--        if ((!flag2 || !flag3) && (flag2 || flag3 || flag || flag1))
--        {
--            if (flag2)
--            {
-+        if ((!flag2 || !flag3) && (flag2 || flag3 || flag || flag1)) {
-+            if (flag2) {
-                 f = 0.0F;
--            }
--            else if (flag3)
--            {
-+            } else if (flag3) {
-                 f1 = 1.0F;
-             }
--        }
--        else
--        {
-+        } else {
-             f = 0.0F;
-             f1 = 1.0F;
-         }
- 
--        if ((!flag || !flag1) && (flag2 || flag3 || flag || flag1))
--        {
--            if (flag)
--            {
-+        if ((!flag || !flag1) && (flag2 || flag3 || flag || flag1)) {
-+            if (flag) {
-                 f2 = 0.0F;
--            }
--            else if (flag1)
--            {
-+            } else if (flag1) {
-                 f3 = 1.0F;
-             }
--        }
--        else
--        {
-+        } else {
-             f2 = 0.0F;
-             f3 = 1.0F;
-         }
- 
-         this.setBlockBounds(f, 0.0F, f2, f1, 1.0F, f3);
-     }
- 
--    public final boolean canPaneConnectToBlock(Block blockIn)
--    {
-+    public final boolean canPaneConnectToBlock(Block blockIn) {
+@@ -165,21 +158,15 @@
+     public final boolean canPaneConnectToBlock(Block blockIn)
+     {
          return blockIn.isFullBlock() || blockIn == this || blockIn == Blocks.glass || blockIn == Blocks.stained_glass || blockIn == Blocks.stained_glass_pane || blockIn instanceof BlockPane;
      }
  
 -    protected boolean canSilkHarvest()
--    {
-+    public boolean canSilkHarvest() { // SpigotMCP -- Make public as bukkit assumes in the same package
++    public boolean canSilkHarvest()   // SpigotMCP -- Make public as bukkit assumes in the same package
+     {
          return true;
      }
  
@@ -211,16 +68,8 @@
 -        return EnumWorldBlockLayer.CUTOUT_MIPPED;
 -    }
 -
--    public int getMetaFromState(IBlockState state)
--    {
-+    public int getMetaFromState(IBlockState state) {
+     public int getMetaFromState(IBlockState state)
+     {
          return 0;
      }
  
--    protected BlockState createBlockState()
--    {
--        return new BlockState(this, new IProperty[] {NORTH, EAST, WEST, SOUTH});
-+    protected BlockState createBlockState() {
-+        return new BlockState(this, new IProperty[]{NORTH, EAST, WEST, SOUTH});
-     }
- }

@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\handshake\client\C00Handshake.java
 +++ src\main\java\net\minecraft\network\handshake\client\C00Handshake.java
-@@ -1,66 +1,52 @@
+@@ -1,39 +1,33 @@
  package net.minecraft.network.handshake.client;
  
  import java.io.IOException;
@@ -13,10 +13,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class C00Handshake implements Packet
--{
 +
-+public class C00Handshake implements Packet {
+ public class C00Handshake implements Packet
+ {
 +
      private int protocolVersion;
 -    private String ip;
@@ -30,17 +29,16 @@
 -
 -    @SideOnly(Side.CLIENT)
 -    public C00Handshake(int version, String ip, int port, EnumConnectionState requestedState)
--    {
++    public C00Handshake()
+     {
 -        this.protocolVersion = version;
 -        this.ip = ip;
 -        this.port = port;
 -        this.requestedState = requestedState;
-+    public C00Handshake() {
      }
  
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
+     public void readPacketData(PacketBuffer buf) throws IOException
+     {
          this.protocolVersion = buf.readVarIntFromBuffer();
 -        this.ip = buf.readStringFromBuffer(255);
 +        this.ip = buf.readStringFromBuffer(Short.MAX_VALUE); // Spigot
@@ -48,37 +46,14 @@
          this.requestedState = EnumConnectionState.getById(buf.readVarIntFromBuffer());
      }
  
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeVarIntToBuffer(this.protocolVersion);
-         buf.writeString(this.ip);
-         buf.writeShort(this.port);
-         buf.writeVarIntToBuffer(this.requestedState.getId());
-     }
- 
--    public void handle(INetHandlerHandshakeServer handler)
--    {
-+    public void handle(INetHandlerHandshakeServer handler) {
-         handler.processHandshake(this);
-     }
- 
--    public EnumConnectionState getRequestedState()
--    {
-+    public EnumConnectionState getRequestedState() {
-         return this.requestedState;
-     }
- 
--    public int getProtocolVersion()
--    {
-+    public int getProtocolVersion() {
+     public void writePacketData(PacketBuffer buf) throws IOException
+@@ -59,8 +53,8 @@
          return this.protocolVersion;
      }
  
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.handle((INetHandlerHandshakeServer)handler);
-+    public void processPacket(INetHandler handler) {
 +        this.handle((INetHandlerHandshakeServer) handler);
      }
  }

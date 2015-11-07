@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S10PacketSpawnPainting.java
 +++ src\main\java\net\minecraft\network\play\server\S10PacketSpawnPainting.java
-@@ -1,81 +1,53 @@
+@@ -1,27 +1,30 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -15,10 +15,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S10PacketSpawnPainting implements Packet
--{
 +
-+public class S10PacketSpawnPainting implements Packet {
+ public class S10PacketSpawnPainting implements Packet
+ {
 +
      private int field_148973_a;
      private BlockPos field_179838_b;
@@ -27,39 +26,17 @@
      private static final String __OBFID = "CL_00001280";
  
 -    public S10PacketSpawnPainting() {}
-+    public S10PacketSpawnPainting() {
++    public S10PacketSpawnPainting()
++    {
 +    }
  
--    public S10PacketSpawnPainting(EntityPainting p_i45170_1_)
--    {
-+    public S10PacketSpawnPainting(EntityPainting p_i45170_1_) {
+     public S10PacketSpawnPainting(EntityPainting p_i45170_1_)
+     {
          this.field_148973_a = p_i45170_1_.getEntityId();
          this.field_179838_b = p_i45170_1_.func_174857_n();
-         this.field_179839_c = p_i45170_1_.field_174860_b;
-         this.field_148968_f = p_i45170_1_.art.title;
-     }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.field_148973_a = buf.readVarIntFromBuffer();
-         this.field_148968_f = buf.readStringFromBuffer(EntityPainting.EnumArt.field_180001_A);
-         this.field_179838_b = buf.readBlockPos();
-         this.field_179839_c = EnumFacing.getHorizontal(buf.readUnsignedByte());
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeVarIntToBuffer(this.field_148973_a);
-         buf.writeString(this.field_148968_f);
-         buf.writeBlockPos(this.field_179838_b);
-         buf.writeByte(this.field_179839_c.getHorizontalIndex());
-     }
- 
--    public void func_180722_a(INetHandlerPlayClient p_180722_1_)
--    {
-+    public void func_180722_a(INetHandlerPlayClient p_180722_1_) {
+@@ -48,34 +51,10 @@
+     public void func_180722_a(INetHandlerPlayClient p_180722_1_)
+     {
          p_180722_1_.handleSpawnPainting(this);
      }
  
@@ -67,14 +44,13 @@
 -    public int func_148965_c()
 -    {
 -        return this.field_148973_a;
-+    public void processPacket(INetHandler handler) {
+-    }
+-
+     public void processPacket(INetHandler handler)
+     {
+-        this.func_180722_a((INetHandlerPlayClient)handler);
 +        this.func_180722_a((INetHandlerPlayClient) handler);
      }
--
--    public void processPacket(INetHandler handler)
--    {
--        this.func_180722_a((INetHandlerPlayClient)handler);
--    }
 -
 -    @SideOnly(Side.CLIENT)
 -    public BlockPos func_179837_b()

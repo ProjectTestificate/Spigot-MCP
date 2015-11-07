@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\inventory\IInventory.java
 +++ src\main\java\net\minecraft\inventory\IInventory.java
-@@ -1,13 +1,19 @@
+@@ -1,13 +1,20 @@
  package net.minecraft.inventory;
  
 +import java.util.List;
@@ -9,20 +9,19 @@
  import net.minecraft.item.ItemStack;
  import net.minecraft.world.IWorldNameable;
  
--public interface IInventory extends IWorldNameable
--{
 +import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 +import org.bukkit.entity.HumanEntity;
 +import org.bukkit.inventory.InventoryHolder;
 +
-+public interface IInventory extends IWorldNameable {
+ public interface IInventory extends IWorldNameable
+ {
 +
      int getSizeInventory();
  
      ItemStack getStackInSlot(int index);
  
      ItemStack decrStackSize(int index, int count);
-@@ -33,6 +39,22 @@
+@@ -33,6 +40,22 @@
      void setField(int id, int value);
  
      int getFieldCount();

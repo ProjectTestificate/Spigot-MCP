@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\entity\projectile\EntityPotion.java
 +++ src\main\java\net\minecraft\entity\projectile\EntityPotion.java
-@@ -1,137 +1,139 @@
+@@ -1,25 +1,30 @@
  package net.minecraft.entity.projectile;
  
 +import java.util.HashMap;
@@ -21,32 +21,21 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class EntityPotion extends EntityThrowable
--{
--    private ItemStack potionDamage;
 +import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 +import org.bukkit.entity.LivingEntity;
 +
-+public class EntityPotion extends EntityThrowable {
+ public class EntityPotion extends EntityThrowable
+ {
+-    private ItemStack potionDamage;
 +
 +    public ItemStack potionDamage; // SpigotMCP -- Apply access transformation
      private static final String __OBFID = "CL_00001727";
  
--    public EntityPotion(World worldIn)
--    {
-+    public EntityPotion(World worldIn) {
+     public EntityPotion(World worldIn)
+     {
          super(worldIn);
-     }
- 
--    public EntityPotion(World worldIn, EntityLivingBase p_i1789_2_, int p_i1789_3_)
--    {
-+    public EntityPotion(World worldIn, EntityLivingBase p_i1789_2_, int p_i1789_3_) {
-         this(worldIn, p_i1789_2_, new ItemStack(Items.potionitem, 1, p_i1789_3_));
-     }
- 
--    public EntityPotion(World worldIn, EntityLivingBase p_i1790_2_, ItemStack p_i1790_3_)
--    {
-+    public EntityPotion(World worldIn, EntityLivingBase p_i1790_2_, ItemStack p_i1790_3_) {
+@@ -34,16 +39,10 @@
+     {
          super(worldIn, p_i1790_2_);
          this.potionDamage = p_i1790_3_;
      }
@@ -57,61 +46,15 @@
 -        this(worldIn, p_i1791_2_, p_i1791_4_, p_i1791_6_, new ItemStack(Items.potionitem, 1, p_i1791_8_));
 -    }
 -
--    public EntityPotion(World worldIn, double p_i1792_2_, double p_i1792_4_, double p_i1792_6_, ItemStack p_i1792_8_)
--    {
-+    public EntityPotion(World worldIn, double p_i1792_2_, double p_i1792_4_, double p_i1792_6_, ItemStack p_i1792_8_) {
+     public EntityPotion(World worldIn, double p_i1792_2_, double p_i1792_4_, double p_i1792_6_, ItemStack p_i1792_8_)
+     {
          super(worldIn, p_i1792_2_, p_i1792_4_, p_i1792_6_);
          this.potionDamage = p_i1792_8_;
      }
- 
--    protected float getGravityVelocity()
--    {
-+    protected float getGravityVelocity() {
-         return 0.05F;
-     }
- 
--    protected float getVelocity()
--    {
-+    protected float getVelocity() {
-         return 0.5F;
-     }
- 
--    protected float getInaccuracy()
--    {
-+    protected float getInaccuracy() {
-         return -20.0F;
-     }
- 
--    public void setPotionDamage(int potionId)
--    {
--        if (this.potionDamage == null)
--        {
-+    public void setPotionDamage(int potionId) {
-+        if (this.potionDamage == null) {
-             this.potionDamage = new ItemStack(Items.potionitem, 1, 0);
-         }
- 
-         this.potionDamage.setItemDamage(potionId);
-     }
- 
--    public int getPotionDamage()
--    {
--        if (this.potionDamage == null)
--        {
-+    public int getPotionDamage() {
-+        if (this.potionDamage == null) {
-             this.potionDamage = new ItemStack(Items.potionitem, 1, 0);
-         }
- 
-         return this.potionDamage.getMetadata();
-     }
- 
--    protected void onImpact(MovingObjectPosition p_70184_1_)
--    {
--        if (!this.worldObj.isRemote)
--        {
-+    protected void onImpact(MovingObjectPosition p_70184_1_) {
-+        if (!this.worldObj.isRemote) {
+@@ -87,18 +86,20 @@
+     {
+         if (!this.worldObj.isRemote)
+         {
              List list = Items.potionitem.getEffects(this.potionDamage);
  
 -            if (list != null && !list.isEmpty())
@@ -124,118 +67,70 @@
 +                if (true || !list1.isEmpty()) // CraftBukkit - Run code even if there are no entities around
                  {
                      Iterator iterator = list1.iterator();
- 
--                    while (iterator.hasNext())
--                    {
--                        EntityLivingBase entitylivingbase = (EntityLivingBase)iterator.next();
 +                    // CraftBukkit
 +                    HashMap<LivingEntity, Double> affected = new HashMap();
-+
-+                    while (iterator.hasNext()) {
-+                        EntityLivingBase entitylivingbase = (EntityLivingBase) iterator.next();
+ 
+                     while (iterator.hasNext())
+                     {
+                         EntityLivingBase entitylivingbase = (EntityLivingBase)iterator.next();
                          double d0 = this.getDistanceSqToEntity(entitylivingbase);
- 
--                        if (d0 < 16.0D)
--                        {
-+                        if (d0 < 16.0D) {
-                             double d1 = 1.0D - Math.sqrt(d0) / 4.0D;
- 
--                            if (entitylivingbase == p_70184_1_.entityHit)
--                            {
-+                            if (entitylivingbase == p_70184_1_.entityHit) {
+@@ -110,28 +111,57 @@
+                             if (entitylivingbase == p_70184_1_.entityHit)
+                             {
                                  d1 = 1.0D;
                              }
+ 
 +                            // CraftBukkit start
-+                            affected.put((LivingEntity) entitylivingbase.getBukkitEntity(), d1);
++                            affected.put((LivingEntity)entitylivingbase.getBukkitEntity(), d1);
 +                        }
 +                    }
- 
++
 +                    org.bukkit.event.entity.PotionSplashEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callPotionSplashEvent(this, affected);
-+                    if (!event.isCancelled() && list != null && !list.isEmpty()) { // do not process effects if there are no effects to process
-+                        for (LivingEntity victim : event.getAffectedEntities()) {
-+                            if (!(victim instanceof CraftLivingEntity)) {
++
++                    if (!event.isCancelled() && list != null && !list.isEmpty())   // do not process effects if there are no effects to process
++                    {
++                        for (LivingEntity victim : event.getAffectedEntities())
++                        {
++                            if (!(victim instanceof CraftLivingEntity))
++                            {
 +                                continue;
 +                            }
 +
-+                            EntityLivingBase entityliving = ((CraftLivingEntity) victim).getHandle(); // SpigotMCP -- Use EntityLivingBase to fix SrgHelper stupidity
++                            EntityLivingBase entityliving = ((CraftLivingEntity)victim).getHandle(); // SpigotMCP -- Use EntityLivingBase to fix SrgHelper stupidity
 +                            double d1 = event.getIntensity(victim);
 +                            // CraftBukkit end
-+
                              Iterator iterator1 = list.iterator();
  
--                            while (iterator1.hasNext())
--                            {
--                                PotionEffect potioneffect = (PotionEffect)iterator1.next();
-+                            while (iterator1.hasNext()) {
-+                                PotionEffect potioneffect = (PotionEffect) iterator1.next();
+                             while (iterator1.hasNext())
+                             {
+                                 PotionEffect potioneffect = (PotionEffect)iterator1.next();
                                  int i = potioneffect.getPotionID();
  
--                                if (Potion.potionTypes[i].isInstant())
--                                {
--                                    Potion.potionTypes[i].affectEntity(this, this.getThrower(), entitylivingbase, potioneffect.getAmplifier(), d1);
 +                                // CraftBukkit start - Abide by PVP settings - for players only!
-+                                if (!this.worldObj.pvpMode && this.getThrower() instanceof EntityPlayer && entityliving instanceof EntityPlayer && entityliving != this.getThrower()) {
++                                if (!this.worldObj.pvpMode && this.getThrower() instanceof EntityPlayer && entityliving instanceof EntityPlayer && entityliving != this.getThrower())
++                                {
 +                                    // Block SLOWER_MOVEMENT, SLOWER_DIG, HARM, BLINDNESS, HUNGER, WEAKNESS and POISON potions
-+                                    if (i == 2 || i == 4 || i == 7 || i == 15 || i == 17 || i == 18 || i == 19) continue;
-                                 }
--                                else
--                                {
--                                    int j = (int)(d1 * (double)potioneffect.getDuration() + 0.5D);
-+                                // CraftBukkit end
- 
--                                    if (j > 20)
--                                    {
--                                        entitylivingbase.addPotionEffect(new PotionEffect(i, j, potioneffect.getAmplifier()));
-+                                if (Potion.potionTypes[i].isInstant()) {
-+                                    Potion.potionTypes[i].affectEntity(this, this.getThrower(), entityliving, potioneffect.getAmplifier(), d1);
-+                                } else {
-+                                    int j = (int) (d1 * (double) potioneffect.getDuration() + 0.5D);
++                                    if (i == 2 || i == 4 || i == 7 || i == 15 || i == 17 || i == 18 || i == 19)
++                                        continue;
++                                }
 +
-+                                    if (j > 20) {
++                                // CraftBukkit end
++
+                                 if (Potion.potionTypes[i].isInstant())
+                                 {
+-                                    Potion.potionTypes[i].affectEntity(this, this.getThrower(), entitylivingbase, potioneffect.getAmplifier(), d1);
++                                    Potion.potionTypes[i].affectEntity(this, this.getThrower(), entityliving, potioneffect.getAmplifier(), d1);
+                                 }
+                                 else
+                                 {
+                                     int j = (int)(d1 * (double)potioneffect.getDuration() + 0.5D);
+ 
+                                     if (j > 20)
+                                     {
+-                                        entitylivingbase.addPotionEffect(new PotionEffect(i, j, potioneffect.getAmplifier()));
 +                                        entityliving.addPotionEffect(new PotionEffect(i, j, potioneffect.getAmplifier()));
                                      }
                                  }
                              }
                          }
                      }
-@@ -141,34 +143,27 @@
-             this.worldObj.playAuxSFX(2002, new BlockPos(this), this.getPotionDamage());
-             this.setDead();
-         }
-     }
- 
--    public void readEntityFromNBT(NBTTagCompound tagCompund)
--    {
-+    public void readEntityFromNBT(NBTTagCompound tagCompund) {
-         super.readEntityFromNBT(tagCompund);
- 
--        if (tagCompund.hasKey("Potion", 10))
--        {
-+        if (tagCompund.hasKey("Potion", 10)) {
-             this.potionDamage = ItemStack.loadItemStackFromNBT(tagCompund.getCompoundTag("Potion"));
--        }
--        else
--        {
-+        } else {
-             this.setPotionDamage(tagCompund.getInteger("potionValue"));
-         }
- 
--        if (this.potionDamage == null)
--        {
-+        if (this.potionDamage == null) {
-             this.setDead();
-         }
-     }
- 
--    public void writeEntityToNBT(NBTTagCompound tagCompound)
--    {
-+    public void writeEntityToNBT(NBTTagCompound tagCompound) {
-         super.writeEntityToNBT(tagCompound);
- 
--        if (this.potionDamage != null)
--        {
-+        if (this.potionDamage != null) {
-             tagCompound.setTag("Potion", this.potionDamage.writeToNBT(new NBTTagCompound()));
-         }
-     }
- }

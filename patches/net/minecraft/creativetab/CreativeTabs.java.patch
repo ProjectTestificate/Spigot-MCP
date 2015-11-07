@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\creativetab\CreativeTabs.java
 +++ src\main\java\net\minecraft\creativetab\CreativeTabs.java
-@@ -1,323 +1,102 @@
+@@ -1,323 +1,97 @@
  package net.minecraft.creativetab;
  
 -import java.util.Iterator;
@@ -16,29 +16,23 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public abstract class CreativeTabs
--{
--    public static final CreativeTabs[] creativeTabArray = new CreativeTabs[12];
--    public static final CreativeTabs tabBlock = new CreativeTabs(0, "buildingBlocks")
--    {
 +
-+public abstract class CreativeTabs {
+ public abstract class CreativeTabs
+ {
+-    public static final CreativeTabs[] creativeTabArray = new CreativeTabs[12];
 +
 +    public static CreativeTabs[] creativeTabArray = new CreativeTabs[12];
-+    public static final CreativeTabs tabBlock = new CreativeTabs(0, "buildingBlocks") {
-+
+     public static final CreativeTabs tabBlock = new CreativeTabs(0, "buildingBlocks")
+     {
          private static final String __OBFID = "CL_00000006";
 -        @SideOnly(Side.CLIENT)
 -        public Item getTabIconItem()
 -        {
 -            return Item.getItemFromBlock(Blocks.brick_block);
 -        }
-+
      };
--    public static final CreativeTabs tabDecorations = new CreativeTabs(1, "decorations")
--    {
-+    public static final CreativeTabs tabDecorations = new CreativeTabs(1, "decorations") {
-+
+     public static final CreativeTabs tabDecorations = new CreativeTabs(1, "decorations")
+     {
          private static final String __OBFID = "CL_00000010";
 -        @SideOnly(Side.CLIENT)
 -        public Item getTabIconItem()
@@ -50,111 +44,81 @@
 -        {
 -            return BlockDoublePlant.EnumPlantType.PAEONIA.getMeta();
 -        }
-+
      };
--    public static final CreativeTabs tabRedstone = new CreativeTabs(2, "redstone")
--    {
-+    public static final CreativeTabs tabRedstone = new CreativeTabs(2, "redstone") {
-+
+     public static final CreativeTabs tabRedstone = new CreativeTabs(2, "redstone")
+     {
          private static final String __OBFID = "CL_00000011";
 -        @SideOnly(Side.CLIENT)
 -        public Item getTabIconItem()
 -        {
 -            return Items.redstone;
 -        }
-+
      };
--    public static final CreativeTabs tabTransport = new CreativeTabs(3, "transportation")
--    {
-+    public static final CreativeTabs tabTransport = new CreativeTabs(3, "transportation") {
-+
+     public static final CreativeTabs tabTransport = new CreativeTabs(3, "transportation")
+     {
          private static final String __OBFID = "CL_00000012";
 -        @SideOnly(Side.CLIENT)
 -        public Item getTabIconItem()
 -        {
 -            return Item.getItemFromBlock(Blocks.golden_rail);
 -        }
-+
      };
--    public static final CreativeTabs tabMisc = (new CreativeTabs(4, "misc")
--    {
-+    public static final CreativeTabs tabMisc = (new CreativeTabs(4, "misc") {
-+
+     public static final CreativeTabs tabMisc = (new CreativeTabs(4, "misc")
+     {
          private static final String __OBFID = "CL_00000014";
 -        @SideOnly(Side.CLIENT)
 -        public Item getTabIconItem()
 -        {
 -            return Items.lava_bucket;
 -        }
--    }).setRelevantEnchantmentTypes(new EnumEnchantmentType[] {EnumEnchantmentType.ALL});
--    public static final CreativeTabs tabAllSearch = (new CreativeTabs(5, "search")
--    {
-+
-+    }).setRelevantEnchantmentTypes(new EnumEnchantmentType[]{EnumEnchantmentType.ALL});
-+    public static final CreativeTabs tabAllSearch = (new CreativeTabs(5, "search") {
-+
+     }).setRelevantEnchantmentTypes(new EnumEnchantmentType[] {EnumEnchantmentType.ALL});
+     public static final CreativeTabs tabAllSearch = (new CreativeTabs(5, "search")
+     {
          private static final String __OBFID = "CL_00000015";
 -        @SideOnly(Side.CLIENT)
 -        public Item getTabIconItem()
 -        {
 -            return Items.compass;
 -        }
-+
      }).setBackgroundImageName("item_search.png");
--    public static final CreativeTabs tabFood = new CreativeTabs(6, "food")
--    {
-+    public static final CreativeTabs tabFood = new CreativeTabs(6, "food") {
-+
+     public static final CreativeTabs tabFood = new CreativeTabs(6, "food")
+     {
          private static final String __OBFID = "CL_00000016";
 -        @SideOnly(Side.CLIENT)
 -        public Item getTabIconItem()
 -        {
 -            return Items.apple;
 -        }
-+
      };
--    public static final CreativeTabs tabTools = (new CreativeTabs(7, "tools")
--    {
-+    public static final CreativeTabs tabTools = (new CreativeTabs(7, "tools") {
-+
+     public static final CreativeTabs tabTools = (new CreativeTabs(7, "tools")
+     {
          private static final String __OBFID = "CL_00000017";
 -        @SideOnly(Side.CLIENT)
 -        public Item getTabIconItem()
 -        {
 -            return Items.iron_axe;
 -        }
--    }).setRelevantEnchantmentTypes(new EnumEnchantmentType[] {EnumEnchantmentType.DIGGER, EnumEnchantmentType.FISHING_ROD, EnumEnchantmentType.BREAKABLE});
--    public static final CreativeTabs tabCombat = (new CreativeTabs(8, "combat")
--    {
-+
-+    }).setRelevantEnchantmentTypes(new EnumEnchantmentType[]{EnumEnchantmentType.DIGGER, EnumEnchantmentType.FISHING_ROD, EnumEnchantmentType.BREAKABLE});
-+    public static final CreativeTabs tabCombat = (new CreativeTabs(8, "combat") {
-+
+     }).setRelevantEnchantmentTypes(new EnumEnchantmentType[] {EnumEnchantmentType.DIGGER, EnumEnchantmentType.FISHING_ROD, EnumEnchantmentType.BREAKABLE});
+     public static final CreativeTabs tabCombat = (new CreativeTabs(8, "combat")
+     {
          private static final String __OBFID = "CL_00000018";
 -        @SideOnly(Side.CLIENT)
 -        public Item getTabIconItem()
 -        {
 -            return Items.golden_sword;
 -        }
--    }).setRelevantEnchantmentTypes(new EnumEnchantmentType[] {EnumEnchantmentType.ARMOR, EnumEnchantmentType.ARMOR_FEET, EnumEnchantmentType.ARMOR_HEAD, EnumEnchantmentType.ARMOR_LEGS, EnumEnchantmentType.ARMOR_TORSO, EnumEnchantmentType.BOW, EnumEnchantmentType.WEAPON});
--    public static final CreativeTabs tabBrewing = new CreativeTabs(9, "brewing")
--    {
-+
-+    }).setRelevantEnchantmentTypes(new EnumEnchantmentType[]{EnumEnchantmentType.ARMOR, EnumEnchantmentType.ARMOR_FEET, EnumEnchantmentType.ARMOR_HEAD, EnumEnchantmentType.ARMOR_LEGS, EnumEnchantmentType.ARMOR_TORSO, EnumEnchantmentType.BOW, EnumEnchantmentType.WEAPON});
-+    public static final CreativeTabs tabBrewing = new CreativeTabs(9, "brewing") {
-+
+     }).setRelevantEnchantmentTypes(new EnumEnchantmentType[] {EnumEnchantmentType.ARMOR, EnumEnchantmentType.ARMOR_FEET, EnumEnchantmentType.ARMOR_HEAD, EnumEnchantmentType.ARMOR_LEGS, EnumEnchantmentType.ARMOR_TORSO, EnumEnchantmentType.BOW, EnumEnchantmentType.WEAPON});
+     public static final CreativeTabs tabBrewing = new CreativeTabs(9, "brewing")
+     {
          private static final String __OBFID = "CL_00000007";
 -        @SideOnly(Side.CLIENT)
 -        public Item getTabIconItem()
 -        {
 -            return Items.potionitem;
 -        }
-+
      };
--    public static final CreativeTabs tabMaterials = new CreativeTabs(10, "materials")
--    {
-+    public static final CreativeTabs tabMaterials = new CreativeTabs(10, "materials") {
-+
+     public static final CreativeTabs tabMaterials = new CreativeTabs(10, "materials")
+     {
          private static final String __OBFID = "CL_00000008";
 -        @SideOnly(Side.CLIENT)
 -        public Item getTabIconItem()
@@ -162,17 +126,14 @@
 -            return Items.stick;
 -        }
      };
--    public static final CreativeTabs tabInventory = (new CreativeTabs(11, "inventory")
--    {
-+    public static final CreativeTabs tabInventory = (new CreativeTabs(11, "inventory") {
-+
+     public static final CreativeTabs tabInventory = (new CreativeTabs(11, "inventory")
+     {
          private static final String __OBFID = "CL_00000009";
 -        @SideOnly(Side.CLIENT)
 -        public Item getTabIconItem()
 -        {
 -            return Item.getItemFromBlock(Blocks.chest);
 -        }
-+
      }).setBackgroundImageName("inventory.png").setNoScrollbar().setNoTitle();
      private final int tabIndex;
      private final String tabLabel;
@@ -184,9 +145,8 @@
 -    private ItemStack iconItemStack;
      private static final String __OBFID = "CL_00000005";
  
--    public CreativeTabs(int index, String label)
--    {
-+    public CreativeTabs(int index, String label) {
+     public CreativeTabs(int index, String label)
+     {
          this.tabIndex = index;
          this.tabLabel = label;
          creativeTabArray[index] = this;
@@ -198,9 +158,8 @@
 -        return this.tabIndex;
 -    }
  
--    public CreativeTabs setBackgroundImageName(String texture)
--    {
-+    public CreativeTabs setBackgroundImageName(String texture) {
+     public CreativeTabs setBackgroundImageName(String texture)
+     {
          this.theTexture = texture;
          return this;
      }
@@ -249,9 +208,8 @@
 -        return this.drawTitle;
 -    }
 -
--    public CreativeTabs setNoTitle()
--    {
-+    public CreativeTabs setNoTitle() {
+     public CreativeTabs setNoTitle()
+     {
          this.drawTitle = false;
          return this;
      }
@@ -262,16 +220,16 @@
 -        return this.hasScrollbar;
 -    }
 -
--    public CreativeTabs setNoScrollbar()
--    {
-+    public CreativeTabs setNoScrollbar() {
+     public CreativeTabs setNoScrollbar()
+     {
          this.hasScrollbar = false;
          return this;
      }
  
 -    @SideOnly(Side.CLIENT)
 -    public int getTabColumn()
--    {
++    public CreativeTabs setRelevantEnchantmentTypes(EnumEnchantmentType... types)
+     {
 -        return this.tabIndex % 6;
 -    }
 -
@@ -289,7 +247,6 @@
 -
 -    public CreativeTabs setRelevantEnchantmentTypes(EnumEnchantmentType ... types)
 -    {
-+    public CreativeTabs setRelevantEnchantmentTypes(EnumEnchantmentType... types) {
          this.enchantmentTypes = types;
          return this;
      }

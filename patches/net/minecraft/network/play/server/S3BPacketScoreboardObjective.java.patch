@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S3BPacketScoreboardObjective.java
 +++ src\main\java\net\minecraft\network\play\server\S3BPacketScoreboardObjective.java
-@@ -1,88 +1,58 @@
+@@ -1,26 +1,29 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -14,10 +14,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S3BPacketScoreboardObjective implements Packet
--{
 +
-+public class S3BPacketScoreboardObjective implements Packet {
+ public class S3BPacketScoreboardObjective implements Packet
+ {
 +
      private String field_149343_a;
      private String field_149341_b;
@@ -26,49 +25,17 @@
      private static final String __OBFID = "CL_00001333";
  
 -    public S3BPacketScoreboardObjective() {}
-+    public S3BPacketScoreboardObjective() {
++    public S3BPacketScoreboardObjective()
++    {
 +    }
  
--    public S3BPacketScoreboardObjective(ScoreObjective p_i45224_1_, int p_i45224_2_)
--    {
-+    public S3BPacketScoreboardObjective(ScoreObjective p_i45224_1_, int p_i45224_2_) {
+     public S3BPacketScoreboardObjective(ScoreObjective p_i45224_1_, int p_i45224_2_)
+     {
          this.field_149343_a = p_i45224_1_.getName();
          this.field_149341_b = p_i45224_1_.getDisplayName();
-         this.field_179818_c = p_i45224_1_.getCriteria().getRenderType();
-         this.field_149342_c = p_i45224_2_;
-     }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.field_149343_a = buf.readStringFromBuffer(16);
-         this.field_149342_c = buf.readByte();
- 
--        if (this.field_149342_c == 0 || this.field_149342_c == 2)
--        {
-+        if (this.field_149342_c == 0 || this.field_149342_c == 2) {
-             this.field_149341_b = buf.readStringFromBuffer(32);
-             this.field_179818_c = IScoreObjectiveCriteria.EnumRenderType.func_178795_a(buf.readStringFromBuffer(16));
-         }
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeString(this.field_149343_a);
-         buf.writeByte(this.field_149342_c);
- 
--        if (this.field_149342_c == 0 || this.field_149342_c == 2)
--        {
-+        if (this.field_149342_c == 0 || this.field_149342_c == 2) {
-             buf.writeString(this.field_149341_b);
-             buf.writeString(this.field_179818_c.func_178796_a());
-         }
-     }
- 
--    public void processPacket(INetHandlerPlayClient handler)
--    {
-+    public void processPacket(INetHandlerPlayClient handler) {
+@@ -55,34 +58,10 @@
+     public void processPacket(INetHandlerPlayClient handler)
+     {
          handler.handleScoreboardObjective(this);
      }
  
@@ -76,14 +43,13 @@
 -    public String func_149339_c()
 -    {
 -        return this.field_149343_a;
-+    public void processPacket(INetHandler handler) {
+-    }
+-
+     public void processPacket(INetHandler handler)
+     {
+-        this.processPacket((INetHandlerPlayClient)handler);
 +        this.processPacket((INetHandlerPlayClient) handler);
      }
--
--    public void processPacket(INetHandler handler)
--    {
--        this.processPacket((INetHandlerPlayClient)handler);
--    }
 -
 -    @SideOnly(Side.CLIENT)
 -    public String func_149337_d()

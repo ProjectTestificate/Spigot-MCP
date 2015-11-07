@@ -10,7 +10,7 @@
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.init.Items;
  import net.minecraft.item.Item;
-@@ -11,76 +12,51 @@
+@@ -11,15 +12,15 @@
  import net.minecraft.util.AxisAlignedBB;
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
@@ -19,25 +19,18 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class BlockSign extends BlockContainer
--{
 +
-+public class BlockSign extends BlockContainer {
+ public class BlockSign extends BlockContainer
+ {
 +
      private static final String __OBFID = "CL_00000306";
  
--    protected BlockSign()
--    {
-+    protected BlockSign() {
+     protected BlockSign()
+     {
          super(Material.wood);
-         float f = 0.25F;
-         float f1 = 1.0F;
-         this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f1, 0.5F + f);
-     }
- 
--    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
--    {
-+    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) {
+@@ -31,17 +32,10 @@
+     public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+     {
          return null;
      }
  
@@ -48,50 +41,15 @@
 -        return super.getSelectedBoundingBox(worldIn, pos);
 -    }
 -
--    public boolean isFullCube()
--    {
-+    public boolean isFullCube() {
+     public boolean isFullCube()
+     {
          return false;
      }
  
--    public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
--    {
-+    public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
-         return true;
-     }
- 
--    public boolean isOpaqueCube()
--    {
-+    public boolean isOpaqueCube() {
-         return false;
-     }
- 
--    public TileEntity createNewTileEntity(World worldIn, int meta)
--    {
-+    public TileEntity createNewTileEntity(World worldIn, int meta) {
-         return new TileEntitySign();
-     }
- 
--    public Item getItemDropped(IBlockState state, Random rand, int fortune)
--    {
-+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-         return Items.sign;
-     }
- 
--    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
--    {
--        if (worldIn.isRemote)
--        {
-+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
-+        if (worldIn.isRemote) {
-             return true;
--        }
--        else
--        {
-+        } else {
+@@ -75,12 +69,6 @@
+         {
              TileEntity tileentity = worldIn.getTileEntity(pos);
--            return tileentity instanceof TileEntitySign ? ((TileEntitySign)tileentity).func_174882_b(playerIn) : false;
-+            return tileentity instanceof TileEntitySign ? ((TileEntitySign) tileentity).func_174882_b(playerIn) : false;
+             return tileentity instanceof TileEntitySign ? ((TileEntitySign)tileentity).func_174882_b(playerIn) : false;
          }
      }
 -

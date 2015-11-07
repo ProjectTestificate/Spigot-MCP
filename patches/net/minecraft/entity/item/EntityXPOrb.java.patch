@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\entity\item\EntityXPOrb.java
 +++ src\main\java\net\minecraft\entity\item\EntityXPOrb.java
-@@ -1,230 +1,212 @@
+@@ -1,25 +1,29 @@
  package net.minecraft.entity.item;
  
  import net.minecraft.block.material.Material;
@@ -15,13 +15,12 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class EntityXPOrb extends Entity
--{
 +import org.bukkit.craftbukkit.event.CraftEventFactory;
 +import org.bukkit.event.entity.EntityTargetEvent;
 +import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 +
-+public class EntityXPOrb extends Entity {
+ public class EntityXPOrb extends Entity
+ {
 +
      public int xpColor;
      public int xpOrbAge;
@@ -33,32 +32,9 @@
      private int xpTargetColor;
      private static final String __OBFID = "CL_00001544";
  
--    public EntityXPOrb(World worldIn, double x, double y, double z, int expValue)
--    {
-+    public EntityXPOrb(World worldIn, double x, double y, double z, int expValue) {
-         super(worldIn);
-         this.setSize(0.5F, 0.5F);
-         this.setPosition(x, y, z);
--        this.rotationYaw = (float)(Math.random() * 360.0D);
--        this.motionX = (double)((float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D) * 2.0F);
--        this.motionY = (double)((float)(Math.random() * 0.2D) * 2.0F);
--        this.motionZ = (double)((float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D) * 2.0F);
-+        this.rotationYaw = (float) (Math.random() * 360.0D);
-+        this.motionX = (double) ((float) (Math.random() * 0.20000000298023224D - 0.10000000149011612D) * 2.0F);
-+        this.motionY = (double) ((float) (Math.random() * 0.2D) * 2.0F);
-+        this.motionZ = (double) ((float) (Math.random() * 0.20000000298023224D - 0.10000000149011612D) * 2.0F);
-         this.xpValue = expValue;
-     }
- 
--    protected boolean canTriggerWalking()
--    {
-+    protected boolean canTriggerWalking() {
-         return false;
-     }
- 
--    public EntityXPOrb(World worldIn)
--    {
-+    public EntityXPOrb(World worldIn) {
+     public EntityXPOrb(World worldIn, double x, double y, double z, int expValue)
+@@ -43,33 +47,19 @@
+     {
          super(worldIn);
          this.setSize(0.25F, 0.25F);
      }
@@ -67,7 +43,8 @@
 -
 -    @SideOnly(Side.CLIENT)
 -    public int getBrightnessForRender(float p_70070_1_)
--    {
++    protected void entityInit()
+     {
 -        float f1 = 0.5F;
 -        f1 = MathHelper.clamp_float(f1, 0.0F, 1.0F);
 -        int i = super.getBrightnessForRender(p_70070_1_);
@@ -81,196 +58,71 @@
 -        }
 -
 -        return j | k << 16;
-+    protected void entityInit() {
      }
  
--    public void onUpdate()
--    {
 +
-+    public void onUpdate() {
+     public void onUpdate()
+     {
          super.onUpdate();
 +        EntityPlayer prevTarget = this.closestPlayer;// CraftBukkit - store old target
  
--        if (this.field_70532_c > 0)
--        {
-+        if (this.field_70532_c > 0) {
+         if (this.field_70532_c > 0)
+         {
              --this.field_70532_c;
          }
- 
-         this.prevPosX = this.posX;
-         this.prevPosY = this.posY;
-         this.prevPosZ = this.posZ;
-         this.motionY -= 0.029999999329447746D;
- 
--        if (this.worldObj.getBlockState(new BlockPos(this)).getBlock().getMaterial() == Material.lava)
--        {
-+        if (this.worldObj.getBlockState(new BlockPos(this)).getBlock().getMaterial() == Material.lava) {
-             this.motionY = 0.20000000298023224D;
--            this.motionX = (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
--            this.motionZ = (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
-+            this.motionX = (double) ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
-+            this.motionZ = (double) ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
-             this.playSound("random.fizz", 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
-         }
- 
-         this.pushOutOfBlocks(this.posX, (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D, this.posZ);
-         double d0 = 8.0D;
- 
--        if (this.xpTargetColor < this.xpColor - 20 + this.getEntityId() % 100)
--        {
--            if (this.closestPlayer == null || this.closestPlayer.getDistanceSqToEntity(this) > d0 * d0)
--            {
-+        if (this.xpTargetColor < this.xpColor - 20 + this.getEntityId() % 100) {
-+            if (this.closestPlayer == null || this.closestPlayer.getDistanceSqToEntity(this) > d0 * d0) {
-                 this.closestPlayer = this.worldObj.getClosestPlayerToEntity(this, d0);
-             }
- 
-             this.xpTargetColor = this.xpColor;
-         }
- 
--        if (this.closestPlayer != null && this.closestPlayer.isSpectator())
--        {
-+        if (this.closestPlayer != null && this.closestPlayer.isSpectator()) {
+@@ -105,23 +95,39 @@
              this.closestPlayer = null;
          }
  
--        if (this.closestPlayer != null)
--        {
+         if (this.closestPlayer != null)
+         {
 -            double d1 = (this.closestPlayer.posX - this.posX) / d0;
 -            double d2 = (this.closestPlayer.posY + (double)this.closestPlayer.getEyeHeight() - this.posY) / d0;
 -            double d3 = (this.closestPlayer.posZ - this.posZ) / d0;
 -            double d4 = Math.sqrt(d1 * d1 + d2 * d2 + d3 * d3);
 -            double d5 = 1.0D - d4;
-+        if (this.closestPlayer != null) {
 +            // CraftBukkit start
 +            boolean cancelled = false;
-+            if (this.closestPlayer != prevTarget) {
-+                EntityTargetLivingEntityEvent event = CraftEventFactory.callEntityTargetLivingEvent(this, closestPlayer, EntityTargetEvent.TargetReason.CLOSEST_PLAYER);
-+                EntityLivingBase target = event.getTarget() == null ? null : ((org.bukkit.craftbukkit.entity.CraftLivingEntity) event.getTarget()).getHandle();
-+                closestPlayer = target instanceof EntityPlayer ? (EntityPlayer) target : null;
-+                cancelled = event.isCancelled();
-+            }
  
 -            if (d5 > 0.0D)
--            {
++            if (this.closestPlayer != prevTarget)
+             {
 -                d5 *= d5;
 -                this.motionX += d1 / d4 * d5 * 0.1D;
 -                this.motionY += d2 / d4 * d5 * 0.1D;
 -                this.motionZ += d3 / d4 * d5 * 0.1D;
-+            if (!cancelled && closestPlayer != null) {
++                EntityTargetLivingEntityEvent event = CraftEventFactory.callEntityTargetLivingEvent(this, closestPlayer, EntityTargetEvent.TargetReason.CLOSEST_PLAYER);
++                EntityLivingBase target = event.getTarget() == null ? null : ((org.bukkit.craftbukkit.entity.CraftLivingEntity)event.getTarget()).getHandle();
++                closestPlayer = target instanceof EntityPlayer ? (EntityPlayer)target : null;
++                cancelled = event.isCancelled();
+             }
++
++            if (!cancelled && closestPlayer != null)
++            {
 +                double d1 = (this.closestPlayer.posX - this.posX) / d0;
-+                double d2 = (this.closestPlayer.posY + (double) this.closestPlayer.getEyeHeight() - this.posY) / d0;
++                double d2 = (this.closestPlayer.posY + (double)this.closestPlayer.getEyeHeight() - this.posY) / d0;
 +                double d3 = (this.closestPlayer.posZ - this.posZ) / d0;
 +                double d4 = Math.sqrt(d1 * d1 + d2 * d2 + d3 * d3);
 +                double d5 = 1.0D - d4;
 +
-+                if (d5 > 0.0D) {
++                if (d5 > 0.0D)
++                {
 +                    d5 *= d5;
 +                    this.motionX += d1 / d4 * d5 * 0.1D;
 +                    this.motionY += d2 / d4 * d5 * 0.1D;
 +                    this.motionZ += d3 / d4 * d5 * 0.1D;
 +                }
-             }
++            }
++
 +            // CraftBukkit end
          }
  
          this.moveEntity(this.motionX, this.motionY, this.motionZ);
          float f = 0.98F;
  
--        if (this.onGround)
--        {
-+        if (this.onGround) {
-             f = this.worldObj.getBlockState(new BlockPos(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.getEntityBoundingBox().minY) - 1, MathHelper.floor_double(this.posZ))).getBlock().slipperiness * 0.98F;
-         }
- 
--        this.motionX *= (double)f;
-+        this.motionX *= (double) f;
-         this.motionY *= 0.9800000190734863D;
--        this.motionZ *= (double)f;
-+        this.motionZ *= (double) f;
- 
--        if (this.onGround)
--        {
-+        if (this.onGround) {
-             this.motionY *= -0.8999999761581421D;
-         }
- 
-         ++this.xpColor;
-         ++this.xpOrbAge;
- 
--        if (this.xpOrbAge >= 6000)
--        {
-+        if (this.xpOrbAge >= 6000) {
-             this.setDead();
-         }
-     }
- 
--    public boolean handleWaterMovement()
--    {
-+    public boolean handleWaterMovement() {
-         return this.worldObj.handleMaterialAcceleration(this.getEntityBoundingBox(), Material.water, this);
-     }
- 
--    protected void dealFireDamage(int amount)
--    {
--        this.attackEntityFrom(DamageSource.inFire, (float)amount);
-+    protected void dealFireDamage(int amount) {
-+        this.attackEntityFrom(DamageSource.inFire, (float) amount);
-     }
- 
--    public boolean attackEntityFrom(DamageSource source, float amount)
--    {
--        if (this.isEntityInvulnerable(source))
--        {
-+    public boolean attackEntityFrom(DamageSource source, float amount) {
-+        if (this.isEntityInvulnerable(source)) {
-             return false;
--        }
--        else
--        {
-+        } else {
-             this.setBeenAttacked();
--            this.xpOrbHealth = (int)((float)this.xpOrbHealth - amount);
-+            this.xpOrbHealth = (int) ((float) this.xpOrbHealth - amount);
- 
--            if (this.xpOrbHealth <= 0)
--            {
-+            if (this.xpOrbHealth <= 0) {
-                 this.setDead();
-             }
- 
-             return false;
-         }
-     }
- 
--    public void writeEntityToNBT(NBTTagCompound tagCompound)
--    {
--        tagCompound.setShort("Health", (short)((byte)this.xpOrbHealth));
--        tagCompound.setShort("Age", (short)this.xpOrbAge);
--        tagCompound.setShort("Value", (short)this.xpValue);
-+    public void writeEntityToNBT(NBTTagCompound tagCompound) {
-+        tagCompound.setShort("Health", (short) ((byte) this.xpOrbHealth));
-+        tagCompound.setShort("Age", (short) this.xpOrbAge);
-+        tagCompound.setShort("Value", (short) this.xpValue);
-     }
- 
--    public void readEntityFromNBT(NBTTagCompound tagCompund)
--    {
-+    public void readEntityFromNBT(NBTTagCompound tagCompund) {
-         this.xpOrbHealth = tagCompund.getShort("Health") & 255;
-         this.xpOrbAge = tagCompund.getShort("Age");
-         this.xpValue = tagCompund.getShort("Value");
-     }
- 
--    public void onCollideWithPlayer(EntityPlayer entityIn)
--    {
--        if (!this.worldObj.isRemote)
--        {
--            if (this.field_70532_c == 0 && entityIn.xpCooldown == 0)
--            {
-+    public void onCollideWithPlayer(EntityPlayer entityIn) {
-+        if (!this.worldObj.isRemote) {
-+            if (this.field_70532_c == 0 && entityIn.xpCooldown == 0) {
+@@ -199,29 +205,56 @@
+             if (this.field_70532_c == 0 && entityIn.xpCooldown == 0)
+             {
                  entityIn.xpCooldown = 2;
                  this.worldObj.playSoundAtEntity(entityIn, "random.orb", 0.1F, 0.5F * ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.8F));
                  entityIn.onItemPickup(this, 1);
@@ -281,9 +133,8 @@
          }
      }
  
--    public int getXpValue()
--    {
-+    public int getXpValue() {
+     public int getXpValue()
+     {
          return this.xpValue;
      }
  
@@ -293,33 +144,44 @@
 -        return this.xpValue >= 2477 ? 10 : (this.xpValue >= 1237 ? 9 : (this.xpValue >= 617 ? 8 : (this.xpValue >= 307 ? 7 : (this.xpValue >= 149 ? 6 : (this.xpValue >= 73 ? 5 : (this.xpValue >= 37 ? 4 : (this.xpValue >= 17 ? 3 : (this.xpValue >= 7 ? 2 : (this.xpValue >= 3 ? 1 : 0)))))))));
 -    }
 -
--    public static int getXPSplit(int expValue)
--    {
-+    public static int getXPSplit(int expValue) {
+     public static int getXPSplit(int expValue)
+     {
 +        // CraftBukkit start
 +        if (expValue > 162670129) return expValue - 100000;
++
 +        if (expValue > 81335063) return 81335063;
++
 +        if (expValue > 40667527) return 40667527;
++
 +        if (expValue > 20333759) return 20333759;
++
 +        if (expValue > 10166857) return 10166857;
++
 +        if (expValue > 5083423) return 5083423;
++
 +        if (expValue > 2541701) return 2541701;
++
 +        if (expValue > 1270849) return 1270849;
++
 +        if (expValue > 635413) return 635413;
++
 +        if (expValue > 317701) return 317701;
++
 +        if (expValue > 158849) return 158849;
++
 +        if (expValue > 79423) return 79423;
++
 +        if (expValue > 39709) return 39709;
++
 +        if (expValue > 19853) return 19853;
++
 +        if (expValue > 9923) return 9923;
++
 +        if (expValue > 4957) return 4957;
++
 +        // CraftBukkit end
          return expValue >= 2477 ? 2477 : (expValue >= 1237 ? 1237 : (expValue >= 617 ? 617 : (expValue >= 307 ? 307 : (expValue >= 149 ? 149 : (expValue >= 73 ? 73 : (expValue >= 37 ? 37 : (expValue >= 17 ? 17 : (expValue >= 7 ? 7 : (expValue >= 3 ? 3 : 1)))))))));
      }
  
--    public boolean canAttackWithItem()
--    {
-+    public boolean canAttackWithItem() {
-         return false;
-     }
- }
+     public boolean canAttackWithItem()
+     {

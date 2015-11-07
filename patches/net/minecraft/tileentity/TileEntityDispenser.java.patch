@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\tileentity\TileEntityDispenser.java
 +++ src\main\java\net\minecraft\tileentity\TileEntityDispenser.java
-@@ -1,228 +1,221 @@
+@@ -1,24 +1,61 @@
  package net.minecraft.tileentity;
  
 +import java.util.ArrayList;
@@ -16,298 +16,106 @@
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.nbt.NBTTagList;
  
--public class TileEntityDispenser extends TileEntityLockable implements IInventory
--{
 +import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 +import org.bukkit.entity.HumanEntity;
 +
-+public class TileEntityDispenser extends TileEntityLockable implements IInventory {
+ public class TileEntityDispenser extends TileEntityLockable implements IInventory
+ {
 +
      private static final Random RNG = new Random();
      private ItemStack[] stacks = new ItemStack[9];
      protected String customName;
      private static final String __OBFID = "CL_00000352";
  
--    public int getSizeInventory()
--    {
 +    // CraftBukkit start - add fields and methods
 +    public List<HumanEntity> transaction = new ArrayList<HumanEntity>();
 +    private int maxStack = MAX_STACK;
 +
-+    public net.minecraft.item.ItemStack[] getContents() {
++    public net.minecraft.item.ItemStack[] getContents()
++    {
 +        return this.stacks;
 +    }
 +
-+    public void onOpen(CraftHumanEntity who) {
++    public void onOpen(CraftHumanEntity who)
++    {
 +        transaction.add(who);
 +    }
 +
-+    public void onClose(CraftHumanEntity who) {
++    public void onClose(CraftHumanEntity who)
++    {
 +        transaction.remove(who);
 +    }
 +
-+    public List<HumanEntity> getViewers() {
++    public List<HumanEntity> getViewers()
++    {
 +        return transaction;
 +    }
 +
-+    public void setMaxStackSize(int size) {
++    public void setMaxStackSize(int size)
++    {
 +        maxStack = size;
 +    }
 +    // CraftBukkit end
 +
-+    public int getSizeInventory() {
+     public int getSizeInventory()
+     {
          return 9;
      }
  
--    public ItemStack getStackInSlot(int index)
--    {
-+    public ItemStack getStackInSlot(int index) {
-         return this.stacks[index];
-     }
+@@ -80,10 +117,12 @@
  
--    public ItemStack decrStackSize(int index, int count)
--    {
--        if (this.stacks[index] != null)
--        {
-+    public ItemStack decrStackSize(int index, int count) {
-+        if (this.stacks[index] != null) {
-             ItemStack itemstack;
- 
--            if (this.stacks[index].stackSize <= count)
--            {
-+            if (this.stacks[index].stackSize <= count) {
-                 itemstack = this.stacks[index];
-                 this.stacks[index] = null;
-                 this.markDirty();
-                 return itemstack;
--            }
--            else
--            {
-+            } else {
-                 itemstack = this.stacks[index].splitStack(count);
- 
--                if (this.stacks[index].stackSize == 0)
--                {
-+                if (this.stacks[index].stackSize == 0) {
-                     this.stacks[index] = null;
-                 }
- 
-                 this.markDirty();
-                 return itemstack;
-             }
--        }
--        else
--        {
-+        } else {
-             return null;
-         }
-     }
- 
--    public ItemStack getStackInSlotOnClosing(int index)
--    {
--        if (this.stacks[index] != null)
--        {
-+    public ItemStack getStackInSlotOnClosing(int index) {
-+        if (this.stacks[index] != null) {
-             ItemStack itemstack = this.stacks[index];
-             this.stacks[index] = null;
-             return itemstack;
--        }
--        else
--        {
-+        } else {
-             return null;
-         }
-     }
- 
--    public int getDispenseSlot()
--    {
-+    public int getDispenseSlot() {
-         int i = -1;
-         int j = 1;
- 
--        for (int k = 0; k < this.stacks.length; ++k)
--        {
--            if (this.stacks[k] != null && RNG.nextInt(j++) == 0)
--            {
-+        for (int k = 0; k < this.stacks.length; ++k) {
-+            if (this.stacks[k] != null && RNG.nextInt(j++) == 0) {
+         for (int k = 0; k < this.stacks.length; ++k)
+         {
+             if (this.stacks[k] != null && RNG.nextInt(j++) == 0)
+             {
 +                if (this.stacks[k].stackSize == 0) continue; // CraftBukkit
++
                  i = k;
              }
          }
  
          return i;
-     }
- 
--    public void setInventorySlotContents(int index, ItemStack stack)
--    {
-+    public void setInventorySlotContents(int index, ItemStack stack) {
-         this.stacks[index] = stack;
- 
--        if (stack != null && stack.stackSize > this.getInventoryStackLimit())
--        {
-+        if (stack != null && stack.stackSize > this.getInventoryStackLimit()) {
-             stack.stackSize = this.getInventoryStackLimit();
-         }
- 
-         this.markDirty();
-     }
- 
--    public int addItemStack(ItemStack stack)
--    {
--        for (int i = 0; i < this.stacks.length; ++i)
--        {
--            if (this.stacks[i] == null || this.stacks[i].getItem() == null)
--            {
-+    public int addItemStack(ItemStack stack) {
-+        for (int i = 0; i < this.stacks.length; ++i) {
-+            if (this.stacks[i] == null || this.stacks[i].getItem() == null) {
-                 this.setInventorySlotContents(i, stack);
-                 return i;
-             }
-         }
- 
-         return -1;
-     }
- 
--    public String getName()
--    {
-+    public String getName() {
-         return this.hasCustomName() ? this.customName : "container.dispenser";
-     }
- 
--    public void setCustomName(String customName)
--    {
-+    public void setCustomName(String customName) {
-         this.customName = customName;
-     }
- 
--    public boolean hasCustomName()
--    {
-+    public boolean hasCustomName() {
-         return this.customName != null;
-     }
- 
--    public void readFromNBT(NBTTagCompound compound)
--    {
-+    public void readFromNBT(NBTTagCompound compound) {
-         super.readFromNBT(compound);
-         NBTTagList nbttaglist = compound.getTagList("Items", 10);
-         this.stacks = new ItemStack[this.getSizeInventory()];
- 
--        for (int i = 0; i < nbttaglist.tagCount(); ++i)
--        {
-+        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-             NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-             int j = nbttagcompound1.getByte("Slot") & 255;
- 
--            if (j >= 0 && j < this.stacks.length)
--            {
-+            if (j >= 0 && j < this.stacks.length) {
-                 this.stacks[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-             }
-         }
- 
--        if (compound.hasKey("CustomName", 8))
--        {
-+        if (compound.hasKey("CustomName", 8)) {
-             this.customName = compound.getString("CustomName");
+@@ -177,21 +216,25 @@
          }
      }
  
--    public void writeToNBT(NBTTagCompound compound)
--    {
-+    public void writeToNBT(NBTTagCompound compound) {
-         super.writeToNBT(compound);
-         NBTTagList nbttaglist = new NBTTagList();
- 
--        for (int i = 0; i < this.stacks.length; ++i)
--        {
--            if (this.stacks[i] != null)
--            {
-+        for (int i = 0; i < this.stacks.length; ++i) {
-+            if (this.stacks[i] != null) {
-                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
--                nbttagcompound1.setByte("Slot", (byte)i);
-+                nbttagcompound1.setByte("Slot", (byte) i);
-                 this.stacks[i].writeToNBT(nbttagcompound1);
-                 nbttaglist.appendTag(nbttagcompound1);
-             }
-         }
- 
-         compound.setTag("Items", nbttaglist);
- 
--        if (this.hasCustomName())
--        {
-+        if (this.hasCustomName()) {
-             compound.setString("CustomName", this.customName);
-         }
-     }
- 
--    public int getInventoryStackLimit()
--    {
+     public int getInventoryStackLimit()
+     {
 -        return 64;
-+    public int getInventoryStackLimit() {
 +        return maxStack; // CraftBukkit
      }
  
--    public boolean isUseableByPlayer(EntityPlayer player)
--    {
--        return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
-+    public boolean isUseableByPlayer(EntityPlayer player) {
-+        return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
+     public boolean isUseableByPlayer(EntityPlayer player)
+     {
+         return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
      }
  
 -    public void openInventory(EntityPlayer player) {}
-+    public void openInventory(EntityPlayer player) {
++    public void openInventory(EntityPlayer player)
++    {
 +    }
  
 -    public void closeInventory(EntityPlayer player) {}
-+    public void closeInventory(EntityPlayer player) {
++    public void closeInventory(EntityPlayer player)
++    {
 +    }
  
--    public boolean isItemValidForSlot(int index, ItemStack stack)
--    {
-+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+     public boolean isItemValidForSlot(int index, ItemStack stack)
+     {
          return true;
      }
- 
--    public String getGuiID()
--    {
-+    public String getGuiID() {
-         return "minecraft:dispenser";
-     }
- 
--    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn)
--    {
-+    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
-         return new ContainerDispenser(playerInventory, this);
-     }
- 
--    public int getField(int id)
--    {
-+    public int getField(int id) {
+@@ -209,11 +252,13 @@
+     public int getField(int id)
+     {
          return 0;
      }
  
 -    public void setField(int id, int value) {}
-+    public void setField(int id, int value) {
++    public void setField(int id, int value)
++    {
 +    }
  
--    public int getFieldCount()
--    {
-+    public int getFieldCount() {
+     public int getFieldCount()
+     {
          return 0;
      }
- 
--    public void clear()
--    {
--        for (int i = 0; i < this.stacks.length; ++i)
--        {
-+    public void clear() {
-+        for (int i = 0; i < this.stacks.length; ++i) {
-             this.stacks[i] = null;
-         }
-     }
- }

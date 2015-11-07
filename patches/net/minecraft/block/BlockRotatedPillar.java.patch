@@ -1,21 +1,14 @@
 --- decompiled\net\minecraft\block\BlockRotatedPillar.java
 +++ src\main\java\net\minecraft\block\BlockRotatedPillar.java
-@@ -2,15 +2,14 @@
- 
- import net.minecraft.block.material.Material;
+@@ -4,10 +4,11 @@
  import net.minecraft.block.properties.PropertyEnum;
  import net.minecraft.util.EnumFacing;
  
--public abstract class BlockRotatedPillar extends Block
--{
-+public abstract class BlockRotatedPillar extends Block {
+ public abstract class BlockRotatedPillar extends Block
+ {
 +
      public static final PropertyEnum AXIS = PropertyEnum.create("axis", EnumFacing.Axis.class);
      private static final String __OBFID = "CL_00000302";
  
--    protected BlockRotatedPillar(Material materialIn)
--    {
-+    protected BlockRotatedPillar(Material materialIn) {
-         super(materialIn);
-     }
- }
+     protected BlockRotatedPillar(Material materialIn)
+     {

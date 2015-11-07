@@ -1,191 +1,35 @@
 --- decompiled\net\minecraft\entity\passive\EntityPig.java
 +++ src\main\java\net\minecraft\entity\passive\EntityPig.java
-@@ -22,20 +22,21 @@
+@@ -22,12 +22,15 @@
  import net.minecraft.pathfinding.PathNavigateGround;
  import net.minecraft.stats.AchievementList;
  import net.minecraft.util.BlockPos;
  import net.minecraft.world.World;
  
--public class EntityPig extends EntityAnimal
--{
 +import org.bukkit.craftbukkit.event.CraftEventFactory;
 +
-+public class EntityPig extends EntityAnimal {
+ public class EntityPig extends EntityAnimal
+ {
 +
      private final EntityAIControlledByPlayer aiControlledByPlayer;
      private static final String __OBFID = "CL_00001647";
  
--    public EntityPig(World worldIn)
--    {
-+    public EntityPig(World worldIn) {
-         super(worldIn);
-         this.setSize(0.9F, 0.9F);
--        ((PathNavigateGround)this.getNavigator()).func_179690_a(true);
-+        ((PathNavigateGround) this.getNavigator()).func_179690_a(true);
-         this.tasks.addTask(0, new EntityAISwimming(this));
-         this.tasks.addTask(1, new EntityAIPanic(this, 1.25D));
-         this.tasks.addTask(2, this.aiControlledByPlayer = new EntityAIControlledByPlayer(this, 0.3F));
-         this.tasks.addTask(3, new EntityAIMate(this, 1.0D));
-         this.tasks.addTask(4, new EntityAITempt(this, 1.2D, Items.carrot_on_a_stick, false));
-@@ -44,154 +45,128 @@
-         this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
-         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-         this.tasks.addTask(8, new EntityAILookIdle(this));
-     }
- 
--    protected void applyEntityAttributes()
--    {
-+    protected void applyEntityAttributes() {
-         super.applyEntityAttributes();
-         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
-         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25D);
-     }
- 
--    public boolean canBeSteered()
--    {
--        ItemStack itemstack = ((EntityPlayer)this.riddenByEntity).getHeldItem();
-+    public boolean canBeSteered() {
-+        ItemStack itemstack = ((EntityPlayer) this.riddenByEntity).getHeldItem();
-         return itemstack != null && itemstack.getItem() == Items.carrot_on_a_stick;
-     }
- 
--    protected void entityInit()
--    {
-+    protected void entityInit() {
-         super.entityInit();
--        this.dataWatcher.addObject(16, Byte.valueOf((byte)0));
-+        this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
-     }
- 
--    public void writeEntityToNBT(NBTTagCompound tagCompound)
--    {
-+    public void writeEntityToNBT(NBTTagCompound tagCompound) {
-         super.writeEntityToNBT(tagCompound);
-         tagCompound.setBoolean("Saddle", this.getSaddled());
-     }
- 
--    public void readEntityFromNBT(NBTTagCompound tagCompund)
--    {
-+    public void readEntityFromNBT(NBTTagCompound tagCompund) {
-         super.readEntityFromNBT(tagCompund);
-         this.setSaddled(tagCompund.getBoolean("Saddle"));
-     }
- 
--    protected String getLivingSound()
--    {
-+    protected String getLivingSound() {
-         return "mob.pig.say";
-     }
- 
--    protected String getHurtSound()
--    {
-+    protected String getHurtSound() {
-         return "mob.pig.say";
-     }
- 
--    protected String getDeathSound()
--    {
-+    protected String getDeathSound() {
-         return "mob.pig.death";
-     }
- 
--    protected void playStepSound(BlockPos p_180429_1_, Block p_180429_2_)
--    {
-+    protected void playStepSound(BlockPos p_180429_1_, Block p_180429_2_) {
-         this.playSound("mob.pig.step", 0.15F, 1.0F);
-     }
- 
--    public boolean interact(EntityPlayer player)
--    {
--        if (super.interact(player))
--        {
-+    public boolean interact(EntityPlayer player) {
-+        if (super.interact(player)) {
-             return true;
--        }
--        else if (this.getSaddled() && !this.worldObj.isRemote && (this.riddenByEntity == null || this.riddenByEntity == player))
--        {
-+        } else if (this.getSaddled() && !this.worldObj.isRemote && (this.riddenByEntity == null || this.riddenByEntity == player)) {
-             player.mountEntity(this);
-             return true;
--        }
--        else
--        {
-+        } else {
-             return false;
-         }
-     }
- 
--    protected Item getDropItem()
--    {
-+    protected Item getDropItem() {
-         return this.isBurning() ? Items.cooked_porkchop : Items.porkchop;
-     }
- 
--    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_)
--    {
-+    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_) {
-         int j = this.rand.nextInt(3) + 1 + this.rand.nextInt(1 + p_70628_2_);
- 
--        for (int k = 0; k < j; ++k)
--        {
--            if (this.isBurning())
--            {
-+        for (int k = 0; k < j; ++k) {
-+            if (this.isBurning()) {
-                 this.dropItem(Items.cooked_porkchop, 1);
--            }
--            else
--            {
-+            } else {
-                 this.dropItem(Items.porkchop, 1);
-             }
-         }
- 
--        if (this.getSaddled())
--        {
-+        if (this.getSaddled()) {
-             this.dropItem(Items.saddle, 1);
-         }
-     }
- 
--    public boolean getSaddled()
--    {
-+    public boolean getSaddled() {
-         return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
-     }
- 
--    public void setSaddled(boolean p_70900_1_)
--    {
--        if (p_70900_1_)
--        {
--            this.dataWatcher.updateObject(16, Byte.valueOf((byte)1));
-+    public void setSaddled(boolean p_70900_1_) {
-+        if (p_70900_1_) {
-+            this.dataWatcher.updateObject(16, Byte.valueOf((byte) 1));
-+        } else {
-+            this.dataWatcher.updateObject(16, Byte.valueOf((byte) 0));
-         }
--        else
--        {
--            this.dataWatcher.updateObject(16, Byte.valueOf((byte)0));
--        }
-     }
- 
--    public void onStruckByLightning(EntityLightningBolt lightningBolt)
--    {
--        if (!this.worldObj.isRemote)
--        {
-+    public void onStruckByLightning(EntityLightningBolt lightningBolt) {
-+        if (!this.worldObj.isRemote) {
+     public EntityPig(World worldIn)
+     {
+@@ -161,13 +164,22 @@
+     public void onStruckByLightning(EntityLightningBolt lightningBolt)
+     {
+         if (!this.worldObj.isRemote)
+         {
              EntityPigZombie entitypigzombie = new EntityPigZombie(this.worldObj);
 +
 +            // CraftBukkit start
-+            if (CraftEventFactory.callPigZapEvent(this, lightningBolt, entitypigzombie).isCancelled()) {
++            if (CraftEventFactory.callPigZapEvent(this, lightningBolt, entitypigzombie).isCancelled())
++            {
 +                return;
 +            }
-+            // CraftBukkit end
 +
++            // CraftBukkit end
              entitypigzombie.setCurrentItemOrArmor(0, new ItemStack(Items.golden_sword));
              entitypigzombie.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
 -            this.worldObj.spawnEntityInWorld(entitypigzombie);
@@ -195,34 +39,4 @@
          }
      }
  
--    public void fall(float distance, float damageMultiplier)
--    {
-+    public void fall(float distance, float damageMultiplier) {
-         super.fall(distance, damageMultiplier);
- 
--        if (distance > 5.0F && this.riddenByEntity instanceof EntityPlayer)
--        {
--            ((EntityPlayer)this.riddenByEntity).triggerAchievement(AchievementList.flyPig);
-+        if (distance > 5.0F && this.riddenByEntity instanceof EntityPlayer) {
-+            ((EntityPlayer) this.riddenByEntity).triggerAchievement(AchievementList.flyPig);
-         }
-     }
- 
--    public EntityPig createChild(EntityAgeable ageable)
--    {
-+    public EntityPig createChild(EntityAgeable ageable) {
-         return new EntityPig(this.worldObj);
-     }
- 
--    public boolean isBreedingItem(ItemStack stack)
--    {
-+    public boolean isBreedingItem(ItemStack stack) {
-         return stack != null && stack.getItem() == Items.carrot;
-     }
- 
--    public EntityAIControlledByPlayer getAIControlledByPlayer()
--    {
-+    public EntityAIControlledByPlayer getAIControlledByPlayer() {
-         return this.aiControlledByPlayer;
-     }
- }
+     public void fall(float distance, float damageMultiplier)

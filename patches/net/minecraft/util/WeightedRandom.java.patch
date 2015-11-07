@@ -1,95 +1,28 @@
 --- decompiled\net\minecraft\util\WeightedRandom.java
 +++ src\main\java\net\minecraft\util\WeightedRandom.java
-@@ -2,71 +2,59 @@
- 
- import java.util.Collection;
+@@ -4,10 +4,11 @@
  import java.util.Iterator;
  import java.util.Random;
  
--public class WeightedRandom
--{
-+public class WeightedRandom {
+ public class WeightedRandom
+ {
 +
      private static final String __OBFID = "CL_00001503";
  
--    public static int getTotalWeight(Collection collection)
--    {
-+    public static int getTotalWeight(Collection collection) {
+     public static int getTotalWeight(Collection collection)
+     {
          int i = 0;
-         WeightedRandom.Item item;
- 
--        for (Iterator iterator = collection.iterator(); iterator.hasNext(); i += item.itemWeight)
--        {
--            item = (WeightedRandom.Item)iterator.next();
-+        for (Iterator iterator = collection.iterator(); iterator.hasNext(); i += item.itemWeight) {
-+            item = (WeightedRandom.Item) iterator.next();
-         }
- 
-         return i;
-     }
- 
--    public static WeightedRandom.Item getRandomItem(Random random, Collection collection, int p_76273_2_)
--    {
--        if (p_76273_2_ <= 0)
--        {
-+    public static WeightedRandom.Item getRandomItem(Random random, Collection collection, int p_76273_2_) {
-+        if (p_76273_2_ <= 0) {
-             throw new IllegalArgumentException();
--        }
--        else
--        {
-+        } else {
-             int j = random.nextInt(p_76273_2_);
-             return getRandomItem(collection, j);
-         }
-     }
- 
--    public static WeightedRandom.Item getRandomItem(Collection collection, int p_180166_1_)
--    {
-+    public static WeightedRandom.Item getRandomItem(Collection collection, int p_180166_1_) {
-         Iterator iterator = collection.iterator();
-         WeightedRandom.Item item;
- 
--        do
--        {
--            if (!iterator.hasNext())
--            {
-+        do {
-+            if (!iterator.hasNext()) {
-                 return null;
-             }
- 
--            item = (WeightedRandom.Item)iterator.next();
-+            item = (WeightedRandom.Item) iterator.next();
-             p_180166_1_ -= item.itemWeight;
--        }
--        while (p_180166_1_ >= 0);
-+        } while (p_180166_1_ >= 0);
- 
-         return item;
-     }
- 
--    public static WeightedRandom.Item getRandomItem(Random random, Collection collection)
--    {
-+    public static WeightedRandom.Item getRandomItem(Random random, Collection collection) {
+@@ -59,11 +60,12 @@
          return getRandomItem(random, collection, getTotalWeight(collection));
      }
  
--    public static class Item
--        {
+     public static class Item
+         {
 -            protected int itemWeight;
--            private static final String __OBFID = "CL_00001504";
-+    public static class Item {
- 
--            public Item(int itemWeightIn)
--            {
--                this.itemWeight = itemWeightIn;
--            }
-+        public int itemWeight;
-+        private static final String __OBFID = "CL_00001504";
 +
-+        public Item(int itemWeightIn) {
-+            this.itemWeight = itemWeightIn;
-         }
-+    }
- }
++            public int itemWeight;
+             private static final String __OBFID = "CL_00001504";
+ 
+             public Item(int itemWeightIn)
+             {
+                 this.itemWeight = itemWeightIn;

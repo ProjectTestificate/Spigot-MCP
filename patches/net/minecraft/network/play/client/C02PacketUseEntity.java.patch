@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\client\C02PacketUseEntity.java
 +++ src\main\java\net\minecraft\network\play\client\C02PacketUseEntity.java
-@@ -1,92 +1,69 @@
+@@ -1,62 +1,51 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -15,10 +15,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class C02PacketUseEntity implements Packet
--{
 +
-+public class C02PacketUseEntity implements Packet {
+ public class C02PacketUseEntity implements Packet
+ {
 +
      private int entityId;
      private C02PacketUseEntity.Action action;
@@ -29,10 +28,10 @@
 -
 -    @SideOnly(Side.CLIENT)
 -    public C02PacketUseEntity(Entity entity, C02PacketUseEntity.Action action)
--    {
++    public C02PacketUseEntity()
+     {
 -        this.entityId = entity.getEntityId();
 -        this.action = action;
-+    public C02PacketUseEntity() {
      }
  
 -    @SideOnly(Side.CLIENT)
@@ -42,75 +41,47 @@
 -        this.hitVec = hitVec;
 -    }
 -
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
+     public void readPacketData(PacketBuffer buf) throws IOException
+     {
          this.entityId = buf.readVarIntFromBuffer();
 -        this.action = (C02PacketUseEntity.Action)buf.readEnumValue(C02PacketUseEntity.Action.class);
 +        this.action = (C02PacketUseEntity.Action) buf.readEnumValue(C02PacketUseEntity.Action.class);
  
--        if (this.action == C02PacketUseEntity.Action.INTERACT_AT)
--        {
+         if (this.action == C02PacketUseEntity.Action.INTERACT_AT)
+         {
 -            this.hitVec = new Vec3((double)buf.readFloat(), (double)buf.readFloat(), (double)buf.readFloat());
-+        if (this.action == C02PacketUseEntity.Action.INTERACT_AT) {
 +            this.hitVec = new Vec3((double) buf.readFloat(), (double) buf.readFloat(), (double) buf.readFloat());
          }
      }
  
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
+     public void writePacketData(PacketBuffer buf) throws IOException
+     {
          buf.writeVarIntToBuffer(this.entityId);
          buf.writeEnumValue(this.action);
  
--        if (this.action == C02PacketUseEntity.Action.INTERACT_AT)
--        {
+         if (this.action == C02PacketUseEntity.Action.INTERACT_AT)
+         {
 -            buf.writeFloat((float)this.hitVec.xCoord);
 -            buf.writeFloat((float)this.hitVec.yCoord);
 -            buf.writeFloat((float)this.hitVec.zCoord);
-+        if (this.action == C02PacketUseEntity.Action.INTERACT_AT) {
 +            buf.writeFloat((float) this.hitVec.xCoord);
 +            buf.writeFloat((float) this.hitVec.yCoord);
 +            buf.writeFloat((float) this.hitVec.zCoord);
          }
      }
  
--    public void processPacket(INetHandlerPlayServer handler)
--    {
-+    public void processPacket(INetHandlerPlayServer handler) {
-         handler.processUseEntity(this);
-     }
- 
--    public Entity getEntityFromWorld(World worldIn)
--    {
-+    public Entity getEntityFromWorld(World worldIn) {
-         return worldIn.getEntityByID(this.entityId);
-     }
- 
--    public C02PacketUseEntity.Action getAction()
--    {
-+    public C02PacketUseEntity.Action getAction() {
-         return this.action;
-     }
- 
--    public Vec3 getHitVec()
--    {
-+    public Vec3 getHitVec() {
+     public void processPacket(INetHandlerPlayServer handler)
+     {
+@@ -78,11 +67,11 @@
          return this.hitVec;
      }
  
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.processPacket((INetHandlerPlayServer)handler);
-+    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
  
--    public static enum Action
--    {
-+    public static enum Action {
+     public static enum Action
+     {
          INTERACT,
-         ATTACK,
-         INTERACT_AT;
- 
-         private static final String __OBFID = "CL_00001358";

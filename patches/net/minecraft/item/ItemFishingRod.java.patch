@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\item\ItemFishingRod.java
 +++ src\main\java\net\minecraft\item\ItemFishingRod.java
-@@ -3,65 +3,55 @@
+@@ -3,51 +3,52 @@
  import net.minecraft.creativetab.CreativeTabs;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.entity.projectile.EntityFishHook;
@@ -9,17 +9,15 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class ItemFishingRod extends Item
--{
 +import org.bukkit.event.player.PlayerFishEvent;
 +
-+public class ItemFishingRod extends Item {
+ public class ItemFishingRod extends Item
+ {
 +
      private static final String __OBFID = "CL_00000034";
  
--    public ItemFishingRod()
--    {
-+    public ItemFishingRod() {
+     public ItemFishingRod()
+     {
          this.setMaxDamage(64);
          this.setMaxStackSize(1);
          this.setCreativeTab(CreativeTabs.tabTools);
@@ -37,54 +35,36 @@
 -        return true;
 -    }
 -
--    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
--    {
--        if (playerIn.fishEntity != null)
--        {
-+    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
-+        if (playerIn.fishEntity != null) {
+     public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
+     {
+         if (playerIn.fishEntity != null)
+         {
              int i = playerIn.fishEntity.handleHookRetraction();
              itemStackIn.damageItem(i, playerIn);
              playerIn.swingItem();
--        }
--        else
--        {
-+        } else {
+         }
+         else
+         {
 +            // CraftBukkit start
 +            EntityFishHook hook = new EntityFishHook(worldIn, playerIn);
-+            PlayerFishEvent playerFishEvent = new PlayerFishEvent((org.bukkit.entity.Player) playerIn.getBukkitEntity(), null, (org.bukkit.entity.Fish) hook.getBukkitEntity(), PlayerFishEvent.State.FISHING);
++            PlayerFishEvent playerFishEvent = new PlayerFishEvent((org.bukkit.entity.Player)playerIn.getBukkitEntity(), null, (org.bukkit.entity.Fish)hook.getBukkitEntity(), PlayerFishEvent.State.FISHING);
 +            worldIn.getServer().getPluginManager().callEvent(playerFishEvent);
 +
-+            if (playerFishEvent.isCancelled()) {
++            if (playerFishEvent.isCancelled())
++            {
 +                playerIn.fishEntity = null;
 +                return itemStackIn;
 +            }
++
 +            // CraftBukkit end
              worldIn.playSoundAtEntity(playerIn, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
  
--            if (!worldIn.isRemote)
--            {
+             if (!worldIn.isRemote)
+             {
 -                worldIn.spawnEntityInWorld(new EntityFishHook(worldIn, playerIn));
-+            if (!worldIn.isRemote) {
 +                worldIn.spawnEntityInWorld(hook); // CraftBukkit - moved creation up
              }
  
              playerIn.swingItem();
              playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
          }
- 
-         return itemStackIn;
-     }
- 
--    public boolean isItemTool(ItemStack stack)
--    {
-+    public boolean isItemTool(ItemStack stack) {
-         return super.isItemTool(stack);
-     }
- 
--    public int getItemEnchantability()
--    {
-+    public int getItemEnchantability() {
-         return 1;
-     }
- }

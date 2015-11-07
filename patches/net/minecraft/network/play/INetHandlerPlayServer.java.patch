@@ -1,14 +1,11 @@
 --- decompiled\net\minecraft\network\play\INetHandlerPlayServer.java
 +++ src\main\java\net\minecraft\network\play\INetHandlerPlayServer.java
-@@ -23,12 +23,12 @@
- import net.minecraft.network.play.client.C16PacketClientStatus;
- import net.minecraft.network.play.client.C17PacketCustomPayload;
+@@ -25,10 +25,11 @@
  import net.minecraft.network.play.client.C18PacketSpectate;
  import net.minecraft.network.play.client.C19PacketResourcePackStatus;
  
--public interface INetHandlerPlayServer extends INetHandler
--{
-+public interface INetHandlerPlayServer extends INetHandler {
+ public interface INetHandlerPlayServer extends INetHandler
+ {
 +
      void handleAnimation(C0APacketAnimation packetIn);
  

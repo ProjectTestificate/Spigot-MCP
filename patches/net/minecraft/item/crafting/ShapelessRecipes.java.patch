@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\item\crafting\ShapelessRecipes.java
 +++ src\main\java\net\minecraft\item\crafting\ShapelessRecipes.java
-@@ -1,92 +1,105 @@
+@@ -1,27 +1,54 @@
  package net.minecraft.item.crafting;
  
 -import com.google.common.collect.Lists;
@@ -13,129 +13,61 @@
  import net.minecraft.item.ItemStack;
  import net.minecraft.world.World;
  
--public class ShapelessRecipes implements IRecipe
--{
--    private final ItemStack recipeOutput;
--    private final List recipeItems;
 +import org.bukkit.craftbukkit.inventory.CraftItemStack;
 +import org.bukkit.craftbukkit.inventory.CraftShapelessRecipe;
 +import org.bukkit.inventory.ShapelessRecipe;
 +
 +import com.google.common.collect.Lists;
 +
-+public class ShapelessRecipes implements IRecipe {
+ public class ShapelessRecipes implements IRecipe
+ {
+-    private final ItemStack recipeOutput;
+-    private final List recipeItems;
 +
 +    public final ItemStack recipeOutput; // Spigot
 +    public final List recipeItems;
      private static final String __OBFID = "CL_00000094";
  
--    public ShapelessRecipes(ItemStack output, List inputList)
--    {
-+    public ShapelessRecipes(ItemStack output, List inputList) {
+     public ShapelessRecipes(ItemStack output, List inputList)
+     {
          this.recipeOutput = output;
          this.recipeItems = inputList;
      }
  
--    public ItemStack getRecipeOutput()
--    {
 +    // CraftBukkit start
 +    @SuppressWarnings("unchecked")
-+    public ShapelessRecipe toBukkitRecipe() {
++    public ShapelessRecipe toBukkitRecipe()
++    {
 +        CraftItemStack result = CraftItemStack.asCraftMirror(this.recipeOutput);
 +        CraftShapelessRecipe recipe = new CraftShapelessRecipe(result, this);
-+        for (ItemStack stack : (List<ItemStack>) this.recipeItems) {
-+            if (stack != null) {
++
++        for (ItemStack stack : (List<ItemStack>)this.recipeItems)
++        {
++            if (stack != null)
++            {
 +                recipe.addIngredient(org.bukkit.craftbukkit.util.CraftMagicNumbers.getMaterial(stack.getItem()), stack.getMetadata());
 +            }
 +        }
++
 +        return recipe;
 +    }
 +    // CraftBukkit end
 +
-+    public ItemStack getRecipeOutput() {
+     public ItemStack getRecipeOutput()
+     {
          return this.recipeOutput;
      }
  
--    public ItemStack[] getRemainingItems(InventoryCrafting p_179532_1_)
--    {
-+    public ItemStack[] getRemainingItems(InventoryCrafting p_179532_1_) {
-         ItemStack[] aitemstack = new ItemStack[p_179532_1_.getSizeInventory()];
+@@ -87,6 +114,13 @@
  
--        for (int i = 0; i < aitemstack.length; ++i)
--        {
-+        for (int i = 0; i < aitemstack.length; ++i) {
-             ItemStack itemstack = p_179532_1_.getStackInSlot(i);
- 
--            if (itemstack != null && itemstack.getItem().hasContainerItem())
--            {
-+            if (itemstack != null && itemstack.getItem().hasContainerItem()) {
-                 aitemstack[i] = new ItemStack(itemstack.getItem().getContainerItem());
-             }
-         }
- 
-         return aitemstack;
-     }
- 
--    public boolean matches(InventoryCrafting p_77569_1_, World worldIn)
--    {
-+    public boolean matches(InventoryCrafting p_77569_1_, World worldIn) {
-         ArrayList arraylist = Lists.newArrayList(this.recipeItems);
- 
--        for (int i = 0; i < p_77569_1_.getHeight(); ++i)
--        {
--            for (int j = 0; j < p_77569_1_.getWidth(); ++j)
--            {
-+        for (int i = 0; i < p_77569_1_.getHeight(); ++i) {
-+            for (int j = 0; j < p_77569_1_.getWidth(); ++j) {
-                 ItemStack itemstack = p_77569_1_.getStackInRowAndColumn(j, i);
- 
--                if (itemstack != null)
--                {
-+                if (itemstack != null) {
-                     boolean flag = false;
-                     Iterator iterator = arraylist.iterator();
- 
--                    while (iterator.hasNext())
--                    {
--                        ItemStack itemstack1 = (ItemStack)iterator.next();
-+                    while (iterator.hasNext()) {
-+                        ItemStack itemstack1 = (ItemStack) iterator.next();
- 
--                        if (itemstack.getItem() == itemstack1.getItem() && (itemstack1.getMetadata() == 32767 || itemstack.getMetadata() == itemstack1.getMetadata()))
--                        {
-+                        if (itemstack.getItem() == itemstack1.getItem() && (itemstack1.getMetadata() == 32767 || itemstack.getMetadata() == itemstack1.getMetadata())) {
-                             flag = true;
-                             arraylist.remove(itemstack1);
-                             break;
-                         }
-                     }
- 
--                    if (!flag)
--                    {
-+                    if (!flag) {
-                         return false;
-                     }
-                 }
-             }
-         }
- 
-         return arraylist.isEmpty();
-     }
- 
--    public ItemStack getCraftingResult(InventoryCrafting p_77572_1_)
--    {
-+    public ItemStack getCraftingResult(InventoryCrafting p_77572_1_) {
-         return this.recipeOutput.copy();
-     }
- 
--    public int getRecipeSize()
--    {
-+    public int getRecipeSize() {
+     public int getRecipeSize()
+     {
          return this.recipeItems.size();
      }
 +
 +    // Spigot start
-+    public List getIngredients() {
++    public List getIngredients()
++    {
 +        return Collections.unmodifiableList(recipeItems);
 +    }
 +    // Spigot end

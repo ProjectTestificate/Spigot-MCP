@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S2FPacketSetSlot.java
 +++ src\main\java\net\minecraft\network\play\server\S2FPacketSetSlot.java
-@@ -1,69 +1,47 @@
+@@ -1,24 +1,27 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -13,10 +13,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S2FPacketSetSlot implements Packet
--{
 +
-+public class S2FPacketSetSlot implements Packet {
+ public class S2FPacketSetSlot implements Packet
+ {
 +
      private int field_149179_a;
      private int field_149177_b;
@@ -24,34 +23,15 @@
      private static final String __OBFID = "CL_00001296";
  
 -    public S2FPacketSetSlot() {}
-+    public S2FPacketSetSlot() {
++    public S2FPacketSetSlot()
++    {
 +    }
  
--    public S2FPacketSetSlot(int p_i45188_1_, int p_i45188_2_, ItemStack p_i45188_3_)
--    {
-+    public S2FPacketSetSlot(int p_i45188_1_, int p_i45188_2_, ItemStack p_i45188_3_) {
+     public S2FPacketSetSlot(int p_i45188_1_, int p_i45188_2_, ItemStack p_i45188_3_)
+     {
          this.field_149179_a = p_i45188_1_;
          this.field_149177_b = p_i45188_2_;
-         this.field_149178_c = p_i45188_3_ == null ? null : p_i45188_3_.copy();
-     }
- 
--    public void processPacket(INetHandlerPlayClient handler)
--    {
-+    public void processPacket(INetHandlerPlayClient handler) {
-         handler.handleSetSlot(this);
-     }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.field_149179_a = buf.readByte();
-         this.field_149177_b = buf.readShort();
-         this.field_149178_c = buf.readItemStackFromBuffer();
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
+@@ -42,28 +45,10 @@
          buf.writeByte(this.field_149179_a);
          buf.writeShort(this.field_149177_b);
          buf.writeItemStackToBuffer(this.field_149178_c);
@@ -61,14 +41,13 @@
 -    public int func_149175_c()
 -    {
 -        return this.field_149179_a;
-+    public void processPacket(INetHandler handler) {
+-    }
+-
+     public void processPacket(INetHandler handler)
+     {
+-        this.processPacket((INetHandlerPlayClient)handler);
 +        this.processPacket((INetHandlerPlayClient) handler);
      }
--
--    public void processPacket(INetHandler handler)
--    {
--        this.processPacket((INetHandlerPlayClient)handler);
--    }
 -
 -    @SideOnly(Side.CLIENT)
 -    public int func_149173_d()

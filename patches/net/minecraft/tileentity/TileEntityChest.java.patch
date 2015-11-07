@@ -17,7 +17,7 @@
  import net.minecraft.inventory.IInventory;
  import net.minecraft.inventory.InventoryLargeChest;
  import net.minecraft.item.ItemStack;
-@@ -15,15 +18,17 @@
+@@ -15,15 +18,18 @@
  import net.minecraft.nbt.NBTTagList;
  import net.minecraft.server.gui.IUpdatePlayerListBox;
  import net.minecraft.util.AxisAlignedBB;
@@ -26,674 +26,196 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class TileEntityChest extends TileEntityLockable implements IUpdatePlayerListBox, IInventory
--{
 +import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 +import org.bukkit.craftbukkit.event.CraftEventFactory;
 +import org.bukkit.entity.HumanEntity;
 +
-+public class TileEntityChest extends TileEntityLockable implements IUpdatePlayerListBox, IInventory {
+ public class TileEntityChest extends TileEntityLockable implements IUpdatePlayerListBox, IInventory
+ {
 +
      private ItemStack[] chestContents = new ItemStack[27];
      public boolean adjacentChestChecked;
      public TileEntityChest adjacentChestZNeg;
      public TileEntityChest adjacentChestXPos;
      public TileEntityChest adjacentChestXNeg;
-@@ -34,487 +39,434 @@
-     private int ticksSinceSync;
-     private int cachedChestType;
-     private String customName;
-     private static final String __OBFID = "CL_00000346";
- 
--    public TileEntityChest()
--    {
-+    public TileEntityChest() {
+@@ -39,16 +45,40 @@
+     public TileEntityChest()
+     {
          this.cachedChestType = -1;
      }
  
 -    @SideOnly(Side.CLIENT)
 -    public TileEntityChest(int chestType)
--    {
--        this.cachedChestType = chestType;
 +    // CraftBukkit start - add fields and methods
 +    public List<HumanEntity> transaction = new ArrayList<HumanEntity>();
 +    private int maxStack = MAX_STACK;
 +
-+    public net.minecraft.item.ItemStack[] getContents() {
++    public net.minecraft.item.ItemStack[] getContents()
+     {
+-        this.cachedChestType = chestType;
 +        return this.chestContents;
      }
  
--    public int getSizeInventory()
--    {
-+    public void onOpen(CraftHumanEntity who) {
++    public void onOpen(CraftHumanEntity who)
++    {
 +        transaction.add(who);
 +    }
 +
-+    public void onClose(CraftHumanEntity who) {
++    public void onClose(CraftHumanEntity who)
++    {
 +        transaction.remove(who);
 +    }
 +
-+    public List<HumanEntity> getViewers() {
++    public List<HumanEntity> getViewers()
++    {
 +        return transaction;
 +    }
 +
-+    public void setMaxStackSize(int size) {
++    public void setMaxStackSize(int size)
++    {
 +        maxStack = size;
 +    }
 +    // CraftBukkit end
 +
-+    public int getSizeInventory() {
+     public int getSizeInventory()
+     {
          return 27;
      }
  
--    public ItemStack getStackInSlot(int index)
--    {
-+    public ItemStack getStackInSlot(int index) {
-         return this.chestContents[index];
-     }
- 
--    public ItemStack decrStackSize(int index, int count)
--    {
--        if (this.chestContents[index] != null)
--        {
-+    public ItemStack decrStackSize(int index, int count) {
-+        if (this.chestContents[index] != null) {
-             ItemStack itemstack;
- 
--            if (this.chestContents[index].stackSize <= count)
--            {
-+            if (this.chestContents[index].stackSize <= count) {
-                 itemstack = this.chestContents[index];
-                 this.chestContents[index] = null;
-                 this.markDirty();
-                 return itemstack;
--            }
--            else
--            {
-+            } else {
-                 itemstack = this.chestContents[index].splitStack(count);
- 
--                if (this.chestContents[index].stackSize == 0)
--                {
-+                if (this.chestContents[index].stackSize == 0) {
-                     this.chestContents[index] = null;
-                 }
- 
-                 this.markDirty();
-                 return itemstack;
-             }
--        }
--        else
--        {
-+        } else {
-             return null;
+@@ -177,15 +207,17 @@
          }
      }
  
--    public ItemStack getStackInSlotOnClosing(int index)
--    {
--        if (this.chestContents[index] != null)
--        {
-+    public ItemStack getStackInSlotOnClosing(int index) {
-+        if (this.chestContents[index] != null) {
-             ItemStack itemstack = this.chestContents[index];
-             this.chestContents[index] = null;
-             return itemstack;
--        }
--        else
--        {
-+        } else {
-             return null;
-         }
-     }
- 
--    public void setInventorySlotContents(int index, ItemStack stack)
--    {
-+    public void setInventorySlotContents(int index, ItemStack stack) {
-         this.chestContents[index] = stack;
- 
--        if (stack != null && stack.stackSize > this.getInventoryStackLimit())
--        {
-+        if (stack != null && stack.stackSize > this.getInventoryStackLimit()) {
-             stack.stackSize = this.getInventoryStackLimit();
-         }
- 
-         this.markDirty();
-     }
- 
--    public String getName()
--    {
-+    public String getName() {
-         return this.hasCustomName() ? this.customName : "container.chest";
-     }
- 
--    public boolean hasCustomName()
--    {
-+    public boolean hasCustomName() {
-         return this.customName != null && this.customName.length() > 0;
-     }
- 
--    public void setCustomName(String name)
--    {
-+    public void setCustomName(String name) {
-         this.customName = name;
-     }
- 
--    public void readFromNBT(NBTTagCompound compound)
--    {
-+    public void readFromNBT(NBTTagCompound compound) {
-         super.readFromNBT(compound);
-         NBTTagList nbttaglist = compound.getTagList("Items", 10);
-         this.chestContents = new ItemStack[this.getSizeInventory()];
- 
--        if (compound.hasKey("CustomName", 8))
--        {
-+        if (compound.hasKey("CustomName", 8)) {
-             this.customName = compound.getString("CustomName");
-         }
- 
--        for (int i = 0; i < nbttaglist.tagCount(); ++i)
--        {
-+        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-             NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-             int j = nbttagcompound1.getByte("Slot") & 255;
- 
--            if (j >= 0 && j < this.chestContents.length)
--            {
-+            if (j >= 0 && j < this.chestContents.length) {
-                 this.chestContents[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-             }
-         }
-     }
- 
--    public void writeToNBT(NBTTagCompound compound)
--    {
-+    public void writeToNBT(NBTTagCompound compound) {
-         super.writeToNBT(compound);
-         NBTTagList nbttaglist = new NBTTagList();
- 
--        for (int i = 0; i < this.chestContents.length; ++i)
--        {
--            if (this.chestContents[i] != null)
--            {
-+        for (int i = 0; i < this.chestContents.length; ++i) {
-+            if (this.chestContents[i] != null) {
-                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
--                nbttagcompound1.setByte("Slot", (byte)i);
-+                nbttagcompound1.setByte("Slot", (byte) i);
-                 this.chestContents[i].writeToNBT(nbttagcompound1);
-                 nbttaglist.appendTag(nbttagcompound1);
-             }
-         }
- 
-         compound.setTag("Items", nbttaglist);
- 
--        if (this.hasCustomName())
--        {
-+        if (this.hasCustomName()) {
-             compound.setString("CustomName", this.customName);
-         }
-     }
- 
--    public int getInventoryStackLimit()
--    {
+     public int getInventoryStackLimit()
+     {
 -        return 64;
-+    public int getInventoryStackLimit() {
 +        return maxStack; // CraftBukkit
      }
  
--    public boolean isUseableByPlayer(EntityPlayer player)
--    {
--        return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
-+    public boolean isUseableByPlayer(EntityPlayer player) {
+     public boolean isUseableByPlayer(EntityPlayer player)
+     {
 +        if (this.worldObj == null) return true; // CraftBukkit
-+        return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
++
+         return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
      }
  
--    public void updateContainingBlockInfo()
--    {
-+    public void updateContainingBlockInfo() {
-         super.updateContainingBlockInfo();
-         this.adjacentChestChecked = false;
-     }
- 
--    private void func_174910_a(TileEntityChest p_174910_1_, EnumFacing p_174910_2_)
--    {
--        if (p_174910_1_.isInvalid())
--        {
-+    private void func_174910_a(TileEntityChest p_174910_1_, EnumFacing p_174910_2_) {
-+        if (p_174910_1_.isInvalid()) {
-             this.adjacentChestChecked = false;
--        }
--        else if (this.adjacentChestChecked)
--        {
--            switch (TileEntityChest.SwitchEnumFacing.field_177366_a[p_174910_2_.ordinal()])
--            {
-+        } else if (this.adjacentChestChecked) {
-+            switch (TileEntityChest.SwitchEnumFacing.field_177366_a[p_174910_2_.ordinal()]) {
+     public void updateContainingBlockInfo()
+     {
+@@ -202,31 +234,35 @@
+         else if (this.adjacentChestChecked)
+         {
+             switch (TileEntityChest.SwitchEnumFacing.field_177366_a[p_174910_2_.ordinal()])
+             {
                  case 1:
--                    if (this.adjacentChestZNeg != p_174910_1_)
--                    {
-+                    if (this.adjacentChestZNeg != p_174910_1_) {
++
+                     if (this.adjacentChestZNeg != p_174910_1_)
+                     {
                          this.adjacentChestChecked = false;
                      }
  
                      break;
                  case 2:
--                    if (this.adjacentChestZPos != p_174910_1_)
--                    {
-+                    if (this.adjacentChestZPos != p_174910_1_) {
++
+                     if (this.adjacentChestZPos != p_174910_1_)
+                     {
                          this.adjacentChestChecked = false;
                      }
  
                      break;
                  case 3:
--                    if (this.adjacentChestXPos != p_174910_1_)
--                    {
-+                    if (this.adjacentChestXPos != p_174910_1_) {
++
+                     if (this.adjacentChestXPos != p_174910_1_)
+                     {
                          this.adjacentChestChecked = false;
                      }
  
                      break;
                  case 4:
--                    if (this.adjacentChestXNeg != p_174910_1_)
--                    {
-+                    if (this.adjacentChestXNeg != p_174910_1_) {
++
+                     if (this.adjacentChestXNeg != p_174910_1_)
+                     {
                          this.adjacentChestChecked = false;
                      }
              }
-         }
-     }
- 
--    public void checkForAdjacentChests()
--    {
--        if (!this.adjacentChestChecked)
--        {
-+    public void checkForAdjacentChests() {
-+        if (!this.adjacentChestChecked) {
-             this.adjacentChestChecked = true;
-             this.adjacentChestXNeg = this.func_174911_a(EnumFacing.WEST);
-             this.adjacentChestXPos = this.func_174911_a(EnumFacing.EAST);
-             this.adjacentChestZNeg = this.func_174911_a(EnumFacing.NORTH);
-             this.adjacentChestZPos = this.func_174911_a(EnumFacing.SOUTH);
-         }
-     }
- 
--    protected TileEntityChest func_174911_a(EnumFacing p_174911_1_)
--    {
-+    protected TileEntityChest func_174911_a(EnumFacing p_174911_1_) {
-         BlockPos blockpos = this.pos.offset(p_174911_1_);
- 
--        if (this.func_174912_b(blockpos))
--        {
-+        if (this.func_174912_b(blockpos)) {
-             TileEntity tileentity = this.worldObj.getTileEntity(blockpos);
- 
--            if (tileentity instanceof TileEntityChest)
--            {
--                TileEntityChest tileentitychest = (TileEntityChest)tileentity;
-+            if (tileentity instanceof TileEntityChest) {
-+                TileEntityChest tileentitychest = (TileEntityChest) tileentity;
-                 tileentitychest.func_174910_a(this, p_174911_1_.getOpposite());
-                 return tileentitychest;
-             }
-         }
- 
-         return null;
-     }
- 
--    private boolean func_174912_b(BlockPos p_174912_1_)
--    {
--        if (this.worldObj == null)
--        {
-+    private boolean func_174912_b(BlockPos p_174912_1_) {
-+        if (this.worldObj == null) {
-             return false;
--        }
--        else
--        {
-+        } else {
-             Block block = this.worldObj.getBlockState(p_174912_1_).getBlock();
--            return block instanceof BlockChest && ((BlockChest)block).chestType == this.getChestType();
-+            return block instanceof BlockChest && ((BlockChest) block).chestType == this.getChestType();
-         }
-     }
- 
--    public void update()
--    {
-+    public void update() {
-         this.checkForAdjacentChests();
-         int i = this.pos.getX();
-         int j = this.pos.getY();
-         int k = this.pos.getZ();
-         ++this.ticksSinceSync;
-         float f;
- 
--        if (!this.worldObj.isRemote && this.numPlayersUsing != 0 && (this.ticksSinceSync + i + j + k) % 200 == 0)
--        {
-+        if (!this.worldObj.isRemote && this.numPlayersUsing != 0 && (this.ticksSinceSync + i + j + k) % 200 == 0) {
-             this.numPlayersUsing = 0;
-             f = 5.0F;
--            List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB((double)((float)i - f), (double)((float)j - f), (double)((float)k - f), (double)((float)(i + 1) + f), (double)((float)(j + 1) + f), (double)((float)(k + 1) + f)));
-+            List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB((double) ((float) i - f), (double) ((float) j - f), (double) ((float) k - f), (double) ((float) (i + 1) + f), (double) ((float) (j + 1) + f), (double) ((float) (k + 1) + f)));
-             Iterator iterator = list.iterator();
- 
--            while (iterator.hasNext())
--            {
--                EntityPlayer entityplayer = (EntityPlayer)iterator.next();
-+            while (iterator.hasNext()) {
-+                EntityPlayer entityplayer = (EntityPlayer) iterator.next();
- 
--                if (entityplayer.openContainer instanceof ContainerChest)
--                {
--                    IInventory iinventory = ((ContainerChest)entityplayer.openContainer).getLowerChestInventory();
-+                if (entityplayer.openContainer instanceof ContainerChest) {
-+                    IInventory iinventory = ((ContainerChest) entityplayer.openContainer).getLowerChestInventory();
- 
--                    if (iinventory == this || iinventory instanceof InventoryLargeChest && ((InventoryLargeChest)iinventory).isPartOfLargeChest(this))
--                    {
-+                    if (iinventory == this || iinventory instanceof InventoryLargeChest && ((InventoryLargeChest) iinventory).isPartOfLargeChest(this)) {
-                         ++this.numPlayersUsing;
-                     }
-                 }
-             }
-         }
- 
-         this.prevLidAngle = this.lidAngle;
-         f = 0.1F;
-         double d2;
- 
--        if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
--        {
--            double d1 = (double)i + 0.5D;
--            d2 = (double)k + 0.5D;
-+        if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null) {
-+            double d1 = (double) i + 0.5D;
-+            d2 = (double) k + 0.5D;
- 
--            if (this.adjacentChestZPos != null)
--            {
-+            if (this.adjacentChestZPos != null) {
-                 d2 += 0.5D;
-             }
- 
--            if (this.adjacentChestXPos != null)
--            {
-+            if (this.adjacentChestXPos != null) {
-                 d1 += 0.5D;
-             }
- 
--            this.worldObj.playSoundEffect(d1, (double)j + 0.5D, d2, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
-+            this.worldObj.playSoundEffect(d1, (double) j + 0.5D, d2, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
-         }
- 
--        if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F)
--        {
-+        if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F) {
-             float f1 = this.lidAngle;
- 
--            if (this.numPlayersUsing > 0)
--            {
-+            if (this.numPlayersUsing > 0) {
-                 this.lidAngle += f;
--            }
--            else
--            {
-+            } else {
-                 this.lidAngle -= f;
-             }
- 
--            if (this.lidAngle > 1.0F)
--            {
-+            if (this.lidAngle > 1.0F) {
-                 this.lidAngle = 1.0F;
-             }
- 
-             float f2 = 0.5F;
- 
--            if (this.lidAngle < f2 && f1 >= f2 && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
--            {
--                d2 = (double)i + 0.5D;
--                double d0 = (double)k + 0.5D;
-+            if (this.lidAngle < f2 && f1 >= f2 && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null) {
-+                d2 = (double) i + 0.5D;
-+                double d0 = (double) k + 0.5D;
- 
--                if (this.adjacentChestZPos != null)
--                {
-+                if (this.adjacentChestZPos != null) {
-                     d0 += 0.5D;
-                 }
- 
--                if (this.adjacentChestXPos != null)
--                {
-+                if (this.adjacentChestXPos != null) {
-                     d2 += 0.5D;
-                 }
- 
--                this.worldObj.playSoundEffect(d2, (double)j + 0.5D, d0, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
-+                this.worldObj.playSoundEffect(d2, (double) j + 0.5D, d0, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
-             }
- 
--            if (this.lidAngle < 0.0F)
--            {
-+            if (this.lidAngle < 0.0F) {
-                 this.lidAngle = 0.0F;
-             }
-         }
-     }
- 
--    public boolean receiveClientEvent(int id, int type)
--    {
--        if (id == 1)
--        {
-+    public boolean receiveClientEvent(int id, int type) {
-+        if (id == 1) {
-             this.numPlayersUsing = type;
-             return true;
--        }
--        else
--        {
-+        } else {
-             return super.receiveClientEvent(id, type);
-         }
-     }
- 
--    public void openInventory(EntityPlayer player)
--    {
--        if (!player.isSpectator())
--        {
--            if (this.numPlayersUsing < 0)
--            {
-+    public void openInventory(EntityPlayer player) {
-+        if (!player.isSpectator()) {
-+            if (this.numPlayersUsing < 0) {
+@@ -396,23 +432,54 @@
+             if (this.numPlayersUsing < 0)
+             {
                  this.numPlayersUsing = 0;
              }
  
 +            int oldPower = Math.max(0, Math.min(15, this.numPlayersUsing)); // CraftBukkit - Get power before new viewer is added
-+
              ++this.numPlayersUsing;
              this.worldObj.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
 +
 +            // CraftBukkit start - Call redstone event
-+            if (this.getBlockType() == Blocks.trapped_chest) {
++            if (this.getBlockType() == Blocks.trapped_chest)
++            {
 +                int newPower = Math.max(0, Math.min(15, this.numPlayersUsing));
 +
-+                if (oldPower != newPower) {
++                if (oldPower != newPower)
++                {
 +                    CraftEventFactory.callRedstoneChange(worldObj, pos.getX(), pos.getY(), pos.getZ(), oldPower, newPower);
 +                }
 +            }
++
 +            // CraftBukkit end
              this.worldObj.notifyNeighborsOfStateChange(this.pos, this.getBlockType());
              this.worldObj.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType());
          }
      }
  
--    public void closeInventory(EntityPlayer player)
--    {
--        if (!player.isSpectator() && this.getBlockType() instanceof BlockChest)
--        {
-+    public void closeInventory(EntityPlayer player) {
-+        if (!player.isSpectator() && this.getBlockType() instanceof BlockChest) {
+     public void closeInventory(EntityPlayer player)
+     {
+         if (!player.isSpectator() && this.getBlockType() instanceof BlockChest)
+         {
 +            int oldPower = Math.max(0, Math.min(15, this.numPlayersUsing)); // CraftBukkit - Get power before new viewer is added
-+
              --this.numPlayersUsing;
++
 +            if (this.worldObj == null) return; // CraftBukkit
++
              this.worldObj.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
 +
 +            // CraftBukkit start - Call redstone event
-+            if (this.getBlockType() == Blocks.trapped_chest) {
++            if (this.getBlockType() == Blocks.trapped_chest)
++            {
 +                int newPower = Math.max(0, Math.min(15, this.numPlayersUsing));
 +
-+                if (oldPower != newPower) {
++                if (oldPower != newPower)
++                {
 +                    CraftEventFactory.callRedstoneChange(worldObj, pos.getX(), pos.getY(), pos.getZ(), oldPower, newPower);
 +                }
 +            }
++
 +            // CraftBukkit end
              this.worldObj.notifyNeighborsOfStateChange(this.pos, this.getBlockType());
              this.worldObj.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType());
          }
      }
  
--    public boolean isItemValidForSlot(int index, ItemStack stack)
--    {
-+    public boolean isItemValidForSlot(int index, ItemStack stack) {
-         return true;
-     }
- 
--    public void invalidate()
--    {
-+    public void invalidate() {
-         super.invalidate();
-         this.updateContainingBlockInfo();
-         this.checkForAdjacentChests();
-     }
- 
--    public int getChestType()
--    {
--        if (this.cachedChestType == -1)
--        {
--            if (this.worldObj == null || !(this.getBlockType() instanceof BlockChest))
--            {
-+    public int getChestType() {
-+        if (this.cachedChestType == -1) {
-+            if (this.worldObj == null || !(this.getBlockType() instanceof BlockChest)) {
-                 return 0;
-             }
- 
--            this.cachedChestType = ((BlockChest)this.getBlockType()).chestType;
-+            this.cachedChestType = ((BlockChest) this.getBlockType()).chestType;
-         }
- 
-         return this.cachedChestType;
-     }
- 
--    public String getGuiID()
--    {
-+    public String getGuiID() {
-         return "minecraft:chest";
-     }
- 
--    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn)
--    {
-+    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
-         return new ContainerChest(playerInventory, this, playerIn);
-     }
- 
--    public int getField(int id)
--    {
-+    public int getField(int id) {
+@@ -456,11 +523,13 @@
+     public int getField(int id)
+     {
          return 0;
      }
  
 -    public void setField(int id, int value) {}
-+    public void setField(int id, int value) {
++    public void setField(int id, int value)
++    {
 +    }
  
--    public int getFieldCount()
--    {
-+    public int getFieldCount() {
+     public int getFieldCount()
+     {
          return 0;
      }
- 
--    public void clear()
--    {
--        for (int i = 0; i < this.chestContents.length; ++i)
--        {
-+    public void clear() {
-+        for (int i = 0; i < this.chestContents.length; ++i) {
-             this.chestContents[i] = null;
+@@ -473,10 +542,11 @@
          }
      }
  
--    static final class SwitchEnumFacing
--        {
--            static final int[] field_177366_a = new int[EnumFacing.values().length];
--            private static final String __OBFID = "CL_00002041";
-+    static final class SwitchEnumFacing {
- 
--            static
--            {
--                try
--                {
--                    field_177366_a[EnumFacing.NORTH.ordinal()] = 1;
--                }
--                catch (NoSuchFieldError var4)
--                {
--                    ;
--                }
-+        static final int[] field_177366_a = new int[EnumFacing.values().length];
-+        private static final String __OBFID = "CL_00002041";
- 
--                try
--                {
--                    field_177366_a[EnumFacing.SOUTH.ordinal()] = 2;
--                }
--                catch (NoSuchFieldError var3)
--                {
--                    ;
--                }
-+        static {
-+            try {
-+                field_177366_a[EnumFacing.NORTH.ordinal()] = 1;
-+            } catch (NoSuchFieldError var4) {
-+                ;
-+            }
- 
--                try
--                {
--                    field_177366_a[EnumFacing.EAST.ordinal()] = 3;
--                }
--                catch (NoSuchFieldError var2)
--                {
--                    ;
--                }
-+            try {
-+                field_177366_a[EnumFacing.SOUTH.ordinal()] = 2;
-+            } catch (NoSuchFieldError var3) {
-+                ;
-+            }
- 
--                try
--                {
--                    field_177366_a[EnumFacing.WEST.ordinal()] = 4;
--                }
--                catch (NoSuchFieldError var1)
--                {
--                    ;
--                }
-+            try {
-+                field_177366_a[EnumFacing.EAST.ordinal()] = 3;
-+            } catch (NoSuchFieldError var2) {
-+                ;
-             }
+     static final class SwitchEnumFacing
+         {
 +
-+            try {
-+                field_177366_a[EnumFacing.WEST.ordinal()] = 4;
-+            } catch (NoSuchFieldError var1) {
-+                ;
-+            }
-         }
-+    }
- }
+             static final int[] field_177366_a = new int[EnumFacing.values().length];
+             private static final String __OBFID = "CL_00002041";
+ 
+             static
+             {

@@ -1,13 +1,11 @@
 --- decompiled\net\minecraft\world\IWorldNameable.java
 +++ src\main\java\net\minecraft\world\IWorldNameable.java
-@@ -1,11 +1,11 @@
- package net.minecraft.world;
+@@ -2,10 +2,11 @@
  
  import net.minecraft.util.IChatComponent;
  
--public interface IWorldNameable
--{
-+public interface IWorldNameable {
+ public interface IWorldNameable
+ {
 +
      String getName();
  

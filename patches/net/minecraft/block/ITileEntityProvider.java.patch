@@ -1,14 +1,11 @@
 --- decompiled\net\minecraft\block\ITileEntityProvider.java
 +++ src\main\java\net\minecraft\block\ITileEntityProvider.java
-@@ -1,9 +1,9 @@
- package net.minecraft.block;
- 
+@@ -3,7 +3,8 @@
  import net.minecraft.tileentity.TileEntity;
  import net.minecraft.world.World;
  
--public interface ITileEntityProvider
--{
-+public interface ITileEntityProvider {
+ public interface ITileEntityProvider
+ {
 +
      TileEntity createNewTileEntity(World worldIn, int meta);
  }

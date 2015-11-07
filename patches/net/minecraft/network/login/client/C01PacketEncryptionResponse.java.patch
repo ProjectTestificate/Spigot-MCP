@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\login\client\C01PacketEncryptionResponse.java
 +++ src\main\java\net\minecraft\network\login\client\C01PacketEncryptionResponse.java
-@@ -1,61 +1,49 @@
+@@ -1,32 +1,28 @@
  package net.minecraft.network.login.client;
  
  import java.io.IOException;
@@ -17,10 +17,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class C01PacketEncryptionResponse implements Packet
--{
 +
-+public class C01PacketEncryptionResponse implements Packet {
+ public class C01PacketEncryptionResponse implements Packet
+ {
 +
      private byte[] secretKeyEncrypted = new byte[0];
      private byte[] verifyTokenEncrypted = new byte[0];
@@ -30,48 +29,22 @@
 -
 -    @SideOnly(Side.CLIENT)
 -    public C01PacketEncryptionResponse(SecretKey secretKey, PublicKey publicKey, byte[] verifyToken)
--    {
++    public C01PacketEncryptionResponse()
+     {
 -        this.secretKeyEncrypted = CryptManager.encryptData(publicKey, secretKey.getEncoded());
 -        this.verifyTokenEncrypted = CryptManager.encryptData(publicKey, verifyToken);
-+    public C01PacketEncryptionResponse() {
      }
  
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
+     public void readPacketData(PacketBuffer buf) throws IOException
+     {
          this.secretKeyEncrypted = buf.readByteArray();
-         this.verifyTokenEncrypted = buf.readByteArray();
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeByteArray(this.secretKeyEncrypted);
-         buf.writeByteArray(this.verifyTokenEncrypted);
-     }
- 
--    public void processPacket(INetHandlerLoginServer handler)
--    {
-+    public void processPacket(INetHandlerLoginServer handler) {
-         handler.processEncryptionResponse(this);
-     }
- 
--    public SecretKey getSecretKey(PrivateKey key)
--    {
-+    public SecretKey getSecretKey(PrivateKey key) {
-         return CryptManager.decryptSharedKey(key, this.secretKeyEncrypted);
-     }
- 
--    public byte[] getVerifyToken(PrivateKey key)
--    {
-+    public byte[] getVerifyToken(PrivateKey key) {
+@@ -54,8 +50,8 @@
          return key == null ? this.verifyTokenEncrypted : CryptManager.decryptData(key, this.verifyTokenEncrypted);
      }
  
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.processPacket((INetHandlerLoginServer)handler);
-+    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerLoginServer) handler);
      }
  }

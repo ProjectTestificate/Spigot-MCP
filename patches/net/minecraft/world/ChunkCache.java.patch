@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\world\ChunkCache.java
 +++ src\main\java\net\minecraft\world\ChunkCache.java
-@@ -4,187 +4,78 @@
+@@ -4,17 +4,16 @@
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.init.Blocks;
  import net.minecraft.tileentity.TileEntity;
@@ -11,53 +11,16 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class ChunkCache implements IBlockAccess
--{
 +
-+public class ChunkCache implements IBlockAccess {
+ public class ChunkCache implements IBlockAccess
+ {
 +
      protected int chunkX;
      protected int chunkZ;
      protected Chunk[][] chunkArray;
      protected boolean hasExtendedLevels;
      protected World worldObj;
-     private static final String __OBFID = "CL_00000155";
- 
--    public ChunkCache(World worldIn, BlockPos posFromIn, BlockPos posToIn, int subIn)
--    {
-+    public ChunkCache(World worldIn, BlockPos posFromIn, BlockPos posToIn, int subIn) {
-         this.worldObj = worldIn;
-         this.chunkX = posFromIn.getX() - subIn >> 4;
-         this.chunkZ = posFromIn.getZ() - subIn >> 4;
-         int j = posToIn.getX() + subIn >> 4;
-         int k = posToIn.getZ() + subIn >> 4;
-         this.chunkArray = new Chunk[j - this.chunkX + 1][k - this.chunkZ + 1];
-         this.hasExtendedLevels = true;
-         int l;
-         int i1;
- 
--        for (l = this.chunkX; l <= j; ++l)
--        {
--            for (i1 = this.chunkZ; i1 <= k; ++i1)
--            {
-+        for (l = this.chunkX; l <= j; ++l) {
-+            for (i1 = this.chunkZ; i1 <= k; ++i1) {
-                 this.chunkArray[l - this.chunkX][i1 - this.chunkZ] = worldIn.getChunkFromChunkCoords(l, i1);
-             }
-         }
- 
--        for (l = posFromIn.getX() >> 4; l <= posToIn.getX() >> 4; ++l)
--        {
--            for (i1 = posFromIn.getZ() >> 4; i1 <= posToIn.getZ() >> 4; ++i1)
--            {
-+        for (l = posFromIn.getX() >> 4; l <= posToIn.getX() >> 4; ++l) {
-+            for (i1 = posFromIn.getZ() >> 4; i1 <= posToIn.getZ() >> 4; ++i1) {
-                 Chunk chunk = this.chunkArray[l - this.chunkX][i1 - this.chunkZ];
- 
--                if (chunk != null && !chunk.getAreLevelsEmpty(posFromIn.getY(), posToIn.getY()))
--                {
-+                if (chunk != null && !chunk.getAreLevelsEmpty(posFromIn.getY(), posToIn.getY())) {
-                     this.hasExtendedLevels = false;
+@@ -52,37 +51,17 @@
                  }
              }
          }
@@ -69,9 +32,8 @@
 -        return this.hasExtendedLevels;
 -    }
 -
--    public TileEntity getTileEntity(BlockPos pos)
--    {
-+    public TileEntity getTileEntity(BlockPos pos) {
+     public TileEntity getTileEntity(BlockPos pos)
+     {
          int i = (pos.getX() >> 4) - this.chunkX;
          int j = (pos.getZ() >> 4) - this.chunkZ;
          return this.chunkArray[i][j].getTileEntity(pos, Chunk.EnumCreateEntityType.IMMEDIATE);
@@ -91,26 +53,12 @@
 -        return j << 20 | k << 4;
 -    }
 -
--    public IBlockState getBlockState(BlockPos pos)
--    {
--        if (pos.getY() >= 0 && pos.getY() < 256)
--        {
-+    public IBlockState getBlockState(BlockPos pos) {
-+        if (pos.getY() >= 0 && pos.getY() < 256) {
+     public IBlockState getBlockState(BlockPos pos)
+     {
+         if (pos.getY() >= 0 && pos.getY() < 256)
+         {
              int i = (pos.getX() >> 4) - this.chunkX;
-             int j = (pos.getZ() >> 4) - this.chunkZ;
- 
--            if (i >= 0 && i < this.chunkArray.length && j >= 0 && j < this.chunkArray[i].length)
--            {
-+            if (i >= 0 && i < this.chunkArray.length && j >= 0 && j < this.chunkArray[i].length) {
-                 Chunk chunk = this.chunkArray[i][j];
- 
--                if (chunk != null)
--                {
-+                if (chunk != null) {
-                     return chunk.getBlockState(pos);
-                 }
-             }
+@@ -100,91 +79,17 @@
          }
  
          return Blocks.air.getDefaultState();
@@ -170,9 +118,8 @@
 -        }
 -    }
 -
--    public boolean isAirBlock(BlockPos pos)
--    {
-+    public boolean isAirBlock(BlockPos pos) {
+     public boolean isAirBlock(BlockPos pos)
+     {
          return this.getBlockState(pos).getBlock().getMaterial() == Material.air;
      }
  
@@ -191,9 +138,8 @@
 -        }
 -    }
 -
--    public int getStrongPower(BlockPos pos, EnumFacing direction)
--    {
-+    public int getStrongPower(BlockPos pos, EnumFacing direction) {
+     public int getStrongPower(BlockPos pos, EnumFacing direction)
+     {
          IBlockState iblockstate = this.getBlockState(pos);
          return iblockstate.getBlock().isProvidingStrongPower(this, pos, iblockstate, direction);
      }

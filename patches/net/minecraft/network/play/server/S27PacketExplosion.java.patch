@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S27PacketExplosion.java
 +++ src\main\java\net\minecraft\network\play\server\S27PacketExplosion.java
-@@ -1,64 +1,61 @@
+@@ -1,33 +1,36 @@
  package net.minecraft.network.play.server;
  
 -import com.google.common.collect.Lists;
@@ -17,11 +17,10 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S27PacketExplosion implements Packet
--{
 +import com.google.common.collect.Lists;
 +
-+public class S27PacketExplosion implements Packet {
+ public class S27PacketExplosion implements Packet
+ {
 +
      private double field_149158_a;
      private double field_149156_b;
@@ -34,36 +33,34 @@
      private static final String __OBFID = "CL_00001300";
  
 -    public S27PacketExplosion() {}
-+    public S27PacketExplosion() {
++    public S27PacketExplosion()
++    {
 +    }
  
--    public S27PacketExplosion(double p_i45193_1_, double p_i45193_3_, double p_i45193_5_, float p_i45193_7_, List p_i45193_8_, Vec3 p_i45193_9_)
--    {
-+    public S27PacketExplosion(double p_i45193_1_, double p_i45193_3_, double p_i45193_5_, float p_i45193_7_, List p_i45193_8_, Vec3 p_i45193_9_) {
+     public S27PacketExplosion(double p_i45193_1_, double p_i45193_3_, double p_i45193_5_, float p_i45193_7_, List p_i45193_8_, Vec3 p_i45193_9_)
+     {
          this.field_149158_a = p_i45193_1_;
          this.field_149156_b = p_i45193_3_;
-         this.field_149157_c = p_i45193_5_;
+@@ -35,27 +38,27 @@
          this.field_149154_d = p_i45193_7_;
          this.field_149155_e = Lists.newArrayList(p_i45193_8_);
  
--        if (p_i45193_9_ != null)
--        {
+         if (p_i45193_9_ != null)
+         {
 -            this.field_149152_f = (float)p_i45193_9_.xCoord;
 -            this.field_149153_g = (float)p_i45193_9_.yCoord;
 -            this.field_149159_h = (float)p_i45193_9_.zCoord;
-+        if (p_i45193_9_ != null) {
 +            this.field_149152_f = (float) p_i45193_9_.xCoord;
 +            this.field_149153_g = (float) p_i45193_9_.yCoord;
 +            this.field_149159_h = (float) p_i45193_9_.zCoord;
          }
      }
  
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
+     public void readPacketData(PacketBuffer buf) throws IOException
+     {
 -        this.field_149158_a = (double)buf.readFloat();
 -        this.field_149156_b = (double)buf.readFloat();
 -        this.field_149157_c = (double)buf.readFloat();
-+    public void readPacketData(PacketBuffer buf) throws IOException {
 +        this.field_149158_a = (double) buf.readFloat();
 +        this.field_149156_b = (double) buf.readFloat();
 +        this.field_149157_c = (double) buf.readFloat();
@@ -77,26 +74,19 @@
 +        int k = (int) this.field_149156_b;
 +        int l = (int) this.field_149157_c;
  
--        for (int i1 = 0; i1 < i; ++i1)
--        {
-+        for (int i1 = 0; i1 < i; ++i1) {
+         for (int i1 = 0; i1 < i; ++i1)
+         {
              int j1 = buf.readByte() + j;
              int k1 = buf.readByte() + k;
-             int l1 = buf.readByte() + l;
-             this.field_149155_e.add(new BlockPos(j1, k1, l1));
-         }
-@@ -66,25 +63,23 @@
-         this.field_149152_f = buf.readFloat();
-         this.field_149153_g = buf.readFloat();
+@@ -68,23 +71,23 @@
          this.field_149159_h = buf.readFloat();
      }
  
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
+     public void writePacketData(PacketBuffer buf) throws IOException
+     {
 -        buf.writeFloat((float)this.field_149158_a);
 -        buf.writeFloat((float)this.field_149156_b);
 -        buf.writeFloat((float)this.field_149157_c);
-+    public void writePacketData(PacketBuffer buf) throws IOException {
 +        buf.writeFloat((float) this.field_149158_a);
 +        buf.writeFloat((float) this.field_149156_b);
 +        buf.writeFloat((float) this.field_149157_c);
@@ -110,25 +100,18 @@
 +        int k = (int) this.field_149157_c;
          Iterator iterator = this.field_149155_e.iterator();
  
--        while (iterator.hasNext())
--        {
+         while (iterator.hasNext())
+         {
 -            BlockPos blockpos = (BlockPos)iterator.next();
-+        while (iterator.hasNext()) {
 +            BlockPos blockpos = (BlockPos) iterator.next();
              int l = blockpos.getX() - i;
              int i1 = blockpos.getY() - j;
              int j1 = blockpos.getZ() - k;
              buf.writeByte(l);
              buf.writeByte(i1);
-@@ -94,63 +89,13 @@
-         buf.writeFloat(this.field_149152_f);
-         buf.writeFloat(this.field_149153_g);
-         buf.writeFloat(this.field_149159_h);
-     }
- 
--    public void processPacket(INetHandlerPlayClient handler)
--    {
-+    public void processPacket(INetHandlerPlayClient handler) {
+@@ -99,58 +102,10 @@
+     public void processPacket(INetHandlerPlayClient handler)
+     {
          handler.handleExplosion(this);
      }
  
@@ -136,14 +119,13 @@
 -    public float func_149149_c()
 -    {
 -        return this.field_149152_f;
-+    public void processPacket(INetHandler handler) {
+-    }
+-
+     public void processPacket(INetHandler handler)
+     {
+-        this.processPacket((INetHandlerPlayClient)handler);
 +        this.processPacket((INetHandlerPlayClient) handler);
      }
--
--    public void processPacket(INetHandler handler)
--    {
--        this.processPacket((INetHandlerPlayClient)handler);
--    }
 -
 -    @SideOnly(Side.CLIENT)
 -    public float func_149144_d()

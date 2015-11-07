@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\client\C12PacketUpdateSign.java
 +++ src\main\java\net\minecraft\network\play\client\C12PacketUpdateSign.java
-@@ -1,68 +1,54 @@
+@@ -1,30 +1,26 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -14,10 +14,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class C12PacketUpdateSign implements Packet
--{
 +
-+public class C12PacketUpdateSign implements Packet {
+ public class C12PacketUpdateSign implements Packet
+ {
 +
      private BlockPos pos;
      private IChatComponent[] lines;
@@ -27,59 +26,22 @@
 -
 -    @SideOnly(Side.CLIENT)
 -    public C12PacketUpdateSign(BlockPos pos, IChatComponent[] lines)
--    {
++    public C12PacketUpdateSign()
+     {
 -        this.pos = pos;
 -        this.lines = new IChatComponent[] {lines[0], lines[1], lines[2], lines[3]};
-+    public C12PacketUpdateSign() {
      }
  
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
+     public void readPacketData(PacketBuffer buf) throws IOException
+     {
          this.pos = buf.readBlockPos();
-         this.lines = new IChatComponent[4];
- 
--        for (int i = 0; i < 4; ++i)
--        {
-+        for (int i = 0; i < 4; ++i) {
-             this.lines[i] = buf.readChatComponent();
-         }
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeBlockPos(this.pos);
- 
--        for (int i = 0; i < 4; ++i)
--        {
-+        for (int i = 0; i < 4; ++i) {
-             buf.writeChatComponent(this.lines[i]);
-         }
-     }
- 
--    public void processPacket(INetHandlerPlayServer handler)
--    {
-+    public void processPacket(INetHandlerPlayServer handler) {
-         handler.processUpdateSign(this);
-     }
- 
--    public BlockPos getPosition()
--    {
-+    public BlockPos getPosition() {
-         return this.pos;
-     }
- 
--    public IChatComponent[] getLines()
--    {
-+    public IChatComponent[] getLines() {
+@@ -61,8 +57,8 @@
          return this.lines;
      }
  
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.processPacket((INetHandlerPlayServer)handler);
-+    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
  }

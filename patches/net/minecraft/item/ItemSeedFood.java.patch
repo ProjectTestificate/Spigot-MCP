@@ -1,51 +1,14 @@
 --- decompiled\net\minecraft\item\ItemSeedFood.java
 +++ src\main\java\net\minecraft\item\ItemSeedFood.java
-@@ -4,40 +4,31 @@
- import net.minecraft.entity.player.EntityPlayer;
- import net.minecraft.util.BlockPos;
+@@ -6,10 +6,11 @@
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
--public class ItemSeedFood extends ItemFood
--{
-+public class ItemSeedFood extends ItemFood {
+ public class ItemSeedFood extends ItemFood
+ {
 +
      private Block crops;
      private Block soilId;
      private static final String __OBFID = "CL_00000060";
  
--    public ItemSeedFood(int healAmount, float saturation, Block crops, Block soil)
--    {
-+    public ItemSeedFood(int healAmount, float saturation, Block crops, Block soil) {
-         super(healAmount, saturation, false);
-         this.crops = crops;
-         this.soilId = soil;
-     }
- 
--    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
--    {
--        if (side != EnumFacing.UP)
--        {
-+    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
-+        if (side != EnumFacing.UP) {
-             return false;
--        }
--        else if (!playerIn.canPlayerEdit(pos.offset(side), side, stack))
--        {
-+        } else if (!playerIn.canPlayerEdit(pos.offset(side), side, stack)) {
-             return false;
--        }
--        else if (worldIn.getBlockState(pos).getBlock() == this.soilId && worldIn.isAirBlock(pos.up()))
--        {
-+        } else if (worldIn.getBlockState(pos).getBlock() == this.soilId && worldIn.isAirBlock(pos.up())) {
-             worldIn.setBlockState(pos.up(), this.crops.getDefaultState());
-             --stack.stackSize;
-             return true;
--        }
--        else
--        {
-+        } else {
-             return false;
-         }
-     }
- }
+     public ItemSeedFood(int healAmount, float saturation, Block crops, Block soil)

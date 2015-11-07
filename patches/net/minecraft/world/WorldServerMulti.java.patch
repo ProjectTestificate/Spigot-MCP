@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\world\WorldServerMulti.java
 +++ src\main\java\net\minecraft\world\WorldServerMulti.java
-@@ -1,74 +1,76 @@
+@@ -1,64 +1,72 @@
  package net.minecraft.world;
  
  import net.minecraft.profiler.Profiler;
@@ -12,21 +12,20 @@
  import net.minecraft.world.storage.ISaveHandler;
 +import net.minecraft.world.storage.WorldInfo;
  
--public class WorldServerMulti extends WorldServer
--{
 +import org.bukkit.World.Environment;
 +import org.bukkit.generator.ChunkGenerator;
 +
-+public class WorldServerMulti extends WorldServer {
+ public class WorldServerMulti extends WorldServer
+ {
 +
      private WorldServer delegate;
      private static final String __OBFID = "CL_00001430";
  
 -    public WorldServerMulti(MinecraftServer server, ISaveHandler saveHandlerIn, int dimensionId, WorldServer delegate, Profiler profilerIn)
--    {
--        super(server, saveHandlerIn, new DerivedWorldInfo(delegate.getWorldInfo()), dimensionId, profilerIn);
 +    // CraftBukkit start - Add WorldData, Environment and ChunkGenerator arguments
-+    public WorldServerMulti(MinecraftServer server, ISaveHandler saveHandlerIn, int dimensionId, WorldServer delegate, Profiler profilerIn, WorldInfo worldData, Environment env, ChunkGenerator gen) {
++    public WorldServerMulti(MinecraftServer server, ISaveHandler saveHandlerIn, int dimensionId, WorldServer delegate, Profiler profilerIn, WorldInfo worldData, Environment env, ChunkGenerator gen)
+     {
+-        super(server, saveHandlerIn, new DerivedWorldInfo(delegate.getWorldInfo()), dimensionId, profilerIn);
 +        super(server, saveHandlerIn, worldData, dimensionId, profilerIn, env, gen);
 +        // CraftBukkit end
          this.delegate = delegate;
@@ -87,27 +86,13 @@
 -    protected void saveLevel() throws MinecraftException {}
 +    // protected void saveLevel() throws MinecraftException {} // CraftBukkit
  
--    public World init()
--    {
-+    public World init() {
+     public World init()
+     {
          this.mapStorage = this.delegate.getMapStorage();
 -        this.worldScoreboard = this.delegate.getScoreboard();
 +        // this.worldScoreboard = this.delegate.getScoreboard(); // CraftBukkit
          String s = VillageCollection.fileNameForProvider(this.provider);
--        VillageCollection villagecollection = (VillageCollection)this.mapStorage.loadData(VillageCollection.class, s);
-+        VillageCollection villagecollection = (VillageCollection) this.mapStorage.loadData(VillageCollection.class, s);
+         VillageCollection villagecollection = (VillageCollection)this.mapStorage.loadData(VillageCollection.class, s);
  
--        if (villagecollection == null)
--        {
-+        if (villagecollection == null) {
-             this.villageCollectionObj = new VillageCollection(this);
-             this.mapStorage.setData(s, this.villageCollectionObj);
--        }
--        else
--        {
-+        } else {
-             this.villageCollectionObj = villagecollection;
-             this.villageCollectionObj.setWorldsForAll(this);
-         }
- 
-         return this;
+         if (villagecollection == null)
+         {

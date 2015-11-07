@@ -42,7 +42,7 @@
              for (int k = 0; k < j; ++k)
              {
 -                if (worldIn.rand.nextFloat() <= chance)
-+                if (worldIn.rand.nextFloat() < chance)// CraftBukkit - <= to < to allow for plugins to completely disable block drops from explosions
++                if (worldIn.rand.nextFloat() < chance) // CraftBukkit - <= to < to allow for plugins to completely disable block drops from explosions
                  {
                      Item item = this.getItemDropped(state, worldIn.rand, fortune);
  
@@ -61,7 +61,7 @@
      }
  
      protected ItemStack createStackedBlock(IBlockState state)
-@@ -1234,10 +1242,32 @@
+@@ -1234,10 +1242,34 @@
      private static void registerBlock(int id, String textualID, Block block_)
      {
          registerBlock(id, new ResourceLocation(textualID), block_);
@@ -81,10 +81,12 @@
 +        {
 +            return min;
 +        }
++
 +        if (value > max)
 +        {
 +            return max;
 +        }
++
 +        return value;
 +    }
 +    // Spigot end

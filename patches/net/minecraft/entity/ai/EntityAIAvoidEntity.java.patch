@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\entity\ai\EntityAIAvoidEntity.java
 +++ src\main\java\net\minecraft\entity\ai\EntityAIAvoidEntity.java
-@@ -1,29 +1,31 @@
+@@ -1,19 +1,22 @@
  package net.minecraft.entity.ai;
  
 -import com.google.common.base.Predicate;
@@ -14,120 +14,14 @@
  import net.minecraft.pathfinding.PathNavigate;
  import net.minecraft.util.Vec3;
  
--public class EntityAIAvoidEntity extends EntityAIBase
--{
--    public final Predicate field_179509_a = new Predicate()
--    {
 +import com.google.common.base.Predicate;
 +import com.google.common.base.Predicates;
 +
-+public class EntityAIAvoidEntity extends EntityAIBase {
+ public class EntityAIAvoidEntity extends EntityAIBase
+ {
 +
-+    public final Predicate field_179509_a = new Predicate() {
-+
+     public final Predicate field_179509_a = new Predicate()
+     {
          private static final String __OBFID = "CL_00001575";
--        public boolean func_180419_a(Entity p_180419_1_)
--        {
-+
-+        public boolean func_180419_a(Entity p_180419_1_) {
-             return p_180419_1_.isEntityAlive() && EntityAIAvoidEntity.this.theEntity.getEntitySenses().canSee(p_180419_1_);
-         }
--        public boolean apply(Object p_apply_1_)
--        {
--            return this.func_180419_a((Entity)p_apply_1_);
-+
-+        public boolean apply(Object p_apply_1_) {
-+            return this.func_180419_a((Entity) p_apply_1_);
-         }
-     };
-     protected EntityCreature theEntity;
-     private double farSpeed;
-     private double nearSpeed;
-@@ -32,72 +34,55 @@
-     private PathEntity entityPathEntity;
-     private PathNavigate entityPathNavigate;
-     private Predicate field_179510_i;
-     private static final String __OBFID = "CL_00001574";
- 
--    public EntityAIAvoidEntity(EntityCreature p_i45890_1_, Predicate p_i45890_2_, float p_i45890_3_, double p_i45890_4_, double p_i45890_6_)
--    {
-+    public EntityAIAvoidEntity(EntityCreature p_i45890_1_, Predicate p_i45890_2_, float p_i45890_3_, double p_i45890_4_, double p_i45890_6_) {
-         this.theEntity = p_i45890_1_;
-         this.field_179510_i = p_i45890_2_;
-         this.field_179508_f = p_i45890_3_;
-         this.farSpeed = p_i45890_4_;
-         this.nearSpeed = p_i45890_6_;
-         this.entityPathNavigate = p_i45890_1_.getNavigator();
-         this.setMutexBits(1);
-     }
- 
--    public boolean shouldExecute()
--    {
--        List list = this.theEntity.worldObj.func_175674_a(this.theEntity, this.theEntity.getEntityBoundingBox().expand((double)this.field_179508_f, 3.0D, (double)this.field_179508_f), Predicates.and(new Predicate[] {IEntitySelector.NOT_SPECTATING, this.field_179509_a, this.field_179510_i}));
-+    public boolean shouldExecute() {
-+        List list = this.theEntity.worldObj.func_175674_a(this.theEntity, this.theEntity.getEntityBoundingBox().expand((double) this.field_179508_f, 3.0D, (double) this.field_179508_f), Predicates.and(new Predicate[]{IEntitySelector.NOT_SPECTATING, this.field_179509_a, this.field_179510_i}));
- 
--        if (list.isEmpty())
--        {
-+        if (list.isEmpty()) {
-             return false;
--        }
--        else
--        {
--            this.closestLivingEntity = (Entity)list.get(0);
-+        } else {
-+            this.closestLivingEntity = (Entity) list.get(0);
-             Vec3 vec3 = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.theEntity, 16, 7, new Vec3(this.closestLivingEntity.posX, this.closestLivingEntity.posY, this.closestLivingEntity.posZ));
- 
--            if (vec3 == null)
--            {
-+            if (vec3 == null) {
-                 return false;
--            }
--            else if (this.closestLivingEntity.getDistanceSq(vec3.xCoord, vec3.yCoord, vec3.zCoord) < this.closestLivingEntity.getDistanceSqToEntity(this.theEntity))
--            {
-+            } else if (this.closestLivingEntity.getDistanceSq(vec3.xCoord, vec3.yCoord, vec3.zCoord) < this.closestLivingEntity.getDistanceSqToEntity(this.theEntity)) {
-                 return false;
--            }
--            else
--            {
-+            } else {
-                 this.entityPathEntity = this.entityPathNavigate.getPathToXYZ(vec3.xCoord, vec3.yCoord, vec3.zCoord);
-                 return this.entityPathEntity == null ? false : this.entityPathEntity.isDestinationSame(vec3);
-             }
-         }
-     }
- 
--    public boolean continueExecuting()
--    {
-+    public boolean continueExecuting() {
-         return !this.entityPathNavigate.noPath();
-     }
- 
--    public void startExecuting()
--    {
-+    public void startExecuting() {
-         this.entityPathNavigate.setPath(this.entityPathEntity, this.farSpeed);
-     }
- 
--    public void resetTask()
--    {
-+    public void resetTask() {
-         this.closestLivingEntity = null;
-     }
- 
--    public void updateTask()
--    {
--        if (this.theEntity.getDistanceSqToEntity(this.closestLivingEntity) < 49.0D)
--        {
-+    public void updateTask() {
-+        if (this.theEntity.getDistanceSqToEntity(this.closestLivingEntity) < 49.0D) {
-             this.theEntity.getNavigator().setSpeed(this.nearSpeed);
--        }
--        else
--        {
-+        } else {
-             this.theEntity.getNavigator().setSpeed(this.farSpeed);
-         }
-     }
- }
+         public boolean func_180419_a(Entity p_180419_1_)
+         {

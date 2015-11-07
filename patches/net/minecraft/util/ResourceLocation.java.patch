@@ -1,110 +1,49 @@
 --- decompiled\net\minecraft\util\ResourceLocation.java
 +++ src\main\java\net\minecraft\util\ResourceLocation.java
-@@ -1,86 +1,68 @@
+@@ -1,18 +1,17 @@
  package net.minecraft.util;
  
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  import org.apache.commons.lang3.Validate;
  
--public class ResourceLocation
--{
-+public class ResourceLocation {
+ public class ResourceLocation
+ {
 +
      protected final String resourceDomain;
      protected final String resourcePath;
      private static final String __OBFID = "CL_00001082";
  
 -    protected ResourceLocation(int p_i45928_1_, String ... resourcePathIn)
--    {
-+    protected ResourceLocation(int p_i45928_1_, String... resourcePathIn) {
++    protected ResourceLocation(int p_i45928_1_, String... resourcePathIn)
+     {
          this.resourceDomain = org.apache.commons.lang3.StringUtils.isEmpty(resourcePathIn[0]) ? "minecraft" : resourcePathIn[0].toLowerCase();
          this.resourcePath = resourcePathIn[1];
          Validate.notNull(this.resourcePath);
      }
- 
--    public ResourceLocation(String p_i1293_1_)
--    {
-+    public ResourceLocation(String p_i1293_1_) {
+@@ -20,11 +19,11 @@
+     public ResourceLocation(String p_i1293_1_)
+     {
          this(0, func_177516_a(p_i1293_1_));
      }
  
 -    @SideOnly(Side.CLIENT)
--    public ResourceLocation(String p_i1292_1_, String p_i1292_2_)
--    {
--        this(0, new String[] {p_i1292_1_, p_i1292_2_});
 +    // SpigotMCP Note -- Is Really client sided, but FML needs it
-+    public ResourceLocation(String p_i1292_1_, String p_i1292_2_) {
-+        this(0, new String[]{p_i1292_1_, p_i1292_2_});
+     public ResourceLocation(String p_i1292_1_, String p_i1292_2_)
+     {
+         this(0, new String[] {p_i1292_1_, p_i1292_2_});
      }
  
--    protected static String[] func_177516_a(String p_177516_0_)
--    {
--        String[] astring = new String[] {null, p_177516_0_};
-+    protected static String[] func_177516_a(String p_177516_0_) {
-+        String[] astring = new String[]{null, p_177516_0_};
-         int i = p_177516_0_.indexOf(58);
- 
--        if (i >= 0)
--        {
-+        if (i >= 0) {
-             astring[1] = p_177516_0_.substring(i + 1, p_177516_0_.length());
- 
--            if (i > 1)
--            {
-+            if (i > 1) {
-                 astring[0] = p_177516_0_.substring(0, i);
-             }
-         }
- 
-         return astring;
-     }
- 
--    public String getResourcePath()
--    {
-+    public String getResourcePath() {
+@@ -49,11 +48,11 @@
+     public String getResourcePath()
+     {
          return this.resourcePath;
      }
  
 -    @SideOnly(Side.CLIENT)
--    public String getResourceDomain()
--    {
 +    // SpigotMCP Note -- Is really client sided, but FML Needs it
-+    public String getResourceDomain() {
+     public String getResourceDomain()
+     {
          return this.resourceDomain;
      }
  
--    public String toString()
--    {
-+    public String toString() {
-         return this.resourceDomain + ':' + this.resourcePath;
-     }
- 
--    public boolean equals(Object p_equals_1_)
--    {
--        if (this == p_equals_1_)
--        {
-+    public boolean equals(Object p_equals_1_) {
-+        if (this == p_equals_1_) {
-             return true;
--        }
--        else if (!(p_equals_1_ instanceof ResourceLocation))
--        {
-+        } else if (!(p_equals_1_ instanceof ResourceLocation)) {
-             return false;
--        }
--        else
--        {
--            ResourceLocation resourcelocation = (ResourceLocation)p_equals_1_;
-+        } else {
-+            ResourceLocation resourcelocation = (ResourceLocation) p_equals_1_;
-             return this.resourceDomain.equals(resourcelocation.resourceDomain) && this.resourcePath.equals(resourcelocation.resourcePath);
-         }
-     }
- 
--    public int hashCode()
--    {
-+    public int hashCode() {
-         return 31 * this.resourceDomain.hashCode() + this.resourcePath.hashCode();
-     }
- }

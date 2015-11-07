@@ -1,42 +1,36 @@
 --- decompiled\net\minecraft\server\management\UserListEntry.java
 +++ src\main\java\net\minecraft\server\management\UserListEntry.java
-@@ -1,31 +1,28 @@
- package net.minecraft.server.management;
+@@ -2,10 +2,11 @@
  
  import com.google.gson.JsonObject;
  
--public class UserListEntry
--{
-+public class UserListEntry {
+ public class UserListEntry
+ {
 +
      private final Object value;
      private static final String __OBFID = "CL_00001877";
  
--    public UserListEntry(Object p_i1146_1_)
--    {
-+    public UserListEntry(Object p_i1146_1_) {
-         this.value = p_i1146_1_;
-     }
- 
--    protected UserListEntry(Object p_i1147_1_, JsonObject p_i1147_2_)
--    {
-+    protected UserListEntry(Object p_i1147_1_, JsonObject p_i1147_2_) {
+     public UserListEntry(Object p_i1146_1_)
+     {
+@@ -15,17 +16,19 @@
+     protected UserListEntry(Object p_i1147_1_, JsonObject p_i1147_2_)
+     {
          this.value = p_i1147_1_;
      }
  
 -    Object getValue()
--    {
-+    public Object getValue() { // SpigotMCP -- Apply access transformation
++    public Object getValue()   // SpigotMCP -- Apply access transformation
+     {
          return this.value;
      }
  
--    boolean hasBanExpired()
--    {
-+    boolean hasBanExpired() {
+     boolean hasBanExpired()
+     {
          return false;
      }
  
 -    protected void onSerialization(JsonObject data) {}
-+    protected void onSerialization(JsonObject data) {
++    protected void onSerialization(JsonObject data)
++    {
 +    }
  }

@@ -25,7 +25,7 @@
  import net.minecraft.item.Item;
  import net.minecraft.item.ItemArmor;
  import net.minecraft.item.ItemBlock;
-@@ -35,455 +38,404 @@
+@@ -35,30 +38,37 @@
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.DifficultyInstance;
  import net.minecraft.world.EnumDifficulty;
@@ -34,8 +34,6 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public abstract class EntityLiving extends EntityLivingBase
--{
 +import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 +import org.bukkit.craftbukkit.event.CraftEventFactory;
 +import org.bukkit.event.entity.EntityTargetEvent;
@@ -44,7 +42,8 @@
 +import org.bukkit.event.entity.EntityUnleashEvent;
 +import org.bukkit.event.entity.EntityUnleashEvent.UnleashReason;
 +
-+public abstract class EntityLiving extends EntityLivingBase {
+ public abstract class EntityLiving extends EntityLivingBase
+ {
 +
      public int livingSoundTime;
      protected int experienceValue;
@@ -72,219 +71,101 @@
      private NBTTagCompound leashNBTTag;
      private static final String __OBFID = "CL_00001550";
  
--    public EntityLiving(World worldIn)
--    {
-+    public EntityLiving(World worldIn) {
-         super(worldIn);
-         this.tasks = new EntityAITasks(worldIn != null && worldIn.theProfiler != null ? worldIn.theProfiler : null);
-         this.targetTasks = new EntityAITasks(worldIn != null && worldIn.theProfiler != null ? worldIn.theProfiler : null);
-         this.lookHelper = new EntityLookHelper(this);
-         this.moveHelper = new EntityMoveHelper(this);
-         this.jumpHelper = new EntityJumpHelper(this);
-         this.bodyHelper = new EntityBodyHelper(this);
-         this.navigator = this.func_175447_b(worldIn);
-         this.senses = new EntitySenses(this);
+@@ -76,10 +86,14 @@
  
--        for (int i = 0; i < this.equipmentDropChances.length; ++i)
--        {
-+        for (int i = 0; i < this.equipmentDropChances.length; ++i) {
+         for (int i = 0; i < this.equipmentDropChances.length; ++i)
+         {
              this.equipmentDropChances[i] = 0.085F;
          }
++
 +        // CraftBukkit start - default persistance to type's persistance value
 +        this.persistenceRequired = !canDespawn();
 +        // CraftBukkit end
      }
  
--    protected void applyEntityAttributes()
--    {
-+    protected void applyEntityAttributes() {
+     protected void applyEntityAttributes()
+     {
          super.applyEntityAttributes();
-         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.followRange).setBaseValue(16.0D);
-     }
- 
--    protected PathNavigate func_175447_b(World worldIn)
--    {
-+    protected PathNavigate func_175447_b(World worldIn) {
-         return new PathNavigateGround(this, worldIn);
-     }
- 
--    public EntityLookHelper getLookHelper()
--    {
-+    public EntityLookHelper getLookHelper() {
-         return this.lookHelper;
-     }
- 
--    public EntityMoveHelper getMoveHelper()
--    {
-+    public EntityMoveHelper getMoveHelper() {
-         return this.moveHelper;
-     }
- 
--    public EntityJumpHelper getJumpHelper()
--    {
-+    public EntityJumpHelper getJumpHelper() {
-         return this.jumpHelper;
-     }
- 
--    public PathNavigate getNavigator()
--    {
-+    public PathNavigate getNavigator() {
-         return this.navigator;
-     }
- 
--    public EntitySenses getEntitySenses()
--    {
-+    public EntitySenses getEntitySenses() {
+@@ -116,24 +130,72 @@
          return this.senses;
      }
  
--    public EntityLivingBase getAttackTarget()
--    {
+     public EntityLivingBase getAttackTarget()
+     {
 -        return this.attackTarget;
-+    public EntityLivingBase getAttackTarget() {
 +        return this.attackTarget.get(); // Spigot
      }
  
--    public void setAttackTarget(EntityLivingBase p_70624_1_)
--    {
+     public void setAttackTarget(EntityLivingBase p_70624_1_)
+     {
 -        this.attackTarget = p_70624_1_;
-+    public void setAttackTarget(EntityLivingBase p_70624_1_) {
 +        // CraftBukkit start - fire event
 +        setGoalTarget(p_70624_1_, EntityTargetEvent.TargetReason.UNKNOWN, true);
      }
  
--    public boolean canAttackClass(Class p_70686_1_)
--    {
-+    public void setGoalTarget(EntityLivingBase entityliving, TargetReason reason, boolean fireEvent) {
++    public void setGoalTarget(EntityLivingBase entityliving, TargetReason reason, boolean fireEvent)
++    {
 +        if (getAttackTarget() == entityliving) return;
-+        if (fireEvent) {
-+            if (reason == EntityTargetEvent.TargetReason.UNKNOWN && getAttackTarget() != null && entityliving == null) {
++
++        if (fireEvent)
++        {
++            if (reason == EntityTargetEvent.TargetReason.UNKNOWN && getAttackTarget() != null && entityliving == null)
++            {
 +                reason = getAttackTarget().isEntityAlive() ? EntityTargetEvent.TargetReason.FORGOT_TARGET : EntityTargetEvent.TargetReason.TARGET_DIED;
 +            }
-+            if (reason == EntityTargetEvent.TargetReason.UNKNOWN) {
++
++            if (reason == EntityTargetEvent.TargetReason.UNKNOWN)
++            {
 +                worldObj.getServer().getLogger().log(java.util.logging.Level.WARNING, "Unknown target reason, please report on the issue tracker", new Exception());
 +            }
++
 +            CraftLivingEntity ctarget = null;
-+            if (entityliving != null) {
-+                ctarget = (CraftLivingEntity) entityliving.getBukkitEntity();
++
++            if (entityliving != null)
++            {
++                ctarget = (CraftLivingEntity)entityliving.getBukkitEntity();
 +            }
++
 +            EntityTargetLivingEntityEvent event = new EntityTargetLivingEntityEvent(this.getBukkitEntity(), ctarget, reason);
 +            worldObj.getServer().getPluginManager().callEvent(event);
-+            if (event.isCancelled()) {
++
++            if (event.isCancelled())
++            {
 +                return;
 +            }
 +
-+            if (event.getTarget() != null) {
-+                entityliving = ((CraftLivingEntity) event.getTarget()).getHandle();
-+            } else {
++            if (event.getTarget() != null)
++            {
++                entityliving = ((CraftLivingEntity)event.getTarget()).getHandle();
++            }
++            else
++            {
 +                entityliving = null;
 +            }
 +        }
++
 +        this.attackTarget = new WeakReference(entityliving); // Spigot
 +        // CraftBukkit end
 +    }
 +
-+    public boolean canAttackClass(Class p_70686_1_) {
+     public boolean canAttackClass(Class p_70686_1_)
+     {
          return p_70686_1_ != EntityGhast.class;
      }
  
 -    public void eatGrassBonus() {}
-+    public void eatGrassBonus() {
++    public void eatGrassBonus()
++    {
 +    }
  
--    protected void entityInit()
--    {
-+    protected void entityInit() {
+     protected void entityInit()
+     {
          super.entityInit();
--        this.dataWatcher.addObject(15, Byte.valueOf((byte)0));
-+        this.dataWatcher.addObject(15, Byte.valueOf((byte) 0));
-     }
- 
--    public int getTalkInterval()
--    {
-+    public int getTalkInterval() {
-         return 80;
-     }
- 
--    public void playLivingSound()
--    {
-+    public void playLivingSound() {
-         String s = this.getLivingSound();
- 
--        if (s != null)
--        {
-+        if (s != null) {
-             this.playSound(s, this.getSoundVolume(), this.getSoundPitch());
+         this.dataWatcher.addObject(15, Byte.valueOf((byte)0));
+@@ -208,23 +270,10 @@
+         {
+             this.worldObj.setEntityState(this, (byte)20);
          }
-     }
- 
--    public void onEntityUpdate()
--    {
-+    public void onEntityUpdate() {
-         super.onEntityUpdate();
-         this.worldObj.theProfiler.startSection("mobBaseTick");
- 
--        if (this.isEntityAlive() && this.rand.nextInt(1000) < this.livingSoundTime++)
--        {
-+        if (this.isEntityAlive() && this.rand.nextInt(1000) < this.livingSoundTime++) {
-             this.livingSoundTime = -this.getTalkInterval();
-             this.playLivingSound();
-         }
- 
-         this.worldObj.theProfiler.endSection();
-     }
- 
--    protected int getExperiencePoints(EntityPlayer player)
--    {
--        if (this.experienceValue > 0)
--        {
-+    protected int getExperiencePoints(EntityPlayer player) {
-+        if (this.experienceValue > 0) {
-             int i = this.experienceValue;
-             ItemStack[] aitemstack = this.getInventory();
- 
--            for (int j = 0; j < aitemstack.length; ++j)
--            {
--                if (aitemstack[j] != null && this.equipmentDropChances[j] <= 1.0F)
--                {
-+            for (int j = 0; j < aitemstack.length; ++j) {
-+                if (aitemstack[j] != null && this.equipmentDropChances[j] <= 1.0F) {
-                     i += 1 + this.rand.nextInt(3);
-                 }
-             }
- 
-             return i;
--        }
--        else
--        {
-+        } else {
-             return this.experienceValue;
-         }
-     }
- 
--    public void spawnExplosionParticle()
--    {
--        if (this.worldObj.isRemote)
--        {
--            for (int i = 0; i < 20; ++i)
--            {
-+    public void spawnExplosionParticle() {
-+        if (this.worldObj.isRemote) {
-+            for (int i = 0; i < 20; ++i) {
-                 double d0 = this.rand.nextGaussian() * 0.02D;
-                 double d1 = this.rand.nextGaussian() * 0.02D;
-                 double d2 = this.rand.nextGaussian() * 0.02D;
-                 double d3 = 10.0D;
--                this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width - d0 * d3, this.posY + (double)(this.rand.nextFloat() * this.height) - d1 * d3, this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width - d2 * d3, d0, d1, d2, new int[0]);
-+                this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width - d0 * d3, this.posY + (double) (this.rand.nextFloat() * this.height) - d1 * d3, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width - d2 * d3, d0, d1, d2, new int[0]);
-             }
-+        } else {
-+            this.worldObj.setEntityState(this, (byte) 20);
-         }
--        else
--        {
--            this.worldObj.setEntityState(this, (byte)20);
--        }
      }
  
 -    @SideOnly(Side.CLIENT)
@@ -300,370 +181,57 @@
 -        }
 -    }
 -
--    public void onUpdate()
--    {
-+    public void onUpdate() {
+     public void onUpdate()
+     {
          super.onUpdate();
  
--        if (!this.worldObj.isRemote)
--        {
-+        if (!this.worldObj.isRemote) {
-             this.updateLeashedState();
-         }
-     }
+         if (!this.worldObj.isRemote)
+@@ -328,16 +377,29 @@
  
--    protected float func_110146_f(float p_110146_1_, float p_110146_2_)
--    {
-+    protected float func_110146_f(float p_110146_1_, float p_110146_2_) {
-         this.bodyHelper.updateRenderAngles();
-         return p_110146_2_;
-     }
- 
--    protected String getLivingSound()
--    {
-+    protected String getLivingSound() {
-         return null;
-     }
- 
--    protected Item getDropItem()
--    {
-+    protected Item getDropItem() {
-         return null;
-     }
- 
--    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_)
--    {
-+    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_) {
-         Item item = this.getDropItem();
- 
--        if (item != null)
--        {
-+        if (item != null) {
-             int j = this.rand.nextInt(3);
- 
--            if (p_70628_2_ > 0)
--            {
-+            if (p_70628_2_ > 0) {
-                 j += this.rand.nextInt(p_70628_2_ + 1);
-             }
- 
--            for (int k = 0; k < j; ++k)
--            {
-+            for (int k = 0; k < j; ++k) {
-                 this.dropItem(item, 1);
-             }
-         }
-     }
- 
--    public void writeEntityToNBT(NBTTagCompound tagCompound)
--    {
-+    public void writeEntityToNBT(NBTTagCompound tagCompound) {
-         super.writeEntityToNBT(tagCompound);
-         tagCompound.setBoolean("CanPickUpLoot", this.canPickUpLoot());
-         tagCompound.setBoolean("PersistenceRequired", this.persistenceRequired);
-         NBTTagList nbttaglist = new NBTTagList();
-         NBTTagCompound nbttagcompound1;
- 
--        for (int i = 0; i < this.equipment.length; ++i)
--        {
-+        for (int i = 0; i < this.equipment.length; ++i) {
-             nbttagcompound1 = new NBTTagCompound();
- 
--            if (this.equipment[i] != null)
--            {
-+            if (this.equipment[i] != null) {
-                 this.equipment[i].writeToNBT(nbttagcompound1);
-             }
- 
-             nbttaglist.appendTag(nbttagcompound1);
-         }
- 
-         tagCompound.setTag("Equipment", nbttaglist);
-         NBTTagList nbttaglist1 = new NBTTagList();
- 
--        for (int j = 0; j < this.equipmentDropChances.length; ++j)
--        {
-+        for (int j = 0; j < this.equipmentDropChances.length; ++j) {
-             nbttaglist1.appendTag(new NBTTagFloat(this.equipmentDropChances[j]));
-         }
- 
-         tagCompound.setTag("DropChances", nbttaglist1);
-         tagCompound.setBoolean("Leashed", this.isLeashed);
- 
--        if (this.leashedToEntity != null)
--        {
-+        if (this.leashedToEntity != null) {
-             nbttagcompound1 = new NBTTagCompound();
- 
--            if (this.leashedToEntity instanceof EntityLivingBase)
--            {
-+            if (this.leashedToEntity instanceof EntityLivingBase) {
-                 nbttagcompound1.setLong("UUIDMost", this.leashedToEntity.getUniqueID().getMostSignificantBits());
-                 nbttagcompound1.setLong("UUIDLeast", this.leashedToEntity.getUniqueID().getLeastSignificantBits());
--            }
--            else if (this.leashedToEntity instanceof EntityHanging)
--            {
--                BlockPos blockpos = ((EntityHanging)this.leashedToEntity).func_174857_n();
-+            } else if (this.leashedToEntity instanceof EntityHanging) {
-+                BlockPos blockpos = ((EntityHanging) this.leashedToEntity).func_174857_n();
-                 nbttagcompound1.setInteger("X", blockpos.getX());
-                 nbttagcompound1.setInteger("Y", blockpos.getY());
-                 nbttagcompound1.setInteger("Z", blockpos.getZ());
-             }
- 
-             tagCompound.setTag("Leash", nbttagcompound1);
-         }
- 
--        if (this.isAIDisabled())
--        {
-+        if (this.isAIDisabled()) {
-             tagCompound.setBoolean("NoAI", this.isAIDisabled());
-         }
-     }
- 
--    public void readEntityFromNBT(NBTTagCompound tagCompund)
--    {
-+    public void readEntityFromNBT(NBTTagCompound tagCompund) {
+     public void readEntityFromNBT(NBTTagCompound tagCompund)
+     {
          super.readEntityFromNBT(tagCompund);
  
--        if (tagCompund.hasKey("CanPickUpLoot", 1))
--        {
--            this.setCanPickUpLoot(tagCompund.getBoolean("CanPickUpLoot"));
 +        // CraftBukkit start - If looting or persistence is false only use it if it was set after we started using it
-+        if (tagCompund.hasKey("CanPickUpLoot", 1)) {
+         if (tagCompund.hasKey("CanPickUpLoot", 1))
+         {
+-            this.setCanPickUpLoot(tagCompund.getBoolean("CanPickUpLoot"));
 +            boolean data = tagCompund.getBoolean("CanPickUpLoot");
-+            if (isLevelAtLeast(tagCompund, 1) || data) {
++
++            if (isLevelAtLeast(tagCompund, 1) || data)
++            {
 +                this.setCanPickUpLoot(data);
 +            }
          }
  
 -        this.persistenceRequired = tagCompund.getBoolean("PersistenceRequired");
 +        boolean data = tagCompund.getBoolean("PersistenceRequired");
-+        if (isLevelAtLeast(tagCompund, 1) || data) {
++
++        if (isLevelAtLeast(tagCompund, 1) || data)
++        {
 +            this.persistenceRequired = data;
 +        }
-+        // CraftBukkit end
 +
++        // CraftBukkit end
          NBTTagList nbttaglist;
          int i;
  
--        if (tagCompund.hasKey("Equipment", 9))
--        {
-+        if (tagCompund.hasKey("Equipment", 9)) {
-             nbttaglist = tagCompund.getTagList("Equipment", 10);
- 
--            for (i = 0; i < this.equipment.length; ++i)
--            {
-+            for (i = 0; i < this.equipment.length; ++i) {
-                 this.equipment[i] = ItemStack.loadItemStackFromNBT(nbttaglist.getCompoundTagAt(i));
-             }
-         }
- 
--        if (tagCompund.hasKey("DropChances", 9))
--        {
-+        if (tagCompund.hasKey("DropChances", 9)) {
-             nbttaglist = tagCompund.getTagList("DropChances", 5);
- 
--            for (i = 0; i < nbttaglist.tagCount(); ++i)
--            {
-+            for (i = 0; i < nbttaglist.tagCount(); ++i) {
-                 this.equipmentDropChances[i] = nbttaglist.getFloat(i);
-             }
-         }
- 
-         this.isLeashed = tagCompund.getBoolean("Leashed");
- 
--        if (this.isLeashed && tagCompund.hasKey("Leash", 10))
--        {
-+        if (this.isLeashed && tagCompund.hasKey("Leash", 10)) {
-             this.leashNBTTag = tagCompund.getCompoundTag("Leash");
-         }
- 
-         this.setNoAI(tagCompund.getBoolean("NoAI"));
-     }
- 
--    public void setMoveForward(float p_70657_1_)
--    {
-+    public void setMoveForward(float p_70657_1_) {
-         this.moveForward = p_70657_1_;
-     }
- 
--    public void setAIMoveSpeed(float p_70659_1_)
--    {
-+    public void setAIMoveSpeed(float p_70659_1_) {
-         super.setAIMoveSpeed(p_70659_1_);
-         this.setMoveForward(p_70659_1_);
-     }
- 
--    public void onLivingUpdate()
--    {
-+    public void onLivingUpdate() {
-         super.onLivingUpdate();
-         this.worldObj.theProfiler.startSection("looting");
- 
--        if (!this.worldObj.isRemote && this.canPickUpLoot() && !this.dead && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
--        {
-+        if (!this.worldObj.isRemote && this.canPickUpLoot() && !this.dead && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing")) {
-             List list = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.getEntityBoundingBox().expand(1.0D, 0.0D, 1.0D));
-             Iterator iterator = list.iterator();
- 
--            while (iterator.hasNext())
--            {
--                EntityItem entityitem = (EntityItem)iterator.next();
-+            while (iterator.hasNext()) {
-+                EntityItem entityitem = (EntityItem) iterator.next();
- 
--                if (!entityitem.isDead && entityitem.getEntityItem() != null && !entityitem.cannotPickup())
--                {
-+                if (!entityitem.isDead && entityitem.getEntityItem() != null && !entityitem.cannotPickup()) {
-                     this.func_175445_a(entityitem);
-                 }
-             }
-         }
- 
-         this.worldObj.theProfiler.endSection();
-     }
- 
--    protected void func_175445_a(EntityItem p_175445_1_)
--    {
-+    protected void func_175445_a(EntityItem p_175445_1_) {
-         ItemStack itemstack = p_175445_1_.getEntityItem();
-         int i = getArmorPosition(itemstack);
- 
--        if (i > -1)
--        {
-+        if (i > -1) {
-             boolean flag = true;
-             ItemStack itemstack1 = this.getEquipmentInSlot(i);
- 
--            if (itemstack1 != null)
--            {
--                if (i == 0)
--                {
--                    if (itemstack.getItem() instanceof ItemSword && !(itemstack1.getItem() instanceof ItemSword))
--                    {
-+            if (itemstack1 != null) {
-+                if (i == 0) {
-+                    if (itemstack.getItem() instanceof ItemSword && !(itemstack1.getItem() instanceof ItemSword)) {
-                         flag = true;
--                    }
--                    else if (itemstack.getItem() instanceof ItemSword && itemstack1.getItem() instanceof ItemSword)
--                    {
--                        ItemSword itemsword = (ItemSword)itemstack.getItem();
--                        ItemSword itemsword1 = (ItemSword)itemstack1.getItem();
-+                    } else if (itemstack.getItem() instanceof ItemSword && itemstack1.getItem() instanceof ItemSword) {
-+                        ItemSword itemsword = (ItemSword) itemstack.getItem();
-+                        ItemSword itemsword1 = (ItemSword) itemstack1.getItem();
- 
--                        if (itemsword.getDamageVsEntity() == itemsword1.getDamageVsEntity())
--                        {
-+                        if (itemsword.getDamageVsEntity() == itemsword1.getDamageVsEntity()) {
-                             flag = itemstack.getMetadata() > itemstack1.getMetadata() || itemstack.hasTagCompound() && !itemstack1.hasTagCompound();
--                        }
--                        else
--                        {
-+                        } else {
-                             flag = itemsword.getDamageVsEntity() > itemsword1.getDamageVsEntity();
-                         }
--                    }
--                    else if (itemstack.getItem() instanceof ItemBow && itemstack1.getItem() instanceof ItemBow)
--                    {
-+                    } else if (itemstack.getItem() instanceof ItemBow && itemstack1.getItem() instanceof ItemBow) {
-                         flag = itemstack.hasTagCompound() && !itemstack1.hasTagCompound();
--                    }
--                    else
--                    {
-+                    } else {
-                         flag = false;
-                     }
--                }
--                else if (itemstack.getItem() instanceof ItemArmor && !(itemstack1.getItem() instanceof ItemArmor))
--                {
-+                } else if (itemstack.getItem() instanceof ItemArmor && !(itemstack1.getItem() instanceof ItemArmor)) {
-                     flag = true;
--                }
--                else if (itemstack.getItem() instanceof ItemArmor && itemstack1.getItem() instanceof ItemArmor)
--                {
--                    ItemArmor itemarmor = (ItemArmor)itemstack.getItem();
--                    ItemArmor itemarmor1 = (ItemArmor)itemstack1.getItem();
-+                } else if (itemstack.getItem() instanceof ItemArmor && itemstack1.getItem() instanceof ItemArmor) {
-+                    ItemArmor itemarmor = (ItemArmor) itemstack.getItem();
-+                    ItemArmor itemarmor1 = (ItemArmor) itemstack1.getItem();
- 
--                    if (itemarmor.damageReduceAmount == itemarmor1.damageReduceAmount)
--                    {
-+                    if (itemarmor.damageReduceAmount == itemarmor1.damageReduceAmount) {
-                         flag = itemstack.getMetadata() > itemstack1.getMetadata() || itemstack.hasTagCompound() && !itemstack1.hasTagCompound();
--                    }
--                    else
--                    {
-+                    } else {
-                         flag = itemarmor.damageReduceAmount > itemarmor1.damageReduceAmount;
-                     }
--                }
--                else
--                {
-+                } else {
-                     flag = false;
-                 }
-             }
- 
--            if (flag && this.func_175448_a(itemstack))
--            {
--                if (itemstack1 != null && this.rand.nextFloat() - 0.1F < this.equipmentDropChances[i])
--                {
-+            if (flag && this.func_175448_a(itemstack)) {
-+                if (itemstack1 != null && this.rand.nextFloat() - 0.1F < this.equipmentDropChances[i]) {
-                     this.entityDropItem(itemstack1, 0.0F);
-                 }
- 
--                if (itemstack.getItem() == Items.diamond && p_175445_1_.getThrower() != null)
--                {
-+                if (itemstack.getItem() == Items.diamond && p_175445_1_.getThrower() != null) {
-                     EntityPlayer entityplayer = this.worldObj.getPlayerEntityByName(p_175445_1_.getThrower());
- 
--                    if (entityplayer != null)
--                    {
-+                    if (entityplayer != null) {
-                         entityplayer.triggerAchievement(AchievementList.diamondsToYou);
-                     }
-                 }
- 
-                 this.setCurrentItemOrArmor(i, itemstack);
-@@ -493,60 +445,55 @@
-                 p_175445_1_.setDead();
-             }
-         }
-     }
- 
--    protected boolean func_175448_a(ItemStack p_175448_1_)
--    {
-+    protected boolean func_175448_a(ItemStack p_175448_1_) {
+         if (tagCompund.hasKey("Equipment", 9))
+         {
+@@ -498,11 +560,11 @@
+     protected boolean func_175448_a(ItemStack p_175448_1_)
+     {
          return true;
      }
  
 -    protected boolean canDespawn()
--    {
-+    public boolean canDespawn() { // SpigotMCP -- Make public as bukkit assumes in same package
++    public boolean canDespawn()   // SpigotMCP -- Make public as bukkit assumes in same package
+     {
          return true;
      }
  
--    protected void despawnEntity()
--    {
--        if (this.persistenceRequired)
--        {
-+    protected void despawnEntity() {
-+        if (this.persistenceRequired) {
-             this.entityAge = 0;
--        }
--        else
--        {
-+        } else {
-             EntityPlayer entityplayer = this.worldObj.getClosestPlayerToEntity(this, -1.0D);
- 
--            if (entityplayer != null)
--            {
-+            if (entityplayer != null) {
+     protected void despawnEntity()
+@@ -520,16 +582,16 @@
                  double d0 = entityplayer.posX - this.posX;
                  double d1 = entityplayer.posY - this.posY;
                  double d2 = entityplayer.posZ - this.posZ;
@@ -679,110 +247,46 @@
 +                if (this.entityAge > 600 && this.rand.nextInt(800) == 0 && d3 > 1024.0D)  // CraftBukkit - remove isTypeNotPersistent() check
                  {
                      this.setDead();
--                }
--                else if (d3 < 1024.0D)
--                {
-+                } else if (d3 < 1024.0D) {
-                     this.entityAge = 0;
                  }
-             }
-         }
-     }
- 
--    protected final void updateEntityActionState()
--    {
-+    protected final void updateEntityActionState() {
+                 else if (d3 < 1024.0D)
+                 {
+@@ -543,10 +605,18 @@
+     {
          ++this.entityAge;
          this.worldObj.theProfiler.startSection("checkDespawn");
          this.despawnEntity();
          this.worldObj.theProfiler.endSection();
++
 +        // Spigot Start
-+        if (this.fromMobSpawner) {
++        if (this.fromMobSpawner)
++        {
 +            return;
 +        }
++
 +        // Spigot End
          this.worldObj.theProfiler.startSection("sensing");
          this.senses.clearSensingCache();
          this.worldObj.theProfiler.endSection();
          this.worldObj.theProfiler.startSection("targetSelector");
          this.targetTasks.onUpdateTasks();
-@@ -569,144 +516,112 @@
+@@ -569,11 +639,13 @@
          this.jumpHelper.doJump();
          this.worldObj.theProfiler.endSection();
          this.worldObj.theProfiler.endSection();
      }
  
 -    protected void updateAITasks() {}
-+    protected void updateAITasks() {
++    protected void updateAITasks()
++    {
 +    }
  
--    public int getVerticalFaceSpeed()
--    {
-+    public int getVerticalFaceSpeed() {
+     public int getVerticalFaceSpeed()
+     {
          return 40;
      }
- 
--    public void faceEntity(Entity p_70625_1_, float p_70625_2_, float p_70625_3_)
--    {
-+    public void faceEntity(Entity p_70625_1_, float p_70625_2_, float p_70625_3_) {
-         double d0 = p_70625_1_.posX - this.posX;
-         double d2 = p_70625_1_.posZ - this.posZ;
-         double d1;
- 
--        if (p_70625_1_ instanceof EntityLivingBase)
--        {
--            EntityLivingBase entitylivingbase = (EntityLivingBase)p_70625_1_;
--            d1 = entitylivingbase.posY + (double)entitylivingbase.getEyeHeight() - (this.posY + (double)this.getEyeHeight());
-+        if (p_70625_1_ instanceof EntityLivingBase) {
-+            EntityLivingBase entitylivingbase = (EntityLivingBase) p_70625_1_;
-+            d1 = entitylivingbase.posY + (double) entitylivingbase.getEyeHeight() - (this.posY + (double) this.getEyeHeight());
-+        } else {
-+            d1 = (p_70625_1_.getEntityBoundingBox().minY + p_70625_1_.getEntityBoundingBox().maxY) / 2.0D - (this.posY + (double) this.getEyeHeight());
-         }
--        else
--        {
--            d1 = (p_70625_1_.getEntityBoundingBox().minY + p_70625_1_.getEntityBoundingBox().maxY) / 2.0D - (this.posY + (double)this.getEyeHeight());
--        }
- 
--        double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d2 * d2);
--        float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
--        float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
-+        double d3 = (double) MathHelper.sqrt_double(d0 * d0 + d2 * d2);
-+        float f2 = (float) (Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
-+        float f3 = (float) (-(Math.atan2(d1, d3) * 180.0D / Math.PI));
-         this.rotationPitch = this.updateRotation(this.rotationPitch, f3, p_70625_3_);
-         this.rotationYaw = this.updateRotation(this.rotationYaw, f2, p_70625_2_);
-     }
- 
--    private float updateRotation(float p_70663_1_, float p_70663_2_, float p_70663_3_)
--    {
-+    private float updateRotation(float p_70663_1_, float p_70663_2_, float p_70663_3_) {
-         float f3 = MathHelper.wrapAngleTo180_float(p_70663_2_ - p_70663_1_);
- 
--        if (f3 > p_70663_3_)
--        {
-+        if (f3 > p_70663_3_) {
-             f3 = p_70663_3_;
-         }
- 
--        if (f3 < -p_70663_3_)
--        {
-+        if (f3 < -p_70663_3_) {
-             f3 = -p_70663_3_;
-         }
- 
-         return p_70663_1_ + f3;
-     }
- 
--    public boolean getCanSpawnHere()
--    {
-+    public boolean getCanSpawnHere() {
-         return true;
-     }
- 
--    public boolean handleLavaMovement()
--    {
-+    public boolean handleLavaMovement() {
+@@ -626,16 +698,10 @@
+     public boolean handleLavaMovement()
+     {
          return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox());
      }
  
@@ -792,630 +296,157 @@
 -        return 1.0F;
 -    }
 -
--    public int getMaxSpawnedInChunk()
--    {
-+    public int getMaxSpawnedInChunk() {
+     public int getMaxSpawnedInChunk()
+     {
          return 4;
      }
  
--    public int getMaxFallHeight()
--    {
--        if (this.getAttackTarget() == null)
--        {
-+    public int getMaxFallHeight() {
-+        if (this.getAttackTarget() == null) {
-             return 3;
--        }
--        else
--        {
--            int i = (int)(this.getHealth() - this.getMaxHealth() * 0.33F);
-+        } else {
-+            int i = (int) (this.getHealth() - this.getMaxHealth() * 0.33F);
-             i -= (3 - this.worldObj.getDifficulty().getDifficultyId()) * 4;
- 
--            if (i < 0)
--            {
-+            if (i < 0) {
-                 i = 0;
-             }
- 
-             return i + 3;
-         }
-     }
- 
--    public ItemStack getHeldItem()
--    {
-+    public ItemStack getHeldItem() {
-         return this.equipment[0];
-     }
- 
--    public ItemStack getEquipmentInSlot(int slotIn)
--    {
-+    public ItemStack getEquipmentInSlot(int slotIn) {
-         return this.equipment[slotIn];
-     }
- 
--    public ItemStack getCurrentArmor(int slotIn)
--    {
-+    public ItemStack getCurrentArmor(int slotIn) {
-         return this.equipment[slotIn + 1];
-     }
- 
--    public void setCurrentItemOrArmor(int slotIn, ItemStack stack)
--    {
-+    public void setCurrentItemOrArmor(int slotIn, ItemStack stack) {
-         this.equipment[slotIn] = stack;
-     }
- 
--    public ItemStack[] getInventory()
--    {
-+    public ItemStack[] getInventory() {
-         return this.equipment;
-     }
- 
--    protected void dropEquipment(boolean p_82160_1_, int p_82160_2_)
--    {
--        for (int j = 0; j < this.getInventory().length; ++j)
--        {
-+    protected void dropEquipment(boolean p_82160_1_, int p_82160_2_) {
-+        for (int j = 0; j < this.getInventory().length; ++j) {
-             ItemStack itemstack = this.getEquipmentInSlot(j);
-             boolean flag1 = this.equipmentDropChances[j] > 1.0F;
- 
--            if (itemstack != null && (p_82160_1_ || flag1) && this.rand.nextFloat() - (float)p_82160_2_ * 0.01F < this.equipmentDropChances[j])
--            {
--                if (!flag1 && itemstack.isItemStackDamageable())
--                {
-+            if (itemstack != null && (p_82160_1_ || flag1) && this.rand.nextFloat() - (float) p_82160_2_ * 0.01F < this.equipmentDropChances[j]) {
-+                if (!flag1 && itemstack.isItemStackDamageable()) {
-                     int k = Math.max(itemstack.getMaxDamage() - 25, 1);
-                     int l = itemstack.getMaxDamage() - this.rand.nextInt(this.rand.nextInt(k) + 1);
- 
--                    if (l > k)
--                    {
-+                    if (l > k) {
-                         l = k;
-                     }
- 
--                    if (l < 1)
--                    {
-+                    if (l < 1) {
-                         l = 1;
-                     }
- 
-                     itemstack.setItemDamage(l);
-                 }
-@@ -714,62 +629,49 @@
-                 this.entityDropItem(itemstack, 0.0F);
-             }
-         }
-     }
- 
--    protected void func_180481_a(DifficultyInstance p_180481_1_)
--    {
--        if (this.rand.nextFloat() < 0.15F * p_180481_1_.getClampedAdditionalDifficulty())
--        {
-+    protected void func_180481_a(DifficultyInstance p_180481_1_) {
-+        if (this.rand.nextFloat() < 0.15F * p_180481_1_.getClampedAdditionalDifficulty()) {
-             int i = this.rand.nextInt(2);
-             float f = this.worldObj.getDifficulty() == EnumDifficulty.HARD ? 0.1F : 0.25F;
- 
--            if (this.rand.nextFloat() < 0.095F)
--            {
-+            if (this.rand.nextFloat() < 0.095F) {
-                 ++i;
-             }
- 
--            if (this.rand.nextFloat() < 0.095F)
--            {
-+            if (this.rand.nextFloat() < 0.095F) {
-                 ++i;
-             }
- 
--            if (this.rand.nextFloat() < 0.095F)
--            {
-+            if (this.rand.nextFloat() < 0.095F) {
-                 ++i;
-             }
- 
--            for (int j = 3; j >= 0; --j)
--            {
-+            for (int j = 3; j >= 0; --j) {
-                 ItemStack itemstack = this.getCurrentArmor(j);
- 
--                if (j < 3 && this.rand.nextFloat() < f)
--                {
-+                if (j < 3 && this.rand.nextFloat() < f) {
-                     break;
-                 }
- 
--                if (itemstack == null)
--                {
-+                if (itemstack == null) {
-                     Item item = getArmorItemForSlot(j + 1, i);
- 
--                    if (item != null)
--                    {
-+                    if (item != null) {
-                         this.setCurrentItemOrArmor(j + 1, new ItemStack(item));
-                     }
-                 }
-             }
-         }
-     }
- 
--    public static int getArmorPosition(ItemStack p_82159_0_)
--    {
--        if (p_82159_0_.getItem() != Item.getItemFromBlock(Blocks.pumpkin) && p_82159_0_.getItem() != Items.skull)
--        {
--            if (p_82159_0_.getItem() instanceof ItemArmor)
--            {
--                switch (((ItemArmor)p_82159_0_.getItem()).armorType)
--                {
-+    public static int getArmorPosition(ItemStack p_82159_0_) {
-+        if (p_82159_0_.getItem() != Item.getItemFromBlock(Blocks.pumpkin) && p_82159_0_.getItem() != Items.skull) {
-+            if (p_82159_0_.getItem() instanceof ItemArmor) {
-+                switch (((ItemArmor) p_82159_0_.getItem()).armorType) {
-                     case 0:
-                         return 4;
-                     case 1:
-                         return 3;
-                     case 2:
-@@ -778,357 +680,283 @@
-                         return 1;
-                 }
-             }
- 
-             return 0;
--        }
--        else
--        {
-+        } else {
-             return 4;
-         }
-     }
- 
--    public static Item getArmorItemForSlot(int armorSlot, int itemTier)
--    {
--        switch (armorSlot)
--        {
-+    public static Item getArmorItemForSlot(int armorSlot, int itemTier) {
-+        switch (armorSlot) {
+@@ -790,10 +856,11 @@
+     public static Item getArmorItemForSlot(int armorSlot, int itemTier)
+     {
+         switch (armorSlot)
+         {
              case 4:
--                if (itemTier == 0)
--                {
-+                if (itemTier == 0) {
++
+                 if (itemTier == 0)
+                 {
                      return Items.leather_helmet;
--                }
--                else if (itemTier == 1)
--                {
-+                } else if (itemTier == 1) {
-                     return Items.golden_helmet;
--                }
--                else if (itemTier == 2)
--                {
-+                } else if (itemTier == 2) {
-                     return Items.chainmail_helmet;
--                }
--                else if (itemTier == 3)
--                {
-+                } else if (itemTier == 3) {
-                     return Items.iron_helmet;
--                }
--                else if (itemTier == 4)
--                {
-+                } else if (itemTier == 4) {
+                 }
+                 else if (itemTier == 1)
+@@ -810,11 +877,13 @@
+                 }
+                 else if (itemTier == 4)
+                 {
                      return Items.diamond_helmet;
                  }
++
              case 3:
--                if (itemTier == 0)
--                {
-+                if (itemTier == 0) {
++
+                 if (itemTier == 0)
+                 {
                      return Items.leather_chestplate;
--                }
--                else if (itemTier == 1)
--                {
-+                } else if (itemTier == 1) {
-                     return Items.golden_chestplate;
--                }
--                else if (itemTier == 2)
--                {
-+                } else if (itemTier == 2) {
-                     return Items.chainmail_chestplate;
--                }
--                else if (itemTier == 3)
--                {
-+                } else if (itemTier == 3) {
-                     return Items.iron_chestplate;
--                }
--                else if (itemTier == 4)
--                {
-+                } else if (itemTier == 4) {
+                 }
+                 else if (itemTier == 1)
+@@ -831,11 +900,13 @@
+                 }
+                 else if (itemTier == 4)
+                 {
                      return Items.diamond_chestplate;
                  }
++
              case 2:
--                if (itemTier == 0)
--                {
-+                if (itemTier == 0) {
++
+                 if (itemTier == 0)
+                 {
                      return Items.leather_leggings;
--                }
--                else if (itemTier == 1)
--                {
-+                } else if (itemTier == 1) {
-                     return Items.golden_leggings;
--                }
--                else if (itemTier == 2)
--                {
-+                } else if (itemTier == 2) {
-                     return Items.chainmail_leggings;
--                }
--                else if (itemTier == 3)
--                {
-+                } else if (itemTier == 3) {
-                     return Items.iron_leggings;
--                }
--                else if (itemTier == 4)
--                {
-+                } else if (itemTier == 4) {
+                 }
+                 else if (itemTier == 1)
+@@ -852,11 +923,13 @@
+                 }
+                 else if (itemTier == 4)
+                 {
                      return Items.diamond_leggings;
                  }
++
              case 1:
--                if (itemTier == 0)
--                {
-+                if (itemTier == 0) {
++
+                 if (itemTier == 0)
+                 {
                      return Items.leather_boots;
--                }
--                else if (itemTier == 1)
--                {
-+                } else if (itemTier == 1) {
-                     return Items.golden_boots;
--                }
--                else if (itemTier == 2)
--                {
-+                } else if (itemTier == 2) {
-                     return Items.chainmail_boots;
--                }
--                else if (itemTier == 3)
--                {
-+                } else if (itemTier == 3) {
-                     return Items.iron_boots;
--                }
--                else if (itemTier == 4)
--                {
-+                } else if (itemTier == 4) {
+                 }
+                 else if (itemTier == 1)
+@@ -873,10 +946,11 @@
+                 }
+                 else if (itemTier == 4)
+                 {
                      return Items.diamond_boots;
                  }
++
              default:
                  return null;
          }
      }
  
--    protected void func_180483_b(DifficultyInstance p_180483_1_)
--    {
-+    protected void func_180483_b(DifficultyInstance p_180483_1_) {
-         float f = p_180483_1_.getClampedAdditionalDifficulty();
+@@ -938,10 +1012,18 @@
  
--        if (this.getHeldItem() != null && this.rand.nextFloat() < 0.25F * f)
--        {
--            EnchantmentHelper.addRandomEnchantment(this.rand, this.getHeldItem(), (int)(5.0F + f * (float)this.rand.nextInt(18)));
-+        if (this.getHeldItem() != null && this.rand.nextFloat() < 0.25F * f) {
-+            EnchantmentHelper.addRandomEnchantment(this.rand, this.getHeldItem(), (int) (5.0F + f * (float) this.rand.nextInt(18)));
-         }
- 
--        for (int i = 0; i < 4; ++i)
--        {
-+        for (int i = 0; i < 4; ++i) {
-             ItemStack itemstack = this.getCurrentArmor(i);
- 
--            if (itemstack != null && this.rand.nextFloat() < 0.5F * f)
--            {
--                EnchantmentHelper.addRandomEnchantment(this.rand, itemstack, (int)(5.0F + f * (float)this.rand.nextInt(18)));
-+            if (itemstack != null && this.rand.nextFloat() < 0.5F * f) {
-+                EnchantmentHelper.addRandomEnchantment(this.rand, itemstack, (int) (5.0F + f * (float) this.rand.nextInt(18)));
-             }
-         }
-     }
- 
--    public IEntityLivingData func_180482_a(DifficultyInstance p_180482_1_, IEntityLivingData p_180482_2_)
--    {
-+    public IEntityLivingData func_180482_a(DifficultyInstance p_180482_1_, IEntityLivingData p_180482_2_) {
-         this.getEntityAttribute(SharedMonsterAttributes.followRange).applyModifier(new AttributeModifier("Random spawn bonus", this.rand.nextGaussian() * 0.05D, 1));
-         return p_180482_2_;
-     }
- 
--    public boolean canBeSteered()
--    {
-+    public boolean canBeSteered() {
-         return false;
-     }
- 
--    public void enablePersistence()
--    {
-+    public void enablePersistence() {
-         this.persistenceRequired = true;
-     }
- 
--    public void setEquipmentDropChance(int p_96120_1_, float p_96120_2_)
--    {
-+    public void setEquipmentDropChance(int p_96120_1_, float p_96120_2_) {
-         this.equipmentDropChances[p_96120_1_] = p_96120_2_;
-     }
- 
--    public boolean canPickUpLoot()
--    {
-+    public boolean canPickUpLoot() {
-         return this.canPickUpLoot;
-     }
- 
--    public void setCanPickUpLoot(boolean p_98053_1_)
--    {
-+    public void setCanPickUpLoot(boolean p_98053_1_) {
-         this.canPickUpLoot = p_98053_1_;
-     }
- 
--    public boolean isNoDespawnRequired()
--    {
-+    public boolean isNoDespawnRequired() {
-         return this.persistenceRequired;
-     }
- 
--    public final boolean interactFirst(EntityPlayer playerIn)
--    {
--        if (this.getLeashed() && this.getLeashedToEntity() == playerIn)
--        {
-+    public final boolean interactFirst(EntityPlayer playerIn) {
-+        if (this.getLeashed() && this.getLeashedToEntity() == playerIn) {
+     public final boolean interactFirst(EntityPlayer playerIn)
+     {
+         if (this.getLeashed() && this.getLeashedToEntity() == playerIn)
+         {
 +            // CraftBukkit start - fire PlayerUnleashEntityEvent
-+            if (CraftEventFactory.callPlayerUnleashEntityEvent(this, playerIn).isCancelled()) {
-+                ((EntityPlayerMP) playerIn).playerNetServerHandler.sendPacket(new S1BPacketEntityAttach(1, this, this.getLeashedToEntity()));
++            if (CraftEventFactory.callPlayerUnleashEntityEvent(this, playerIn).isCancelled())
++            {
++                ((EntityPlayerMP)playerIn).playerNetServerHandler.sendPacket(new S1BPacketEntityAttach(1, this, this.getLeashedToEntity()));
 +                return false;
 +            }
++
 +            // CraftBukkit end
              this.clearLeashed(true, !playerIn.capabilities.isCreativeMode);
              return true;
--        }
--        else
--        {
-+        } else {
-             ItemStack itemstack = playerIn.inventory.getCurrentItem();
+         }
+         else
+         {
+@@ -949,17 +1031,33 @@
  
--            if (itemstack != null && itemstack.getItem() == Items.lead && this.allowLeashing())
--            {
--                if (!(this instanceof EntityTameable) || !((EntityTameable)this).isTamed())
--                {
-+            if (itemstack != null && itemstack.getItem() == Items.lead && this.allowLeashing()) {
-+                if (!(this instanceof EntityTameable) || !((EntityTameable) this).isTamed()) {
+             if (itemstack != null && itemstack.getItem() == Items.lead && this.allowLeashing())
+             {
+                 if (!(this instanceof EntityTameable) || !((EntityTameable)this).isTamed())
+                 {
 +                    // CraftBukkit start - fire PlayerLeashEntityEvent
-+                    if (CraftEventFactory.callPlayerLeashEntityEvent(this, playerIn, playerIn).isCancelled()) {
-+                        ((EntityPlayerMP) playerIn).playerNetServerHandler.sendPacket(new S1BPacketEntityAttach(1, this, this.getLeashedToEntity()));
++                    if (CraftEventFactory.callPlayerLeashEntityEvent(this, playerIn, playerIn).isCancelled())
++                    {
++                        ((EntityPlayerMP)playerIn).playerNetServerHandler.sendPacket(new S1BPacketEntityAttach(1, this, this.getLeashedToEntity()));
 +                        return false;
 +                    }
++
 +                    // CraftBukkit end
                      this.setLeashedToEntity(playerIn, true);
                      --itemstack.stackSize;
                      return true;
                  }
  
--                if (((EntityTameable)this).isOwner(playerIn))
--                {
-+                if (((EntityTameable) this).isOwner(playerIn)) {
+                 if (((EntityTameable)this).isOwner(playerIn))
+                 {
 +                    // CraftBukkit start - fire PlayerLeashEntityEvent
-+                    if (CraftEventFactory.callPlayerLeashEntityEvent(this, playerIn, playerIn).isCancelled()) {
-+                        ((EntityPlayerMP) playerIn).playerNetServerHandler.sendPacket(new S1BPacketEntityAttach(1, this, this.getLeashedToEntity()));
++                    if (CraftEventFactory.callPlayerLeashEntityEvent(this, playerIn, playerIn).isCancelled())
++                    {
++                        ((EntityPlayerMP)playerIn).playerNetServerHandler.sendPacket(new S1BPacketEntityAttach(1, this, this.getLeashedToEntity()));
 +                        return false;
 +                    }
++
 +                    // CraftBukkit end
                      this.setLeashedToEntity(playerIn, true);
                      --itemstack.stackSize;
                      return true;
                  }
              }
+@@ -982,15 +1080,17 @@
  
-             return this.interact(playerIn) ? true : super.interactFirst(playerIn);
-         }
-     }
- 
--    protected boolean interact(EntityPlayer player)
--    {
-+    protected boolean interact(EntityPlayer player) {
-         return false;
-     }
- 
--    protected void updateLeashedState()
--    {
--        if (this.leashNBTTag != null)
--        {
-+    protected void updateLeashedState() {
-+        if (this.leashNBTTag != null) {
-             this.recreateLeash();
-         }
- 
--        if (this.isLeashed)
--        {
--            if (!this.isEntityAlive())
--            {
-+        if (this.isLeashed) {
-+            if (!this.isEntityAlive()) {
+         if (this.isLeashed)
+         {
+             if (!this.isEntityAlive())
+             {
 +                this.worldObj.getServer().getPluginManager().callEvent(new EntityUnleashEvent(this.getBukkitEntity(), UnleashReason.PLAYER_UNLEASH)); // CraftBukkit
                  this.clearLeashed(true, true);
              }
  
--            if (this.leashedToEntity == null || this.leashedToEntity.isDead)
--            {
-+            if (this.leashedToEntity == null || this.leashedToEntity.isDead) {
+             if (this.leashedToEntity == null || this.leashedToEntity.isDead)
+             {
 +                this.worldObj.getServer().getPluginManager().callEvent(new EntityUnleashEvent(this.getBukkitEntity(), UnleashReason.HOLDER_GONE)); // CraftBukkit
                  this.clearLeashed(true, true);
              }
          }
      }
  
--    public void clearLeashed(boolean p_110160_1_, boolean p_110160_2_)
--    {
--        if (this.isLeashed)
--        {
-+    public void clearLeashed(boolean p_110160_1_, boolean p_110160_2_) {
-+        if (this.isLeashed) {
-             this.isLeashed = false;
-             this.leashedToEntity = null;
- 
--            if (!this.worldObj.isRemote && p_110160_2_)
--            {
-+            if (!this.worldObj.isRemote && p_110160_2_) {
-                 this.dropItem(Items.lead, 1);
-             }
- 
--            if (!this.worldObj.isRemote && p_110160_1_ && this.worldObj instanceof WorldServer)
--            {
--                ((WorldServer)this.worldObj).getEntityTracker().sendToAllTrackingEntity(this, new S1BPacketEntityAttach(1, this, (Entity)null));
-+            if (!this.worldObj.isRemote && p_110160_1_ && this.worldObj instanceof WorldServer) {
-+                ((WorldServer) this.worldObj).getEntityTracker().sendToAllTrackingEntity(this, new S1BPacketEntityAttach(1, this, (Entity) null));
-             }
-         }
-     }
- 
--    public boolean allowLeashing()
--    {
-+    public boolean allowLeashing() {
-         return !this.getLeashed() && !(this instanceof IMob);
-     }
- 
--    public boolean getLeashed()
--    {
-+    public boolean getLeashed() {
-         return this.isLeashed;
-     }
- 
--    public Entity getLeashedToEntity()
--    {
-+    public Entity getLeashedToEntity() {
-         return this.leashedToEntity;
-     }
- 
--    public void setLeashedToEntity(Entity entityIn, boolean sendAttachNotification)
--    {
-+    public void setLeashedToEntity(Entity entityIn, boolean sendAttachNotification) {
-         this.isLeashed = true;
-         this.leashedToEntity = entityIn;
- 
--        if (!this.worldObj.isRemote && sendAttachNotification && this.worldObj instanceof WorldServer)
--        {
--            ((WorldServer)this.worldObj).getEntityTracker().sendToAllTrackingEntity(this, new S1BPacketEntityAttach(1, this, this.leashedToEntity));
-+        if (!this.worldObj.isRemote && sendAttachNotification && this.worldObj instanceof WorldServer) {
-+            ((WorldServer) this.worldObj).getEntityTracker().sendToAllTrackingEntity(this, new S1BPacketEntityAttach(1, this, this.leashedToEntity));
-         }
-     }
- 
--    private void recreateLeash()
--    {
--        if (this.isLeashed && this.leashNBTTag != null)
--        {
--            if (this.leashNBTTag.hasKey("UUIDMost", 4) && this.leashNBTTag.hasKey("UUIDLeast", 4))
--            {
-+    private void recreateLeash() {
-+        if (this.isLeashed && this.leashNBTTag != null) {
-+            if (this.leashNBTTag.hasKey("UUIDMost", 4) && this.leashNBTTag.hasKey("UUIDLeast", 4)) {
-                 UUID uuid = new UUID(this.leashNBTTag.getLong("UUIDMost"), this.leashNBTTag.getLong("UUIDLeast"));
-                 List list = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().expand(10.0D, 10.0D, 10.0D));
-                 Iterator iterator = list.iterator();
- 
--                while (iterator.hasNext())
--                {
--                    EntityLivingBase entitylivingbase = (EntityLivingBase)iterator.next();
-+                while (iterator.hasNext()) {
-+                    EntityLivingBase entitylivingbase = (EntityLivingBase) iterator.next();
- 
--                    if (entitylivingbase.getUniqueID().equals(uuid))
--                    {
-+                    if (entitylivingbase.getUniqueID().equals(uuid)) {
-                         this.leashedToEntity = entitylivingbase;
-                         break;
-                     }
-                 }
--            }
--            else if (this.leashNBTTag.hasKey("X", 99) && this.leashNBTTag.hasKey("Y", 99) && this.leashNBTTag.hasKey("Z", 99))
--            {
-+            } else if (this.leashNBTTag.hasKey("X", 99) && this.leashNBTTag.hasKey("Y", 99) && this.leashNBTTag.hasKey("Z", 99)) {
-                 BlockPos blockpos = new BlockPos(this.leashNBTTag.getInteger("X"), this.leashNBTTag.getInteger("Y"), this.leashNBTTag.getInteger("Z"));
-                 EntityLeashKnot entityleashknot = EntityLeashKnot.getKnotForPosition(this.worldObj, blockpos);
- 
--                if (entityleashknot == null)
--                {
-+                if (entityleashknot == null) {
-                     entityleashknot = EntityLeashKnot.createKnot(this.worldObj, blockpos);
-                 }
+@@ -1072,10 +1172,11 @@
  
                  this.leashedToEntity = entityleashknot;
--            }
--            else
--            {
-+            } else {
+             }
+             else
+             {
 +                this.worldObj.getServer().getPluginManager().callEvent(new EntityUnleashEvent(this.getBukkitEntity(), UnleashReason.UNKNOWN)); // CraftBukkit
                  this.clearLeashed(false, true);
              }
          }
  
          this.leashNBTTag = null;
-     }
- 
--    public boolean replaceItemInInventory(int p_174820_1_, ItemStack p_174820_2_)
--    {
-+    public boolean replaceItemInInventory(int p_174820_1_, ItemStack p_174820_2_) {
-         int j;
- 
--        if (p_174820_1_ == 99)
--        {
-+        if (p_174820_1_ == 99) {
-             j = 0;
--        }
--        else
--        {
-+        } else {
-             j = p_174820_1_ - 100 + 1;
- 
--            if (j < 0 || j >= this.equipment.length)
--            {
-+            if (j < 0 || j >= this.equipment.length) {
-                 return false;
-             }
-         }
- 
--        if (p_174820_2_ != null && getArmorPosition(p_174820_2_) != j && (j != 4 || !(p_174820_2_.getItem() instanceof ItemBlock)))
--        {
-+        if (p_174820_2_ != null && getArmorPosition(p_174820_2_) != j && (j != 4 || !(p_174820_2_.getItem() instanceof ItemBlock))) {
-             return false;
--        }
--        else
--        {
-+        } else {
-             this.setCurrentItemOrArmor(j, p_174820_2_);
-             return true;
-         }
-     }
- 
--    public boolean isServerWorld()
--    {
-+    public boolean isServerWorld() {
-         return super.isServerWorld() && !this.isAIDisabled();
-     }
- 
--    protected void setNoAI(boolean p_94061_1_)
--    {
--        this.dataWatcher.updateObject(15, Byte.valueOf((byte)(p_94061_1_ ? 1 : 0)));
-+    protected void setNoAI(boolean p_94061_1_) {
-+        this.dataWatcher.updateObject(15, Byte.valueOf((byte) (p_94061_1_ ? 1 : 0)));
-     }
- 
--    private boolean isAIDisabled()
--    {
-+    private boolean isAIDisabled() {
-         return this.dataWatcher.getWatchableObjectByte(15) != 0;
-     }
- 
--    public static enum SpawnPlacementType
--    {
-+    public static enum SpawnPlacementType {
-         ON_GROUND,
-         IN_AIR,
-         IN_WATER;
- 
-         private static final String __OBFID = "CL_00002255";

@@ -1,13 +1,11 @@
 --- decompiled\net\minecraft\block\properties\IProperty.java
 +++ src\main\java\net\minecraft\block\properties\IProperty.java
-@@ -1,11 +1,11 @@
- package net.minecraft.block.properties;
+@@ -2,10 +2,11 @@
  
  import java.util.Collection;
  
--public interface IProperty
--{
-+public interface IProperty {
+ public interface IProperty
+ {
 +
      String getName();
  

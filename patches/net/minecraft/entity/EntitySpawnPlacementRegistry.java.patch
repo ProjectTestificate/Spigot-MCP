@@ -11,33 +11,19 @@
  import net.minecraft.entity.monster.EntityBlaze;
  import net.minecraft.entity.monster.EntityCaveSpider;
  import net.minecraft.entity.monster.EntityCreeper;
-@@ -33,22 +33,22 @@
+@@ -33,12 +33,15 @@
  import net.minecraft.entity.passive.EntitySheep;
  import net.minecraft.entity.passive.EntitySquid;
  import net.minecraft.entity.passive.EntityVillager;
  import net.minecraft.entity.passive.EntityWolf;
  
--public class EntitySpawnPlacementRegistry
--{
 +import com.google.common.collect.Maps;
 +
-+public class EntitySpawnPlacementRegistry {
+ public class EntitySpawnPlacementRegistry
+ {
 +
      private static final HashMap field_180110_a = Maps.newHashMap();
      private static final String __OBFID = "CL_00002254";
  
--    public static EntityLiving.SpawnPlacementType func_180109_a(Class p_180109_0_)
--    {
--        return (EntityLiving.SpawnPlacementType)field_180110_a.get(p_180109_0_);
-+    public static EntityLiving.SpawnPlacementType func_180109_a(Class p_180109_0_) {
-+        return (EntityLiving.SpawnPlacementType) field_180110_a.get(p_180109_0_);
-     }
- 
--    static
--    {
-+    static {
-         field_180110_a.put(EntityBat.class, EntityLiving.SpawnPlacementType.ON_GROUND);
-         field_180110_a.put(EntityChicken.class, EntityLiving.SpawnPlacementType.ON_GROUND);
-         field_180110_a.put(EntityCow.class, EntityLiving.SpawnPlacementType.ON_GROUND);
-         field_180110_a.put(EntityHorse.class, EntityLiving.SpawnPlacementType.ON_GROUND);
-         field_180110_a.put(EntityMooshroom.class, EntityLiving.SpawnPlacementType.ON_GROUND);
+     public static EntityLiving.SpawnPlacementType func_180109_a(Class p_180109_0_)
+     {

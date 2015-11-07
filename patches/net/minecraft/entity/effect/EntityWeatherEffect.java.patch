@@ -1,20 +1,14 @@
 --- decompiled\net\minecraft\entity\effect\EntityWeatherEffect.java
 +++ src\main\java\net\minecraft\entity\effect\EntityWeatherEffect.java
-@@ -1,14 +1,13 @@
- package net.minecraft.entity.effect;
- 
+@@ -3,10 +3,11 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.world.World;
  
--public abstract class EntityWeatherEffect extends Entity
--{
-+public abstract class EntityWeatherEffect extends Entity {
+ public abstract class EntityWeatherEffect extends Entity
+ {
 +
      private static final String __OBFID = "CL_00001665";
  
--    public EntityWeatherEffect(World worldIn)
--    {
-+    public EntityWeatherEffect(World worldIn) {
+     public EntityWeatherEffect(World worldIn)
+     {
          super(worldIn);
-     }
- }

@@ -14,123 +14,103 @@
  import net.minecraft.entity.EntitySpawnPlacementRegistry;
  import net.minecraft.entity.EnumCreatureType;
  import net.minecraft.entity.IEntityLivingData;
-@@ -16,159 +16,193 @@
+@@ -16,16 +16,44 @@
  import net.minecraft.util.MathHelper;
  import net.minecraft.util.WeightedRandom;
  import net.minecraft.world.biome.BiomeGenBase;
  import net.minecraft.world.chunk.Chunk;
  
--public final class SpawnerAnimals
--{
--    private static final int MOB_COUNT_DIV = (int)Math.pow(17.0D, 2.0D);
 +import org.bukkit.craftbukkit.util.LongHash;
 +import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 +
 +import com.google.common.collect.Sets;
 +
-+public final class SpawnerAnimals {
+ public final class SpawnerAnimals
+ {
 +
-+    private static final int MOB_COUNT_DIV = (int) Math.pow(17.0D, 2.0D);
+     private static final int MOB_COUNT_DIV = (int)Math.pow(17.0D, 2.0D);
      private final Set eligibleChunksForSpawning = Sets.newHashSet();
      private static final String __OBFID = "CL_00000152";
  
--    public int findChunksForSpawning(WorldServer p_77192_1_, boolean p_77192_2_, boolean p_77192_3_, boolean p_77192_4_)
--    {
--        if (!p_77192_2_ && !p_77192_3_)
--        {
--            return 0;
 +    // Spigot start - get entity count only from chunks being processed in b
-+    private int getEntityCount(WorldServer server, Class oClass) {
++    private int getEntityCount(WorldServer server, Class oClass)
++    {
 +        int i = 0;
 +        Iterator<Long> it = this.eligibleChunksForSpawning.iterator();
-+        while (it.hasNext()) {
++
++        while (it.hasNext())
++        {
 +            Long coord = it.next();
 +            int x = LongHash.msw(coord);
 +            int z = LongHash.lsw(coord);
-+            if (!server.theChunkProviderServer.droppedChunksSet.contains(coord) && server.isChunkLoaded(x, z, true)) {
++
++            if (!server.theChunkProviderServer.droppedChunksSet.contains(coord) && server.isChunkLoaded(x, z, true))
++            {
 +                i += server.getChunkFromChunkCoords(x, z).entityCount.get(oClass);
 +            }
-         }
--        else
--        {
++        }
++
 +        return i;
 +    }
 +    // Spigot end
 +
-+    public int findChunksForSpawning(WorldServer p_77192_1_, boolean p_77192_2_, boolean p_77192_3_, boolean p_77192_4_) {
-+        if (!p_77192_2_ && !p_77192_3_) {
-+            return 0;
-+        } else {
-             this.eligibleChunksForSpawning.clear();
-             int i = 0;
-             Iterator iterator = p_77192_1_.playerEntities.iterator();
-             int k;
-             int i1;
- 
--            while (iterator.hasNext())
--            {
--                EntityPlayer entityplayer = (EntityPlayer)iterator.next();
-+            while (iterator.hasNext()) {
-+                EntityPlayer entityplayer = (EntityPlayer) iterator.next();
- 
--                if (!entityplayer.isSpectator())
--                {
-+                if (!entityplayer.isSpectator()) {
+     public int findChunksForSpawning(WorldServer p_77192_1_, boolean p_77192_2_, boolean p_77192_3_, boolean p_77192_4_)
+     {
+         if (!p_77192_2_ && !p_77192_3_)
+         {
+             return 0;
+@@ -45,27 +73,36 @@
+                 if (!entityplayer.isSpectator())
+                 {
                      int j = MathHelper.floor_double(entityplayer.posX / 16.0D);
                      k = MathHelper.floor_double(entityplayer.posZ / 16.0D);
                      byte b0 = 8;
 +                    // Spigot Start
 +                    b0 = p_77192_1_.spigotConfig.mobSpawnRange;
-+                    b0 = (b0 > p_77192_1_.spigotConfig.viewDistance) ? (byte) p_77192_1_.spigotConfig.viewDistance : b0;
++                    b0 = (b0 > p_77192_1_.spigotConfig.viewDistance) ? (byte)p_77192_1_.spigotConfig.viewDistance : b0;
 +                    b0 = (b0 > 8) ? 8 : b0;
 +                    // Spigot End
  
--                    for (int l = -b0; l <= b0; ++l)
--                    {
--                        for (i1 = -b0; i1 <= b0; ++i1)
--                        {
-+                    for (int l = -b0; l <= b0; ++l) {
-+                        for (i1 = -b0; i1 <= b0; ++i1) {
+                     for (int l = -b0; l <= b0; ++l)
+                     {
+                         for (i1 = -b0; i1 <= b0; ++i1)
+                         {
                              boolean flag3 = l == -b0 || l == b0 || i1 == -b0 || i1 == b0;
 -                            ChunkCoordIntPair chunkcoordintpair = new ChunkCoordIntPair(l + j, i1 + k);
 +                            // ChunkCoordIntPair chunkcoordintpair = new ChunkCoordIntPair(l + j, i1 + k);
- 
--                            if (!this.eligibleChunksForSpawning.contains(chunkcoordintpair))
--                            {
--                                ++i;
 +                            // CraftBukkit start - use LongHash and LongHashSet
 +                            long chunkCoords = LongHash.toLong(i1 + l, k + j);
  
+-                            if (!this.eligibleChunksForSpawning.contains(chunkcoordintpair))
++                            if (!this.eligibleChunksForSpawning.contains(chunkCoords))
+                             {
+                                 ++i;
+ 
 -                                if (!flag3 && p_77192_1_.getWorldBorder().contains(chunkcoordintpair))
--                                {
++                                if (!flag3 && p_77192_1_.getWorldBorder().isInBounds(chunkCoords))
+                                 {
 -                                    this.eligibleChunksForSpawning.add(chunkcoordintpair);
-+                            if (!this.eligibleChunksForSpawning.contains(chunkCoords)) {
-+                                ++i;
-+                                if (!flag3 && p_77192_1_.getWorldBorder().isInBounds(chunkCoords)) {
 +                                    this.eligibleChunksForSpawning.add(chunkCoords);
                                  }
                              }
++
 +                            // CraftBukkit end
                          }
                      }
                  }
              }
  
-             int k3 = 0;
-             BlockPos blockpos2 = p_77192_1_.getSpawnPoint();
-             EnumCreatureType[] aenumcreaturetype = EnumCreatureType.values();
+@@ -75,25 +112,54 @@
              k = aenumcreaturetype.length;
  
--            for (int l3 = 0; l3 < k; ++l3)
--            {
-+            for (int l3 = 0; l3 < k; ++l3) {
+             for (int l3 = 0; l3 < k; ++l3)
+             {
                  EnumCreatureType enumcreaturetype = aenumcreaturetype[l3];
- 
--                if ((!enumcreaturetype.getPeacefulCreature() || p_77192_3_) && (enumcreaturetype.getPeacefulCreature() || p_77192_2_) && (!enumcreaturetype.getAnimal() || p_77192_4_))
--                {
 +                // CraftBukkit start - Use per-world spawn limits
 +                int limit = enumcreaturetype.getMaxNumberOfCreature();
-+                switch (enumcreaturetype) {
+ 
++                switch (enumcreaturetype)
++                {
 +                    case MONSTER:
 +                        limit = p_77192_1_.getWorld().getMonsterSpawnLimit();
 +                        break;
@@ -145,32 +125,33 @@
 +                        break;
 +                }
 +
-+                if (limit == 0) {
++                if (limit == 0)
++                {
 +                    continue;
 +                }
++
 +                int mobcnt = 0; // Spigot
 +                // CraftBukkit end
 +
-+                if ((!enumcreaturetype.getPeacefulCreature() || p_77192_3_) && (enumcreaturetype.getPeacefulCreature() || p_77192_2_) && (!enumcreaturetype.getAnimal() || p_77192_4_)) {
+                 if ((!enumcreaturetype.getPeacefulCreature() || p_77192_3_) && (enumcreaturetype.getPeacefulCreature() || p_77192_2_) && (!enumcreaturetype.getAnimal() || p_77192_4_))
+                 {
                      i1 = p_77192_1_.countEntities(enumcreaturetype.getCreatureClass());
 -                    int i4 = enumcreaturetype.getMaxNumberOfCreature() * i / MOB_COUNT_DIV;
 +                    int i4 = limit * i / MOB_COUNT_DIV; // CraftBukkit - use per-world limits
  
--                    if (i1 <= i4)
--                    {
-+                    if (i1 <= i4) {
+                     if (i1 <= i4)
+                     {
                          Iterator iterator1 = this.eligibleChunksForSpawning.iterator();
-+
 +                        int moblimit = (limit * i / 256) - mobcnt + 1; // Spigot - up to 1 more than limit
                          label115:
  
 -                        while (iterator1.hasNext())
--                        {
++                        while (iterator1.hasNext() && (moblimit > 0))   // Spigot - while more allowed
+                         {
 -                            ChunkCoordIntPair chunkcoordintpair1 = (ChunkCoordIntPair)iterator1.next();
 -                            BlockPos blockpos = getRandomChunkPosition(p_77192_1_, chunkcoordintpair1.chunkXPos, chunkcoordintpair1.chunkZPos);
-+                        while (iterator1.hasNext() && (moblimit > 0)) { // Spigot - while more allowed
 +                            // CraftBukkit start = use LongHash and LongObjectHashMap
-+                            long key = ((Long) iterator1.next()).longValue();
++                            long key = ((Long)iterator1.next()).longValue();
 +                            BlockPos blockpos = getRandomChunkPosition(p_77192_1_, LongHash.msw(key), LongHash.lsw(key));
 +                            // CraftBukkit end
                              int j1 = blockpos.getX();
@@ -178,212 +159,36 @@
                              int l1 = blockpos.getZ();
                              Block block = p_77192_1_.getBlockState(blockpos).getBlock();
  
--                            if (!block.isNormalCube())
--                            {
-+                            if (!block.isNormalCube()) {
-                                 int i2 = 0;
-                                 int j2 = 0;
- 
--                                while (j2 < 3)
--                                {
-+                                while (j2 < 3) {
-                                     int k2 = j1;
-                                     int l2 = k1;
-                                     int i3 = l1;
-                                     byte b1 = 6;
-                                     BiomeGenBase.SpawnListEntry spawnlistentry = null;
-                                     IEntityLivingData ientitylivingdata = null;
-                                     int j3 = 0;
- 
--                                    while (true)
--                                    {
--                                        if (j3 < 4)
--                                        {
-+                                    while (true) {
-+                                        if (j3 < 4) {
-                                             label108:
-                                             {
-                                                 k2 += p_77192_1_.rand.nextInt(b1) - p_77192_1_.rand.nextInt(b1);
-                                                 l2 += p_77192_1_.rand.nextInt(1) - p_77192_1_.rand.nextInt(1);
-                                                 i3 += p_77192_1_.rand.nextInt(b1) - p_77192_1_.rand.nextInt(b1);
-                                                 BlockPos blockpos1 = new BlockPos(k2, l2, i3);
--                                                float f = (float)k2 + 0.5F;
--                                                float f1 = (float)i3 + 0.5F;
-+                                                float f = (float) k2 + 0.5F;
-+                                                float f1 = (float) i3 + 0.5F;
- 
--                                                if (!p_77192_1_.func_175636_b((double)f, (double)l2, (double)f1, 24.0D) && blockpos2.distanceSq((double)f, (double)l2, (double)f1) >= 576.0D)
--                                                {
--                                                    if (spawnlistentry == null)
--                                                    {
-+                                                if (!p_77192_1_.func_175636_b((double) f, (double) l2, (double) f1, 24.0D) && blockpos2.distanceSq((double) f, (double) l2, (double) f1) >= 576.0D) {
-+                                                    if (spawnlistentry == null) {
-                                                         spawnlistentry = p_77192_1_.func_175734_a(enumcreaturetype, blockpos1);
- 
--                                                        if (spawnlistentry == null)
--                                                        {
-+                                                        if (spawnlistentry == null) {
-                                                             break label108;
-                                                         }
-                                                     }
- 
--                                                    if (p_77192_1_.func_175732_a(enumcreaturetype, spawnlistentry, blockpos1) && canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.func_180109_a(spawnlistentry.entityClass), p_77192_1_, blockpos1))
--                                                    {
-+                                                    if (p_77192_1_.func_175732_a(enumcreaturetype, spawnlistentry, blockpos1) && canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.func_180109_a(spawnlistentry.entityClass), p_77192_1_, blockpos1)) {
-                                                         EntityLiving entityliving;
- 
--                                                        try
--                                                        {
--                                                            entityliving = (EntityLiving)spawnlistentry.entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {p_77192_1_});
--                                                        }
--                                                        catch (Exception exception)
--                                                        {
-+                                                        try {
-+                                                            entityliving = (EntityLiving) spawnlistentry.entityClass.getConstructor(new Class[]{World.class}).newInstance(new Object[]{p_77192_1_});
-+                                                        } catch (Exception exception) {
-                                                             exception.printStackTrace();
-                                                             return k3;
-                                                         }
- 
--                                                        entityliving.setLocationAndAngles((double)f, (double)l2, (double)f1, p_77192_1_.rand.nextFloat() * 360.0F, 0.0F);
-+                                                        entityliving.setLocationAndAngles((double) f, (double) l2, (double) f1, p_77192_1_.rand.nextFloat() * 360.0F, 0.0F);
- 
--                                                        if (entityliving.getCanSpawnHere() && entityliving.handleLavaMovement())
--                                                        {
-+                                                        if (entityliving.getCanSpawnHere() && entityliving.handleLavaMovement()) {
+@@ -158,13 +224,21 @@
                                                              ientitylivingdata = entityliving.func_180482_a(p_77192_1_.getDifficultyForLocation(new BlockPos(entityliving)), ientitylivingdata);
  
--                                                            if (entityliving.handleLavaMovement())
--                                                            {
-+                                                            if (entityliving.handleLavaMovement()) {
+                                                             if (entityliving.handleLavaMovement())
+                                                             {
                                                                  ++i2;
 -                                                                p_77192_1_.spawnEntityInWorld(entityliving);
 +                                                                p_77192_1_.addEntity(entityliving, SpawnReason.NATURAL); // CraftBukkit - Added a reason for spawning this creature
                                                              }
  
--                                                            if (i2 >= entityliving.getMaxSpawnedInChunk())
--                                                            {
 +                                                            // Spigot start
-+                                                            if (--moblimit <= 0) {
++                                                            if (--moblimit <= 0)
++                                                            {
 +                                                                // If we're past limit, stop spawn
-                                                                 continue label115;
-                                                             }
-+                                                            // Spigot end
-+                                                            if (i2 >= entityliving.getMaxSpawnedInChunk()) {
 +                                                                continue label115;
 +                                                            }
++
++                                                            // Spigot end
+                                                             if (i2 >= entityliving.getMaxSpawnedInChunk())
+                                                             {
+                                                                 continue label115;
+                                                             }
                                                          }
- 
-                                                         k3 += i2;
-                                                     }
-                                                 }
-@@ -190,100 +224,81 @@
- 
-             return k3;
-         }
-     }
- 
--    protected static BlockPos getRandomChunkPosition(World worldIn, int x, int z)
--    {
-+    protected static BlockPos getRandomChunkPosition(World worldIn, int x, int z) {
-         Chunk chunk = worldIn.getChunkFromChunkCoords(x, z);
-         int k = x * 16 + worldIn.rand.nextInt(16);
-         int l = z * 16 + worldIn.rand.nextInt(16);
-         int i1 = MathHelper.func_154354_b(chunk.getHeight(new BlockPos(k, 0, l)) + 1, 16);
-         int j1 = worldIn.rand.nextInt(i1 > 0 ? i1 : chunk.getTopFilledSegment() + 16 - 1);
-         return new BlockPos(k, j1, l);
-     }
- 
--    public static boolean canCreatureTypeSpawnAtLocation(EntityLiving.SpawnPlacementType p_180267_0_, World worldIn, BlockPos pos)
--    {
--        if (!worldIn.getWorldBorder().contains(pos))
--        {
-+    public static boolean canCreatureTypeSpawnAtLocation(EntityLiving.SpawnPlacementType p_180267_0_, World worldIn, BlockPos pos) {
-+        if (!worldIn.getWorldBorder().contains(pos)) {
-             return false;
--        }
--        else
--        {
-+        } else {
-             Block block = worldIn.getBlockState(pos).getBlock();
- 
--            if (p_180267_0_ == EntityLiving.SpawnPlacementType.IN_WATER)
--            {
-+            if (p_180267_0_ == EntityLiving.SpawnPlacementType.IN_WATER) {
-                 return block.getMaterial().isLiquid() && worldIn.getBlockState(pos.down()).getBlock().getMaterial().isLiquid() && !worldIn.getBlockState(pos.up()).getBlock().isNormalCube();
--            }
--            else
--            {
-+            } else {
-                 BlockPos blockpos1 = pos.down();
- 
--                if (!World.doesBlockHaveSolidTopSurface(worldIn, blockpos1))
--                {
-+                if (!World.doesBlockHaveSolidTopSurface(worldIn, blockpos1)) {
-                     return false;
--                }
--                else
--                {
-+                } else {
-                     Block block1 = worldIn.getBlockState(blockpos1).getBlock();
-                     boolean flag = block1 != Blocks.bedrock && block1 != Blocks.barrier;
-                     return flag && !block.isNormalCube() && !block.getMaterial().isLiquid() && !worldIn.getBlockState(pos.up()).getBlock().isNormalCube();
-                 }
-             }
-         }
-     }
- 
--    public static void performWorldGenSpawning(World worldIn, BiomeGenBase p_77191_1_, int p_77191_2_, int p_77191_3_, int p_77191_4_, int p_77191_5_, Random p_77191_6_)
--    {
-+    public static void performWorldGenSpawning(World worldIn, BiomeGenBase p_77191_1_, int p_77191_2_, int p_77191_3_, int p_77191_4_, int p_77191_5_, Random p_77191_6_) {
-         List list = p_77191_1_.getSpawnableList(EnumCreatureType.CREATURE);
- 
--        if (!list.isEmpty())
--        {
--            while (p_77191_6_.nextFloat() < p_77191_1_.getSpawningChance())
--            {
--                BiomeGenBase.SpawnListEntry spawnlistentry = (BiomeGenBase.SpawnListEntry)WeightedRandom.getRandomItem(worldIn.rand, list);
-+        if (!list.isEmpty()) {
-+            while (p_77191_6_.nextFloat() < p_77191_1_.getSpawningChance()) {
-+                BiomeGenBase.SpawnListEntry spawnlistentry = (BiomeGenBase.SpawnListEntry) WeightedRandom.getRandomItem(worldIn.rand, list);
-                 int i1 = spawnlistentry.minGroupCount + p_77191_6_.nextInt(1 + spawnlistentry.maxGroupCount - spawnlistentry.minGroupCount);
-                 IEntityLivingData ientitylivingdata = null;
-                 int j1 = p_77191_2_ + p_77191_6_.nextInt(p_77191_4_);
-                 int k1 = p_77191_3_ + p_77191_6_.nextInt(p_77191_5_);
-                 int l1 = j1;
-                 int i2 = k1;
- 
--                for (int j2 = 0; j2 < i1; ++j2)
--                {
-+                for (int j2 = 0; j2 < i1; ++j2) {
-                     boolean flag = false;
- 
--                    for (int k2 = 0; !flag && k2 < 4; ++k2)
--                    {
-+                    for (int k2 = 0; !flag && k2 < 4; ++k2) {
-                         BlockPos blockpos = worldIn.getTopSolidOrLiquidBlock(new BlockPos(j1, 0, k1));
- 
--                        if (canCreatureTypeSpawnAtLocation(EntityLiving.SpawnPlacementType.ON_GROUND, worldIn, blockpos))
--                        {
-+                        if (canCreatureTypeSpawnAtLocation(EntityLiving.SpawnPlacementType.ON_GROUND, worldIn, blockpos)) {
-                             EntityLiving entityliving;
- 
--                            try
--                            {
--                                entityliving = (EntityLiving)spawnlistentry.entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {worldIn});
--                            }
--                            catch (Exception exception)
--                            {
-+                            try {
-+                                entityliving = (EntityLiving) spawnlistentry.entityClass.getConstructor(new Class[]{World.class}).newInstance(new Object[]{worldIn});
-+                            } catch (Exception exception) {
+@@ -271,12 +345,14 @@
                                  exception.printStackTrace();
                                  continue;
                              }
  
--                            entityliving.setLocationAndAngles((double)((float)j1 + 0.5F), (double)blockpos.getY(), (double)((float)k1 + 0.5F), p_77191_6_.nextFloat() * 360.0F, 0.0F);
+                             entityliving.setLocationAndAngles((double)((float)j1 + 0.5F), (double)blockpos.getY(), (double)((float)k1 + 0.5F), p_77191_6_.nextFloat() * 360.0F, 0.0F);
 -                            worldIn.spawnEntityInWorld(entityliving);
-+                            entityliving.setLocationAndAngles((double) ((float) j1 + 0.5F), (double) blockpos.getY(), (double) ((float) k1 + 0.5F), p_77191_6_.nextFloat() * 360.0F, 0.0F);
 +                            // CraftBukkit start - Added a reason for spawning this creature, moved entityinsentient.prepare(groupdataentity) up
                              ientitylivingdata = entityliving.func_180482_a(worldIn.getDifficultyForLocation(new BlockPos(entityliving)), ientitylivingdata);
 +                            worldIn.addEntity(entityliving, SpawnReason.CHUNK_GEN);
@@ -393,11 +198,3 @@
  
                          j1 += p_77191_6_.nextInt(5) - p_77191_6_.nextInt(5);
  
--                        for (k1 += p_77191_6_.nextInt(5) - p_77191_6_.nextInt(5); j1 < p_77191_2_ || j1 >= p_77191_2_ + p_77191_4_ || k1 < p_77191_3_ || k1 >= p_77191_3_ + p_77191_4_; k1 = i2 + p_77191_6_.nextInt(5) - p_77191_6_.nextInt(5))
--                        {
-+                        for (k1 += p_77191_6_.nextInt(5) - p_77191_6_.nextInt(5); j1 < p_77191_2_ || j1 >= p_77191_2_ + p_77191_4_ || k1 < p_77191_3_ || k1 >= p_77191_3_ + p_77191_4_; k1 = i2 + p_77191_6_.nextInt(5) - p_77191_6_.nextInt(5)) {
-                             j1 = l1 + p_77191_6_.nextInt(5) - p_77191_6_.nextInt(5);
-                         }
-                     }
-                 }
-             }

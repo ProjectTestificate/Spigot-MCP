@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S18PacketEntityTeleport.java
 +++ src\main\java\net\minecraft\network\play\server\S18PacketEntityTeleport.java
-@@ -1,121 +1,74 @@
+@@ -1,29 +1,32 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -14,10 +14,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S18PacketEntityTeleport implements Packet
--{
 +
-+public class S18PacketEntityTeleport implements Packet {
+ public class S18PacketEntityTeleport implements Packet
+ {
 +
      private int field_149458_a;
      private int field_149456_b;
@@ -29,62 +28,17 @@
      private static final String __OBFID = "CL_00001340";
  
 -    public S18PacketEntityTeleport() {}
-+    public S18PacketEntityTeleport() {
++    public S18PacketEntityTeleport()
++    {
 +    }
  
--    public S18PacketEntityTeleport(Entity p_i45233_1_)
--    {
-+    public S18PacketEntityTeleport(Entity p_i45233_1_) {
+     public S18PacketEntityTeleport(Entity p_i45233_1_)
+     {
          this.field_149458_a = p_i45233_1_.getEntityId();
          this.field_149456_b = MathHelper.floor_double(p_i45233_1_.posX * 32.0D);
-         this.field_149457_c = MathHelper.floor_double(p_i45233_1_.posY * 32.0D);
-         this.field_149454_d = MathHelper.floor_double(p_i45233_1_.posZ * 32.0D);
--        this.field_149455_e = (byte)((int)(p_i45233_1_.rotationYaw * 256.0F / 360.0F));
--        this.field_149453_f = (byte)((int)(p_i45233_1_.rotationPitch * 256.0F / 360.0F));
-+        this.field_149455_e = (byte) ((int) (p_i45233_1_.rotationYaw * 256.0F / 360.0F));
-+        this.field_149453_f = (byte) ((int) (p_i45233_1_.rotationPitch * 256.0F / 360.0F));
-         this.field_179698_g = p_i45233_1_.onGround;
-     }
- 
--    public S18PacketEntityTeleport(int p_i45949_1_, int p_i45949_2_, int p_i45949_3_, int p_i45949_4_, byte p_i45949_5_, byte p_i45949_6_, boolean p_i45949_7_)
--    {
-+    public S18PacketEntityTeleport(int p_i45949_1_, int p_i45949_2_, int p_i45949_3_, int p_i45949_4_, byte p_i45949_5_, byte p_i45949_6_, boolean p_i45949_7_) {
-         this.field_149458_a = p_i45949_1_;
-         this.field_149456_b = p_i45949_2_;
-         this.field_149457_c = p_i45949_3_;
-         this.field_149454_d = p_i45949_4_;
-         this.field_149455_e = p_i45949_5_;
-         this.field_149453_f = p_i45949_6_;
-         this.field_179698_g = p_i45949_7_;
-     }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.field_149458_a = buf.readVarIntFromBuffer();
-         this.field_149456_b = buf.readInt();
-         this.field_149457_c = buf.readInt();
-         this.field_149454_d = buf.readInt();
-         this.field_149455_e = buf.readByte();
-         this.field_149453_f = buf.readByte();
-         this.field_179698_g = buf.readBoolean();
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeVarIntToBuffer(this.field_149458_a);
-         buf.writeInt(this.field_149456_b);
-         buf.writeInt(this.field_149457_c);
-         buf.writeInt(this.field_149454_d);
-         buf.writeByte(this.field_149455_e);
-         buf.writeByte(this.field_149453_f);
-         buf.writeBoolean(this.field_179698_g);
-     }
- 
--    public void processPacket(INetHandlerPlayClient handler)
--    {
-+    public void processPacket(INetHandlerPlayClient handler) {
+@@ -70,52 +73,10 @@
+     public void processPacket(INetHandlerPlayClient handler)
+     {
          handler.handleEntityTeleport(this);
      }
  
@@ -92,14 +46,13 @@
 -    public int func_149451_c()
 -    {
 -        return this.field_149458_a;
-+    public void processPacket(INetHandler handler) {
+-    }
+-
+     public void processPacket(INetHandler handler)
+     {
+-        this.processPacket((INetHandlerPlayClient)handler);
 +        this.processPacket((INetHandlerPlayClient) handler);
      }
--
--    public void processPacket(INetHandler handler)
--    {
--        this.processPacket((INetHandlerPlayClient)handler);
--    }
 -
 -    @SideOnly(Side.CLIENT)
 -    public int func_149449_d()

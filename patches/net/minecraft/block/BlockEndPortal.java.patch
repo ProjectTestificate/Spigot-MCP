@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\block\BlockEndPortal.java
 +++ src\main\java\net\minecraft\block\BlockEndPortal.java
-@@ -1,95 +1,66 @@
+@@ -1,27 +1,27 @@
  package net.minecraft.block;
  
  import java.util.List;
@@ -22,68 +22,43 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class BlockEndPortal extends BlockContainer
--{
 +import org.bukkit.Location;
 +import org.bukkit.event.entity.EntityPortalEnterEvent;
 +
-+public class BlockEndPortal extends BlockContainer {
+ public class BlockEndPortal extends BlockContainer
+ {
 +
      private static final String __OBFID = "CL_00000236";
  
--    protected BlockEndPortal(Material materialIn)
--    {
-+    protected BlockEndPortal(Material materialIn) {
+     protected BlockEndPortal(Material materialIn)
+     {
          super(materialIn);
-         this.setLightLevel(1.0F);
-     }
- 
--    public TileEntity createNewTileEntity(World worldIn, int meta)
--    {
-+    public TileEntity createNewTileEntity(World worldIn, int meta) {
-         return new TileEntityEndPortal();
-     }
- 
--    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
--    {
-+    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) {
+@@ -37,18 +37,14 @@
+     {
          float f = 0.0625F;
          this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, f, 1.0F);
      }
  
 -    @SideOnly(Side.CLIENT)
 -    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
--    {
++    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
+     {
 -        return side == EnumFacing.DOWN ? super.shouldSideBeRendered(worldIn, pos, side) : false;
-+    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity) {
      }
  
 -    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity) {}
 -
--    public boolean isOpaqueCube()
--    {
-+    public boolean isOpaqueCube() {
+     public boolean isOpaqueCube()
+     {
          return false;
      }
  
--    public boolean isFullCube()
--    {
-+    public boolean isFullCube() {
-         return false;
-     }
+@@ -64,32 +60,18 @@
  
--    public int quantityDropped(Random random)
--    {
-+    public int quantityDropped(Random random) {
-         return 0;
-     }
- 
--    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
--    {
--        if (entityIn.ridingEntity == null && entityIn.riddenByEntity == null && !worldIn.isRemote)
--        {
-+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-+        if (entityIn.ridingEntity == null && entityIn.riddenByEntity == null && !worldIn.isRemote) {
+     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+     {
+         if (entityIn.ridingEntity == null && entityIn.riddenByEntity == null && !worldIn.isRemote)
+         {
 +            // CraftBukkit start - Entity in portal
 +            EntityPortalEnterEvent event = new EntityPortalEnterEvent(entityIn.getBukkitEntity(), new Location(worldIn.getWorld(), pos.getX(), pos.getY(), pos.getZ()));
 +            worldIn.getServer().getPluginManager().callEvent(event);
@@ -110,9 +85,8 @@
 -        return null;
 -    }
 -
--    public MapColor getMapColor(IBlockState state)
--    {
-+    public MapColor getMapColor(IBlockState state) {
+     public MapColor getMapColor(IBlockState state)
+     {
          return MapColor.obsidianColor;
      }
  }

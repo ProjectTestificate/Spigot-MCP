@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\world\gen\ChunkProviderServer.java
 +++ src\main\java\net\minecraft\world\gen\ChunkProviderServer.java
-@@ -1,332 +1,430 @@
+@@ -1,43 +1,51 @@
  package net.minecraft.world.gen;
  
 -import com.google.common.collect.Lists;
@@ -43,9 +43,8 @@
 +import org.bukkit.event.world.ChunkUnloadEvent;
 +import org.bukkit.generator.BlockPopulator;
  
--public class ChunkProviderServer implements IChunkProvider
--{
-+public class ChunkProviderServer implements IChunkProvider {
+ public class ChunkProviderServer implements IChunkProvider
+ {
 +
      private static final Logger logger = LogManager.getLogger();
 -    private Set droppedChunksSet = Collections.newSetFromMap(new ConcurrentHashMap());
@@ -66,178 +65,170 @@
 +    public WorldServer worldObj; // CraftBukkit - public // SpigotMCP NOTE -- Already public
      private static final String __OBFID = "CL_00001436";
  
--    public ChunkProviderServer(WorldServer p_i1520_1_, IChunkLoader p_i1520_2_, IChunkProvider p_i1520_3_)
--    {
-+    public ChunkProviderServer(WorldServer p_i1520_1_, IChunkLoader p_i1520_2_, IChunkProvider p_i1520_3_) {
+     public ChunkProviderServer(WorldServer p_i1520_1_, IChunkLoader p_i1520_2_, IChunkProvider p_i1520_3_)
+     {
          this.dummyChunk = new EmptyChunk(p_i1520_1_, 0, 0);
-         this.worldObj = p_i1520_1_;
-         this.chunkLoader = p_i1520_2_;
+@@ -46,52 +54,124 @@
          this.serverChunkGenerator = p_i1520_3_;
      }
  
--    public boolean chunkExists(int x, int z)
--    {
+     public boolean chunkExists(int x, int z)
+     {
 -        return this.id2ChunkMap.containsItem(ChunkCoordIntPair.chunkXZ2Int(x, z));
-+    public boolean chunkExists(int x, int z) {
 +        return this.id2ChunkMap.containsKey(LongHash.toLong(x, z)); // CraftBukkit
      }
  
 -    public List func_152380_a()
--    {
--        return this.loadedChunks;
 +    // CraftBukkit start - Change return type to Collection and return the values of our chunk map
-+    public Collection func_152380_a() {
++    public Collection func_152380_a()
+     {
+-        return this.loadedChunks;
 +        // return this.chunkList;
 +        return this.id2ChunkMap.values();
 +        // CraftBukkit end
      }
  
--    public void dropChunk(int p_73241_1_, int p_73241_2_)
--    {
--        if (this.worldObj.provider.canRespawnHere())
--        {
--            if (!this.worldObj.isSpawnChunk(p_73241_1_, p_73241_2_))
--            {
+     public void dropChunk(int p_73241_1_, int p_73241_2_)
+     {
+         if (this.worldObj.provider.canRespawnHere())
+         {
+             if (!this.worldObj.isSpawnChunk(p_73241_1_, p_73241_2_))
+             {
 -                this.droppedChunksSet.add(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(p_73241_1_, p_73241_2_)));
-+    public void dropChunk(int p_73241_1_, int p_73241_2_) {
-+        if (this.worldObj.provider.canRespawnHere()) {
-+            if (!this.worldObj.isSpawnChunk(p_73241_1_, p_73241_2_)) {
 +                // CraftBukkit start
 +                this.droppedChunksSet.add(p_73241_1_, p_73241_2_);
-+
 +                Chunk c = id2ChunkMap.get(LongHash.toLong(p_73241_1_, p_73241_2_));
-+                if (c != null) {
++
++                if (c != null)
++                {
 +                    c.mustSave = true;
 +                }
++
 +                // CraftBukkit end
              }
-+        } else {
+         }
+         else
+         {
+-            this.droppedChunksSet.add(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(p_73241_1_, p_73241_2_)));
 +            // CraftBukkit start
 +            this.droppedChunksSet.add(p_73241_1_, p_73241_2_);
-+
 +            Chunk c = id2ChunkMap.get(LongHash.toLong(p_73241_1_, p_73241_2_));
-+            if (c != null) {
++
++            if (c != null)
++            {
 +                c.mustSave = true;
 +            }
++
 +            // CraftBukkit end
          }
--        else
--        {
--            this.droppedChunksSet.add(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(p_73241_1_, p_73241_2_)));
--        }
      }
  
--    public void unloadAllChunks()
--    {
+     public void unloadAllChunks()
+     {
 -        Iterator iterator = this.loadedChunks.iterator();
-+    public void unloadAllChunks() {
 +        Iterator iterator = this.id2ChunkMap.values().iterator(); // CraftBukkit
  
--        while (iterator.hasNext())
--        {
--            Chunk chunk = (Chunk)iterator.next();
-+        while (iterator.hasNext()) {
-+            Chunk chunk = (Chunk) iterator.next();
+         while (iterator.hasNext())
+         {
+             Chunk chunk = (Chunk)iterator.next();
              this.dropChunk(chunk.xPosition, chunk.zPosition);
          }
      }
  
 -    public Chunk loadChunk(int p_73158_1_, int p_73158_2_)
--    {
++    // CraftBukkit start - Add async variant, provide compatibility
++    public net.minecraft.world.chunk.Chunk getChunkIfLoaded(int x, int z)
+     {
 -        long k = ChunkCoordIntPair.chunkXZ2Int(p_73158_1_, p_73158_2_);
 -        this.droppedChunksSet.remove(Long.valueOf(k));
 -        Chunk chunk = (Chunk)this.id2ChunkMap.getValueByKey(k);
-+    // CraftBukkit start - Add async variant, provide compatibility
-+    public net.minecraft.world.chunk.Chunk getChunkIfLoaded(int x, int z) {
 +        return id2ChunkMap.get(LongHash.toLong(x, z));
 +    }
  
--        if (chunk == null)
--        {
-+    public net.minecraft.world.chunk.Chunk loadChunk(int i, int j) {
++    public net.minecraft.world.chunk.Chunk loadChunk(int i, int j)
++    {
 +        return getChunkAt(i, j, null);
 +    }
 +
-+    public net.minecraft.world.chunk.Chunk getChunkAt(int i, int j, Runnable runnable) {
++    public net.minecraft.world.chunk.Chunk getChunkAt(int i, int j, Runnable runnable)
++    {
 +        droppedChunksSet.remove(i, j);
 +        Chunk chunk = id2ChunkMap.get(LongHash.toLong(i, j));
 +        AnvilChunkLoader loader = null;
 +
-+        if (this.chunkLoader instanceof AnvilChunkLoader) {
-+            loader = (AnvilChunkLoader) this.chunkLoader;
-+
++        if (this.chunkLoader instanceof AnvilChunkLoader)
++        {
++            loader = (AnvilChunkLoader)this.chunkLoader;
 +        }
++
 +        // We can only use the queue for already generated chunks
-+        if (chunk == null && loader != null && loader.chunkExists(worldObj, i, j)) {
-+            if (runnable != null) {
++        if (chunk == null && loader != null && loader.chunkExists(worldObj, i, j))
++        {
++            if (runnable != null)
++            {
 +                ChunkIOExecutor.queueChunkLoad(worldObj, loader, this, i, j, runnable);
 +                return null;
-+            } else {
++            }
++            else
++            {
 +                chunk = ChunkIOExecutor.syncChunkLoad(worldObj, loader, this, i, j);
 +            }
-+        } else if (chunk == null) {
++        }
++        else if (chunk == null)
++        {
 +            chunk = originalGetChunkAt(i, j);
 +        }
 +
 +        // If we didn't load the chunk async and have a callback run it now
-+        if (runnable != null) {
++        if (runnable != null)
++        {
 +            runnable.run();
 +        }
 +
 +        return chunk;
 +    }
 +
-+    public Chunk originalGetChunkAt(int p_73158_1_, int p_73158_2_) {
++    public Chunk originalGetChunkAt(int p_73158_1_, int p_73158_2_)
++    {
 +        this.droppedChunksSet.remove(p_73158_1_, p_73158_2_);
-+        Chunk chunk = (Chunk) this.id2ChunkMap.get(LongHash.toLong(p_73158_1_, p_73158_2_)); // CraftBukkit
++        Chunk chunk = (Chunk)this.id2ChunkMap.get(LongHash.toLong(p_73158_1_, p_73158_2_)); // CraftBukkit
 +        boolean newChunk = false;
++
 +        // CraftBukkit end
-+        if (chunk == null) {
+         if (chunk == null)
+         {
 +            worldObj.timings.syncChunkLoadTimer.startTiming(); // Spigot
              chunk = this.loadChunkFromFile(p_73158_1_, p_73158_2_);
  
--            if (chunk == null)
--            {
--                if (this.serverChunkGenerator == null)
--                {
-+            if (chunk == null) {
-+                if (this.serverChunkGenerator == null) {
-                     chunk = this.dummyChunk;
--                }
--                else
--                {
--                    try
--                    {
-+                } else {
-+                    try {
-                         chunk = this.serverChunkGenerator.provideChunk(p_73158_1_, p_73158_2_);
--                    }
--                    catch (Throwable throwable)
--                    {
-+                    } catch (Throwable throwable) {
+             if (chunk == null)
+             {
+                 if (this.serverChunkGenerator == null)
+@@ -107,30 +187,82 @@
+                     catch (Throwable throwable)
+                     {
                          CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception generating new chunk");
                          CrashReportCategory crashreportcategory = crashreport.makeCategory("Chunk to be generated");
--                        crashreportcategory.addCrashSection("Location", String.format("%d,%d", new Object[] {Integer.valueOf(p_73158_1_), Integer.valueOf(p_73158_2_)}));
+                         crashreportcategory.addCrashSection("Location", String.format("%d,%d", new Object[] {Integer.valueOf(p_73158_1_), Integer.valueOf(p_73158_2_)}));
 -                        crashreportcategory.addCrashSection("Position hash", Long.valueOf(k));
-+                        crashreportcategory.addCrashSection("Location", String.format("%d,%d", new Object[]{Integer.valueOf(p_73158_1_), Integer.valueOf(p_73158_2_)}));
 +                        crashreportcategory.addCrashSection("Position hash", Long.valueOf(LongHash.toLong(p_73158_1_, p_73158_2_))); // CraftBukkit - Use LongHash
                          crashreportcategory.addCrashSection("Generator", this.serverChunkGenerator.makeString());
                          throw new ReportedException(crashreport);
                      }
                  }
++
 +                newChunk = true; // CraftBukkit
              }
  
 -            this.id2ChunkMap.add(k, chunk);
 -            this.loadedChunks.add(chunk);
-+
 +            this.id2ChunkMap.put(LongHash.toLong(p_73158_1_, p_73158_2_), chunk); // CraftBukkit
 +            // this.loadedChunks.add(chunk);  // CraftBukkit
              chunk.onChunkLoad();
-+
 +            // CraftBukkit start
 +            Server server = worldObj.getServer();
-+            if (server != null) {
++
++            if (server != null)
++            {
 +                /*
 +                 * If it's a new world, the first few chunks are generated inside
 +                 * the World constructor. We can't reliably alter that, so we have
@@ -247,21 +238,26 @@
 +            }
 +
 +            // Update neighbor counts
-+            for (int x = -2; x < 3; x++) {
-+                for (int z = -2; z < 3; z++) {
-+                    if (x == 0 && z == 0) {
++            for (int x = -2; x < 3; x++)
++            {
++                for (int z = -2; z < 3; z++)
++                {
++                    if (x == 0 && z == 0)
++                    {
 +                        continue;
 +                    }
 +
 +                    Chunk neighbor = this.getChunkIfLoaded(chunk.xPosition + x, chunk.zPosition + z);
-+                    if (neighbor != null) {
++
++                    if (neighbor != null)
++                    {
 +                        neighbor.setNeighborLoaded(-x, -z);
 +                        chunk.setNeighborLoaded(x, z);
 +                    }
 +                }
 +            }
-+            // CraftBukkit end
 +
++            // CraftBukkit end
              chunk.populateChunk(this, this, p_73158_1_, p_73158_2_);
 +            worldObj.timings.syncChunkLoadTimer.stopTiming(); // Spigot
          }
@@ -269,18 +265,18 @@
          return chunk;
      }
  
--    public Chunk provideChunk(int x, int z)
--    {
+     public Chunk provideChunk(int x, int z)
+     {
 -        Chunk chunk = (Chunk)this.id2ChunkMap.getValueByKey(ChunkCoordIntPair.chunkXZ2Int(x, z));
 -        return chunk == null ? (!this.worldObj.isFindingSpawnPoint() && !this.chunkLoadOverride ? this.dummyChunk : this.loadChunk(x, z)) : chunk;
-+    public Chunk provideChunk(int x, int z) {
 +        // CraftBukkit start
-+        Chunk chunk = (Chunk) this.id2ChunkMap.get(LongHash.toLong(x, z));
-+
++        Chunk chunk = (Chunk)this.id2ChunkMap.get(LongHash.toLong(x, z));
 +        chunk = chunk == null ? (!this.worldObj.isFindingSpawnPoint() && !this.chunkLoadOverride ? this.dummyChunk : this.loadChunk(x, z)) : chunk;
 +
 +        if (chunk == dummyChunk) return chunk;
-+        if (x != chunk.xPosition || z != chunk.zPosition) {
++
++        if (x != chunk.xPosition || z != chunk.zPosition)
++        {
 +            logger.error("Chunk (" + chunk.xPosition + ", " + chunk.zPosition + ") stored at  (" + x + ", " + z + ") in world '" + worldObj.getWorld().getName() + "'");
 +            logger.error(chunk.getClass().getName());
 +            Throwable ex = new Throwable();
@@ -292,30 +288,15 @@
 +        // CraftBukkit end
      }
  
--    private Chunk loadChunkFromFile(int p_73239_1_, int p_73239_2_)
--    {
--        if (this.chunkLoader == null)
--        {
-+    private Chunk loadChunkFromFile(int p_73239_1_, int p_73239_2_) {
-+        if (this.chunkLoader == null) {
-             return null;
--        }
--        else
--        {
--            try
--            {
-+        } else {
-+            try {
-                 Chunk chunk = this.chunkLoader.loadChunk(this.worldObj, p_73239_1_, p_73239_2_);
- 
--                if (chunk != null)
--                {
-+                if (chunk != null) {
+     private Chunk loadChunkFromFile(int p_73239_1_, int p_73239_2_)
+     {
+         if (this.chunkLoader == null)
+@@ -147,11 +279,13 @@
+                 {
                      chunk.setLastSaveTime(this.worldObj.getTotalWorldTime());
  
--                    if (this.serverChunkGenerator != null)
--                    {
-+                    if (this.serverChunkGenerator != null) {
+                     if (this.serverChunkGenerator != null)
+                     {
 +                        worldObj.timings.syncChunkLoadStructuresTimer.startTiming(); // Spigot
                          this.serverChunkGenerator.recreateStructures(chunk, p_73239_1_, p_73239_2_);
 +                        worldObj.timings.syncChunkLoadStructuresTimer.stopTiming(); // Spigot
@@ -323,57 +304,46 @@
                  }
  
                  return chunk;
--            }
--            catch (Exception exception)
--            {
-+            } catch (Exception exception) {
-                 logger.error("Couldn\'t load chunk", exception);
+             }
+@@ -161,11 +295,11 @@
                  return null;
              }
          }
      }
  
 -    private void saveChunkExtraData(Chunk p_73243_1_)
--    {
--        if (this.chunkLoader != null)
--        {
--            try
--            {
-+    public void saveChunkExtraData(Chunk p_73243_1_) { // SpigotMCP -- Apply access transformation
-+        if (this.chunkLoader != null) {
-+            try {
-                 this.chunkLoader.saveExtraChunkData(this.worldObj, p_73243_1_);
--            }
--            catch (Exception exception)
--            {
-+            } catch (Exception exception) {
++    public void saveChunkExtraData(Chunk p_73243_1_)   // SpigotMCP -- Apply access transformation
+     {
+         if (this.chunkLoader != null)
+         {
+             try
+             {
+@@ -176,26 +310,28 @@
                  logger.error("Couldn\'t save entities", exception);
              }
          }
      }
  
 -    private void saveChunkData(Chunk p_73242_1_)
--    {
--        if (this.chunkLoader != null)
--        {
--            try
--            {
-+    public void saveChunkData(Chunk p_73242_1_) { // SpigotMCP -- Apply access transformation
-+        if (this.chunkLoader != null) {
-+            try {
++    public void saveChunkData(Chunk p_73242_1_)   // SpigotMCP -- Apply access transformation
+     {
+         if (this.chunkLoader != null)
+         {
+             try
+             {
                  p_73242_1_.setLastSaveTime(this.worldObj.getTotalWorldTime());
                  this.chunkLoader.saveChunk(this.worldObj, p_73242_1_);
--            }
--            catch (IOException ioexception)
--            {
 +                // CraftBukkit start - IOException to Exception
-+            } catch (Exception ioexception) {
+             }
+-            catch (IOException ioexception)
++            catch (Exception ioexception)
+             {
                  logger.error("Couldn\'t save chunk", ioexception);
 -            }
 -            catch (MinecraftException minecraftexception)
 -            {
 +                /* Remove extra exception
-+            } catch (MinecraftException minecraftexception) {
++                } catch (MinecraftException minecraftexception) {
                  logger.error("Couldn\'t save chunk; already in use by another instance of Minecraft?", minecraftexception);
 +                */
 +                // CraftBukkit end
@@ -381,145 +351,94 @@
          }
      }
  
--    public void populate(IChunkProvider p_73153_1_, int p_73153_2_, int p_73153_3_)
--    {
-+    public void populate(IChunkProvider p_73153_1_, int p_73153_2_, int p_73153_3_) {
-         Chunk chunk = this.provideChunk(p_73153_2_, p_73153_3_);
- 
--        if (!chunk.isTerrainPopulated())
--        {
-+        if (!chunk.isTerrainPopulated()) {
+     public void populate(IChunkProvider p_73153_1_, int p_73153_2_, int p_73153_3_)
+@@ -207,10 +343,39 @@
              chunk.func_150809_p();
  
--            if (this.serverChunkGenerator != null)
--            {
-+            if (this.serverChunkGenerator != null) {
+             if (this.serverChunkGenerator != null)
+             {
                  this.serverChunkGenerator.populate(p_73153_1_, p_73153_2_, p_73153_3_);
-+
 +                // CraftBukkit start
 +                BlockSand.fallInstantly = true;
 +                Random random = new Random();
 +                random.setSeed(worldObj.getSeed());
 +                long xRand = random.nextLong() / 2L * 2L + 1L;
 +                long zRand = random.nextLong() / 2L * 2L + 1L;
-+                random.setSeed((long) p_73153_2_ * xRand + (long) p_73153_3_ * zRand ^ worldObj.getSeed());
-+
++                random.setSeed((long)p_73153_2_ * xRand + (long)p_73153_3_ * zRand ^ worldObj.getSeed());
 +                org.bukkit.World world = this.worldObj.getWorld();
-+                if (world != null) {
++
++                if (world != null)
++                {
 +                    this.worldObj.populating = true;
-+                    try {
-+                        for (BlockPopulator populator : world.getPopulators()) {
++
++                    try
++                    {
++                        for (BlockPopulator populator : world.getPopulators())
++                        {
 +                            populator.populate(world, random, chunk.bukkitChunk);
 +                        }
-+                    } finally {
++                    }
++                    finally
++                    {
 +                        this.worldObj.populating = false;
 +                    }
 +                }
++
 +                BlockSand.fallInstantly = false;
 +                this.worldObj.getServer().getPluginManager().callEvent(new ChunkPopulateEvent(chunk.bukkitChunk));
 +                // CraftBukkit end
-+
                  chunk.setChunkModified();
              }
          }
      }
  
--    public boolean func_177460_a(IChunkProvider p_177460_1_, Chunk p_177460_2_, int p_177460_3_, int p_177460_4_)
--    {
--        if (this.serverChunkGenerator != null && this.serverChunkGenerator.func_177460_a(p_177460_1_, p_177460_2_, p_177460_3_, p_177460_4_))
--        {
-+    public boolean func_177460_a(IChunkProvider p_177460_1_, Chunk p_177460_2_, int p_177460_3_, int p_177460_4_) {
-+        if (this.serverChunkGenerator != null && this.serverChunkGenerator.func_177460_a(p_177460_1_, p_177460_2_, p_177460_3_, p_177460_4_)) {
-             Chunk chunk1 = this.provideChunk(p_177460_3_, p_177460_4_);
-             chunk1.setChunkModified();
-             return true;
--        }
--        else
--        {
-+        } else {
-             return false;
-         }
+@@ -229,14 +394,17 @@
      }
  
--    public boolean saveChunks(boolean p_73151_1_, IProgressUpdate p_73151_2_)
--    {
-+    public boolean saveChunks(boolean p_73151_1_, IProgressUpdate p_73151_2_) {
+     public boolean saveChunks(boolean p_73151_1_, IProgressUpdate p_73151_2_)
+     {
          int i = 0;
- 
--        for (int j = 0; j < this.loadedChunks.size(); ++j)
--        {
--            Chunk chunk = (Chunk)this.loadedChunks.get(j);
 +        // CraftBukkit start
 +        Iterator<Chunk> iterator = this.id2ChunkMap.values().iterator();
-+        while (iterator.hasNext()) {
+ 
+-        for (int j = 0; j < this.loadedChunks.size(); ++j)
++        while (iterator.hasNext())
+         {
+-            Chunk chunk = (Chunk)this.loadedChunks.get(j);
 +            Chunk chunk = iterator.next();
 +            // CraftBukkit end
  
--            if (p_73151_1_)
--            {
-+            if (p_73151_1_) {
+             if (p_73151_1_)
+             {
                  this.saveChunkExtraData(chunk);
              }
+@@ -267,30 +435,58 @@
  
--            if (chunk.needsSaving(p_73151_1_))
--            {
-+            if (chunk.needsSaving(p_73151_1_)) {
-                 this.saveChunkData(chunk);
-                 chunk.setModified(false);
-                 ++i;
- 
--                if (i == 24 && !p_73151_1_)
--                {
-+                if (i == 24 && !p_73151_1_) {
-                     return false;
-                 }
-             }
-         }
- 
-         return true;
-     }
- 
--    public void saveExtraData()
--    {
--        if (this.chunkLoader != null)
--        {
-+    public void saveExtraData() {
-+        if (this.chunkLoader != null) {
-             this.chunkLoader.saveExtraData();
-         }
-     }
- 
--    public boolean unloadQueuedChunks()
--    {
--        if (!this.worldObj.disableLevelSaving)
--        {
+     public boolean unloadQueuedChunks()
+     {
+         if (!this.worldObj.disableLevelSaving)
+         {
 -            for (int i = 0; i < 100; ++i)
--            {
--                if (!this.droppedChunksSet.isEmpty())
--                {
--                    Long olong = (Long)this.droppedChunksSet.iterator().next();
--                    Chunk chunk = (Chunk)this.id2ChunkMap.getValueByKey(olong.longValue());
-+    public boolean unloadQueuedChunks() {
-+        if (!this.worldObj.disableLevelSaving) {
 +            // CraftBukkit start
 +            Server server = this.worldObj.getServer();
-+            for (int i = 0; i < 100 && !this.droppedChunksSet.isEmpty(); ++i) {
-+                Long olong = (Long) this.droppedChunksSet.popFirst();
-+                Chunk chunk = (Chunk) this.id2ChunkMap.get(olong);
++
++            for (int i = 0; i < 100 && !this.droppedChunksSet.isEmpty(); ++i)
+             {
+-                if (!this.droppedChunksSet.isEmpty())
++                Long olong = (Long)this.droppedChunksSet.popFirst();
++                Chunk chunk = (Chunk)this.id2ChunkMap.get(olong);
++
 +                if (chunk == null) continue;
- 
--                    if (chunk != null)
--                    {
--                        chunk.onChunkUnload();
--                        this.saveChunkData(chunk);
--                        this.saveChunkExtraData(chunk);
--                        this.id2ChunkMap.remove(olong.longValue());
--                        this.loadedChunks.remove(chunk);
--                    }
++
 +                ChunkUnloadEvent event = new ChunkUnloadEvent(chunk.bukkitChunk);
 +                server.getPluginManager().callEvent(event);
++
 +                if (event.isCancelled()) continue; // SpigotMCP -- Use continue instead of if-block
-+                if (chunk != null) {
++
++                if (chunk != null)
+                 {
+-                    Long olong = (Long)this.droppedChunksSet.iterator().next();
+-                    Chunk chunk = (Chunk)this.id2ChunkMap.getValueByKey(olong.longValue());
 +                    chunk.onChunkUnload();
 +                    this.saveChunkData(chunk);
 +                    this.saveChunkExtraData(chunk);
@@ -527,78 +446,74 @@
 +                    // this.loadedChunks.remove(chunk);
 +                }
  
--                    this.droppedChunksSet.remove(olong);
+-                    if (chunk != null)
 +                // this.droppedChunksSet.remove(olong);
-+
-+
 +                // Update neighbor counts
-+                for (int x = -2; x < 3; x++) {
-+                    for (int z = -2; z < 3; z++) {
-+                        if (x == 0 && z == 0) {
++                for (int x = -2; x < 3; x++)
++                {
++                    for (int z = -2; z < 3; z++)
+                     {
+-                        chunk.onChunkUnload();
+-                        this.saveChunkData(chunk);
+-                        this.saveChunkExtraData(chunk);
+-                        this.id2ChunkMap.remove(olong.longValue());
+-                        this.loadedChunks.remove(chunk);
+-                    }
++                        if (x == 0 && z == 0)
++                        {
 +                            continue;
 +                        }
-+
+ 
+-                    this.droppedChunksSet.remove(olong);
 +                        Chunk neighbor = this.getChunkIfLoaded(chunk.xPosition + x, chunk.zPosition + z);
-+                        if (neighbor != null) {
++
++                        if (neighbor != null)
++                        {
 +                            neighbor.setNeighborUnloaded(-x, -z);
 +                            chunk.setNeighborUnloaded(x, z);
 +                        }
 +                    }
                  }
              }
-+            // CraftBukkit end
  
--            if (this.chunkLoader != null)
--            {
-+            if (this.chunkLoader != null) {
++            // CraftBukkit end
++
+             if (this.chunkLoader != null)
+             {
                  this.chunkLoader.chunkTick();
              }
          }
- 
-         return this.serverChunkGenerator.unloadQueuedChunks();
-     }
- 
--    public boolean canSave()
--    {
-+    public boolean canSave() {
+@@ -303,11 +499,12 @@
          return !this.worldObj.disableLevelSaving;
      }
  
--    public String makeString()
--    {
+     public String makeString()
+     {
 -        return "ServerChunkCache: " + this.id2ChunkMap.getNumHashElements() + " Drop: " + this.droppedChunksSet.size();
-+    public String makeString() {
 +        // CraftBukkit - this.chunks.count() -> .size()
 +        return "ServerChunkCache: " + this.id2ChunkMap.size() + " Drop: " + this.droppedChunksSet.size();
      }
  
--    public List func_177458_a(EnumCreatureType p_177458_1_, BlockPos p_177458_2_)
--    {
-+    public List func_177458_a(EnumCreatureType p_177458_1_, BlockPos p_177458_2_) {
+     public List func_177458_a(EnumCreatureType p_177458_1_, BlockPos p_177458_2_)
+     {
          return this.serverChunkGenerator.func_177458_a(p_177458_1_, p_177458_2_);
-     }
- 
--    public BlockPos getStrongholdGen(World worldIn, String p_180513_2_, BlockPos p_180513_3_)
--    {
-+    public BlockPos getStrongholdGen(World worldIn, String p_180513_2_, BlockPos p_180513_3_) {
+@@ -318,14 +515,17 @@
          return this.serverChunkGenerator.getStrongholdGen(worldIn, p_180513_2_, p_180513_3_);
      }
  
--    public int getLoadedChunkCount()
--    {
+     public int getLoadedChunkCount()
+     {
 -        return this.id2ChunkMap.getNumHashElements();
-+    public int getLoadedChunkCount() {
 +        // CraftBukkit - this.chunks.count() -> this.chunks.size()
 +        return this.id2ChunkMap.size();
      }
  
 -    public void recreateStructures(Chunk p_180514_1_, int p_180514_2_, int p_180514_3_) {}
-+    public void recreateStructures(Chunk p_180514_1_, int p_180514_2_, int p_180514_3_) {
++    public void recreateStructures(Chunk p_180514_1_, int p_180514_2_, int p_180514_3_)
++    {
 +    }
  
--    public Chunk provideChunk(BlockPos blockPosIn)
--    {
-+    public Chunk provideChunk(BlockPos blockPosIn) {
+     public Chunk provideChunk(BlockPos blockPosIn)
+     {
          return this.provideChunk(blockPosIn.getX() >> 4, blockPosIn.getZ() >> 4);
      }
- }

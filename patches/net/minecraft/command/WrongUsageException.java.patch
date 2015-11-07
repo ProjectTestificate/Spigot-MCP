@@ -1,17 +1,16 @@
 --- decompiled\net\minecraft\command\WrongUsageException.java
 +++ src\main\java\net\minecraft\command\WrongUsageException.java
-@@ -1,11 +1,10 @@
+@@ -1,11 +1,12 @@
  package net.minecraft.command;
  
--public class WrongUsageException extends SyntaxErrorException
--{
-+public class WrongUsageException extends SyntaxErrorException {
+ public class WrongUsageException extends SyntaxErrorException
+ {
 +
      private static final String __OBFID = "CL_00001192";
  
 -    public WrongUsageException(String message, Object ... replacements)
--    {
-+    public WrongUsageException(String message, Object... replacements) {
++    public WrongUsageException(String message, Object... replacements)
+     {
          super(message, replacements);
      }
  }

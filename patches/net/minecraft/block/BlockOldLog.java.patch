@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\block\BlockOldLog.java
 +++ src\main\java\net\minecraft\block\BlockOldLog.java
-@@ -1,55 +1,40 @@
+@@ -1,21 +1,19 @@
  package net.minecraft.block;
  
 -import com.google.common.base.Predicate;
@@ -15,36 +15,19 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class BlockOldLog extends BlockLog
--{
--    public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockPlanks.EnumType.class, new Predicate()
--    {
 +import com.google.common.base.Predicate;
 +
-+public class BlockOldLog extends BlockLog {
+ public class BlockOldLog extends BlockLog
+ {
 +
-+    public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockPlanks.EnumType.class, new Predicate() {
-+
+     public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockPlanks.EnumType.class, new Predicate()
+     {
          private static final String __OBFID = "CL_00002084";
--        public boolean apply(BlockPlanks.EnumType type)
--        {
-+
-+        public boolean apply(BlockPlanks.EnumType type) {
-             return type.getMetadata() < 4;
-         }
--        public boolean apply(Object p_apply_1_)
--        {
--            return this.apply((BlockPlanks.EnumType)p_apply_1_);
-+
-+        public boolean apply(Object p_apply_1_) {
-+            return this.apply((BlockPlanks.EnumType) p_apply_1_);
-         }
-     });
-     private static final String __OBFID = "CL_00000281";
- 
--    public BlockOldLog()
--    {
-+    public BlockOldLog() {
+         public boolean apply(BlockPlanks.EnumType type)
+         {
+@@ -31,19 +29,10 @@
+     public BlockOldLog()
+     {
          this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockPlanks.EnumType.OAK).withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
      }
  
@@ -57,120 +40,20 @@
 -        list.add(new ItemStack(itemIn, 1, BlockPlanks.EnumType.JUNGLE.getMetadata()));
 -    }
 -
--    public IBlockState getStateFromMeta(int meta)
--    {
-+    public IBlockState getStateFromMeta(int meta) {
+     public IBlockState getStateFromMeta(int meta)
+     {
          IBlockState iblockstate = this.getDefaultState().withProperty(VARIANT, BlockPlanks.EnumType.byMetadata((meta & 3) % 4));
  
--        switch (meta & 12)
--        {
-+        switch (meta & 12) {
-             case 0:
-                 iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.Y);
-                 break;
-             case 4:
-                 iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.X);
-@@ -62,17 +47,15 @@
-         }
- 
-         return iblockstate;
+         switch (meta & 12)
+@@ -99,10 +88,11 @@
+         return ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata();
      }
  
--    public int getMetaFromState(IBlockState state)
--    {
-+    public int getMetaFromState(IBlockState state) {
-         byte b0 = 0;
--        int i = b0 | ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata();
-+        int i = b0 | ((BlockPlanks.EnumType) state.getValue(VARIANT)).getMetadata();
- 
--        switch (BlockOldLog.SwitchEnumAxis.AXIS_LOOKUP[((BlockLog.EnumAxis)state.getValue(LOG_AXIS)).ordinal()])
--        {
-+        switch (BlockOldLog.SwitchEnumAxis.AXIS_LOOKUP[((BlockLog.EnumAxis) state.getValue(LOG_AXIS)).ordinal()]) {
-             case 1:
-                 i |= 4;
-                 break;
-             case 2:
-                 i |= 8;
-@@ -82,56 +65,43 @@
-         }
- 
-         return i;
-     }
- 
--    protected BlockState createBlockState()
--    {
--        return new BlockState(this, new IProperty[] {VARIANT, LOG_AXIS});
-+    protected BlockState createBlockState() {
-+        return new BlockState(this, new IProperty[]{VARIANT, LOG_AXIS});
-     }
- 
--    protected ItemStack createStackedBlock(IBlockState state)
--    {
--        return new ItemStack(Item.getItemFromBlock(this), 1, ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata());
-+    protected ItemStack createStackedBlock(IBlockState state) {
-+        return new ItemStack(Item.getItemFromBlock(this), 1, ((BlockPlanks.EnumType) state.getValue(VARIANT)).getMetadata());
-     }
- 
--    public int damageDropped(IBlockState state)
--    {
--        return ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata();
-+    public int damageDropped(IBlockState state) {
-+        return ((BlockPlanks.EnumType) state.getValue(VARIANT)).getMetadata();
-     }
- 
--    static final class SwitchEnumAxis
--        {
--            static final int[] AXIS_LOOKUP = new int[BlockLog.EnumAxis.values().length];
--            private static final String __OBFID = "CL_00002083";
-+    static final class SwitchEnumAxis {
- 
--            static
--            {
--                try
--                {
--                    AXIS_LOOKUP[BlockLog.EnumAxis.X.ordinal()] = 1;
--                }
--                catch (NoSuchFieldError var3)
--                {
--                    ;
--                }
-+        static final int[] AXIS_LOOKUP = new int[BlockLog.EnumAxis.values().length];
-+        private static final String __OBFID = "CL_00002083";
- 
--                try
--                {
--                    AXIS_LOOKUP[BlockLog.EnumAxis.Z.ordinal()] = 2;
--                }
--                catch (NoSuchFieldError var2)
--                {
--                    ;
--                }
-+        static {
-+            try {
-+                AXIS_LOOKUP[BlockLog.EnumAxis.X.ordinal()] = 1;
-+            } catch (NoSuchFieldError var3) {
-+                ;
-+            }
- 
--                try
--                {
--                    AXIS_LOOKUP[BlockLog.EnumAxis.NONE.ordinal()] = 3;
--                }
--                catch (NoSuchFieldError var1)
--                {
--                    ;
--                }
-+            try {
-+                AXIS_LOOKUP[BlockLog.EnumAxis.Z.ordinal()] = 2;
-+            } catch (NoSuchFieldError var2) {
-+                ;
-             }
+     static final class SwitchEnumAxis
+         {
 +
-+            try {
-+                AXIS_LOOKUP[BlockLog.EnumAxis.NONE.ordinal()] = 3;
-+            } catch (NoSuchFieldError var1) {
-+                ;
-+            }
-         }
-+    }
- }
+             static final int[] AXIS_LOOKUP = new int[BlockLog.EnumAxis.values().length];
+             private static final String __OBFID = "CL_00002083";
+ 
+             static
+             {

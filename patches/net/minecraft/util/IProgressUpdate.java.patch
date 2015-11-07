@@ -1,14 +1,13 @@
 --- decompiled\net\minecraft\util\IProgressUpdate.java
 +++ src\main\java\net\minecraft\util\IProgressUpdate.java
-@@ -1,19 +1,11 @@
+@@ -1,19 +1,12 @@
  package net.minecraft.util;
  
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public interface IProgressUpdate
--{
-+public interface IProgressUpdate {
+ public interface IProgressUpdate
+ {
 +
      void displaySavingString(String message);
  

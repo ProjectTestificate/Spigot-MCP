@@ -1,15 +1,14 @@
 --- decompiled\net\minecraft\world\WorldType.java
 +++ src\main\java\net\minecraft\world\WorldType.java
-@@ -1,13 +1,11 @@
+@@ -1,13 +1,12 @@
  package net.minecraft.world;
  
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class WorldType
--{
+ public class WorldType
+ {
 -    public static final WorldType[] worldTypes = new WorldType[16];
-+public class WorldType {
 +
 +    public static WorldType[] worldTypes = new WorldType[16];
      public static final WorldType DEFAULT = (new WorldType(0, "default", 1)).setVersioned();
@@ -17,31 +16,9 @@
      public static final WorldType LARGE_BIOMES = new WorldType(2, "largeBiomes");
      public static final WorldType AMPLIFIED = (new WorldType(3, "amplified")).setNotificationData();
      public static final WorldType CUSTOMIZED = new WorldType(4, "customized");
-@@ -19,99 +17,62 @@
-     private boolean canBeCreated;
-     private boolean isWorldTypeVersioned;
-     private boolean hasNotificationData;
-     private static final String __OBFID = "CL_00000150";
- 
--    private WorldType(int id, String name)
--    {
-+    private WorldType(int id, String name) {
-         this(id, name, 0);
-     }
- 
--    private WorldType(int id, String name, int version)
--    {
-+    private WorldType(int id, String name, int version) {
-         this.worldType = name;
-         this.generatorVersion = version;
-         this.canBeCreated = true;
-         this.worldTypeId = id;
-         worldTypes[id] = this;
-     }
- 
--    public String getWorldTypeName()
--    {
-+    public String getWorldTypeName() {
+@@ -38,22 +37,10 @@
+     public String getWorldTypeName()
+     {
          return this.worldType;
      }
  
@@ -57,21 +34,13 @@
 -        return this.getTranslateName() + ".info";
 -    }
 -
--    public int getGeneratorVersion()
--    {
-+    public int getGeneratorVersion() {
+     public int getGeneratorVersion()
+     {
          return this.generatorVersion;
      }
  
--    public WorldType getWorldTypeForGeneratorVersion(int version)
--    {
-+    public WorldType getWorldTypeForGeneratorVersion(int version) {
-         return this == DEFAULT && version == 0 ? DEFAULT_1_1 : this;
-     }
- 
--    private WorldType setCanBeCreated(boolean enable)
--    {
-+    private WorldType setCanBeCreated(boolean enable) {
+@@ -66,16 +53,10 @@
+     {
          this.canBeCreated = enable;
          return this;
      }
@@ -82,38 +51,14 @@
 -        return this.canBeCreated;
 -    }
 -
--    private WorldType setVersioned()
--    {
-+    private WorldType setVersioned() {
+     private WorldType setVersioned()
+     {
          this.isWorldTypeVersioned = true;
          return this;
      }
- 
--    public boolean isVersioned()
--    {
-+    public boolean isVersioned() {
-         return this.isWorldTypeVersioned;
-     }
- 
--    public static WorldType parseWorldType(String type)
--    {
--        for (int i = 0; i < worldTypes.length; ++i)
--        {
--            if (worldTypes[i] != null && worldTypes[i].worldType.equalsIgnoreCase(type))
--            {
-+    public static WorldType parseWorldType(String type) {
-+        for (int i = 0; i < worldTypes.length; ++i) {
-+            if (worldTypes[i] != null && worldTypes[i].worldType.equalsIgnoreCase(type)) {
-                 return worldTypes[i];
-             }
-         }
- 
-         return null;
-     }
- 
--    public int getWorldTypeID()
--    {
-+    public int getWorldTypeID() {
+@@ -101,16 +82,10 @@
+     public int getWorldTypeID()
+     {
          return this.worldTypeId;
      }
  
@@ -123,10 +68,8 @@
 -        return this.hasNotificationData;
 -    }
 -
--    private WorldType setNotificationData()
--    {
-+    private WorldType setNotificationData() {
+     private WorldType setNotificationData()
+     {
          this.hasNotificationData = true;
          return this;
      }
- }

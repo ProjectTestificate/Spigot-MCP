@@ -1,80 +1,18 @@
 --- decompiled\net\minecraft\item\ItemDoor.java
 +++ src\main\java\net\minecraft\item\ItemDoor.java
-@@ -7,72 +7,62 @@
- import net.minecraft.entity.player.EntityPlayer;
- import net.minecraft.util.BlockPos;
+@@ -9,10 +9,11 @@
  import net.minecraft.util.EnumFacing;
  import net.minecraft.world.World;
  
--public class ItemDoor extends Item
--{
-+public class ItemDoor extends Item {
+ public class ItemDoor extends Item
+ {
 +
      private Block block;
      private static final String __OBFID = "CL_00000020";
  
--    public ItemDoor(Block block)
--    {
-+    public ItemDoor(Block block) {
-         this.block = block;
-         this.setCreativeTab(CreativeTabs.tabRedstone);
-     }
- 
--    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
--    {
--        if (side != EnumFacing.UP)
--        {
-+    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
-+        if (side != EnumFacing.UP) {
-             return false;
--        }
--        else
--        {
-+        } else {
-             IBlockState iblockstate = worldIn.getBlockState(pos);
-             Block block = iblockstate.getBlock();
- 
--            if (!block.isReplaceable(worldIn, pos))
--            {
-+            if (!block.isReplaceable(worldIn, pos)) {
-                 pos = pos.offset(side);
-             }
- 
--            if (!playerIn.canPlayerEdit(pos, side, stack))
--            {
-+            if (!playerIn.canPlayerEdit(pos, side, stack)) {
-                 return false;
--            }
--            else if (!this.block.canPlaceBlockAt(worldIn, pos))
--            {
-+            } else if (!this.block.canPlaceBlockAt(worldIn, pos)) {
-                 return false;
--            }
--            else
--            {
--                placeDoor(worldIn, pos, EnumFacing.fromAngle((double)playerIn.rotationYaw), this.block);
-+            } else {
-+                placeDoor(worldIn, pos, EnumFacing.fromAngle((double) playerIn.rotationYaw), this.block);
-                 --stack.stackSize;
-                 return true;
-             }
-         }
-     }
- 
--    public static void placeDoor(World worldIn, BlockPos pos, EnumFacing facing, Block door)
--    {
-+    public static void placeDoor(World worldIn, BlockPos pos, EnumFacing facing, Block door) {
-         BlockPos blockpos1 = pos.offset(facing.rotateY());
-         BlockPos blockpos2 = pos.offset(facing.rotateYCCW());
-         int i = (worldIn.getBlockState(blockpos2).getBlock().isNormalCube() ? 1 : 0) + (worldIn.getBlockState(blockpos2.up()).getBlock().isNormalCube() ? 1 : 0);
-         int j = (worldIn.getBlockState(blockpos1).getBlock().isNormalCube() ? 1 : 0) + (worldIn.getBlockState(blockpos1.up()).getBlock().isNormalCube() ? 1 : 0);
-         boolean flag = worldIn.getBlockState(blockpos2).getBlock() == door || worldIn.getBlockState(blockpos2.up()).getBlock() == door;
-         boolean flag1 = worldIn.getBlockState(blockpos1).getBlock() == door || worldIn.getBlockState(blockpos1.up()).getBlock() == door;
-         boolean flag2 = false;
- 
--        if (flag && !flag1 || j > i)
--        {
-+        if (flag && !flag1 || j > i) {
+     public ItemDoor(Block block)
+     {
+@@ -68,11 +69,13 @@
              flag2 = true;
          }
  
@@ -84,7 +22,6 @@
 -        worldIn.setBlockState(blockpos3, iblockstate.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.UPPER), 2);
 -        worldIn.notifyNeighborsOfStateChange(pos, door);
 -        worldIn.notifyNeighborsOfStateChange(blockpos3, door);
-+
 +        // Spigot start - update physics after the block multi place event
 +        worldIn.setBlockState(pos, iblockstate.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.LOWER), 3);
 +        worldIn.setBlockState(blockpos3, iblockstate.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.UPPER), 3);

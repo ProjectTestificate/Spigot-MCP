@@ -1,14 +1,11 @@
 --- decompiled\net\minecraft\inventory\ISidedInventory.java
 +++ src\main\java\net\minecraft\inventory\ISidedInventory.java
-@@ -1,12 +1,12 @@
- package net.minecraft.inventory;
- 
+@@ -3,10 +3,11 @@
  import net.minecraft.item.ItemStack;
  import net.minecraft.util.EnumFacing;
  
--public interface ISidedInventory extends IInventory
--{
-+public interface ISidedInventory extends IInventory {
+ public interface ISidedInventory extends IInventory
+ {
 +
      int[] getSlotsForFace(EnumFacing side);
  

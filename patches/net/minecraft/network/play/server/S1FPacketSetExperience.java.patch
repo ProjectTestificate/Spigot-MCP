@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S1FPacketSetExperience.java
 +++ src\main\java\net\minecraft\network\play\server\S1FPacketSetExperience.java
-@@ -1,68 +1,47 @@
+@@ -1,23 +1,26 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -12,10 +12,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S1FPacketSetExperience implements Packet
--{
 +
-+public class S1FPacketSetExperience implements Packet {
+ public class S1FPacketSetExperience implements Packet
+ {
 +
      private float field_149401_a;
      private int field_149399_b;
@@ -23,36 +22,17 @@
      private static final String __OBFID = "CL_00001331";
  
 -    public S1FPacketSetExperience() {}
-+    public S1FPacketSetExperience() {
++    public S1FPacketSetExperience()
++    {
 +    }
  
--    public S1FPacketSetExperience(float p_i45222_1_, int p_i45222_2_, int p_i45222_3_)
--    {
-+    public S1FPacketSetExperience(float p_i45222_1_, int p_i45222_2_, int p_i45222_3_) {
+     public S1FPacketSetExperience(float p_i45222_1_, int p_i45222_2_, int p_i45222_3_)
+     {
          this.field_149401_a = p_i45222_1_;
          this.field_149399_b = p_i45222_2_;
-         this.field_149400_c = p_i45222_3_;
-     }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.field_149401_a = buf.readFloat();
-         this.field_149400_c = buf.readVarIntFromBuffer();
-         this.field_149399_b = buf.readVarIntFromBuffer();
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeFloat(this.field_149401_a);
-         buf.writeVarIntToBuffer(this.field_149400_c);
-         buf.writeVarIntToBuffer(this.field_149399_b);
-     }
- 
--    public void func_180749_a(INetHandlerPlayClient p_180749_1_)
--    {
-+    public void func_180749_a(INetHandlerPlayClient p_180749_1_) {
+@@ -41,28 +44,11 @@
+     public void func_180749_a(INetHandlerPlayClient p_180749_1_)
+     {
          p_180749_1_.handleSetExperience(this);
      }
  
@@ -60,15 +40,14 @@
 -    public float func_149397_c()
 -    {
 -        return this.field_149401_a;
-+    public void processPacket(INetHandler handler) {
+-    }
+-
+     public void processPacket(INetHandler handler)
+     {
+-        this.func_180749_a((INetHandlerPlayClient)handler);
 +        this.func_180749_a((INetHandlerPlayClient) handler);
      }
  
--    public void processPacket(INetHandler handler)
--    {
--        this.func_180749_a((INetHandlerPlayClient)handler);
--    }
--
 -    @SideOnly(Side.CLIENT)
 -    public int func_149396_d()
 -    {

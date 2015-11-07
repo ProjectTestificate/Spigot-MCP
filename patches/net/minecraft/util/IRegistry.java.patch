@@ -1,16 +1,15 @@
 --- decompiled\net\minecraft\util\IRegistry.java
 +++ src\main\java\net\minecraft\util\IRegistry.java
-@@ -1,13 +1,6 @@
+@@ -1,13 +1,7 @@
  package net.minecraft.util;
  
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public interface IRegistry extends Iterable
--{
+ public interface IRegistry extends Iterable
+ {
 -    @SideOnly(Side.CLIENT)
 -    Object getObject(Object p_82594_1_);
-+public interface IRegistry extends Iterable {
  
 -    @SideOnly(Side.CLIENT)
 -    void putObject(Object p_82595_1_, Object p_82595_2_);

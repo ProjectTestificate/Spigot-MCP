@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\inventory\ContainerBrewingStand.java
 +++ src\main\java\net\minecraft\inventory\ContainerBrewingStand.java
-@@ -3,204 +3,178 @@
+@@ -3,22 +3,30 @@
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.entity.player.InventoryPlayer;
  import net.minecraft.init.Items;
@@ -9,12 +9,11 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class ContainerBrewingStand extends Container
--{
 +import org.bukkit.craftbukkit.inventory.CraftInventoryBrewer;
 +import org.bukkit.craftbukkit.inventory.CraftInventoryView;
 +
-+public class ContainerBrewingStand extends Container {
+ public class ContainerBrewingStand extends Container
+ {
 +
      private IInventory tileBrewingStand;
      private final Slot theSlot;
@@ -26,57 +25,15 @@
 +    // CraftBukkit end
      private static final String __OBFID = "CL_00001737";
  
--    public ContainerBrewingStand(InventoryPlayer playerInventory, IInventory p_i45802_2_)
--    {
-+    public ContainerBrewingStand(InventoryPlayer playerInventory, IInventory p_i45802_2_) {
+     public ContainerBrewingStand(InventoryPlayer playerInventory, IInventory p_i45802_2_)
+     {
 +        player = playerInventory; // CraftBukkit
          this.tileBrewingStand = p_i45802_2_;
          this.addSlotToContainer(new ContainerBrewingStand.Potion(playerInventory.player, p_i45802_2_, 0, 56, 46));
          this.addSlotToContainer(new ContainerBrewingStand.Potion(playerInventory.player, p_i45802_2_, 1, 79, 53));
          this.addSlotToContainer(new ContainerBrewingStand.Potion(playerInventory.player, p_i45802_2_, 2, 102, 46));
          this.theSlot = this.addSlotToContainer(new ContainerBrewingStand.Ingredient(p_i45802_2_, 3, 79, 17));
-         int i;
- 
--        for (i = 0; i < 3; ++i)
--        {
--            for (int j = 0; j < 9; ++j)
--            {
-+        for (i = 0; i < 3; ++i) {
-+            for (int j = 0; j < 9; ++j) {
-                 this.addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-             }
-         }
- 
--        for (i = 0; i < 9; ++i)
--        {
-+        for (i = 0; i < 9; ++i) {
-             this.addSlotToContainer(new Slot(playerInventory, i, 8 + i * 18, 142));
-         }
-     }
- 
--    public void addCraftingToCrafters(ICrafting listener)
--    {
-+    public void addCraftingToCrafters(ICrafting listener) {
-         super.addCraftingToCrafters(listener);
-         listener.func_175173_a(this, this.tileBrewingStand);
-     }
- 
--    public void detectAndSendChanges()
--    {
-+    public void detectAndSendChanges() {
-         super.detectAndSendChanges();
- 
--        for (int i = 0; i < this.crafters.size(); ++i)
--        {
--            ICrafting icrafting = (ICrafting)this.crafters.get(i);
-+        for (int i = 0; i < this.crafters.size(); ++i) {
-+            ICrafting icrafting = (ICrafting) this.crafters.get(i);
- 
--            if (this.brewTime != this.tileBrewingStand.getField(0))
--            {
-+            if (this.brewTime != this.tileBrewingStand.getField(0)) {
-                 icrafting.sendProgressBarUpdate(this, 0, this.tileBrewingStand.getField(0));
-             }
+@@ -59,18 +67,14 @@
          }
  
          this.brewTime = this.tileBrewingStand.getField(0);
@@ -88,113 +45,27 @@
 -        this.tileBrewingStand.setField(id, data);
 -    }
 -
--    public boolean canInteractWith(EntityPlayer playerIn)
--    {
-+    public boolean canInteractWith(EntityPlayer playerIn) {
+     public boolean canInteractWith(EntityPlayer playerIn)
+     {
 +        if (!this.checkReachable) return true; // CraftBukkit
++
          return this.tileBrewingStand.isUseableByPlayer(playerIn);
      }
  
--    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
--    {
-+    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
-         ItemStack itemstack = null;
--        Slot slot = (Slot)this.inventorySlots.get(index);
-+        Slot slot = (Slot) this.inventorySlots.get(index);
- 
--        if (slot != null && slot.getHasStack())
--        {
-+        if (slot != null && slot.getHasStack()) {
-             ItemStack itemstack1 = slot.getStack();
-             itemstack = itemstack1.copy();
- 
--            if ((index < 0 || index > 2) && index != 3)
--            {
--                if (!this.theSlot.getHasStack() && this.theSlot.isItemValid(itemstack1))
--                {
--                    if (!this.mergeItemStack(itemstack1, 3, 4, false))
--                    {
-+            if ((index < 0 || index > 2) && index != 3) {
-+                if (!this.theSlot.getHasStack() && this.theSlot.isItemValid(itemstack1)) {
-+                    if (!this.mergeItemStack(itemstack1, 3, 4, false)) {
-                         return null;
-                     }
--                }
--                else if (ContainerBrewingStand.Potion.canHoldPotion(itemstack))
--                {
--                    if (!this.mergeItemStack(itemstack1, 0, 3, false))
--                    {
-+                } else if (ContainerBrewingStand.Potion.canHoldPotion(itemstack)) {
-+                    if (!this.mergeItemStack(itemstack1, 0, 3, false)) {
-                         return null;
-                     }
--                }
--                else if (index >= 4 && index < 31)
--                {
--                    if (!this.mergeItemStack(itemstack1, 31, 40, false))
--                    {
-+                } else if (index >= 4 && index < 31) {
-+                    if (!this.mergeItemStack(itemstack1, 31, 40, false)) {
-                         return null;
-                     }
--                }
--                else if (index >= 31 && index < 40)
--                {
--                    if (!this.mergeItemStack(itemstack1, 4, 31, false))
--                    {
-+                } else if (index >= 31 && index < 40) {
-+                    if (!this.mergeItemStack(itemstack1, 4, 31, false)) {
-                         return null;
-                     }
--                }
--                else if (!this.mergeItemStack(itemstack1, 4, 40, false))
--                {
-+                } else if (!this.mergeItemStack(itemstack1, 4, 40, false)) {
-                     return null;
-                 }
--            }
--            else
--            {
--                if (!this.mergeItemStack(itemstack1, 4, 40, true))
--                {
-+            } else {
-+                if (!this.mergeItemStack(itemstack1, 4, 40, true)) {
-                     return null;
-                 }
- 
-                 slot.onSlotChange(itemstack1, itemstack);
-             }
- 
--            if (itemstack1.stackSize == 0)
--            {
--                slot.putStack((ItemStack)null);
--            }
--            else
--            {
-+            if (itemstack1.stackSize == 0) {
-+                slot.putStack((ItemStack) null);
-+            } else {
-                 slot.onSlotChanged();
-             }
- 
--            if (itemstack1.stackSize == itemstack.stackSize)
--            {
-+            if (itemstack1.stackSize == itemstack.stackSize) {
-                 return null;
-             }
- 
-             slot.onPickupFromSlot(playerIn, itemstack1);
+     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
+     {
+@@ -145,12 +149,28 @@
          }
  
          return itemstack;
      }
  
--    class Ingredient extends Slot
--    {
 +    // CraftBukkit start
 +    @Override
-+    public org.bukkit.craftbukkit.inventory.CraftInventoryView getBukkitView() {
-+        if (bukkitEntity != null) {
++    public org.bukkit.craftbukkit.inventory.CraftInventoryView getBukkitView()
++    {
++        if (bukkitEntity != null)
++        {
 +            return bukkitEntity;
 +        }
 +
@@ -204,85 +75,23 @@
 +    }
 +    // CraftBukkit end
 +
-+    class Ingredient extends Slot {
+     class Ingredient extends Slot
+     {
 +
          private static final String __OBFID = "CL_00001738";
  
--        public Ingredient(IInventory p_i1803_2_, int p_i1803_3_, int p_i1803_4_, int p_i1803_5_)
--        {
-+        public Ingredient(IInventory p_i1803_2_, int p_i1803_3_, int p_i1803_4_, int p_i1803_5_) {
+         public Ingredient(IInventory p_i1803_2_, int p_i1803_3_, int p_i1803_4_, int p_i1803_5_)
+         {
              super(p_i1803_2_, p_i1803_3_, p_i1803_4_, p_i1803_5_);
-         }
- 
--        public boolean isItemValid(ItemStack stack)
--        {
-+        public boolean isItemValid(ItemStack stack) {
-             return stack != null ? stack.getItem().isPotionIngredient(stack) : false;
-         }
- 
--        public int getSlotStackLimit()
--        {
-+        public int getSlotStackLimit() {
-             return 64;
+@@ -167,10 +187,11 @@
          }
      }
  
--    static class Potion extends Slot
--        {
--            private EntityPlayer player;
--            private static final String __OBFID = "CL_00001740";
-+    static class Potion extends Slot {
- 
--            public Potion(EntityPlayer p_i1804_1_, IInventory p_i1804_2_, int p_i1804_3_, int p_i1804_4_, int p_i1804_5_)
--            {
--                super(p_i1804_2_, p_i1804_3_, p_i1804_4_, p_i1804_5_);
--                this.player = p_i1804_1_;
--            }
-+        private EntityPlayer player;
-+        private static final String __OBFID = "CL_00001740";
- 
--            public boolean isItemValid(ItemStack stack)
--            {
--                return canHoldPotion(stack);
--            }
-+        public Potion(EntityPlayer p_i1804_1_, IInventory p_i1804_2_, int p_i1804_3_, int p_i1804_4_, int p_i1804_5_) {
-+            super(p_i1804_2_, p_i1804_3_, p_i1804_4_, p_i1804_5_);
-+            this.player = p_i1804_1_;
-+        }
- 
--            public int getSlotStackLimit()
--            {
--                return 1;
--            }
-+        public boolean isItemValid(ItemStack stack) {
-+            return canHoldPotion(stack);
-+        }
- 
--            public void onPickupFromSlot(EntityPlayer playerIn, ItemStack stack)
--            {
--                if (stack.getItem() == Items.potionitem && stack.getMetadata() > 0)
--                {
--                    this.player.triggerAchievement(AchievementList.potion);
--                }
-+        public int getSlotStackLimit() {
-+            return 1;
-+        }
- 
--                super.onPickupFromSlot(playerIn, stack);
-+        public void onPickupFromSlot(EntityPlayer playerIn, ItemStack stack) {
-+            if (stack.getItem() == Items.potionitem && stack.getMetadata() > 0) {
-+                this.player.triggerAchievement(AchievementList.potion);
-             }
- 
--            public static boolean canHoldPotion(ItemStack p_75243_0_)
--            {
--                return p_75243_0_ != null && (p_75243_0_.getItem() == Items.potionitem || p_75243_0_.getItem() == Items.glass_bottle);
--            }
-+            super.onPickupFromSlot(playerIn, stack);
-         }
+     static class Potion extends Slot
+         {
 +
-+        public static boolean canHoldPotion(ItemStack p_75243_0_) {
-+            return p_75243_0_ != null && (p_75243_0_.getItem() == Items.potionitem || p_75243_0_.getItem() == Items.glass_bottle);
-+        }
-+    }
- }
+             private EntityPlayer player;
+             private static final String __OBFID = "CL_00001740";
+ 
+             public Potion(EntityPlayer p_i1804_1_, IInventory p_i1804_2_, int p_i1804_3_, int p_i1804_4_, int p_i1804_5_)
+             {

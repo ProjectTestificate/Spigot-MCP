@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\block\BlockWoodSlab.java
 +++ src\main\java\net\minecraft\block\BlockWoodSlab.java
-@@ -1,114 +1,77 @@
+@@ -1,25 +1,23 @@
  package net.minecraft.block;
  
 -import java.util.List;
@@ -20,33 +20,18 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public abstract class BlockWoodSlab extends BlockSlab
--{
 +
-+public abstract class BlockWoodSlab extends BlockSlab {
+ public abstract class BlockWoodSlab extends BlockSlab
+ {
 +
      public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockPlanks.EnumType.class);
      private static final String __OBFID = "CL_00000337";
  
--    public BlockWoodSlab()
--    {
-+    public BlockWoodSlab() {
-         super(Material.wood);
-         IBlockState iblockstate = this.blockState.getBaseState();
- 
--        if (!this.isDouble())
--        {
-+        if (!this.isDouble()) {
-             iblockstate = iblockstate.withProperty(HALF, BlockSlab.EnumBlockHalf.BOTTOM);
-         }
- 
-         this.setDefaultState(iblockstate.withProperty(VARIANT, BlockPlanks.EnumType.OAK));
-         this.setCreativeTab(CreativeTabs.tabBlock);
-     }
- 
--    public Item getItemDropped(IBlockState state, Random rand, int fortune)
--    {
-+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+     public BlockWoodSlab()
+     {
+@@ -38,16 +36,10 @@
+     public Item getItemDropped(IBlockState state, Random rand, int fortune)
+     {
          return Item.getItemFromBlock(Blocks.wooden_slab);
      }
  
@@ -56,21 +41,14 @@
 -        return Item.getItemFromBlock(Blocks.wooden_slab);
 -    }
 -
--    public String getUnlocalizedName(int meta)
--    {
-+    public String getUnlocalizedName(int meta) {
+     public String getUnlocalizedName(int meta)
+     {
          return super.getUnlocalizedName() + "." + BlockPlanks.EnumType.byMetadata(meta).getUnlocalizedName();
      }
  
--    public IProperty getVariantProperty()
--    {
-+    public IProperty getVariantProperty() {
-         return VARIANT;
-     }
- 
--    public Object getVariant(ItemStack stack)
--    {
-+    public Object getVariant(ItemStack stack) {
+@@ -59,26 +51,10 @@
+     public Object getVariant(ItemStack stack)
+     {
          return BlockPlanks.EnumType.byMetadata(stack.getMetadata() & 7);
      }
  
@@ -90,47 +68,21 @@
 -        }
 -    }
 -
--    public IBlockState getStateFromMeta(int meta)
--    {
-+    public IBlockState getStateFromMeta(int meta) {
+     public IBlockState getStateFromMeta(int meta)
+     {
          IBlockState iblockstate = this.getDefaultState().withProperty(VARIANT, BlockPlanks.EnumType.byMetadata(meta & 7));
  
--        if (!this.isDouble())
--        {
-+        if (!this.isDouble()) {
-             iblockstate = iblockstate.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
-         }
- 
-         return iblockstate;
-     }
- 
--    public int getMetaFromState(IBlockState state)
--    {
-+    public int getMetaFromState(IBlockState state) {
-         byte b0 = 0;
--        int i = b0 | ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata();
-+        int i = b0 | ((BlockPlanks.EnumType) state.getValue(VARIANT)).getMetadata();
- 
--        if (!this.isDouble() && state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP)
--        {
-+        if (!this.isDouble() && state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP) {
-             i |= 8;
-         }
- 
+         if (!this.isDouble())
+@@ -102,11 +78,11 @@
          return i;
      }
  
--    protected BlockState createBlockState()
--    {
+     protected BlockState createBlockState()
+     {
 -        return this.isDouble() ? new BlockState(this, new IProperty[] {VARIANT}): new BlockState(this, new IProperty[] {HALF, VARIANT});
-+    protected BlockState createBlockState() {
-+        return this.isDouble() ? new BlockState(this, new IProperty[]{VARIANT}) : new BlockState(this, new IProperty[]{HALF, VARIANT});
++        return this.isDouble() ? new BlockState(this, new IProperty[] {VARIANT}) : new BlockState(this, new IProperty[] {HALF, VARIANT});
      }
  
--    public int damageDropped(IBlockState state)
--    {
--        return ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata();
-+    public int damageDropped(IBlockState state) {
-+        return ((BlockPlanks.EnumType) state.getValue(VARIANT)).getMetadata();
-     }
- }
+     public int damageDropped(IBlockState state)
+     {
+         return ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata();

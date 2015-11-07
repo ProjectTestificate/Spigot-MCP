@@ -1,37 +1,13 @@
 --- decompiled\net\minecraft\util\TupleIntJsonSerializable.java
 +++ src\main\java\net\minecraft\util\TupleIntJsonSerializable.java
-@@ -1,28 +1,24 @@
+@@ -1,9 +1,10 @@
  package net.minecraft.util;
  
--public class TupleIntJsonSerializable
--{
-+public class TupleIntJsonSerializable {
+ public class TupleIntJsonSerializable
+ {
 +
      private int integerValue;
      private IJsonSerializable jsonSerializableValue;
      private static final String __OBFID = "CL_00001478";
  
--    public int getIntegerValue()
--    {
-+    public int getIntegerValue() {
-         return this.integerValue;
-     }
- 
--    public void setIntegerValue(int integerValueIn)
--    {
-+    public void setIntegerValue(int integerValueIn) {
-         this.integerValue = integerValueIn;
-     }
- 
--    public IJsonSerializable getJsonSerializableValue()
--    {
-+    public IJsonSerializable getJsonSerializableValue() {
-         return this.jsonSerializableValue;
-     }
- 
--    public void setJsonSerializableValue(IJsonSerializable jsonSerializableValueIn)
--    {
-+    public void setJsonSerializableValue(IJsonSerializable jsonSerializableValueIn) {
-         this.jsonSerializableValue = jsonSerializableValueIn;
-     }
- }
+     public int getIntegerValue()

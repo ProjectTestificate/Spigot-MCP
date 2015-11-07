@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\client\C0BPacketEntityAction.java
 +++ src\main\java\net\minecraft\network\play\client\C0BPacketEntityAction.java
-@@ -1,75 +1,55 @@
+@@ -1,43 +1,32 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -13,10 +13,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class C0BPacketEntityAction implements Packet
--{
 +
-+public class C0BPacketEntityAction implements Packet {
+ public class C0BPacketEntityAction implements Packet
+ {
 +
      private int entityID;
      private C0BPacketEntityAction.Action action;
@@ -27,9 +26,9 @@
 -
 -    @SideOnly(Side.CLIENT)
 -    public C0BPacketEntityAction(Entity entity, C0BPacketEntityAction.Action action)
--    {
++    public C0BPacketEntityAction()
+     {
 -        this(entity, action, 0);
-+    public C0BPacketEntityAction() {
      }
  
 -    @SideOnly(Side.CLIENT)
@@ -40,53 +39,26 @@
 -        this.auxData = auxData;
 -    }
  
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
+     public void readPacketData(PacketBuffer buf) throws IOException
+     {
          this.entityID = buf.readVarIntFromBuffer();
 -        this.action = (C0BPacketEntityAction.Action)buf.readEnumValue(C0BPacketEntityAction.Action.class);
 +        this.action = (C0BPacketEntityAction.Action) buf.readEnumValue(C0BPacketEntityAction.Action.class);
          this.auxData = buf.readVarIntFromBuffer();
      }
  
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeVarIntToBuffer(this.entityID);
-         buf.writeEnumValue(this.action);
-         buf.writeVarIntToBuffer(this.auxData);
-     }
- 
--    public void processPacket(INetHandlerPlayServer handler)
--    {
-+    public void processPacket(INetHandlerPlayServer handler) {
-         handler.processEntityAction(this);
-     }
- 
--    public C0BPacketEntityAction.Action getAction()
--    {
-+    public C0BPacketEntityAction.Action getAction() {
-         return this.action;
-     }
- 
--    public int getAuxData()
--    {
-+    public int getAuxData() {
+     public void writePacketData(PacketBuffer buf) throws IOException
+     {
+@@ -61,11 +50,11 @@
          return this.auxData;
      }
  
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.processPacket((INetHandlerPlayServer)handler);
-+    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
  
--    public static enum Action
--    {
-+    public static enum Action {
+     public static enum Action
+     {
          START_SNEAKING,
-         STOP_SNEAKING,
-         STOP_SLEEPING,
-         START_SPRINTING,
-         STOP_SPRINTING,

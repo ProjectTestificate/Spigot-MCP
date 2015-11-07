@@ -1,17 +1,13 @@
 --- decompiled\net\minecraft\block\BlockRedFlower.java
 +++ src\main\java\net\minecraft\block\BlockRedFlower.java
-@@ -1,11 +1,10 @@
+@@ -1,9 +1,10 @@
  package net.minecraft.block;
  
--public class BlockRedFlower extends BlockFlower
--{
-+public class BlockRedFlower extends BlockFlower {
+ public class BlockRedFlower extends BlockFlower
+ {
 +
      private static final String __OBFID = "CL_00002073";
  
--    public BlockFlower.EnumFlowerColor getBlockType()
--    {
-+    public BlockFlower.EnumFlowerColor getBlockType() {
+     public BlockFlower.EnumFlowerColor getBlockType()
+     {
          return BlockFlower.EnumFlowerColor.RED;
-     }
- }

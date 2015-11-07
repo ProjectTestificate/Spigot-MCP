@@ -1,43 +1,14 @@
 --- decompiled\net\minecraft\item\ItemEnderPearl.java
 +++ src\main\java\net\minecraft\item\ItemEnderPearl.java
-@@ -4,33 +4,27 @@
- import net.minecraft.entity.item.EntityEnderPearl;
- import net.minecraft.entity.player.EntityPlayer;
+@@ -6,10 +6,11 @@
  import net.minecraft.stats.StatList;
  import net.minecraft.world.World;
  
--public class ItemEnderPearl extends Item
--{
-+public class ItemEnderPearl extends Item {
+ public class ItemEnderPearl extends Item
+ {
 +
      private static final String __OBFID = "CL_00000027";
  
--    public ItemEnderPearl()
--    {
-+    public ItemEnderPearl() {
+     public ItemEnderPearl()
+     {
          this.maxStackSize = 16;
-         this.setCreativeTab(CreativeTabs.tabMisc);
-     }
- 
--    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
--    {
--        if (playerIn.capabilities.isCreativeMode)
--        {
-+    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
-+        if (playerIn.capabilities.isCreativeMode) {
-             return itemStackIn;
--        }
--        else
--        {
-+        } else {
-             --itemStackIn.stackSize;
-             worldIn.playSoundAtEntity(playerIn, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
- 
--            if (!worldIn.isRemote)
--            {
-+            if (!worldIn.isRemote) {
-                 worldIn.spawnEntityInWorld(new EntityEnderPearl(worldIn, playerIn));
-             }
- 
-             playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
-             return itemStackIn;

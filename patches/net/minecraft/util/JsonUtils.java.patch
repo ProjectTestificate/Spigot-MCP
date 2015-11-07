@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\util\JsonUtils.java
 +++ src\main\java\net\minecraft\util\JsonUtils.java
-@@ -1,266 +1,130 @@
+@@ -1,48 +1,24 @@
  package net.minecraft.util;
  
 +
@@ -12,9 +12,8 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class JsonUtils
--{
-+public class JsonUtils {
+ public class JsonUtils
+ {
 +
      private static final String __OBFID = "CL_00001484";
  
@@ -36,9 +35,8 @@
 -        return !jsonObjectFieldTypeIsPrimitive(p_180199_0_, p_180199_1_) ? false : p_180199_0_.getAsJsonPrimitive(p_180199_1_).isBoolean();
 -    }
 -
--    public static boolean jsonObjectFieldTypeIsArray(JsonObject p_151202_0_, String p_151202_1_)
--    {
-+    public static boolean jsonObjectFieldTypeIsArray(JsonObject p_151202_0_, String p_151202_1_) {
+     public static boolean jsonObjectFieldTypeIsArray(JsonObject p_151202_0_, String p_151202_1_)
+     {
          return !jsonObjectHasNamedField(p_151202_0_, p_151202_1_) ? false : p_151202_0_.get(p_151202_1_).isJsonArray();
      }
  
@@ -48,38 +46,13 @@
 -        return !jsonObjectHasNamedField(p_151201_0_, p_151201_1_) ? false : p_151201_0_.get(p_151201_1_).isJsonPrimitive();
 -    }
 -
--    public static boolean jsonObjectHasNamedField(JsonObject p_151204_0_, String p_151204_1_)
--    {
-+    public static boolean jsonObjectHasNamedField(JsonObject p_151204_0_, String p_151204_1_) {
+     public static boolean jsonObjectHasNamedField(JsonObject p_151204_0_, String p_151204_1_)
+     {
          return p_151204_0_ == null ? false : p_151204_0_.get(p_151204_1_) != null;
      }
  
--    public static String getJsonElementStringValue(JsonElement p_151206_0_, String p_151206_1_)
--    {
--        if (p_151206_0_.isJsonPrimitive())
--        {
-+    public static String getJsonElementStringValue(JsonElement p_151206_0_, String p_151206_1_) {
-+        if (p_151206_0_.isJsonPrimitive()) {
-             return p_151206_0_.getAsString();
--        }
--        else
--        {
-+        } else {
-             throw new JsonSyntaxException("Expected " + p_151206_1_ + " to be a string, was " + getJsonElementTypeDescription(p_151206_0_));
-         }
-     }
- 
--    public static String getJsonObjectStringFieldValue(JsonObject p_151200_0_, String p_151200_1_)
--    {
--        if (p_151200_0_.has(p_151200_1_))
--        {
-+    public static String getJsonObjectStringFieldValue(JsonObject p_151200_0_, String p_151200_1_) {
-+        if (p_151200_0_.has(p_151200_1_)) {
-             return getJsonElementStringValue(p_151200_0_.get(p_151200_1_), p_151200_1_);
--        }
--        else
--        {
-+        } else {
+@@ -68,16 +44,10 @@
+         {
              throw new JsonSyntaxException("Missing " + p_151200_1_ + ", expected to find a string");
          }
      }
@@ -90,17 +63,13 @@
 -        return p_151219_0_.has(p_151219_1_) ? getJsonElementStringValue(p_151219_0_.get(p_151219_1_), p_151219_1_) : p_151219_2_;
 -    }
 -
--    public static boolean getJsonElementBooleanValue(JsonElement p_151216_0_, String p_151216_1_)
--    {
--        if (p_151216_0_.isJsonPrimitive())
--        {
-+    public static boolean getJsonElementBooleanValue(JsonElement p_151216_0_, String p_151216_1_) {
-+        if (p_151216_0_.isJsonPrimitive()) {
+     public static boolean getJsonElementBooleanValue(JsonElement p_151216_0_, String p_151216_1_)
+     {
+         if (p_151216_0_.isJsonPrimitive())
+         {
              return p_151216_0_.getAsBoolean();
--        }
--        else
--        {
-+        } else {
+@@ -86,23 +56,10 @@
+         {
              throw new JsonSyntaxException("Expected " + p_151216_1_ + " to be a Boolean, was " + getJsonElementTypeDescription(p_151216_0_));
          }
      }
@@ -118,23 +87,13 @@
 -        }
 -    }
 -
--    public static boolean getJsonObjectBooleanFieldValueOrDefault(JsonObject p_151209_0_, String p_151209_1_, boolean p_151209_2_)
--    {
-+    public static boolean getJsonObjectBooleanFieldValueOrDefault(JsonObject p_151209_0_, String p_151209_1_, boolean p_151209_2_) {
+     public static boolean getJsonObjectBooleanFieldValueOrDefault(JsonObject p_151209_0_, String p_151209_1_, boolean p_151209_2_)
+     {
          return p_151209_0_.has(p_151209_1_) ? getJsonElementBooleanValue(p_151209_0_.get(p_151209_1_), p_151209_1_) : p_151209_2_;
      }
  
--    public static float getJsonElementFloatValue(JsonElement p_151220_0_, String p_151220_1_)
--    {
--        if (p_151220_0_.isJsonPrimitive() && p_151220_0_.getAsJsonPrimitive().isNumber())
--        {
-+    public static float getJsonElementFloatValue(JsonElement p_151220_0_, String p_151220_1_) {
-+        if (p_151220_0_.isJsonPrimitive() && p_151220_0_.getAsJsonPrimitive().isNumber()) {
-             return p_151220_0_.getAsFloat();
--        }
--        else
--        {
-+        } else {
+@@ -116,23 +73,10 @@
+         {
              throw new JsonSyntaxException("Expected " + p_151220_1_ + " to be a Float, was " + getJsonElementTypeDescription(p_151220_0_));
          }
      }
@@ -152,59 +111,13 @@
 -        }
 -    }
 -
--    public static float getJsonObjectFloatFieldValueOrDefault(JsonObject p_151221_0_, String p_151221_1_, float p_151221_2_)
--    {
-+    public static float getJsonObjectFloatFieldValueOrDefault(JsonObject p_151221_0_, String p_151221_1_, float p_151221_2_) {
+     public static float getJsonObjectFloatFieldValueOrDefault(JsonObject p_151221_0_, String p_151221_1_, float p_151221_2_)
+     {
          return p_151221_0_.has(p_151221_1_) ? getJsonElementFloatValue(p_151221_0_.get(p_151221_1_), p_151221_1_) : p_151221_2_;
      }
  
--    public static int getJsonElementIntegerValue(JsonElement p_151215_0_, String p_151215_1_)
--    {
--        if (p_151215_0_.isJsonPrimitive() && p_151215_0_.getAsJsonPrimitive().isNumber())
--        {
-+    public static int getJsonElementIntegerValue(JsonElement p_151215_0_, String p_151215_1_) {
-+        if (p_151215_0_.isJsonPrimitive() && p_151215_0_.getAsJsonPrimitive().isNumber()) {
-             return p_151215_0_.getAsInt();
--        }
--        else
--        {
-+        } else {
-             throw new JsonSyntaxException("Expected " + p_151215_1_ + " to be a Int, was " + getJsonElementTypeDescription(p_151215_0_));
-         }
-     }
- 
--    public static int getJsonObjectIntegerFieldValue(JsonObject p_151203_0_, String p_151203_1_)
--    {
--        if (p_151203_0_.has(p_151203_1_))
--        {
-+    public static int getJsonObjectIntegerFieldValue(JsonObject p_151203_0_, String p_151203_1_) {
-+        if (p_151203_0_.has(p_151203_1_)) {
-             return getJsonElementIntegerValue(p_151203_0_.get(p_151203_1_), p_151203_1_);
--        }
--        else
--        {
-+        } else {
-             throw new JsonSyntaxException("Missing " + p_151203_1_ + ", expected to find a Int");
-         }
-     }
- 
--    public static int getJsonObjectIntegerFieldValueOrDefault(JsonObject p_151208_0_, String p_151208_1_, int p_151208_2_)
--    {
-+    public static int getJsonObjectIntegerFieldValueOrDefault(JsonObject p_151208_0_, String p_151208_1_, int p_151208_2_) {
-         return p_151208_0_.has(p_151208_1_) ? getJsonElementIntegerValue(p_151208_0_.get(p_151208_1_), p_151208_1_) : p_151208_2_;
-     }
- 
--    public static JsonObject getElementAsJsonObject(JsonElement p_151210_0_, String p_151210_1_)
--    {
--        if (p_151210_0_.isJsonObject())
--        {
-+    public static JsonObject getElementAsJsonObject(JsonElement p_151210_0_, String p_151210_1_) {
-+        if (p_151210_0_.isJsonObject()) {
-             return p_151210_0_.getAsJsonObject();
--        }
--        else
--        {
-+        } else {
+@@ -175,29 +119,10 @@
+         {
              throw new JsonSyntaxException("Expected " + p_151210_1_ + " to be a JsonObject, was " + getJsonElementTypeDescription(p_151210_0_));
          }
      }
@@ -228,32 +141,13 @@
 -        return p_151218_0_.has(p_151218_1_) ? getElementAsJsonObject(p_151218_0_.get(p_151218_1_), p_151218_1_) : p_151218_2_;
 -    }
 -
--    public static JsonArray getJsonElementAsJsonArray(JsonElement p_151207_0_, String p_151207_1_)
--    {
--        if (p_151207_0_.isJsonArray())
--        {
-+    public static JsonArray getJsonElementAsJsonArray(JsonElement p_151207_0_, String p_151207_1_) {
-+        if (p_151207_0_.isJsonArray()) {
+     public static JsonArray getJsonElementAsJsonArray(JsonElement p_151207_0_, String p_151207_1_)
+     {
+         if (p_151207_0_.isJsonArray())
+         {
              return p_151207_0_.getAsJsonArray();
--        }
--        else
--        {
-+        } else {
-             throw new JsonSyntaxException("Expected " + p_151207_1_ + " to be a JsonArray, was " + getJsonElementTypeDescription(p_151207_0_));
-         }
-     }
- 
--    public static JsonArray getJsonObjectJsonArrayField(JsonObject p_151214_0_, String p_151214_1_)
--    {
--        if (p_151214_0_.has(p_151214_1_))
--        {
-+    public static JsonArray getJsonObjectJsonArrayField(JsonObject p_151214_0_, String p_151214_1_) {
-+        if (p_151214_0_.has(p_151214_1_)) {
-             return getJsonElementAsJsonArray(p_151214_0_.get(p_151214_1_), p_151214_1_);
--        }
--        else
--        {
-+        } else {
+@@ -218,16 +143,10 @@
+         {
              throw new JsonSyntaxException("Missing " + p_151214_1_ + ", expected to find a JsonArray");
          }
      }
@@ -264,50 +158,8 @@
 -        return p_151213_0_.has(p_151213_1_) ? getJsonElementAsJsonArray(p_151213_0_.get(p_151213_1_), p_151213_1_) : p_151213_2_;
 -    }
 -
--    public static String getJsonElementTypeDescription(JsonElement p_151222_0_)
--    {
-+    public static String getJsonElementTypeDescription(JsonElement p_151222_0_) {
+     public static String getJsonElementTypeDescription(JsonElement p_151222_0_)
+     {
          String s = org.apache.commons.lang3.StringUtils.abbreviateMiddle(String.valueOf(p_151222_0_), "...", 10);
  
--        if (p_151222_0_ == null)
--        {
-+        if (p_151222_0_ == null) {
-             return "null (missing)";
--        }
--        else if (p_151222_0_.isJsonNull())
--        {
-+        } else if (p_151222_0_.isJsonNull()) {
-             return "null (json)";
--        }
--        else if (p_151222_0_.isJsonArray())
--        {
-+        } else if (p_151222_0_.isJsonArray()) {
-             return "an array (" + s + ")";
--        }
--        else if (p_151222_0_.isJsonObject())
--        {
-+        } else if (p_151222_0_.isJsonObject()) {
-             return "an object (" + s + ")";
--        }
--        else
--        {
--            if (p_151222_0_.isJsonPrimitive())
--            {
-+        } else {
-+            if (p_151222_0_.isJsonPrimitive()) {
-                 JsonPrimitive jsonprimitive = p_151222_0_.getAsJsonPrimitive();
- 
--                if (jsonprimitive.isNumber())
--                {
-+                if (jsonprimitive.isNumber()) {
-                     return "a number (" + s + ")";
-                 }
- 
--                if (jsonprimitive.isBoolean())
--                {
-+                if (jsonprimitive.isBoolean()) {
-                     return "a boolean (" + s + ")";
-                 }
-             }
- 
-             return s;
+         if (p_151222_0_ == null)

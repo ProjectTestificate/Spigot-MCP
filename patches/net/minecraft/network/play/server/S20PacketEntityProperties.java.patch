@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S20PacketEntityProperties.java
 +++ src\main\java\net\minecraft\network\play\server\S20PacketEntityProperties.java
-@@ -1,136 +1,111 @@
+@@ -1,39 +1,42 @@
  package net.minecraft.network.play.server;
  
 -import com.google.common.collect.Lists;
@@ -20,92 +20,59 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S20PacketEntityProperties implements Packet
--{
 +import com.google.common.collect.Lists;
 +
-+public class S20PacketEntityProperties implements Packet {
+ public class S20PacketEntityProperties implements Packet
+ {
 +
      private int field_149445_a;
      private final List field_149444_b = Lists.newArrayList();
      private static final String __OBFID = "CL_00001341";
  
 -    public S20PacketEntityProperties() {}
-+    public S20PacketEntityProperties() {
++    public S20PacketEntityProperties()
++    {
 +    }
  
--    public S20PacketEntityProperties(int p_i45236_1_, Collection p_i45236_2_)
--    {
-+    public S20PacketEntityProperties(int p_i45236_1_, Collection p_i45236_2_) {
+     public S20PacketEntityProperties(int p_i45236_1_, Collection p_i45236_2_)
+     {
          this.field_149445_a = p_i45236_1_;
          Iterator iterator = p_i45236_2_.iterator();
  
--        while (iterator.hasNext())
--        {
+         while (iterator.hasNext())
+         {
 -            IAttributeInstance iattributeinstance = (IAttributeInstance)iterator.next();
-+        while (iterator.hasNext()) {
 +            IAttributeInstance iattributeinstance = (IAttributeInstance) iterator.next();
              this.field_149444_b.add(new S20PacketEntityProperties.Snapshot(iattributeinstance.getAttribute().getAttributeUnlocalizedName(), iattributeinstance.getBaseValue(), iattributeinstance.func_111122_c()));
          }
      }
  
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.field_149445_a = buf.readVarIntFromBuffer();
-         int i = buf.readInt();
- 
--        for (int j = 0; j < i; ++j)
--        {
-+        for (int j = 0; j < i; ++j) {
-             String s = buf.readStringFromBuffer(64);
-             double d0 = buf.readDouble();
-             ArrayList arraylist = Lists.newArrayList();
-             int k = buf.readVarIntFromBuffer();
- 
--            for (int l = 0; l < k; ++l)
--            {
-+            for (int l = 0; l < k; ++l) {
-                 UUID uuid = buf.readUuid();
-                 arraylist.add(new AttributeModifier(uuid, "Unknown synced attribute modifier", buf.readDouble(), buf.readByte()));
-             }
- 
-             this.field_149444_b.add(new S20PacketEntityProperties.Snapshot(s, d0, arraylist));
-         }
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeVarIntToBuffer(this.field_149445_a);
+     public void readPacketData(PacketBuffer buf) throws IOException
+@@ -64,19 +67,19 @@
          buf.writeInt(this.field_149444_b.size());
          Iterator iterator = this.field_149444_b.iterator();
  
--        while (iterator.hasNext())
--        {
+         while (iterator.hasNext())
+         {
 -            S20PacketEntityProperties.Snapshot snapshot = (S20PacketEntityProperties.Snapshot)iterator.next();
-+        while (iterator.hasNext()) {
 +            S20PacketEntityProperties.Snapshot snapshot = (S20PacketEntityProperties.Snapshot) iterator.next();
              buf.writeString(snapshot.func_151409_a());
              buf.writeDouble(snapshot.func_151410_b());
              buf.writeVarIntToBuffer(snapshot.func_151408_c().size());
              Iterator iterator1 = snapshot.func_151408_c().iterator();
  
--            while (iterator1.hasNext())
--            {
+             while (iterator1.hasNext())
+             {
 -                AttributeModifier attributemodifier = (AttributeModifier)iterator1.next();
-+            while (iterator1.hasNext()) {
 +                AttributeModifier attributemodifier = (AttributeModifier) iterator1.next();
                  buf.writeUuid(attributemodifier.getID());
                  buf.writeDouble(attributemodifier.getAmount());
                  buf.writeByte(attributemodifier.getOperation());
              }
          }
-     }
- 
--    public void func_180754_a(INetHandlerPlayClient p_180754_1_)
--    {
-+    public void func_180754_a(INetHandlerPlayClient p_180754_1_) {
+@@ -85,29 +88,18 @@
+     public void func_180754_a(INetHandlerPlayClient p_180754_1_)
+     {
          p_180754_1_.handleEntityProperties(this);
      }
  
@@ -113,15 +80,13 @@
 -    public int func_149442_c()
 -    {
 -        return this.field_149445_a;
-+    public void processPacket(INetHandler handler) {
+-    }
+-
+     public void processPacket(INetHandler handler)
+     {
+-        this.func_180754_a((INetHandlerPlayClient)handler);
 +        this.func_180754_a((INetHandlerPlayClient) handler);
      }
- 
--    public void processPacket(INetHandler handler)
--    {
--        this.func_180754_a((INetHandlerPlayClient)handler);
--    }
-+    public class Snapshot {
  
 -    @SideOnly(Side.CLIENT)
 -    public List func_149441_d()
@@ -129,37 +94,11 @@
 -        return this.field_149444_b;
 -    }
 -
--    public class Snapshot
--    {
+     public class Snapshot
+     {
++
          private final String field_151412_b;
          private final double field_151413_c;
          private final Collection field_151411_d;
          private static final String __OBFID = "CL_00001342";
  
--        public Snapshot(String p_i45235_2_, double p_i45235_3_, Collection p_i45235_5_)
--        {
-+        public Snapshot(String p_i45235_2_, double p_i45235_3_, Collection p_i45235_5_) {
-             this.field_151412_b = p_i45235_2_;
-             this.field_151413_c = p_i45235_3_;
-             this.field_151411_d = p_i45235_5_;
-         }
- 
--        public String func_151409_a()
--        {
-+        public String func_151409_a() {
-             return this.field_151412_b;
-         }
- 
--        public double func_151410_b()
--        {
-+        public double func_151410_b() {
-             return this.field_151413_c;
-         }
- 
--        public Collection func_151408_c()
--        {
-+        public Collection func_151408_c() {
-             return this.field_151411_d;
-         }
-     }
- }

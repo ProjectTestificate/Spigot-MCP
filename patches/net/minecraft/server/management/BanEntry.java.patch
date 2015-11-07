@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\server\management\BanEntry.java
 +++ src\main\java\net\minecraft\server\management\BanEntry.java
-@@ -1,79 +1,94 @@
+@@ -1,14 +1,16 @@
  package net.minecraft.server.management;
  
 -import com.google.gson.JsonObject;
@@ -8,86 +8,17 @@
  import java.text.SimpleDateFormat;
  import java.util.Date;
  
--public abstract class BanEntry extends UserListEntry
--{
 +import com.google.gson.JsonObject;
 +
-+public abstract class BanEntry extends UserListEntry {
+ public abstract class BanEntry extends UserListEntry
+ {
 +
      public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
      protected final Date banStartDate;
      protected final String bannedBy;
      protected final Date banEndDate;
      protected final String reason;
-     private static final String __OBFID = "CL_00001395";
- 
--    public BanEntry(Object p_i46334_1_, Date startDate, String banner, Date endDate, String banReason)
--    {
-+    public BanEntry(Object p_i46334_1_, Date startDate, String banner, Date endDate, String banReason) {
-         super(p_i46334_1_);
-         this.banStartDate = startDate == null ? new Date() : startDate;
-         this.bannedBy = banner == null ? "(Unknown)" : banner;
-         this.banEndDate = endDate;
-         this.reason = banReason == null ? "Banned by an operator." : banReason;
-     }
- 
--    protected BanEntry(Object p_i1174_1_, JsonObject p_i1174_2_)
--    {
-+    protected BanEntry(Object p_i1174_1_, JsonObject p_i1174_2_) {
-         super(p_i1174_1_, p_i1174_2_);
-         Date date;
- 
--        try
--        {
-+        try {
-             date = p_i1174_2_.has("created") ? dateFormat.parse(p_i1174_2_.get("created").getAsString()) : new Date();
--        }
--        catch (ParseException parseexception1)
--        {
-+        } catch (ParseException parseexception1) {
-             date = new Date();
-         }
- 
-         this.banStartDate = date;
-         this.bannedBy = p_i1174_2_.has("source") ? p_i1174_2_.get("source").getAsString() : "(Unknown)";
-         Date date1;
- 
--        try
--        {
-+        try {
-             date1 = p_i1174_2_.has("expires") ? dateFormat.parse(p_i1174_2_.get("expires").getAsString()) : null;
--        }
--        catch (ParseException parseexception)
--        {
-+        } catch (ParseException parseexception) {
-             date1 = null;
-         }
- 
-         this.banEndDate = date1;
-         this.reason = p_i1174_2_.has("reason") ? p_i1174_2_.get("reason").getAsString() : "Banned by an operator.";
-     }
- 
--    public Date getBanEndDate()
--    {
-+    public Date getBanEndDate() {
-         return this.banEndDate;
-     }
- 
--    public String getBanReason()
--    {
-+    public String getBanReason() {
-         return this.reason;
-     }
- 
--    boolean hasBanExpired()
--    {
-+    boolean hasBanExpired() {
-         return this.banEndDate == null ? false : this.banEndDate.before(new Date());
-     }
- 
--    protected void onSerialization(JsonObject data)
--    {
-+    protected void onSerialization(JsonObject data) {
+@@ -74,6 +76,41 @@
          data.addProperty("created", dateFormat.format(this.banStartDate));
          data.addProperty("source", this.bannedBy);
          data.addProperty("expires", this.banEndDate == null ? "forever" : dateFormat.format(this.banEndDate));
@@ -95,26 +26,35 @@
      }
 +
 +    // CraftBukkit start
-+    public String getSource() {
++    public String getSource()
++    {
 +        return this.bannedBy;
 +    }
 +
-+    public Date getCreated() {
++    public Date getCreated()
++    {
 +        return this.banStartDate;
 +    }
 +
-+    private static Object checkExpiry(Object object, JsonObject jsonobject) {
++    private static Object checkExpiry(Object object, JsonObject jsonobject)
++    {
 +        Date expires = null;
 +
-+        try {
++        try
++        {
 +            expires = jsonobject.has("expires") ? dateFormat.parse(jsonobject.get("expires").getAsString()) : null;
-+        } catch (ParseException ex) {
++        }
++        catch (ParseException ex)
++        {
 +            // Guess we don't have a date
 +        }
 +
-+        if (expires == null || expires.after(new Date())) {
++        if (expires == null || expires.after(new Date()))
++        {
 +            return object;
-+        } else {
++        }
++        else
++        {
 +            return null;
 +        }
 +    }

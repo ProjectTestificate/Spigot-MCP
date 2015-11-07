@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\entity\monster\EntityMagmaCube.java
 +++ src\main\java\net\minecraft\entity\monster\EntityMagmaCube.java
-@@ -4,134 +4,106 @@
+@@ -4,15 +4,15 @@
  import net.minecraft.init.Items;
  import net.minecraft.item.Item;
  import net.minecraft.util.EnumParticleTypes;
@@ -9,42 +9,18 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class EntityMagmaCube extends EntitySlime
--{
 +
-+public class EntityMagmaCube extends EntitySlime {
+ public class EntityMagmaCube extends EntitySlime
+ {
 +
      private static final String __OBFID = "CL_00001691";
  
--    public EntityMagmaCube(World worldIn)
--    {
-+    public EntityMagmaCube(World worldIn) {
+     public EntityMagmaCube(World worldIn)
+     {
          super(worldIn);
-         this.isImmuneToFire = true;
-     }
- 
--    protected void applyEntityAttributes()
--    {
-+    protected void applyEntityAttributes() {
-         super.applyEntityAttributes();
-         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.20000000298023224D);
-     }
- 
--    public boolean getCanSpawnHere()
--    {
-+    public boolean getCanSpawnHere() {
-         return this.worldObj.getDifficulty() != EnumDifficulty.PEACEFUL;
-     }
- 
--    public boolean handleLavaMovement()
--    {
-+    public boolean handleLavaMovement() {
-         return this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.isAnyLiquid(this.getEntityBoundingBox());
-     }
- 
--    public int getTotalArmorValue()
--    {
-+    public int getTotalArmorValue() {
+@@ -38,16 +38,10 @@
+     public int getTotalArmorValue()
+     {
          return this.getSlimeSize() * 3;
      }
  
@@ -54,113 +30,23 @@
 -        return 15728880;
 -    }
 -
--    public float getBrightness(float p_70013_1_)
--    {
-+    public float getBrightness(float p_70013_1_) {
+     public float getBrightness(float p_70013_1_)
+     {
          return 1.0F;
      }
  
--    protected EnumParticleTypes func_180487_n()
--    {
-+    protected EnumParticleTypes func_180487_n() {
-         return EnumParticleTypes.FLAME;
-     }
- 
--    protected EntitySlime createInstance()
--    {
-+    protected EntitySlime createInstance() {
-         return new EntityMagmaCube(this.worldObj);
-     }
- 
--    protected Item getDropItem()
--    {
-+    protected Item getDropItem() {
-         return Items.magma_cream;
-     }
- 
--    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_)
--    {
-+    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_) {
-         Item item = this.getDropItem();
- 
--        if (item != null && this.getSlimeSize() > 1)
--        {
-+        if (item != null && this.getSlimeSize() > 1) {
-             int j = this.rand.nextInt(4) - 2;
- 
--            if (p_70628_2_ > 0)
--            {
-+            if (p_70628_2_ > 0) {
-                 j += this.rand.nextInt(p_70628_2_ + 1);
-             }
- 
--            for (int k = 0; k < j; ++k)
--            {
-+            for (int k = 0; k < j; ++k) {
-                 this.dropItem(item, 1);
-             }
-         }
-     }
- 
--    public boolean isBurning()
--    {
-+    public boolean isBurning() {
-         return false;
-     }
- 
--    protected int getJumpDelay()
--    {
-+    protected int getJumpDelay() {
-         return super.getJumpDelay() * 4;
-     }
- 
--    protected void alterSquishAmount()
--    {
-+    protected void alterSquishAmount() {
-         this.squishAmount *= 0.9F;
-     }
- 
--    protected void jump()
--    {
--        this.motionY = (double)(0.42F + (float)this.getSlimeSize() * 0.1F);
-+    protected void jump() {
-+        this.motionY = (double) (0.42F + (float) this.getSlimeSize() * 0.1F);
-         this.isAirBorne = true;
-     }
- 
--    protected void func_180466_bG()
--    {
--        this.motionY = (double)(0.22F + (float)this.getSlimeSize() * 0.05F);
-+    protected void func_180466_bG() {
-+        this.motionY = (double) (0.22F + (float) this.getSlimeSize() * 0.05F);
+@@ -111,11 +105,13 @@
+     {
+         this.motionY = (double)(0.22F + (float)this.getSlimeSize() * 0.05F);
          this.isAirBorne = true;
      }
  
 -    public void fall(float distance, float damageMultiplier) {}
-+    public void fall(float distance, float damageMultiplier) {
++    public void fall(float distance, float damageMultiplier)
++    {
 +    }
  
--    protected boolean canDamagePlayer()
--    {
-+    protected boolean canDamagePlayer() {
+     protected boolean canDamagePlayer()
+     {
          return true;
      }
- 
--    protected int getAttackStrength()
--    {
-+    protected int getAttackStrength() {
-         return super.getAttackStrength() + 2;
-     }
- 
--    protected String getJumpSound()
--    {
-+    protected String getJumpSound() {
-         return this.getSlimeSize() > 1 ? "mob.magmacube.big" : "mob.magmacube.small";
-     }
- 
--    protected boolean makesSoundOnLand()
--    {
-+    protected boolean makesSoundOnLand() {
-         return true;
-     }
- }

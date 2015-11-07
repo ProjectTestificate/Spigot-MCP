@@ -1,21 +1,14 @@
 --- decompiled\net\minecraft\world\biome\BiomeGenStoneBeach.java
 +++ src\main\java\net\minecraft\world\biome\BiomeGenStoneBeach.java
-@@ -1,15 +1,14 @@
- package net.minecraft.world.biome;
+@@ -2,10 +2,11 @@
  
  import net.minecraft.init.Blocks;
  
--public class BiomeGenStoneBeach extends BiomeGenBase
--{
-+public class BiomeGenStoneBeach extends BiomeGenBase {
+ public class BiomeGenStoneBeach extends BiomeGenBase
+ {
 +
      private static final String __OBFID = "CL_00000184";
  
--    public BiomeGenStoneBeach(int p_i45384_1_)
--    {
-+    public BiomeGenStoneBeach(int p_i45384_1_) {
+     public BiomeGenStoneBeach(int p_i45384_1_)
+     {
          super(p_i45384_1_);
-         this.spawnableCreatureList.clear();
-         this.topBlock = Blocks.stone.getDefaultState();
-         this.fillerBlock = Blocks.stone.getDefaultState();
-         this.theBiomeDecorator.treesPerChunk = -999;

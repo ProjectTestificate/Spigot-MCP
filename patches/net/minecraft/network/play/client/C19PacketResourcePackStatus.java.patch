@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\client\C19PacketResourcePackStatus.java
 +++ src\main\java\net\minecraft\network\play\client\C19PacketResourcePackStatus.java
-@@ -1,59 +1,43 @@
+@@ -1,39 +1,30 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -12,10 +12,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class C19PacketResourcePackStatus implements Packet
--{
 +
-+public class C19PacketResourcePackStatus implements Packet {
+ public class C19PacketResourcePackStatus implements Packet
+ {
 +
      private String hash;
      private C19PacketResourcePackStatus.Action status;
@@ -25,7 +24,8 @@
 -
 -    @SideOnly(Side.CLIENT)
 -    public C19PacketResourcePackStatus(String p_i45935_1_, C19PacketResourcePackStatus.Action p_i45935_2_)
--    {
++    public C19PacketResourcePackStatus()
+     {
 -        if (p_i45935_1_.length() > 40)
 -        {
 -            p_i45935_1_ = p_i45935_1_.substring(0, 40);
@@ -33,42 +33,28 @@
 -
 -        this.hash = p_i45935_1_;
 -        this.status = p_i45935_2_;
-+    public C19PacketResourcePackStatus() {
      }
  
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
+     public void readPacketData(PacketBuffer buf) throws IOException
+     {
          this.hash = buf.readStringFromBuffer(40);
 -        this.status = (C19PacketResourcePackStatus.Action)buf.readEnumValue(C19PacketResourcePackStatus.Action.class);
 +        this.status = (C19PacketResourcePackStatus.Action) buf.readEnumValue(C19PacketResourcePackStatus.Action.class);
      }
  
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
+     public void writePacketData(PacketBuffer buf) throws IOException
+     {
          buf.writeString(this.hash);
-         buf.writeEnumValue(this.status);
-     }
- 
--    public void handle(INetHandlerPlayServer handler)
--    {
-+    public void handle(INetHandlerPlayServer handler) {
+@@ -45,11 +36,11 @@
          handler.handleResourcePackStatus(this);
      }
  
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.handle((INetHandlerPlayServer)handler);
-+    public void processPacket(INetHandler handler) {
 +        this.handle((INetHandlerPlayServer) handler);
      }
  
--    public static enum Action
--    {
-+    public static enum Action {
+     public static enum Action
+     {
          SUCCESSFULLY_LOADED,
-         DECLINED,
-         FAILED_DOWNLOAD,
-         ACCEPTED;
- 

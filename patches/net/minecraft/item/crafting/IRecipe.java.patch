@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\item\crafting\IRecipe.java
 +++ src\main\java\net\minecraft\item\crafting\IRecipe.java
-@@ -1,18 +1,26 @@
+@@ -1,18 +1,27 @@
  package net.minecraft.item.crafting;
  
 +import java.util.List;
@@ -9,11 +9,10 @@
  import net.minecraft.item.ItemStack;
  import net.minecraft.world.World;
  
--public interface IRecipe
--{
 +import org.bukkit.inventory.Recipe;
 +
-+public interface IRecipe {
+ public interface IRecipe
+ {
 +
      boolean matches(InventoryCrafting p_77569_1_, World worldIn);
  

@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\entity\ai\attributes\IAttributeInstance.java
 +++ src\main\java\net\minecraft\entity\ai\attributes\IAttributeInstance.java
-@@ -1,14 +1,13 @@
+@@ -1,14 +1,14 @@
  package net.minecraft.entity.ai.attributes;
  
  import java.util.Collection;
@@ -8,17 +8,16 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public interface IAttributeInstance
--{
 +
-+public interface IAttributeInstance {
+ public interface IAttributeInstance
+ {
 +
      IAttribute getAttribute();
  
      double getBaseValue();
  
      void setBaseValue(double p_111128_1_);
-@@ -23,10 +22,7 @@
+@@ -23,10 +23,7 @@
  
      void applyModifier(AttributeModifier p_111121_1_);
  

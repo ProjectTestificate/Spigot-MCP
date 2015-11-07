@@ -6,7 +6,7 @@
  import net.minecraft.world.IBlockAccess;
  import net.minecraft.world.World;
  
-+// CraftBukkit Start 
++// CraftBukkit Start
 +import org.bukkit.event.block.BlockRedstoneEvent;
 +import org.bukkit.event.entity.EntityInteractEvent;
 +// CraftBukkit end
@@ -27,7 +27,6 @@
 +            org.bukkit.block.Block block = worldIn.getWorld().getBlockAt(pos.getX(), pos.getY(), pos.getZ());
 +            int old = (powered) ? 15 : 0;
 +            int current = (!powered) ? 15 : 0;
-+
 +            BlockRedstoneEvent eventRedstone = new BlockRedstoneEvent(block, old, current);
 +            worldIn.getServer().getPluginManager().callEvent(eventRedstone);
 +
@@ -35,6 +34,7 @@
 +            {
 +                return true;
 +            }
++
 +            // CraftBukkit end
              worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(true)), 3);
              worldIn.markBlockRangeForRenderUpdate(pos, pos);
@@ -49,7 +49,6 @@
                  {
 +                    // CraftBukkit start
 +                    org.bukkit.block.Block block = worldIn.getWorld().getBlockAt(pos.getX(), pos.getY(), pos.getZ());
-+
 +                    BlockRedstoneEvent eventRedstone = new BlockRedstoneEvent(block, 15, 0);
 +                    worldIn.getServer().getPluginManager().callEvent(eventRedstone);
 +
@@ -57,13 +56,14 @@
 +                    {
 +                        return;
 +                    }
++
 +                    // CraftBukkit end
                      worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(false)));
                      this.notifyNeighbors(worldIn, pos, (EnumFacing)state.getValue(FACING));
                      worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.click", 0.3F, 0.5F);
                      worldIn.markBlockRangeForRenderUpdate(pos, pos);
                  }
-@@ -240,12 +270,52 @@
+@@ -240,12 +270,53 @@
          this.updateBlockBounds(state);
          List list = worldIn.getEntitiesWithinAABB(EntityArrow.class, new AxisAlignedBB((double)pos.getX() + this.minX, (double)pos.getY() + this.minY, (double)pos.getZ() + this.minZ, (double)pos.getX() + this.maxX, (double)pos.getY() + this.maxY, (double)pos.getZ() + this.maxZ));
          boolean flag = !list.isEmpty();
@@ -96,13 +96,13 @@
 +                return;
 +            }
 +        }
++
 +        // CraftBukkit end
 +
          if (flag && !flag1)
          {
 +            // CraftBukkit start
 +            org.bukkit.block.Block block = worldIn.getWorld().getBlockAt(pos.getX(), pos.getY(), pos.getZ());
-+
 +            BlockRedstoneEvent eventRedstone = new BlockRedstoneEvent(block, 15, 0);
 +            worldIn.getServer().getPluginManager().callEvent(eventRedstone);
 +
@@ -110,6 +110,7 @@
 +            {
 +                return;
 +            }
++
 +            // CraftBukkit end
              worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(true)));
              this.notifyNeighbors(worldIn, pos, (EnumFacing)state.getValue(FACING));

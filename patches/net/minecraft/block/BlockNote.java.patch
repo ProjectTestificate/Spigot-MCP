@@ -11,132 +11,19 @@
  import net.minecraft.creativetab.CreativeTabs;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.tileentity.TileEntity;
-@@ -11,99 +11,83 @@
+@@ -11,12 +11,15 @@
  import net.minecraft.util.BlockPos;
  import net.minecraft.util.EnumFacing;
  import net.minecraft.util.EnumParticleTypes;
  import net.minecraft.world.World;
  
--public class BlockNote extends BlockContainer
--{
--    private static final List INSTRUMENTS = Lists.newArrayList(new String[] {"harp", "bd", "snare", "hat", "bassattack"});
 +import com.google.common.collect.Lists;
 +
-+public class BlockNote extends BlockContainer {
+ public class BlockNote extends BlockContainer
+ {
 +
-+    private static final List INSTRUMENTS = Lists.newArrayList(new String[]{"harp", "bd", "snare", "hat", "bassattack"});
+     private static final List INSTRUMENTS = Lists.newArrayList(new String[] {"harp", "bd", "snare", "hat", "bassattack"});
      private static final String __OBFID = "CL_00000278";
  
--    public BlockNote()
--    {
-+    public BlockNote() {
-         super(Material.wood);
-         this.setCreativeTab(CreativeTabs.tabRedstone);
-     }
- 
--    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
--    {
-+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
-         boolean flag = worldIn.isBlockPowered(pos);
-         TileEntity tileentity = worldIn.getTileEntity(pos);
- 
--        if (tileentity instanceof TileEntityNote)
--        {
--            TileEntityNote tileentitynote = (TileEntityNote)tileentity;
-+        if (tileentity instanceof TileEntityNote) {
-+            TileEntityNote tileentitynote = (TileEntityNote) tileentity;
- 
--            if (tileentitynote.previousRedstoneState != flag)
--            {
--                if (flag)
--                {
-+            if (tileentitynote.previousRedstoneState != flag) {
-+                if (flag) {
-                     tileentitynote.triggerNote(worldIn, pos);
-                 }
- 
-                 tileentitynote.previousRedstoneState = flag;
-             }
-         }
-     }
- 
--    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
--    {
--        if (worldIn.isRemote)
--        {
-+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
-+        if (worldIn.isRemote) {
-             return true;
--        }
--        else
--        {
-+        } else {
-             TileEntity tileentity = worldIn.getTileEntity(pos);
- 
--            if (tileentity instanceof TileEntityNote)
--            {
--                TileEntityNote tileentitynote = (TileEntityNote)tileentity;
-+            if (tileentity instanceof TileEntityNote) {
-+                TileEntityNote tileentitynote = (TileEntityNote) tileentity;
-                 tileentitynote.changePitch();
-                 tileentitynote.triggerNote(worldIn, pos);
-             }
- 
-             return true;
-         }
-     }
- 
--    public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn)
--    {
--        if (!worldIn.isRemote)
--        {
-+    public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
-+        if (!worldIn.isRemote) {
-             TileEntity tileentity = worldIn.getTileEntity(pos);
- 
--            if (tileentity instanceof TileEntityNote)
--            {
--                ((TileEntityNote)tileentity).triggerNote(worldIn, pos);
-+            if (tileentity instanceof TileEntityNote) {
-+                ((TileEntityNote) tileentity).triggerNote(worldIn, pos);
-             }
-         }
-     }
- 
--    public TileEntity createNewTileEntity(World worldIn, int meta)
--    {
-+    public TileEntity createNewTileEntity(World worldIn, int meta) {
-         return new TileEntityNote();
-     }
- 
--    private String getInstrument(int id)
--    {
--        if (id < 0 || id >= INSTRUMENTS.size())
--        {
-+    private String getInstrument(int id) {
-+        if (id < 0 || id >= INSTRUMENTS.size()) {
-             id = 0;
-         }
- 
--        return (String)INSTRUMENTS.get(id);
-+        return (String) INSTRUMENTS.get(id);
-     }
- 
--    public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam)
--    {
--        float f = (float)Math.pow(2.0D, (double)(eventParam - 12) / 12.0D);
--        worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "note." + this.getInstrument(eventID), 3.0F, f);
--        worldIn.spawnParticle(EnumParticleTypes.NOTE, (double)pos.getX() + 0.5D, (double)pos.getY() + 1.2D, (double)pos.getZ() + 0.5D, (double)eventParam / 24.0D, 0.0D, 0.0D, new int[0]);
-+    public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam) {
-+        float f = (float) Math.pow(2.0D, (double) (eventParam - 12) / 12.0D);
-+        worldIn.playSoundEffect((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, "note." + this.getInstrument(eventID), 3.0F, f);
-+        worldIn.spawnParticle(EnumParticleTypes.NOTE, (double) pos.getX() + 0.5D, (double) pos.getY() + 1.2D, (double) pos.getZ() + 0.5D, (double) eventParam / 24.0D, 0.0D, 0.0D, new int[0]);
-         return true;
-     }
- 
--    public int getRenderType()
--    {
-+    public int getRenderType() {
-         return 3;
-     }
- }
+     public BlockNote()
+     {

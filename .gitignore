@@ -8,6 +8,7 @@ target
 # Python Scripts
 gradle.log
 __pycache__
+*.pyc
 JDiff.jar
 jdiff-version.txt
 

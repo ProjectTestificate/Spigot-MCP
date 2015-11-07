@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\entity\item\EntityPainting.java
 +++ src\main\java\net\minecraft\entity\item\EntityPainting.java
-@@ -1,154 +1,108 @@
+@@ -1,29 +1,31 @@
  package net.minecraft.entity.item;
  
 -import com.google.common.collect.Lists;
@@ -18,49 +18,24 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class EntityPainting extends EntityHanging
--{
 +import com.google.common.collect.Lists;
 +
-+public class EntityPainting extends EntityHanging {
+ public class EntityPainting extends EntityHanging
+ {
 +
      public EntityPainting.EnumArt art;
      private static final String __OBFID = "CL_00001556";
  
--    public EntityPainting(World worldIn)
--    {
-+    public EntityPainting(World worldIn) {
+     public EntityPainting(World worldIn)
+     {
          super(worldIn);
 +        this.art = EnumArt.values()[this.rand.nextInt(EnumArt.values().length)]; // CraftBukkit - generate a non-null painting
      }
  
--    public EntityPainting(World worldIn, BlockPos p_i45849_2_, EnumFacing p_i45849_3_)
--    {
-+    public EntityPainting(World worldIn, BlockPos p_i45849_2_, EnumFacing p_i45849_3_) {
+     public EntityPainting(World worldIn, BlockPos p_i45849_2_, EnumFacing p_i45849_3_)
+     {
          super(worldIn, p_i45849_2_);
-         ArrayList arraylist = Lists.newArrayList();
-         EntityPainting.EnumArt[] aenumart = EntityPainting.EnumArt.values();
-         int i = aenumart.length;
- 
--        for (int j = 0; j < i; ++j)
--        {
-+        for (int j = 0; j < i; ++j) {
-             EntityPainting.EnumArt enumart = aenumart[j];
-             this.art = enumart;
-             this.func_174859_a(p_i45849_3_);
- 
--            if (this.onValidSurface())
--            {
-+            if (this.onValidSurface()) {
-                 arraylist.add(enumart);
-             }
-         }
- 
--        if (!arraylist.isEmpty())
--        {
--            this.art = (EntityPainting.EnumArt)arraylist.get(this.rand.nextInt(arraylist.size()));
-+        if (!arraylist.isEmpty()) {
-+            this.art = (EntityPainting.EnumArt) arraylist.get(this.rand.nextInt(arraylist.size()));
+@@ -49,31 +51,10 @@
          }
  
          this.func_174859_a(p_i45849_3_);
@@ -87,83 +62,15 @@
 -        this.func_174859_a(p_i45850_3_);
 -    }
 -
--    public void writeEntityToNBT(NBTTagCompound tagCompound)
--    {
-+    public void writeEntityToNBT(NBTTagCompound tagCompound) {
+     public void writeEntityToNBT(NBTTagCompound tagCompound)
+     {
          tagCompound.setString("Motive", this.art.title);
          super.writeEntityToNBT(tagCompound);
      }
- 
--    public void readEntityFromNBT(NBTTagCompound tagCompund)
--    {
-+    public void readEntityFromNBT(NBTTagCompound tagCompund) {
-         String s = tagCompund.getString("Motive");
-         EntityPainting.EnumArt[] aenumart = EntityPainting.EnumArt.values();
-         int i = aenumart.length;
- 
--        for (int j = 0; j < i; ++j)
--        {
-+        for (int j = 0; j < i; ++j) {
-             EntityPainting.EnumArt enumart = aenumart[j];
- 
--            if (enumart.title.equals(s))
--            {
-+            if (enumart.title.equals(s)) {
-                 this.art = enumart;
-             }
-         }
- 
--        if (this.art == null)
--        {
-+        if (this.art == null) {
-             this.art = EntityPainting.EnumArt.KEBAB;
-         }
- 
-         super.readEntityFromNBT(tagCompund);
-     }
- 
--    public int getWidthPixels()
--    {
-+    public int getWidthPixels() {
-         return this.art.sizeX;
-     }
- 
--    public int getHeightPixels()
--    {
-+    public int getHeightPixels() {
-         return this.art.sizeY;
-     }
- 
--    public void onBroken(Entity p_110128_1_)
--    {
--        if (this.worldObj.getGameRules().getGameRuleBooleanValue("doTileDrops"))
--        {
--            if (p_110128_1_ instanceof EntityPlayer)
--            {
--                EntityPlayer entityplayer = (EntityPlayer)p_110128_1_;
-+    public void onBroken(Entity p_110128_1_) {
-+        if (this.worldObj.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
-+            if (p_110128_1_ instanceof EntityPlayer) {
-+                EntityPlayer entityplayer = (EntityPlayer) p_110128_1_;
- 
--                if (entityplayer.capabilities.isCreativeMode)
--                {
-+                if (entityplayer.capabilities.isCreativeMode) {
-                     return;
-                 }
-             }
- 
-             this.entityDropItem(new ItemStack(Items.painting), 0.0F);
-         }
-     }
- 
--    public void setLocationAndAngles(double x, double y, double z, float yaw, float pitch)
--    {
-+    public void setLocationAndAngles(double x, double y, double z, float yaw, float pitch) {
+@@ -135,18 +116,10 @@
          BlockPos blockpos = new BlockPos(x - this.posX, y - this.posY, z - this.posZ);
          BlockPos blockpos1 = this.hangingPosition.add(blockpos);
--        this.setPosition((double)blockpos1.getX(), (double)blockpos1.getY(), (double)blockpos1.getZ());
-+        this.setPosition((double) blockpos1.getX(), (double) blockpos1.getY(), (double) blockpos1.getZ());
+         this.setPosition((double)blockpos1.getX(), (double)blockpos1.getY(), (double)blockpos1.getZ());
      }
  
 -    @SideOnly(Side.CLIENT)
@@ -174,25 +81,8 @@
 -        this.setPosition((double)blockpos1.getX(), (double)blockpos1.getY(), (double)blockpos1.getZ());
 -    }
 -
--    public static enum EnumArt
--    {
-+    public static enum EnumArt {
+     public static enum EnumArt
+     {
          KEBAB("Kebab", 16, 16, 0, 0),
          AZTEC("Aztec", 16, 16, 16, 0),
          ALBAN("Alban", 16, 16, 32, 0),
-         AZTEC_2("Aztec2", 16, 16, 48, 0),
-         BOMB("Bomb", 16, 16, 64, 0),
-@@ -180,12 +134,11 @@
-         public final int offsetX;
-         public final int offsetY;
- 
-         private static final String __OBFID = "CL_00001557";
- 
--        private EnumArt(String p_i1598_3_, int p_i1598_4_, int p_i1598_5_, int p_i1598_6_, int p_i1598_7_)
--        {
-+        private EnumArt(String p_i1598_3_, int p_i1598_4_, int p_i1598_5_, int p_i1598_6_, int p_i1598_7_) {
-             this.title = p_i1598_3_;
-             this.sizeX = p_i1598_4_;
-             this.sizeY = p_i1598_5_;
-             this.offsetX = p_i1598_6_;
-             this.offsetY = p_i1598_7_;

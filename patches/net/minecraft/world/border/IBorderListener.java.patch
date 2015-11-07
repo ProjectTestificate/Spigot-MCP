@@ -1,11 +1,10 @@
 --- decompiled\net\minecraft\world\border\IBorderListener.java
 +++ src\main\java\net\minecraft\world\border\IBorderListener.java
-@@ -1,9 +1,9 @@
+@@ -1,9 +1,10 @@
  package net.minecraft.world.border;
  
--public interface IBorderListener
--{
-+public interface IBorderListener {
+ public interface IBorderListener
+ {
 +
      void onSizeChanged(WorldBorder border, double newSize);
  

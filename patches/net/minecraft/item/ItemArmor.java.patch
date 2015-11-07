@@ -11,7 +11,7 @@
  import net.minecraft.creativetab.CreativeTabs;
  import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
  import net.minecraft.dispenser.IBehaviorDispenseItem;
-@@ -14,195 +14,179 @@
+@@ -14,15 +14,20 @@
  import net.minecraft.init.Items;
  import net.minecraft.nbt.NBTTagCompound;
  import net.minecraft.util.AxisAlignedBB;
@@ -20,109 +20,76 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class ItemArmor extends Item
--{
--    private static final int[] maxDamageArray = new int[] {11, 16, 15, 13};
--    public static final String[] EMPTY_SLOT_NAMES = new String[] {"minecraft:items/empty_armor_slot_helmet", "minecraft:items/empty_armor_slot_chestplate", "minecraft:items/empty_armor_slot_leggings", "minecraft:items/empty_armor_slot_boots"};
--    private static final IBehaviorDispenseItem dispenserBehavior = new BehaviorDefaultDispenseItem()
--    {
 +import org.bukkit.craftbukkit.inventory.CraftItemStack;
 +import org.bukkit.event.block.BlockDispenseEvent;
 +import org.bukkit.util.Vector;
 +
 +import com.google.common.base.Predicates;
 +
-+public class ItemArmor extends Item {
+ public class ItemArmor extends Item
+ {
 +
-+    private static final int[] maxDamageArray = new int[]{11, 16, 15, 13};
-+    public static final String[] EMPTY_SLOT_NAMES = new String[]{"minecraft:items/empty_armor_slot_helmet", "minecraft:items/empty_armor_slot_chestplate", "minecraft:items/empty_armor_slot_leggings", "minecraft:items/empty_armor_slot_boots"};
-+    private static final IBehaviorDispenseItem dispenserBehavior = new BehaviorDefaultDispenseItem() {
-+
+     private static final int[] maxDamageArray = new int[] {11, 16, 15, 13};
+     public static final String[] EMPTY_SLOT_NAMES = new String[] {"minecraft:items/empty_armor_slot_helmet", "minecraft:items/empty_armor_slot_chestplate", "minecraft:items/empty_armor_slot_leggings", "minecraft:items/empty_armor_slot_boots"};
+     private static final IBehaviorDispenseItem dispenserBehavior = new BehaviorDefaultDispenseItem()
+     {
          private static final String __OBFID = "CL_00001767";
--        protected ItemStack dispenseStack(IBlockSource source, ItemStack stack)
--        {
-+
-+        protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
-             BlockPos blockpos = source.getBlockPos().offset(BlockDispenser.getFacing(source.getBlockMetadata()));
-             int i = blockpos.getX();
-             int j = blockpos.getY();
-             int k = blockpos.getZ();
--            AxisAlignedBB axisalignedbb = new AxisAlignedBB((double)i, (double)j, (double)k, (double)(i + 1), (double)(j + 1), (double)(k + 1));
-+            AxisAlignedBB axisalignedbb = new AxisAlignedBB((double) i, (double) j, (double) k, (double) (i + 1), (double) (j + 1), (double) (k + 1));
-             List list = source.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb, Predicates.and(IEntitySelector.NOT_SPECTATING, new IEntitySelector.ArmoredMob(stack)));
- 
--            if (list.size() > 0)
--            {
--                EntityLivingBase entitylivingbase = (EntityLivingBase)list.get(0);
-+            if (list.size() > 0) {
-+                EntityLivingBase entitylivingbase = (EntityLivingBase) list.get(0);
+@@ -38,20 +43,52 @@
+             if (list.size() > 0)
+             {
+                 EntityLivingBase entitylivingbase = (EntityLivingBase)list.get(0);
                  int l = entitylivingbase instanceof EntityPlayer ? 1 : 0;
                  int i1 = EntityLiving.getArmorPosition(stack);
 -                ItemStack itemstack1 = stack.copy();
-+
 +                // CraftBukkit start
 +                ItemStack itemstack1 = stack.splitStack(1);
 +                World world = source.getWorld();
 +                org.bukkit.block.Block block = world.getWorld().getBlockAt(source.getBlockPos().getX(), source.getBlockPos().getY(), source.getBlockPos().getZ());
 +                CraftItemStack craftItem = CraftItemStack.asCraftMirror(itemstack1);
-+
 +                BlockDispenseEvent event = new BlockDispenseEvent(block, craftItem.clone(), new Vector(0, 0, 0));
-+                if (!BlockDispenser.eventFired) {
++
++                if (!BlockDispenser.eventFired)
++                {
 +                    world.getServer().getPluginManager().callEvent(event);
 +                }
 +
-+                if (event.isCancelled()) {
++                if (event.isCancelled())
++                {
 +                    stack.stackSize++;
 +                    return stack;
 +                }
 +
-+                if (!event.getItem().equals(craftItem)) {
++                if (!event.getItem().equals(craftItem))
++                {
 +                    stack.stackSize++;
 +                    // Chain to handler for new item
 +                    ItemStack eventStack = CraftItemStack.asNMSCopy(event.getItem());
-+                    IBehaviorDispenseItem idispensebehavior = (IBehaviorDispenseItem) BlockDispenser.dispenseBehaviorRegistry.getObject(eventStack.getItem());
-+                    if (idispensebehavior != IBehaviorDispenseItem.itemDispenseBehaviorProvider && idispensebehavior != this) {
++                    IBehaviorDispenseItem idispensebehavior = (IBehaviorDispenseItem)BlockDispenser.dispenseBehaviorRegistry.getObject(eventStack.getItem());
++
++                    if (idispensebehavior != IBehaviorDispenseItem.itemDispenseBehaviorProvider && idispensebehavior != this)
++                    {
 +                        idispensebehavior.dispense(source, eventStack);
 +                        return stack;
 +                    }
 +                }
-+                // CraftBukkit end
 +
++                // CraftBukkit end
                  itemstack1.stackSize = 1;
                  entitylivingbase.setCurrentItemOrArmor(i1 - l, itemstack1);
  
--                if (entitylivingbase instanceof EntityLiving)
--                {
--                    ((EntityLiving)entitylivingbase).setEquipmentDropChance(i1, 2.0F);
-+                if (entitylivingbase instanceof EntityLiving) {
-+                    ((EntityLiving) entitylivingbase).setEquipmentDropChance(i1, 2.0F);
+                 if (entitylivingbase instanceof EntityLiving)
+                 {
+                     ((EntityLiving)entitylivingbase).setEquipmentDropChance(i1, 2.0F);
                  }
  
 -                --stack.stackSize;
 +                // --stack.stackSize; // CraftBukkit - handled above
                  return stack;
--            }
--            else
--            {
-+            } else {
-                 return super.dispenseStack(source, stack);
              }
-         }
-     };
-     public final int armorType;
-     public final int damageReduceAmount;
-     public final int renderIndex;
-     private final ItemArmor.ArmorMaterial material;
-     private static final String __OBFID = "CL_00001766";
- 
--    public ItemArmor(ItemArmor.ArmorMaterial material, int renderIndex, int armorType)
--    {
-+    public ItemArmor(ItemArmor.ArmorMaterial material, int renderIndex, int armorType) {
-         this.material = material;
-         this.armorType = armorType;
-         this.renderIndex = renderIndex;
-         this.damageReduceAmount = material.getDamageReductionAmount(armorType);
-         this.setMaxDamage(material.getDurability(armorType));
+             else
+             {
+                 return super.dispenseStack(source, stack);
+@@ -74,30 +111,10 @@
          this.maxStackSize = 1;
          this.setCreativeTab(CreativeTabs.tabCombat);
          BlockDispenser.dispenseBehaviorRegistry.putObject(this, dispenserBehavior);
@@ -148,173 +115,36 @@
 -        }
 -    }
 -
--    public int getItemEnchantability()
--    {
-+    public int getItemEnchantability() {
+     public int getItemEnchantability()
+     {
          return this.material.getEnchantability();
      }
  
--    public ItemArmor.ArmorMaterial getArmorMaterial()
--    {
-+    public ItemArmor.ArmorMaterial getArmorMaterial() {
-         return this.material;
-     }
- 
--    public boolean hasColor(ItemStack stack)
--    {
-+    public boolean hasColor(ItemStack stack) {
-         return this.material != ItemArmor.ArmorMaterial.LEATHER ? false : (!stack.hasTagCompound() ? false : (!stack.getTagCompound().hasKey("display", 10) ? false : stack.getTagCompound().getCompoundTag("display").hasKey("color", 3)));
-     }
- 
--    public int getColor(ItemStack stack)
--    {
--        if (this.material != ItemArmor.ArmorMaterial.LEATHER)
--        {
-+    public int getColor(ItemStack stack) {
-+        if (this.material != ItemArmor.ArmorMaterial.LEATHER) {
-             return -1;
--        }
--        else
--        {
-+        } else {
-             NBTTagCompound nbttagcompound = stack.getTagCompound();
- 
--            if (nbttagcompound != null)
--            {
-+            if (nbttagcompound != null) {
-                 NBTTagCompound nbttagcompound1 = nbttagcompound.getCompoundTag("display");
- 
--                if (nbttagcompound1 != null && nbttagcompound1.hasKey("color", 3))
--                {
-+                if (nbttagcompound1 != null && nbttagcompound1.hasKey("color", 3)) {
-                     return nbttagcompound1.getInteger("color");
-                 }
-             }
- 
-             return 10511680;
-         }
-     }
- 
--    public void removeColor(ItemStack stack)
--    {
--        if (this.material == ItemArmor.ArmorMaterial.LEATHER)
--        {
-+    public void removeColor(ItemStack stack) {
-+        if (this.material == ItemArmor.ArmorMaterial.LEATHER) {
-             NBTTagCompound nbttagcompound = stack.getTagCompound();
- 
--            if (nbttagcompound != null)
--            {
-+            if (nbttagcompound != null) {
-                 NBTTagCompound nbttagcompound1 = nbttagcompound.getCompoundTag("display");
- 
--                if (nbttagcompound1.hasKey("color"))
--                {
-+                if (nbttagcompound1.hasKey("color")) {
-                     nbttagcompound1.removeTag("color");
-                 }
-             }
-         }
-     }
- 
--    public void setColor(ItemStack stack, int color)
--    {
--        if (this.material != ItemArmor.ArmorMaterial.LEATHER)
--        {
-+    public void setColor(ItemStack stack, int color) {
-+        if (this.material != ItemArmor.ArmorMaterial.LEATHER) {
-             throw new UnsupportedOperationException("Can\'t dye non-leather!");
--        }
--        else
--        {
-+        } else {
-             NBTTagCompound nbttagcompound = stack.getTagCompound();
- 
--            if (nbttagcompound == null)
--            {
-+            if (nbttagcompound == null) {
-                 nbttagcompound = new NBTTagCompound();
-                 stack.setTagCompound(nbttagcompound);
-             }
- 
-             NBTTagCompound nbttagcompound1 = nbttagcompound.getCompoundTag("display");
- 
--            if (!nbttagcompound.hasKey("display", 10))
--            {
-+            if (!nbttagcompound.hasKey("display", 10)) {
-                 nbttagcompound.setTag("display", nbttagcompound1);
-             }
- 
-             nbttagcompound1.setInteger("color", color);
-         }
-     }
- 
--    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
--    {
-+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-         return this.material.getRepairItem() == repair.getItem() ? true : super.getIsRepairable(toRepair, repair);
-     }
- 
--    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
--    {
-+    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
-         int i = EntityLiving.getArmorPosition(itemStackIn) - 1;
-         ItemStack itemstack1 = playerIn.getCurrentArmor(i);
- 
--        if (itemstack1 == null)
--        {
-+        if (itemstack1 == null) {
-             playerIn.setCurrentItemOrArmor(i, itemStackIn.copy());
-             itemStackIn.stackSize = 0;
-         }
- 
+@@ -199,15 +216,15 @@
          return itemStackIn;
      }
  
--    public static enum ArmorMaterial
--    {
-+    public static enum ArmorMaterial {
-         LEATHER("leather", 5, new int[]{1, 3, 2, 1}, 15),
-         CHAIN("chainmail", 15, new int[]{2, 5, 4, 1}, 12),
-         IRON("iron", 15, new int[]{2, 6, 5, 2}, 9),
-         GOLD("gold", 7, new int[]{2, 5, 3, 1}, 25),
-         DIAMOND("diamond", 33, new int[]{3, 8, 6, 3}, 10);
-@@ -211,40 +195,29 @@
+     public static enum ArmorMaterial
+     {
+-        LEATHER("leather", 5, new int[]{1, 3, 2, 1}, 15),
+-        CHAIN("chainmail", 15, new int[]{2, 5, 4, 1}, 12),
+-        IRON("iron", 15, new int[]{2, 6, 5, 2}, 9),
+-        GOLD("gold", 7, new int[]{2, 5, 3, 1}, 25),
+-        DIAMOND("diamond", 33, new int[]{3, 8, 6, 3}, 10);
++        LEATHER("leather", 5, new int[] {1, 3, 2, 1}, 15),
++        CHAIN("chainmail", 15, new int[] {2, 5, 4, 1}, 12),
++        IRON("iron", 15, new int[] {2, 6, 5, 2}, 9),
++        GOLD("gold", 7, new int[] {2, 5, 3, 1}, 25),
++        DIAMOND("diamond", 33, new int[] {3, 8, 6, 3}, 10);
+         private final String name;
+         private final int maxDamageFactor;
          private final int[] damageReductionAmountArray;
          private final int enchantability;
  
-         private static final String __OBFID = "CL_00001768";
+@@ -238,13 +255,7 @@
  
--        private ArmorMaterial(String name, int p_i45789_4_, int[] reductionAmounts, int enchantability)
--        {
-+        private ArmorMaterial(String name, int p_i45789_4_, int[] reductionAmounts, int enchantability) {
-             this.name = name;
-             this.maxDamageFactor = p_i45789_4_;
-             this.damageReductionAmountArray = reductionAmounts;
-             this.enchantability = enchantability;
-         }
- 
--        public int getDurability(int armorType)
--        {
-+        public int getDurability(int armorType) {
-             return ItemArmor.maxDamageArray[armorType] * this.maxDamageFactor;
-         }
- 
--        public int getDamageReductionAmount(int armorType)
--        {
-+        public int getDamageReductionAmount(int armorType) {
-             return this.damageReductionAmountArray[armorType];
-         }
- 
--        public int getEnchantability()
--        {
-+        public int getEnchantability() {
-             return this.enchantability;
-         }
- 
--        public Item getRepairItem()
--        {
-+        public Item getRepairItem() {
+         public Item getRepairItem()
+         {
              return this == LEATHER ? Items.leather : (this == CHAIN ? Items.iron_ingot : (this == GOLD ? Items.gold_ingot : (this == IRON ? Items.iron_ingot : (this == DIAMOND ? Items.diamond : null))));
          }
 -

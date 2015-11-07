@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\command\server\CommandEmote.java
 +++ src\main\java\net\minecraft\command\server\CommandEmote.java
-@@ -1,50 +1,43 @@
+@@ -1,8 +1,9 @@
  package net.minecraft.command.server;
  
  import java.util.List;
@@ -10,55 +10,15 @@
  import net.minecraft.command.ICommandSender;
  import net.minecraft.command.WrongUsageException;
  import net.minecraft.entity.player.EntityPlayer;
- import net.minecraft.server.MinecraftServer;
- import net.minecraft.util.BlockPos;
+@@ -11,10 +12,11 @@
  import net.minecraft.util.ChatComponentTranslation;
  import net.minecraft.util.IChatComponent;
  
--public class CommandEmote extends CommandBase
--{
-+public class CommandEmote extends CommandBase {
+ public class CommandEmote extends CommandBase
+ {
 +
      private static final String __OBFID = "CL_00000351";
  
--    public String getName()
--    {
-+    public String getName() {
+     public String getName()
+     {
          return "me";
-     }
- 
--    public int getRequiredPermissionLevel()
--    {
-+    public int getRequiredPermissionLevel() {
-         return 0;
-     }
- 
--    public String getCommandUsage(ICommandSender sender)
--    {
-+    public String getCommandUsage(ICommandSender sender) {
-         return "commands.me.usage";
-     }
- 
--    public void execute(ICommandSender sender, String[] args) throws CommandException
--    {
--        if (args.length <= 0)
--        {
-+    public void execute(ICommandSender sender, String[] args) throws CommandException {
-+        if (args.length <= 0) {
-             throw new WrongUsageException("commands.me.usage", new Object[0]);
--        }
--        else
--        {
-+        } else {
-             IChatComponent ichatcomponent = getChatComponentFromNthArg(sender, args, 0, !(sender instanceof EntityPlayer));
--            MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation("chat.type.emote", new Object[] {sender.getDisplayName(), ichatcomponent}));
-+            MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation("chat.type.emote", new Object[]{sender.getDisplayName(), ichatcomponent}));
-         }
-     }
- 
--    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
--    {
-+    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
-         return getListOfStringsMatchingLastWord(args, MinecraftServer.getServer().getAllUsernames());
-     }
- }

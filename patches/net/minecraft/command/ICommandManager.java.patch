@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\command\ICommandManager.java
 +++ src\main\java\net\minecraft\command\ICommandManager.java
-@@ -1,13 +1,14 @@
+@@ -1,13 +1,15 @@
  package net.minecraft.command;
  
  import java.util.List;
@@ -8,9 +8,8 @@
 +
  import net.minecraft.util.BlockPos;
  
--public interface ICommandManager
--{
-+public interface ICommandManager {
+ public interface ICommandManager
+ {
 +
      int executeCommand(ICommandSender sender, String rawCommand);
  

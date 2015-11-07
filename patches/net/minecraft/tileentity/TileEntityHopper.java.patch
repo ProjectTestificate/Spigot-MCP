@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\tileentity\TileEntityHopper.java
 +++ src\main\java\net\minecraft\tileentity\TileEntityHopper.java
-@@ -1,552 +1,610 @@
+@@ -1,37 +1,127 @@
  package net.minecraft.tileentity;
  
 +import java.util.ArrayList;
@@ -30,8 +30,6 @@
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.World;
  
--public class TileEntityHopper extends TileEntityLockable implements IHopper, IUpdatePlayerListBox
--{
 +import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 +import org.bukkit.craftbukkit.inventory.CraftInventoryDoubleChest;
 +import org.bukkit.craftbukkit.inventory.CraftItemStack;
@@ -39,49 +37,59 @@
 +import org.bukkit.event.inventory.InventoryPickupItemEvent;
 +import org.bukkit.inventory.Inventory;
 +
-+public class TileEntityHopper extends TileEntityLockable implements IHopper, IUpdatePlayerListBox {
+ public class TileEntityHopper extends TileEntityLockable implements IHopper, IUpdatePlayerListBox
+ {
 +
      private ItemStack[] inventory = new ItemStack[5];
      private String customName;
      private int transferCooldown = -1;
      private static final String __OBFID = "CL_00000359";
  
--    public void readFromNBT(NBTTagCompound compound)
--    {
 +    // Spigot start
 +    private long nextTick = -1; // Next tick this hopper will be ticked.
 +    private long lastTick = -1; // Last tick this hopper was polled.
 +
 +    // If this hopper is not cooling down, assaign a visible tick for next time.
-+    public void makeTick() {
-+        if (!this.isOnTransferCooldown()) {
++    public void makeTick()
++    {
++        if (!this.isOnTransferCooldown())
++        {
 +            this.setTransferCooldown(0);
 +        }
 +    }
 +
 +    // Contents changed, so make this hopper active.
-+    public void scheduleHopperTick() {
-+        if (this.worldObj != null && this.worldObj.spigotConfig.altHopperTicking) {
++    public void scheduleHopperTick()
++    {
++        if (this.worldObj != null && this.worldObj.spigotConfig.altHopperTicking)
++        {
 +            this.makeTick();
 +        }
 +    }
 +
 +    // Called after this hopper is assaigned a world or when altHopperTicking is turned
 +    // on from reload.
-+    public void convertToScheduling() {
++    public void convertToScheduling()
++    {
 +        // j is the cooldown in ticks
 +        this.setTransferCooldown(this.transferCooldown);
 +    }
 +
 +    // Called when alt hopper ticking is turned off from the reload command
-+    public void convertToPolling() {
++    public void convertToPolling()
++    {
 +        long cooldownDiff;
-+        if (this.lastTick == this.worldObj.getTotalWorldTime()) {
++
++        if (this.lastTick == this.worldObj.getTotalWorldTime())
++        {
 +            cooldownDiff = this.nextTick - this.worldObj.getTotalWorldTime();
-+        } else {
++        }
++        else
++        {
 +            cooldownDiff = this.nextTick - this.worldObj.getTotalWorldTime() + 1;
 +        }
-+        this.setTransferCooldown((int) Math.max(0, Math.min(cooldownDiff, Integer.MAX_VALUE)));
++
++        this.setTransferCooldown((int)Math.max(0, Math.min(cooldownDiff, Integer.MAX_VALUE)));
 +    }
 +    // Spigot end
 +
@@ -89,287 +97,158 @@
 +    public List<CraftHumanEntity> transaction = new ArrayList<CraftHumanEntity>();
 +    private int maxStack = MAX_STACK;
 +
-+    public ItemStack[] getContents() {
++    public ItemStack[] getContents()
++    {
 +        return this.inventory;
 +    }
 +
-+    public void onOpen(CraftHumanEntity who) {
++    public void onOpen(CraftHumanEntity who)
++    {
 +        transaction.add(who);
 +    }
 +
-+    public void onClose(CraftHumanEntity who) {
++    public void onClose(CraftHumanEntity who)
++    {
 +        transaction.remove(who);
 +    }
 +
-+    public java.util.List getViewers() {
++    public java.util.List getViewers()
++    {
 +        return transaction;
 +    }
 +
-+    public void setMaxStackSize(int size) {
++    public void setMaxStackSize(int size)
++    {
 +        maxStack = size;
 +    }
 +    // CraftBukkit end
 +
-+    public void readFromNBT(NBTTagCompound compound) {
+     public void readFromNBT(NBTTagCompound compound)
+     {
          super.readFromNBT(compound);
          NBTTagList nbttaglist = compound.getTagList("Items", 10);
          this.inventory = new ItemStack[this.getSizeInventory()];
- 
--        if (compound.hasKey("CustomName", 8))
--        {
-+        if (compound.hasKey("CustomName", 8)) {
-             this.customName = compound.getString("CustomName");
-         }
- 
-         this.transferCooldown = compound.getInteger("TransferCooldown");
- 
--        for (int i = 0; i < nbttaglist.tagCount(); ++i)
--        {
-+        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-             NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-             byte b0 = nbttagcompound1.getByte("Slot");
- 
--            if (b0 >= 0 && b0 < this.inventory.length)
--            {
-+            if (b0 >= 0 && b0 < this.inventory.length) {
-                 this.inventory[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-             }
-         }
-     }
- 
--    public void writeToNBT(NBTTagCompound compound)
--    {
-+    public void writeToNBT(NBTTagCompound compound) {
-         super.writeToNBT(compound);
-         NBTTagList nbttaglist = new NBTTagList();
- 
--        for (int i = 0; i < this.inventory.length; ++i)
--        {
--            if (this.inventory[i] != null)
--            {
-+        for (int i = 0; i < this.inventory.length; ++i) {
-+            if (this.inventory[i] != null) {
-                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
--                nbttagcompound1.setByte("Slot", (byte)i);
-+                nbttagcompound1.setByte("Slot", (byte) i);
-                 this.inventory[i].writeToNBT(nbttagcompound1);
+@@ -70,21 +160,46 @@
                  nbttaglist.appendTag(nbttagcompound1);
              }
          }
  
          compound.setTag("Items", nbttaglist);
 -        compound.setInteger("TransferCooldown", this.transferCooldown);
--
--        if (this.hasCustomName())
--        {
+ 
 +        // Spigot start - Need to write the correct cooldown to disk. We convert from long to int on saving.
-+        if (this.worldObj != null && this.worldObj.spigotConfig.altHopperTicking) {
++        if (this.worldObj != null && this.worldObj.spigotConfig.altHopperTicking)
++        {
 +            long cooldownDiff;
-+            if (this.lastTick == this.worldObj.getTotalWorldTime()) {
++
++            if (this.lastTick == this.worldObj.getTotalWorldTime())
++            {
 +                cooldownDiff = this.nextTick - this.worldObj.getTotalWorldTime();
-+            } else {
++            }
++            else
++            {
 +                cooldownDiff = this.nextTick - this.worldObj.getTotalWorldTime() + 1;
 +            }
-+            compound.setInteger("TransferCooldown", (int) Math.max(0, Math.min(cooldownDiff, Integer.MAX_VALUE)));
-+        } else {
++
++            compound.setInteger("TransferCooldown", (int)Math.max(0, Math.min(cooldownDiff, Integer.MAX_VALUE)));
++        }
++        else
++        {
 +            // g is the cooldown in ticks.
 +            compound.setInteger("TransferCooldown", this.transferCooldown);
 +        }
++
 +        // Spigot end
-+        if (this.hasCustomName()) {
+         if (this.hasCustomName())
+         {
              compound.setString("CustomName", this.customName);
          }
      }
  
--    public void markDirty()
--    {
-+    public void markDirty() {
+     public void markDirty()
+     {
          super.markDirty();
 +        // Spigot start - The contents have changed, so make this hopper active.
 +        this.scheduleHopperTick();
 +        // Spigot end
      }
  
--    public int getSizeInventory()
--    {
-+    public int getSizeInventory() {
+     public int getSizeInventory()
+     {
          return this.inventory.length;
-     }
- 
--    public ItemStack getStackInSlot(int index)
--    {
-+    public ItemStack getStackInSlot(int index) {
-         return this.inventory[index];
-     }
- 
--    public ItemStack decrStackSize(int index, int count)
--    {
--        if (this.inventory[index] != null)
--        {
-+    public ItemStack decrStackSize(int index, int count) {
-+        if (this.inventory[index] != null) {
-             ItemStack itemstack;
- 
--            if (this.inventory[index].stackSize <= count)
--            {
-+            if (this.inventory[index].stackSize <= count) {
-                 itemstack = this.inventory[index];
-                 this.inventory[index] = null;
-                 return itemstack;
--            }
--            else
--            {
-+            } else {
-                 itemstack = this.inventory[index].splitStack(count);
- 
--                if (this.inventory[index].stackSize == 0)
--                {
-+                if (this.inventory[index].stackSize == 0) {
-                     this.inventory[index] = null;
-                 }
- 
-                 return itemstack;
-             }
--        }
--        else
--        {
-+        } else {
-             return null;
-         }
-     }
- 
--    public ItemStack getStackInSlotOnClosing(int index)
--    {
--        if (this.inventory[index] != null)
--        {
-+    public ItemStack getStackInSlotOnClosing(int index) {
-+        if (this.inventory[index] != null) {
-             ItemStack itemstack = this.inventory[index];
-             this.inventory[index] = null;
-             return itemstack;
--        }
--        else
--        {
-+        } else {
-             return null;
-         }
-     }
- 
--    public void setInventorySlotContents(int index, ItemStack stack)
--    {
-+    public void setInventorySlotContents(int index, ItemStack stack) {
-         this.inventory[index] = stack;
- 
--        if (stack != null && stack.stackSize > this.getInventoryStackLimit())
--        {
-+        if (stack != null && stack.stackSize > this.getInventoryStackLimit()) {
-             stack.stackSize = this.getInventoryStackLimit();
-         }
-     }
- 
--    public String getName()
--    {
-+    public String getName() {
-         return this.hasCustomName() ? this.customName : "container.hopper";
-     }
- 
--    public boolean hasCustomName()
--    {
-+    public boolean hasCustomName() {
-         return this.customName != null && this.customName.length() > 0;
-     }
- 
--    public void setCustomName(String customNameIn)
--    {
-+    public void setCustomName(String customNameIn) {
+@@ -164,38 +279,58 @@
          this.customName = customNameIn;
      }
  
--    public int getInventoryStackLimit()
--    {
+     public int getInventoryStackLimit()
+     {
 -        return 64;
-+    public int getInventoryStackLimit() {
 +        return maxStack; // CraftBukkit
      }
  
--    public boolean isUseableByPlayer(EntityPlayer player)
--    {
--        return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
-+    public boolean isUseableByPlayer(EntityPlayer player) {
-+        return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
+     public boolean isUseableByPlayer(EntityPlayer player)
+     {
+         return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
      }
  
 -    public void openInventory(EntityPlayer player) {}
-+    public void openInventory(EntityPlayer player) {
++    public void openInventory(EntityPlayer player)
++    {
 +    }
  
 -    public void closeInventory(EntityPlayer player) {}
-+    public void closeInventory(EntityPlayer player) {
++    public void closeInventory(EntityPlayer player)
++    {
 +    }
  
--    public boolean isItemValidForSlot(int index, ItemStack stack)
--    {
-+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+     public boolean isItemValidForSlot(int index, ItemStack stack)
+     {
          return true;
      }
  
--    public void update()
--    {
--        if (this.worldObj != null && !this.worldObj.isRemote)
--        {
+     public void update()
+     {
+         if (this.worldObj != null && !this.worldObj.isRemote)
+         {
 -            --this.transferCooldown;
--
--            if (!this.isOnTransferCooldown())
--            {
--                this.setTransferCooldown(0);
--                this.func_145887_i();
-+    public void update() {
-+        if (this.worldObj != null && !this.worldObj.isRemote) {
 +            // Spigot start
-+            if (this.worldObj.spigotConfig.altHopperTicking) {
++            if (this.worldObj.spigotConfig.altHopperTicking)
++            {
 +                this.lastTick = this.worldObj.getTotalWorldTime();
-+                if (this.nextTick == this.worldObj.getTotalWorldTime()) {
+ 
+-            if (!this.isOnTransferCooldown())
++                if (this.nextTick == this.worldObj.getTotalWorldTime())
++                {
 +                    // Method that does the pushing and pulling.
 +                    this.func_145887_i();
 +                }
-+            } else {
++            }
++            else
+             {
+-                this.setTransferCooldown(0);
+-                this.func_145887_i();
 +                --this.transferCooldown;
-+                if (!this.isOnTransferCooldown()) {
++
++                if (!this.isOnTransferCooldown())
++                {
 +                    this.setTransferCooldown(0);
 +                    this.func_145887_i();
 +                }
              }
++
 +            // Spigot end
          }
      }
  
--    public boolean func_145887_i()
--    {
--        if (this.worldObj != null && !this.worldObj.isRemote)
--        {
--            if (!this.isOnTransferCooldown() && BlockHopper.isEnabled(this.getBlockMetadata()))
--            {
-+    public boolean func_145887_i() {
-+        if (this.worldObj != null && !this.worldObj.isRemote) {
-+            if (!this.isOnTransferCooldown() && BlockHopper.isEnabled(this.getBlockMetadata())) {
-                 boolean flag = false;
- 
--                if (!this.func_152104_k())
--                {
-+                if (!this.func_152104_k()) {
-                     flag = this.func_145883_k();
-                 }
- 
--                if (!this.func_152105_l())
--                {
-+                if (!this.func_152105_l()) {
+     public boolean func_145887_i()
+     {
+@@ -215,16 +350,23 @@
                      flag = func_145891_a(this) || flag;
                  }
  
--                if (flag)
--                {
+                 if (flag)
+                 {
 -                    this.setTransferCooldown(8);
-+                if (flag) {
 +                    this.setTransferCooldown(worldObj.spigotConfig.hopperTransfer); // Spigot
                      this.markDirty();
                      return true;
@@ -377,667 +256,274 @@
              }
  
 +            // Spigot start
-+            if (!worldObj.spigotConfig.altHopperTicking && !this.isOnTransferCooldown()) {
++            if (!worldObj.spigotConfig.altHopperTicking && !this.isOnTransferCooldown())
++            {
 +                this.setTransferCooldown(worldObj.spigotConfig.hopperCheck);
 +            }
++
 +            // Spigot end
              return false;
--        }
--        else
--        {
-+        } else {
+         }
+         else
+         {
              return false;
-         }
-     }
- 
--    private boolean func_152104_k()
--    {
-+    private boolean func_152104_k() {
-         ItemStack[] aitemstack = this.inventory;
-         int i = aitemstack.length;
- 
--        for (int j = 0; j < i; ++j)
--        {
-+        for (int j = 0; j < i; ++j) {
-             ItemStack itemstack = aitemstack[j];
- 
--            if (itemstack != null)
--            {
-+            if (itemstack != null) {
-                 return false;
-             }
-         }
- 
-         return true;
-     }
- 
--    private boolean func_152105_l()
--    {
-+    private boolean func_152105_l() {
-         ItemStack[] aitemstack = this.inventory;
-         int i = aitemstack.length;
- 
--        for (int j = 0; j < i; ++j)
--        {
-+        for (int j = 0; j < i; ++j) {
-             ItemStack itemstack = aitemstack[j];
- 
--            if (itemstack == null || itemstack.stackSize != itemstack.getMaxStackSize())
--            {
-+            if (itemstack == null || itemstack.stackSize != itemstack.getMaxStackSize()) {
-                 return false;
-             }
-         }
- 
-         return true;
-     }
- 
--    private boolean func_145883_k()
--    {
-+    private boolean func_145883_k() {
-         IInventory iinventory = this.func_145895_l();
- 
--        if (iinventory == null)
--        {
-+        if (iinventory == null) {
-             return false;
--        }
--        else
--        {
-+        } else {
-             EnumFacing enumfacing = BlockHopper.getFacing(this.getBlockMetadata()).getOpposite();
- 
--            if (this.func_174919_a(iinventory, enumfacing))
--            {
-+            if (this.func_174919_a(iinventory, enumfacing)) {
-                 return false;
--            }
--            else
--            {
--                for (int i = 0; i < this.getSizeInventory(); ++i)
--                {
--                    if (this.getStackInSlot(i) != null)
--                    {
-+            } else {
-+                for (int i = 0; i < this.getSizeInventory(); ++i) {
-+                    if (this.getStackInSlot(i) != null) {
+@@ -288,18 +430,54 @@
+                 for (int i = 0; i < this.getSizeInventory(); ++i)
+                 {
+                     if (this.getStackInSlot(i) != null)
+                     {
                          ItemStack itemstack = this.getStackInSlot(i).copy();
 -                        ItemStack itemstack1 = func_174918_a(iinventory, this.decrStackSize(i, 1), enumfacing);
 +                        // ItemStack itemstack1 = func_174918_a(iinventory, this.decrStackSize(i, 1), enumfacing);
- 
--                        if (itemstack1 == null || itemstack1.stackSize == 0)
--                        {
--                            iinventory.markDirty();
--                            return true;
 +                        // CraftBukkit start - Call event when pushing items into other inventories
 +                        CraftItemStack oitemstack = CraftItemStack.asCraftMirror(this.decrStackSize(i, worldObj.spigotConfig.hopperAmount)); // Spigot
-+
 +                        Inventory destinationInventory;
-+                        // Have to special case large chests as they work oddly
-+                        if (iinventory instanceof InventoryLargeChest) {
-+                            destinationInventory = new CraftInventoryDoubleChest((InventoryLargeChest) iinventory);
-+                        } else {
-+                            destinationInventory = iinventory.getOwner().getInventory();
-                         }
  
++                        // Have to special case large chests as they work oddly
++                        if (iinventory instanceof InventoryLargeChest)
++                        {
++                            destinationInventory = new CraftInventoryDoubleChest((InventoryLargeChest)iinventory);
++                        }
++                        else
++                        {
++                            destinationInventory = iinventory.getOwner().getInventory();
++                        }
++
 +                        InventoryMoveItemEvent event = new InventoryMoveItemEvent(this.getOwner().getInventory(), oitemstack.clone(), destinationInventory, true);
 +                        this.getWorld().getServer().getPluginManager().callEvent(event);
-+                        if (event.isCancelled()) {
++
++                        if (event.isCancelled())
++                        {
 +                            this.setInventorySlotContents(i, itemstack);
 +                            this.setTransferCooldown(worldObj.spigotConfig.hopperTransfer); // Spigot
 +                            return false;
 +                        }
++
 +                        int origCount = event.getItem().getAmount(); // Spigot
 +                        ItemStack itemstack1 = func_174918_a(iinventory, CraftItemStack.asNMSCopy(event.getItem()), enumfacing);
 +
-+                        if (itemstack1 == null || itemstack1.stackSize == 0) {
-+                            if (event.getItem().equals(oitemstack)) {
+                         if (itemstack1 == null || itemstack1.stackSize == 0)
+                         {
+-                            iinventory.markDirty();
++                            if (event.getItem().equals(oitemstack))
++                            {
 +                                iinventory.markDirty();
-+                            } else {
++                            }
++                            else
++                            {
 +                                this.setInventorySlotContents(i, itemstack);
 +                            }
++
 +                            // CraftBukkit end
-+                            return true;
-+                        }
+                             return true;
+                         }
+ 
 +                        itemstack.stackSize -= origCount - itemstack1.stackSize; // Spigot
                          this.setInventorySlotContents(i, itemstack);
                      }
                  }
  
                  return false;
-             }
-         }
-     }
- 
--    private boolean func_174919_a(IInventory p_174919_1_, EnumFacing p_174919_2_)
--    {
--        if (p_174919_1_ instanceof ISidedInventory)
--        {
--            ISidedInventory isidedinventory = (ISidedInventory)p_174919_1_;
-+    private boolean func_174919_a(IInventory p_174919_1_, EnumFacing p_174919_2_) {
-+        if (p_174919_1_ instanceof ISidedInventory) {
-+            ISidedInventory isidedinventory = (ISidedInventory) p_174919_1_;
-             int[] aint = isidedinventory.getSlotsForFace(p_174919_2_);
- 
--            for (int i = 0; i < aint.length; ++i)
--            {
-+            for (int i = 0; i < aint.length; ++i) {
-                 ItemStack itemstack = isidedinventory.getStackInSlot(aint[i]);
- 
--                if (itemstack == null || itemstack.stackSize != itemstack.getMaxStackSize())
--                {
-+                if (itemstack == null || itemstack.stackSize != itemstack.getMaxStackSize()) {
-                     return false;
-                 }
-             }
--        }
--        else
--        {
-+        } else {
-             int j = p_174919_1_.getSizeInventory();
- 
--            for (int k = 0; k < j; ++k)
--            {
-+            for (int k = 0; k < j; ++k) {
-                 ItemStack itemstack1 = p_174919_1_.getStackInSlot(k);
- 
--                if (itemstack1 == null || itemstack1.stackSize != itemstack1.getMaxStackSize())
--                {
-+                if (itemstack1 == null || itemstack1.stackSize != itemstack1.getMaxStackSize()) {
-                     return false;
-                 }
-             }
-         }
- 
-         return true;
-     }
- 
--    private static boolean func_174917_b(IInventory p_174917_0_, EnumFacing p_174917_1_)
--    {
--        if (p_174917_0_ instanceof ISidedInventory)
--        {
--            ISidedInventory isidedinventory = (ISidedInventory)p_174917_0_;
-+    private static boolean func_174917_b(IInventory p_174917_0_, EnumFacing p_174917_1_) {
-+        if (p_174917_0_ instanceof ISidedInventory) {
-+            ISidedInventory isidedinventory = (ISidedInventory) p_174917_0_;
-             int[] aint = isidedinventory.getSlotsForFace(p_174917_1_);
- 
--            for (int i = 0; i < aint.length; ++i)
--            {
--                if (isidedinventory.getStackInSlot(aint[i]) != null)
--                {
-+            for (int i = 0; i < aint.length; ++i) {
-+                if (isidedinventory.getStackInSlot(aint[i]) != null) {
-                     return false;
-                 }
-             }
--        }
--        else
--        {
-+        } else {
-             int j = p_174917_0_.getSizeInventory();
- 
--            for (int k = 0; k < j; ++k)
--            {
--                if (p_174917_0_.getStackInSlot(k) != null)
--                {
-+            for (int k = 0; k < j; ++k) {
-+                if (p_174917_0_.getStackInSlot(k) != null) {
-                     return false;
-                 }
-             }
-         }
- 
-         return true;
-     }
- 
--    public static boolean func_145891_a(IHopper p_145891_0_)
--    {
-+    public static boolean func_145891_a(IHopper p_145891_0_) {
-         IInventory iinventory = func_145884_b(p_145891_0_);
- 
--        if (iinventory != null)
--        {
-+        if (iinventory != null) {
-             EnumFacing enumfacing = EnumFacing.DOWN;
- 
--            if (func_174917_b(iinventory, enumfacing))
--            {
-+            if (func_174917_b(iinventory, enumfacing)) {
-                 return false;
-             }
- 
--            if (iinventory instanceof ISidedInventory)
--            {
--                ISidedInventory isidedinventory = (ISidedInventory)iinventory;
-+            if (iinventory instanceof ISidedInventory) {
-+                ISidedInventory isidedinventory = (ISidedInventory) iinventory;
-                 int[] aint = isidedinventory.getSlotsForFace(enumfacing);
- 
--                for (int i = 0; i < aint.length; ++i)
--                {
--                    if (func_174915_a(p_145891_0_, iinventory, aint[i], enumfacing))
--                    {
-+                for (int i = 0; i < aint.length; ++i) {
-+                    if (func_174915_a(p_145891_0_, iinventory, aint[i], enumfacing)) {
-                         return true;
-                     }
-                 }
--            }
--            else
--            {
-+            } else {
-                 int j = iinventory.getSizeInventory();
- 
--                for (int k = 0; k < j; ++k)
--                {
--                    if (func_174915_a(p_145891_0_, iinventory, k, enumfacing))
--                    {
-+                for (int k = 0; k < j; ++k) {
-+                    if (func_174915_a(p_145891_0_, iinventory, k, enumfacing)) {
-                         return true;
-                     }
-                 }
-             }
--        }
--        else
--        {
-+        } else {
-             EntityItem entityitem = func_145897_a(p_145891_0_.getWorld(), p_145891_0_.getXPos(), p_145891_0_.getYPos() + 1.0D, p_145891_0_.getZPos());
- 
--            if (entityitem != null)
--            {
-+            if (entityitem != null) {
-                 return func_145898_a(p_145891_0_, entityitem);
-             }
+@@ -423,26 +601,71 @@
          }
  
          return false;
      }
  
 -    private static boolean func_174915_a(IHopper p_174915_0_, IInventory p_174915_1_, int p_174915_2_, EnumFacing p_174915_3_)
--    {
++    private static boolean func_174915_a(IHopper hopper, IInventory inventoryIn, int i, EnumFacing direction)   // SpigotMCP -- Use sensible names
+     {
 -        ItemStack itemstack = p_174915_1_.getStackInSlot(p_174915_2_);
-+    private static boolean func_174915_a(IHopper hopper, IInventory inventoryIn, int i, EnumFacing direction) { // SpigotMCP -- Use sensible names
 +        ItemStack itemstack = inventoryIn.getStackInSlot(i);
  
 -        if (itemstack != null && func_174921_b(p_174915_1_, itemstack, p_174915_2_, p_174915_3_))
--        {
-+        if (itemstack != null && func_174921_b(inventoryIn, itemstack, i, direction)) {
++        if (itemstack != null && func_174921_b(inventoryIn, itemstack, i, direction))
+         {
              ItemStack itemstack1 = itemstack.copy();
 -            ItemStack itemstack2 = func_174918_a(p_174915_0_, p_174915_1_.decrStackSize(p_174915_2_, 1), (EnumFacing)null);
 +            // CraftBukkit start - Call event on collection of items from inventories into the hopper
 +            // ItemStack itemstack2 = func_174918_a(hopper, inventoryIn.decrStackSize(i, 1), (EnumFacing) null);
- 
--            if (itemstack2 == null || itemstack2.stackSize == 0)
--            {
--                p_174915_1_.markDirty();
 +            CraftItemStack oitemstack = CraftItemStack.asCraftMirror(inventoryIn.decrStackSize(i, hopper.getWorld().spigotConfig.hopperAmount)); // Spigot
-+
 +            Inventory sourceInventory;
+ 
 +            // Have to special case large chests as they work oddly
-+            if (inventoryIn instanceof InventoryLargeChest) {
-+                sourceInventory = new CraftInventoryDoubleChest((InventoryLargeChest) inventoryIn);
-+            } else {
++            if (inventoryIn instanceof InventoryLargeChest)
++            {
++                sourceInventory = new CraftInventoryDoubleChest((InventoryLargeChest)inventoryIn);
++            }
++            else
++            {
 +                sourceInventory = inventoryIn.getOwner().getInventory();
 +            }
 +
 +            InventoryMoveItemEvent event = new InventoryMoveItemEvent(sourceInventory, oitemstack.clone(), hopper.getOwner().getInventory(), false);
-+
 +            hopper.getWorld().getServer().getPluginManager().callEvent(event);
-+            if (event.isCancelled()) {
++
++            if (event.isCancelled())
++            {
 +                inventoryIn.setInventorySlotContents(i, itemstack1);
 +
-+                if (hopper instanceof TileEntityHopper) {
-+                    ((TileEntityHopper) hopper).setTransferCooldown(hopper.getWorld().spigotConfig.hopperTransfer); // Spigot
-+                } else if (hopper instanceof EntityMinecartHopper) {
-+                    ((EntityMinecartHopper) hopper).setDisplayTileOffset(hopper.getWorld().spigotConfig.hopperTransfer / 2); // Spigot
++                if (hopper instanceof TileEntityHopper)
++                {
++                    ((TileEntityHopper)hopper).setTransferCooldown(hopper.getWorld().spigotConfig.hopperTransfer); // Spigot
++                }
++                else if (hopper instanceof EntityMinecartHopper)
++                {
++                    ((EntityMinecartHopper)hopper).setDisplayTileOffset(hopper.getWorld().spigotConfig.hopperTransfer / 2); // Spigot
 +                }
 +
 +                return false;
 +            }
++
 +            int origCount = event.getItem().getAmount(); // Spigot
 +            ItemStack itemstack2 = func_174918_a(hopper, CraftItemStack.asNMSCopy(event.getItem()), null);
 +
-+            if (itemstack2 == null || itemstack2.stackSize == 0) {
-+                if (event.getItem().equals(oitemstack)) {
+             if (itemstack2 == null || itemstack2.stackSize == 0)
+             {
+-                p_174915_1_.markDirty();
++                if (event.getItem().equals(oitemstack))
++                {
 +                    inventoryIn.markDirty();
-+                } else {
++                }
++                else
++                {
 +                    inventoryIn.setInventorySlotContents(i, itemstack1);
 +                }
++
 +                // CraftBukkit end
                  return true;
              }
-+            itemstack1.stackSize -= origCount - itemstack2.stackSize; // Spigot
  
 -            p_174915_1_.setInventorySlotContents(p_174915_2_, itemstack1);
++            itemstack1.stackSize -= origCount - itemstack2.stackSize; // Spigot
 +            inventoryIn.setInventorySlotContents(i, itemstack1);
          }
  
          return false;
      }
  
--    public static boolean func_145898_a(IInventory p_145898_0_, EntityItem p_145898_1_)
--    {
-+    public static boolean func_145898_a(IInventory p_145898_0_, EntityItem p_145898_1_) {
-         boolean flag = false;
- 
--        if (p_145898_1_ == null)
--        {
-+        if (p_145898_1_ == null) {
+@@ -454,10 +677,20 @@
+         {
              return false;
--        }
--        else
--        {
-+        } else {
+         }
+         else
+         {
 +            // CraftBukkit start
-+            InventoryPickupItemEvent event = new InventoryPickupItemEvent(p_145898_0_.getOwner().getInventory(), (org.bukkit.entity.Item) p_145898_1_.getBukkitEntity());
++            InventoryPickupItemEvent event = new InventoryPickupItemEvent(p_145898_0_.getOwner().getInventory(), (org.bukkit.entity.Item)p_145898_1_.getBukkitEntity());
 +            p_145898_1_.worldObj.getServer().getPluginManager().callEvent(event);
-+            if (event.isCancelled()) {
++
++            if (event.isCancelled())
++            {
 +                return false;
 +            }
-+            // CraftBukkit end
 +
++            // CraftBukkit end
              ItemStack itemstack = p_145898_1_.getEntityItem().copy();
--            ItemStack itemstack1 = func_174918_a(p_145898_0_, itemstack, (EnumFacing)null);
-+            ItemStack itemstack1 = func_174918_a(p_145898_0_, itemstack, (EnumFacing) null);
+             ItemStack itemstack1 = func_174918_a(p_145898_0_, itemstack, (EnumFacing)null);
  
--            if (itemstack1 != null && itemstack1.stackSize != 0)
--            {
-+            if (itemstack1 != null && itemstack1.stackSize != 0) {
-                 p_145898_1_.setEntityItemStack(itemstack1);
--            }
--            else
--            {
-+            } else {
-                 flag = true;
-                 p_145898_1_.setDead();
-             }
+             if (itemstack1 != null && itemstack1.stackSize != 0)
+             {
+@@ -542,11 +775,11 @@
+                 {
+                     TileEntityHopper tileentityhopper = (TileEntityHopper)p_174916_0_;
  
-             return flag;
-         }
-     }
- 
--    public static ItemStack func_174918_a(IInventory p_174918_0_, ItemStack p_174918_1_, EnumFacing p_174918_2_)
--    {
--        if (p_174918_0_ instanceof ISidedInventory && p_174918_2_ != null)
--        {
--            ISidedInventory isidedinventory = (ISidedInventory)p_174918_0_;
-+    public static ItemStack func_174918_a(IInventory p_174918_0_, ItemStack p_174918_1_, EnumFacing p_174918_2_) {
-+        if (p_174918_0_ instanceof ISidedInventory && p_174918_2_ != null) {
-+            ISidedInventory isidedinventory = (ISidedInventory) p_174918_0_;
-             int[] aint = isidedinventory.getSlotsForFace(p_174918_2_);
- 
--            for (int k = 0; k < aint.length && p_174918_1_ != null && p_174918_1_.stackSize > 0; ++k)
--            {
-+            for (int k = 0; k < aint.length && p_174918_1_ != null && p_174918_1_.stackSize > 0; ++k) {
-                 p_174918_1_ = func_174916_c(p_174918_0_, p_174918_1_, aint[k], p_174918_2_);
-             }
--        }
--        else
--        {
-+        } else {
-             int i = p_174918_0_.getSizeInventory();
- 
--            for (int j = 0; j < i && p_174918_1_ != null && p_174918_1_.stackSize > 0; ++j)
--            {
-+            for (int j = 0; j < i && p_174918_1_ != null && p_174918_1_.stackSize > 0; ++j) {
-                 p_174918_1_ = func_174916_c(p_174918_0_, p_174918_1_, j, p_174918_2_);
-             }
-         }
- 
--        if (p_174918_1_ != null && p_174918_1_.stackSize == 0)
--        {
-+        if (p_174918_1_ != null && p_174918_1_.stackSize == 0) {
-             p_174918_1_ = null;
-         }
- 
-         return p_174918_1_;
-     }
- 
--    private static boolean func_174920_a(IInventory p_174920_0_, ItemStack p_174920_1_, int p_174920_2_, EnumFacing p_174920_3_)
--    {
--        return !p_174920_0_.isItemValidForSlot(p_174920_2_, p_174920_1_) ? false : !(p_174920_0_ instanceof ISidedInventory) || ((ISidedInventory)p_174920_0_).canInsertItem(p_174920_2_, p_174920_1_, p_174920_3_);
-+    private static boolean func_174920_a(IInventory p_174920_0_, ItemStack p_174920_1_, int p_174920_2_, EnumFacing p_174920_3_) {
-+        return !p_174920_0_.isItemValidForSlot(p_174920_2_, p_174920_1_) ? false : !(p_174920_0_ instanceof ISidedInventory) || ((ISidedInventory) p_174920_0_).canInsertItem(p_174920_2_, p_174920_1_, p_174920_3_);
-     }
- 
--    private static boolean func_174921_b(IInventory p_174921_0_, ItemStack p_174921_1_, int p_174921_2_, EnumFacing p_174921_3_)
--    {
--        return !(p_174921_0_ instanceof ISidedInventory) || ((ISidedInventory)p_174921_0_).canExtractItem(p_174921_2_, p_174921_1_, p_174921_3_);
-+    private static boolean func_174921_b(IInventory p_174921_0_, ItemStack p_174921_1_, int p_174921_2_, EnumFacing p_174921_3_) {
-+        return !(p_174921_0_ instanceof ISidedInventory) || ((ISidedInventory) p_174921_0_).canExtractItem(p_174921_2_, p_174921_1_, p_174921_3_);
-     }
- 
--    private static ItemStack func_174916_c(IInventory p_174916_0_, ItemStack p_174916_1_, int p_174916_2_, EnumFacing p_174916_3_)
--    {
-+    private static ItemStack func_174916_c(IInventory p_174916_0_, ItemStack p_174916_1_, int p_174916_2_, EnumFacing p_174916_3_) {
-         ItemStack itemstack1 = p_174916_0_.getStackInSlot(p_174916_2_);
- 
--        if (func_174920_a(p_174916_0_, p_174916_1_, p_174916_2_, p_174916_3_))
--        {
-+        if (func_174920_a(p_174916_0_, p_174916_1_, p_174916_2_, p_174916_3_)) {
-             boolean flag = false;
- 
--            if (itemstack1 == null)
--            {
-+            if (itemstack1 == null) {
-                 p_174916_0_.setInventorySlotContents(p_174916_2_, p_174916_1_);
-                 p_174916_1_ = null;
-                 flag = true;
--            }
--            else if (canCombine(itemstack1, p_174916_1_))
--            {
-+            } else if (canCombine(itemstack1, p_174916_1_)) {
-                 int j = p_174916_1_.getMaxStackSize() - itemstack1.stackSize;
-                 int k = Math.min(p_174916_1_.stackSize, j);
-                 p_174916_1_.stackSize -= k;
-                 itemstack1.stackSize += k;
-                 flag = k > 0;
-             }
- 
--            if (flag)
--            {
--                if (p_174916_0_ instanceof TileEntityHopper)
--                {
--                    TileEntityHopper tileentityhopper = (TileEntityHopper)p_174916_0_;
-+            if (flag) {
-+                if (p_174916_0_ instanceof TileEntityHopper) {
-+                    TileEntityHopper tileentityhopper = (TileEntityHopper) p_174916_0_;
- 
--                    if (tileentityhopper.mayTransfer())
--                    {
+                     if (tileentityhopper.mayTransfer())
+                     {
 -                        tileentityhopper.setTransferCooldown(8);
-+                    if (tileentityhopper.mayTransfer()) {
 +                        tileentityhopper.setTransferCooldown(tileentityhopper.worldObj.spigotConfig.hopperTransfer); // Spigot
                      }
  
                      p_174916_0_.markDirty();
                  }
  
-@@ -555,124 +613,128 @@
-         }
- 
-         return p_174916_1_;
-     }
- 
--    private IInventory func_145895_l()
--    {
-+    private IInventory func_145895_l() {
-         EnumFacing enumfacing = BlockHopper.getFacing(this.getBlockMetadata());
--        return func_145893_b(this.getWorld(), (double)(this.pos.getX() + enumfacing.getFrontOffsetX()), (double)(this.pos.getY() + enumfacing.getFrontOffsetY()), (double)(this.pos.getZ() + enumfacing.getFrontOffsetZ()));
-+        return func_145893_b(this.getWorld(), (double) (this.pos.getX() + enumfacing.getFrontOffsetX()), (double) (this.pos.getY() + enumfacing.getFrontOffsetY()), (double) (this.pos.getZ() + enumfacing.getFrontOffsetZ()));
-     }
- 
--    public static IInventory func_145884_b(IHopper p_145884_0_)
--    {
-+    public static IInventory func_145884_b(IHopper p_145884_0_) {
-         return func_145893_b(p_145884_0_.getWorld(), p_145884_0_.getXPos(), p_145884_0_.getYPos() + 1.0D, p_145884_0_.getZPos());
-     }
- 
--    public static EntityItem func_145897_a(World worldIn, double p_145897_1_, double p_145897_3_, double p_145897_5_)
--    {
-+    public static EntityItem func_145897_a(World worldIn, double p_145897_1_, double p_145897_3_, double p_145897_5_) {
-         List list = worldIn.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(p_145897_1_, p_145897_3_, p_145897_5_, p_145897_1_ + 1.0D, p_145897_3_ + 1.0D, p_145897_5_ + 1.0D), IEntitySelector.selectAnything);
--        return list.size() > 0 ? (EntityItem)list.get(0) : null;
-+        return list.size() > 0 ? (EntityItem) list.get(0) : null;
-     }
- 
--    public static IInventory func_145893_b(World worldIn, double p_145893_1_, double p_145893_3_, double p_145893_5_)
--    {
-+    public static IInventory func_145893_b(World worldIn, double p_145893_1_, double p_145893_3_, double p_145893_5_) {
+@@ -579,10 +812,13 @@
          Object object = null;
          int i = MathHelper.floor_double(p_145893_1_);
          int j = MathHelper.floor_double(p_145893_3_);
          int k = MathHelper.floor_double(p_145893_5_);
          BlockPos blockpos = new BlockPos(i, j, k);
++
 +        if (!worldIn.isBlockLoaded(blockpos)) return null; // Spigot
++
          TileEntity tileentity = worldIn.getTileEntity(new BlockPos(i, j, k));
  
--        if (tileentity instanceof IInventory)
--        {
--            object = (IInventory)tileentity;
-+        if (tileentity instanceof IInventory) {
-+            object = (IInventory) tileentity;
- 
--            if (object instanceof TileEntityChest)
--            {
-+            if (object instanceof TileEntityChest) {
-                 Block block = worldIn.getBlockState(new BlockPos(i, j, k)).getBlock();
- 
--                if (block instanceof BlockChest)
--                {
--                    object = ((BlockChest)block).getLockableContainer(worldIn, blockpos);
-+                if (block instanceof BlockChest) {
-+                    object = ((BlockChest) block).getLockableContainer(worldIn, blockpos);
-                 }
-             }
-         }
- 
--        if (object == null)
--        {
--            List list = worldIn.func_175674_a((Entity)null, new AxisAlignedBB(p_145893_1_, p_145893_3_, p_145893_5_, p_145893_1_ + 1.0D, p_145893_3_ + 1.0D, p_145893_5_ + 1.0D), IEntitySelector.selectInventories);
-+        if (object == null) {
-+            List list = worldIn.func_175674_a((Entity) null, new AxisAlignedBB(p_145893_1_, p_145893_3_, p_145893_5_, p_145893_1_ + 1.0D, p_145893_3_ + 1.0D, p_145893_5_ + 1.0D), IEntitySelector.selectInventories);
- 
--            if (list.size() > 0)
--            {
--                object = (IInventory)list.get(worldIn.rand.nextInt(list.size()));
-+            if (list.size() > 0) {
-+                object = (IInventory) list.get(worldIn.rand.nextInt(list.size()));
-             }
-         }
- 
--        return (IInventory)object;
-+        return (IInventory) object;
-     }
- 
--    private static boolean canCombine(ItemStack stack1, ItemStack stack2)
--    {
-+    private static boolean canCombine(ItemStack stack1, ItemStack stack2) {
-         return stack1.getItem() != stack2.getItem() ? false : (stack1.getMetadata() != stack2.getMetadata() ? false : (stack1.stackSize > stack1.getMaxStackSize() ? false : ItemStack.areItemStackTagsEqual(stack1, stack2)));
-     }
- 
--    public double getXPos()
--    {
--        return (double)this.pos.getX();
-+    public double getXPos() {
-+        return (double) this.pos.getX();
-     }
- 
--    public double getYPos()
--    {
--        return (double)this.pos.getY();
-+    public double getYPos() {
-+        return (double) this.pos.getY();
-     }
- 
--    public double getZPos()
--    {
--        return (double)this.pos.getZ();
-+    public double getZPos() {
-+        return (double) this.pos.getZ();
+         if (tileentity instanceof IInventory)
+         {
+             object = (IInventory)tileentity;
+@@ -629,18 +865,58 @@
+     public double getZPos()
+     {
+         return (double)this.pos.getZ();
      }
  
 -    public void setTransferCooldown(int ticks)
--    {
++    public void setTransferCooldown(int i)   // SpigotMCP - use cb param names
+     {
 -        this.transferCooldown = ticks;
-+    public void setTransferCooldown(int i) { // SpigotMCP - use cb param names
 +        // Spigot start - i is the delay for which this hopper will be ticked next.
 +        // i of 1 or below implies a tick next tick.
-+        if (this.worldObj != null && this.worldObj.spigotConfig.altHopperTicking) {
-+            if (i <= 0) {
++        if (this.worldObj != null && this.worldObj.spigotConfig.altHopperTicking)
++        {
++            if (i <= 0)
++            {
 +                i = 1;
 +            }
-+            if (this.lastTick == this.worldObj.getTotalWorldTime()) {
++
++            if (this.lastTick == this.worldObj.getTotalWorldTime())
++            {
 +                this.nextTick = this.worldObj.getTotalWorldTime() + i;
-+            } else {
++            }
++            else
++            {
 +                this.nextTick = this.worldObj.getTotalWorldTime() + i - 1;
 +            }
-+        } else {
++        }
++        else
++        {
 +            this.transferCooldown = i;
 +        }
++
 +        // Spigot end
      }
  
--    public boolean isOnTransferCooldown()
--    {
+     public boolean isOnTransferCooldown()
+     {
 -        return this.transferCooldown > 0;
-+    public boolean isOnTransferCooldown() {
 +        // Spigot start - Return whether this hopper is cooling down.
-+        if (this.worldObj != null && this.worldObj.spigotConfig.altHopperTicking) {
-+            if (this.lastTick == this.worldObj.getTotalWorldTime()) {
++        if (this.worldObj != null && this.worldObj.spigotConfig.altHopperTicking)
++        {
++            if (this.lastTick == this.worldObj.getTotalWorldTime())
++            {
 +                return this.nextTick > this.worldObj.getTotalWorldTime();
-+            } else {
++            }
++            else
++            {
 +                return this.nextTick >= this.worldObj.getTotalWorldTime();
 +            }
-+        } else {
++        }
++        else
++        {
 +            return this.transferCooldown > 0;
 +        }
++
 +        // Spigot end
      }
  
--    public boolean mayTransfer()
--    {
-+    public boolean mayTransfer() {
+     public boolean mayTransfer()
+     {
          return this.transferCooldown <= 1;
-     }
- 
--    public String getGuiID()
--    {
-+    public String getGuiID() {
-         return "minecraft:hopper";
-     }
- 
--    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn)
--    {
-+    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
-         return new ContainerHopper(playerInventory, this, playerIn);
-     }
- 
--    public int getField(int id)
--    {
-+    public int getField(int id) {
+@@ -659,11 +935,13 @@
+     public int getField(int id)
+     {
          return 0;
      }
  
 -    public void setField(int id, int value) {}
-+    public void setField(int id, int value) {
++    public void setField(int id, int value)
++    {
 +    }
  
--    public int getFieldCount()
--    {
-+    public int getFieldCount() {
+     public int getFieldCount()
+     {
          return 0;
      }
- 
--    public void clear()
--    {
--        for (int i = 0; i < this.inventory.length; ++i)
--        {
-+    public void clear() {
-+        for (int i = 0; i < this.inventory.length; ++i) {
-             this.inventory[i] = null;
-         }
-     }
- }

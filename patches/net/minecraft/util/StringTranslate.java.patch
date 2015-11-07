@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\util\StringTranslate.java
 +++ src\main\java\net\minecraft\util\StringTranslate.java
-@@ -1,106 +1,82 @@
+@@ -1,23 +1,24 @@
  package net.minecraft.util;
  
 -import com.google.common.base.Splitter;
@@ -18,65 +18,21 @@
  import org.apache.commons.io.Charsets;
  import org.apache.commons.io.IOUtils;
  
--public class StringTranslate
--{
 +import com.google.common.base.Splitter;
 +import com.google.common.collect.Iterables;
 +import com.google.common.collect.Maps;
 +
-+public class StringTranslate {
+ public class StringTranslate
+ {
 +
      private static final Pattern numericVariablePattern = Pattern.compile("%(\\d+\\$)?[\\d\\.]*[df]");
      private static final Splitter equalSignSplitter = Splitter.on('=').limit(2);
      private static StringTranslate instance = new StringTranslate();
      private final Map languageList = Maps.newHashMap();
      private long lastUpdateTimeInMilliseconds;
-     private static final String __OBFID = "CL_00001212";
- 
--    public StringTranslate()
--    {
--        try
--        {
-+    public StringTranslate() {
-+        try {
-             InputStream inputstream = StringTranslate.class.getResourceAsStream("/assets/minecraft/lang/en_US.lang");
-+
-             Iterator iterator = IOUtils.readLines(inputstream, Charsets.UTF_8).iterator();
- 
--            while (iterator.hasNext())
--            {
--                String s = (String)iterator.next();
-+            while (iterator.hasNext()) {
-+                String s = (String) iterator.next();
- 
--                if (!s.isEmpty() && s.charAt(0) != 35)
--                {
--                    String[] astring = (String[])Iterables.toArray(equalSignSplitter.split(s), String.class);
-+                if (!s.isEmpty() && s.charAt(0) != 35) {
-+                    String[] astring = (String[]) Iterables.toArray(equalSignSplitter.split(s), String.class);
- 
--                    if (astring != null && astring.length == 2)
--                    {
-+                    if (astring != null && astring.length == 2) {
-                         String s1 = astring[0];
-                         String s2 = numericVariablePattern.matcher(astring[1]).replaceAll("%$1s");
-                         this.languageList.put(s1, s2);
-                     }
-                 }
-             }
- 
-             this.lastUpdateTimeInMilliseconds = System.currentTimeMillis();
--        }
--        catch (IOException ioexception)
--        {
-+        } catch (IOException ioexception) {
-             ;
-         }
-     }
- 
--    static StringTranslate getInstance()
--    {
-+    static StringTranslate getInstance() {
+@@ -58,25 +59,16 @@
+     static StringTranslate getInstance()
+     {
          return instance;
      }
  
@@ -89,46 +45,15 @@
 -        instance.lastUpdateTimeInMilliseconds = System.currentTimeMillis();
 -    }
 -
--    public synchronized String translateKey(String key)
--    {
-+    public synchronized String translateKey(String key) {
+     public synchronized String translateKey(String key)
+     {
          return this.tryTranslateKey(key);
      }
  
 -    public synchronized String translateKeyFormat(String key, Object ... format)
--    {
-+    public synchronized String translateKeyFormat(String key, Object... format) {
++    public synchronized String translateKeyFormat(String key, Object... format)
+     {
          String s1 = this.tryTranslateKey(key);
  
--        try
--        {
-+        try {
-             return String.format(s1, format);
--        }
--        catch (IllegalFormatException illegalformatexception)
--        {
-+        } catch (IllegalFormatException illegalformatexception) {
-             return "Format error: " + s1;
-         }
-     }
- 
--    private String tryTranslateKey(String key)
--    {
--        String s1 = (String)this.languageList.get(key);
-+    private String tryTranslateKey(String key) {
-+        String s1 = (String) this.languageList.get(key);
-         return s1 == null ? key : s1;
-     }
- 
--    public synchronized boolean isKeyTranslated(String key)
--    {
-+    public synchronized boolean isKeyTranslated(String key) {
-         return this.languageList.containsKey(key);
-     }
- 
--    public long getLastUpdateTimeInMilliseconds()
--    {
-+    public long getLastUpdateTimeInMilliseconds() {
-         return this.lastUpdateTimeInMilliseconds;
-     }
- }
+         try
+         {

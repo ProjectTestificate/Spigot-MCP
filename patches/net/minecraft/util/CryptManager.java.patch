@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\util\CryptManager.java
 +++ src\main\java\net\minecraft\util\CryptManager.java
-@@ -11,185 +11,124 @@
+@@ -11,43 +11,28 @@
  import java.security.NoSuchAlgorithmException;
  import java.security.PrivateKey;
  import java.security.PublicKey;
@@ -21,9 +21,8 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  
--public class CryptManager
--{
-+public class CryptManager {
+ public class CryptManager
+ {
 +
      private static final Logger field_180198_a = LogManager.getLogger();
      private static final String __OBFID = "CL_00001483";
@@ -43,97 +42,27 @@
 -        }
 -    }
 -
--    public static KeyPair generateKeyPair()
--    {
--        try
--        {
-+    public static KeyPair generateKeyPair() {
-+        try {
+     public static KeyPair generateKeyPair()
+     {
+         try
+         {
              KeyPairGenerator keypairgenerator = KeyPairGenerator.getInstance("RSA");
-             keypairgenerator.initialize(1024);
-             return keypairgenerator.generateKeyPair();
--        }
--        catch (NoSuchAlgorithmException nosuchalgorithmexception)
--        {
-+        } catch (NoSuchAlgorithmException nosuchalgorithmexception) {
-             nosuchalgorithmexception.printStackTrace();
-             field_180198_a.error("Key pair generation failed!");
-             return null;
-         }
-     }
- 
--    public static byte[] getServerIdHash(String p_75895_0_, PublicKey publicKey, SecretKey secretKey)
--    {
--        try
--        {
--            return digestOperation("SHA-1", new byte[][] {p_75895_0_.getBytes("ISO_8859_1"), secretKey.getEncoded(), publicKey.getEncoded()});
--        }
--        catch (UnsupportedEncodingException unsupportedencodingexception)
--        {
-+    public static byte[] getServerIdHash(String p_75895_0_, PublicKey publicKey, SecretKey secretKey) {
-+        try {
-+            return digestOperation("SHA-1", new byte[][]{p_75895_0_.getBytes("ISO_8859_1"), secretKey.getEncoded(), publicKey.getEncoded()});
-+        } catch (UnsupportedEncodingException unsupportedencodingexception) {
+@@ -73,11 +58,11 @@
              unsupportedencodingexception.printStackTrace();
              return null;
          }
      }
  
 -    private static byte[] digestOperation(String p_75893_0_, byte[] ... p_75893_1_)
--    {
--        try
--        {
-+    private static byte[] digestOperation(String p_75893_0_, byte[]... p_75893_1_) {
-+        try {
++    private static byte[] digestOperation(String p_75893_0_, byte[]... p_75893_1_)
+     {
+         try
+         {
              MessageDigest messagedigest = MessageDigest.getInstance(p_75893_0_);
              byte[][] abyte1 = p_75893_1_;
-             int i = p_75893_1_.length;
- 
--            for (int j = 0; j < i; ++j)
--            {
-+            for (int j = 0; j < i; ++j) {
-                 byte[] abyte2 = abyte1[j];
-                 messagedigest.update(abyte2);
-             }
- 
-             return messagedigest.digest();
--        }
--        catch (NoSuchAlgorithmException nosuchalgorithmexception)
--        {
-+        } catch (NoSuchAlgorithmException nosuchalgorithmexception) {
-             nosuchalgorithmexception.printStackTrace();
-             return null;
-         }
-     }
- 
--    public static PublicKey decodePublicKey(byte[] p_75896_0_)
--    {
--        try
--        {
-+    public static PublicKey decodePublicKey(byte[] p_75896_0_) {
-+        try {
-             X509EncodedKeySpec x509encodedkeyspec = new X509EncodedKeySpec(p_75896_0_);
-             KeyFactory keyfactory = KeyFactory.getInstance("RSA");
-             return keyfactory.generatePublic(x509encodedkeyspec);
--        }
--        catch (NoSuchAlgorithmException nosuchalgorithmexception)
--        {
-+        } catch (NoSuchAlgorithmException nosuchalgorithmexception) {
-             ;
--        }
--        catch (InvalidKeySpecException invalidkeyspecexception)
--        {
-+        } catch (InvalidKeySpecException invalidkeyspecexception) {
-             ;
-         }
- 
-         field_180198_a.error("Public key reconstitute failed!");
-         return null;
-     }
- 
--    public static SecretKey decryptSharedKey(PrivateKey p_75887_0_, byte[] p_75887_1_)
--    {
-+    public static SecretKey decryptSharedKey(PrivateKey p_75887_0_, byte[] p_75887_1_) {
+@@ -122,16 +107,10 @@
+     public static SecretKey decryptSharedKey(PrivateKey p_75887_0_, byte[] p_75887_1_)
+     {
          return new SecretKeySpec(decryptData(p_75887_0_, p_75887_1_), "AES");
      }
  
@@ -143,79 +72,8 @@
 -        return cipherOperation(1, p_75894_0_, p_75894_1_);
 -    }
 -
--    public static byte[] decryptData(Key p_75889_0_, byte[] p_75889_1_)
--    {
-+    public static byte[] decryptData(Key p_75889_0_, byte[] p_75889_1_) {
+     public static byte[] decryptData(Key p_75889_0_, byte[] p_75889_1_)
+     {
          return cipherOperation(2, p_75889_0_, p_75889_1_);
      }
  
--    private static byte[] cipherOperation(int p_75885_0_, Key p_75885_1_, byte[] p_75885_2_)
--    {
--        try
--        {
-+    private static byte[] cipherOperation(int p_75885_0_, Key p_75885_1_, byte[] p_75885_2_) {
-+        try {
-             return createTheCipherInstance(p_75885_0_, p_75885_1_.getAlgorithm(), p_75885_1_).doFinal(p_75885_2_);
--        }
--        catch (IllegalBlockSizeException illegalblocksizeexception)
--        {
-+        } catch (IllegalBlockSizeException illegalblocksizeexception) {
-             illegalblocksizeexception.printStackTrace();
--        }
--        catch (BadPaddingException badpaddingexception)
--        {
-+        } catch (BadPaddingException badpaddingexception) {
-             badpaddingexception.printStackTrace();
-         }
- 
-         field_180198_a.error("Cipher data failed!");
-         return null;
-     }
- 
--    private static Cipher createTheCipherInstance(int p_75886_0_, String p_75886_1_, Key p_75886_2_)
--    {
--        try
--        {
-+    private static Cipher createTheCipherInstance(int p_75886_0_, String p_75886_1_, Key p_75886_2_) {
-+        try {
-             Cipher cipher = Cipher.getInstance(p_75886_1_);
-             cipher.init(p_75886_0_, p_75886_2_);
-             return cipher;
--        }
--        catch (InvalidKeyException invalidkeyexception)
--        {
-+        } catch (InvalidKeyException invalidkeyexception) {
-             invalidkeyexception.printStackTrace();
--        }
--        catch (NoSuchAlgorithmException nosuchalgorithmexception)
--        {
-+        } catch (NoSuchAlgorithmException nosuchalgorithmexception) {
-             nosuchalgorithmexception.printStackTrace();
--        }
--        catch (NoSuchPaddingException nosuchpaddingexception)
--        {
-+        } catch (NoSuchPaddingException nosuchpaddingexception) {
-             nosuchpaddingexception.printStackTrace();
-         }
- 
-         field_180198_a.error("Cipher creation failed!");
-         return null;
-     }
- 
--    public static Cipher func_151229_a(int p_151229_0_, Key p_151229_1_)
--    {
--        try
--        {
-+    public static Cipher func_151229_a(int p_151229_0_, Key p_151229_1_) {
-+        try {
-             Cipher cipher = Cipher.getInstance("AES/CFB8/NoPadding");
-             cipher.init(p_151229_0_, p_151229_1_, new IvParameterSpec(p_151229_1_.getEncoded()));
-             return cipher;
--        }
--        catch (GeneralSecurityException generalsecurityexception)
--        {
-+        } catch (GeneralSecurityException generalsecurityexception) {
-             throw new RuntimeException(generalsecurityexception);
-         }
-     }
- }

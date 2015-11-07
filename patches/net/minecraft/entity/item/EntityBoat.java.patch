@@ -10,7 +10,7 @@
  import net.minecraft.entity.Entity;
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.player.EntityPlayer;
-@@ -15,555 +16,509 @@
+@@ -15,29 +16,55 @@
  import net.minecraft.util.DamageSource;
  import net.minecraft.util.EntityDamageSourceIndirect;
  import net.minecraft.util.EnumParticleTypes;
@@ -19,8 +19,6 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class EntityBoat extends Entity
--{
 +import org.bukkit.Location;
 +import org.bukkit.craftbukkit.event.CraftEventFactory;
 +import org.bukkit.entity.Vehicle;
@@ -31,7 +29,8 @@
 +import org.bukkit.event.vehicle.VehicleMoveEvent;
 +import org.bukkit.event.vehicle.VehicleUpdateEvent;
 +
-+public class EntityBoat extends Entity {
+ public class EntityBoat extends Entity
+ {
 +
      private boolean isBoatEmpty;
      private double speedMultiplier;
@@ -55,13 +54,14 @@
 +    public boolean landBoats = false;
 +
 +    @Override
-+    public void applyEntityCollision(Entity entity) {
++    public void applyEntityCollision(Entity entity)
++    {
 +        org.bukkit.entity.Entity hitEntity = (entity == null) ? null : entity.getBukkitEntity();
-+
-+        VehicleEntityCollisionEvent event = new VehicleEntityCollisionEvent((Vehicle) this.getBukkitEntity(), hitEntity);
++        VehicleEntityCollisionEvent event = new VehicleEntityCollisionEvent((Vehicle)this.getBukkitEntity(), hitEntity);
 +        this.worldObj.getServer().getPluginManager().callEvent(event);
 +
-+        if (event.isCancelled()) {
++        if (event.isCancelled())
++        {
 +            return;
 +        }
 +
@@ -71,141 +71,66 @@
 +
      private static final String __OBFID = "CL_00001667";
  
--    public EntityBoat(World worldIn)
--    {
-+    public EntityBoat(World worldIn) {
+     public EntityBoat(World worldIn)
+     {
          super(worldIn);
-         this.isBoatEmpty = true;
-         this.speedMultiplier = 0.07D;
-         this.preventEntitySpawning = true;
-         this.setSize(1.5F, 0.6F);
-     }
- 
--    protected boolean canTriggerWalking()
--    {
-+    protected boolean canTriggerWalking() {
-         return false;
-     }
- 
--    protected void entityInit()
--    {
-+    protected void entityInit() {
-         this.dataWatcher.addObject(17, new Integer(0));
-         this.dataWatcher.addObject(18, new Integer(1));
-         this.dataWatcher.addObject(19, new Float(0.0F));
-     }
- 
--    public AxisAlignedBB getCollisionBox(Entity entityIn)
--    {
-+    public AxisAlignedBB getCollisionBox(Entity entityIn) {
-         return entityIn.getEntityBoundingBox();
-     }
- 
--    public AxisAlignedBB getBoundingBox()
--    {
-+    public AxisAlignedBB getBoundingBox() {
-         return this.getEntityBoundingBox();
-     }
- 
--    public boolean canBePushed()
--    {
-+    public boolean canBePushed() {
-         return true;
-     }
- 
--    public EntityBoat(World worldIn, double p_i1705_2_, double p_i1705_4_, double p_i1705_6_)
--    {
-+    public EntityBoat(World worldIn, double p_i1705_2_, double p_i1705_4_, double p_i1705_6_) {
-         this(worldIn);
-         this.setPosition(p_i1705_2_, p_i1705_4_, p_i1705_6_);
-         this.motionX = 0.0D;
+@@ -82,10 +109,11 @@
          this.motionY = 0.0D;
          this.motionZ = 0.0D;
          this.prevPosX = p_i1705_2_;
          this.prevPosY = p_i1705_4_;
          this.prevPosZ = p_i1705_6_;
-+        this.worldObj.getServer().getPluginManager().callEvent(new VehicleCreateEvent((Vehicle) this.getBukkitEntity())); // CraftBukkit
++        this.worldObj.getServer().getPluginManager().callEvent(new VehicleCreateEvent((Vehicle)this.getBukkitEntity())); // CraftBukkit
      }
  
--    public double getMountedYOffset()
--    {
--        return (double)this.height * 0.0D - 0.30000001192092896D;
-+    public double getMountedYOffset() {
-+        return (double) this.height * 0.0D - 0.30000001192092896D;
-     }
- 
--    public boolean attackEntityFrom(DamageSource source, float amount)
--    {
--        if (this.isEntityInvulnerable(source))
--        {
-+    public boolean attackEntityFrom(DamageSource source, float amount) {
-+        if (this.isEntityInvulnerable(source)) {
-             return false;
--        }
--        else if (!this.worldObj.isRemote && !this.isDead)
--        {
--            if (this.riddenByEntity != null && this.riddenByEntity == source.getEntity() && source instanceof EntityDamageSourceIndirect)
--            {
-+        } else if (!this.worldObj.isRemote && !this.isDead) {
-+            if (this.riddenByEntity != null && this.riddenByEntity == source.getEntity() && source instanceof EntityDamageSourceIndirect) {
+     public double getMountedYOffset()
+     {
+         return (double)this.height * 0.0D - 0.30000001192092896D;
+@@ -103,18 +131,42 @@
+             {
                  return false;
--            }
--            else
--            {
-+            } else {
+             }
+             else
+             {
 +                // CraftBukkit start
-+                Vehicle vehicle = (Vehicle) this.getBukkitEntity();
++                Vehicle vehicle = (Vehicle)this.getBukkitEntity();
 +                org.bukkit.entity.Entity attacker = (source.getEntity() == null) ? null : source.getEntity().getBukkitEntity();
-+
-+                VehicleDamageEvent event = new VehicleDamageEvent(vehicle, attacker, (double) amount);
++                VehicleDamageEvent event = new VehicleDamageEvent(vehicle, attacker, (double)amount);
 +                this.worldObj.getServer().getPluginManager().callEvent(event);
 +
-+                if (event.isCancelled()) {
++                if (event.isCancelled())
++                {
 +                    return true;
 +                }
++
 +                // amount = event.getDamage(); // TODO Why don't we do this?
 +                // CraftBukkit end
-+
                  this.setForwardDirection(-this.getForwardDirection());
                  this.setTimeSinceHit(10);
                  this.setDamageTaken(this.getDamageTaken() + amount * 10.0F);
                  this.setBeenAttacked();
--                boolean flag = source.getEntity() instanceof EntityPlayer && ((EntityPlayer)source.getEntity()).capabilities.isCreativeMode;
-+                boolean flag = source.getEntity() instanceof EntityPlayer && ((EntityPlayer) source.getEntity()).capabilities.isCreativeMode;
+                 boolean flag = source.getEntity() instanceof EntityPlayer && ((EntityPlayer)source.getEntity()).capabilities.isCreativeMode;
  
--                if (flag || this.getDamageTaken() > 40.0F)
--                {
--                    if (this.riddenByEntity != null)
--                    {
-+                if (flag || this.getDamageTaken() > 40.0F) {
+                 if (flag || this.getDamageTaken() > 40.0F)
+                 {
 +                    // CraftBukkit start
 +                    VehicleDestroyEvent destroyEvent = new VehicleDestroyEvent(vehicle, attacker);
 +                    this.worldObj.getServer().getPluginManager().callEvent(destroyEvent);
 +
-+                    if (destroyEvent.isCancelled()) {
++                    if (destroyEvent.isCancelled())
++                    {
 +                        this.setDamageTaken(40F); // Maximize damage so this doesn't get triggered again right away
 +                        return true;
 +                    }
++
 +                    // CraftBukkit end
-+                    if (this.riddenByEntity != null) {
+                     if (this.riddenByEntity != null)
+                     {
                          this.riddenByEntity.mountEntity(this);
                      }
  
--                    if (!flag)
--                    {
-+                    if (!flag) {
-                         this.dropItemWithOffset(Items.boat, 1, 0.0F);
-                     }
- 
-                     this.setDead();
-                 }
- 
-                 return true;
-             }
--        }
--        else
--        {
-+        } else {
+@@ -133,81 +185,24 @@
+         {
              return true;
          }
      }
@@ -218,9 +143,8 @@
 -        this.setDamageTaken(this.getDamageTaken() * 11.0F);
 -    }
 -
--    public boolean canBeCollidedWith()
--    {
-+    public boolean canBeCollidedWith() {
+     public boolean canBeCollidedWith()
+     {
          return !this.isDead;
      }
  
@@ -280,9 +204,8 @@
 -        this.velocityZ = this.motionZ = z;
 -    }
 -
--    public void onUpdate()
--    {
-+    public void onUpdate() {
+     public void onUpdate()
+     {
 +        // CraftBukkit start
 +        double prevX = this.posX;
 +        double prevY = this.posY;
@@ -292,242 +215,63 @@
 +        // CraftBukkit end
          super.onUpdate();
  
--        if (this.getTimeSinceHit() > 0)
--        {
-+        if (this.getTimeSinceHit() > 0) {
+         if (this.getTimeSinceHit() > 0)
+         {
              this.setTimeSinceHit(this.getTimeSinceHit() - 1);
-         }
- 
--        if (this.getDamageTaken() > 0.0F)
--        {
-+        if (this.getDamageTaken() > 0.0F) {
-             this.setDamageTaken(this.getDamageTaken() - 1.0F);
-         }
- 
-         this.prevPosX = this.posX;
-         this.prevPosY = this.posY;
-         this.prevPosZ = this.posZ;
-         byte b0 = 5;
-         double d0 = 0.0D;
- 
--        for (int i = 0; i < b0; ++i)
--        {
--            double d1 = this.getEntityBoundingBox().minY + (this.getEntityBoundingBox().maxY - this.getEntityBoundingBox().minY) * (double)(i + 0) / (double)b0 - 0.125D;
--            double d3 = this.getEntityBoundingBox().minY + (this.getEntityBoundingBox().maxY - this.getEntityBoundingBox().minY) * (double)(i + 1) / (double)b0 - 0.125D;
-+        for (int i = 0; i < b0; ++i) {
-+            double d1 = this.getEntityBoundingBox().minY + (this.getEntityBoundingBox().maxY - this.getEntityBoundingBox().minY) * (double) (i + 0) / (double) b0 - 0.125D;
-+            double d3 = this.getEntityBoundingBox().minY + (this.getEntityBoundingBox().maxY - this.getEntityBoundingBox().minY) * (double) (i + 1) / (double) b0 - 0.125D;
-             AxisAlignedBB axisalignedbb = new AxisAlignedBB(this.getEntityBoundingBox().minX, d1, this.getEntityBoundingBox().minZ, this.getEntityBoundingBox().maxX, d3, this.getEntityBoundingBox().maxZ);
- 
--            if (this.worldObj.isAABBInMaterial(axisalignedbb, Material.water))
--            {
--                d0 += 1.0D / (double)b0;
-+            if (this.worldObj.isAABBInMaterial(axisalignedbb, Material.water)) {
-+                d0 += 1.0D / (double) b0;
-             }
-         }
- 
-         double d9 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-         double d2;
-         double d4;
-         int j;
- 
--        if (d9 > 0.2975D)
--        {
--            d2 = Math.cos((double)this.rotationYaw * Math.PI / 180.0D);
--            d4 = Math.sin((double)this.rotationYaw * Math.PI / 180.0D);
-+        if (d9 > 0.2975D) {
-+            d2 = Math.cos((double) this.rotationYaw * Math.PI / 180.0D);
-+            d4 = Math.sin((double) this.rotationYaw * Math.PI / 180.0D);
- 
--            for (j = 0; (double)j < 1.0D + d9 * 60.0D; ++j)
--            {
--                double d5 = (double)(this.rand.nextFloat() * 2.0F - 1.0F);
--                double d6 = (double)(this.rand.nextInt(2) * 2 - 1) * 0.7D;
-+            for (j = 0; (double) j < 1.0D + d9 * 60.0D; ++j) {
-+                double d5 = (double) (this.rand.nextFloat() * 2.0F - 1.0F);
-+                double d6 = (double) (this.rand.nextInt(2) * 2 - 1) * 0.7D;
-                 double d7;
-                 double d8;
- 
--                if (this.rand.nextBoolean())
--                {
-+                if (this.rand.nextBoolean()) {
-                     d7 = this.posX - d2 * d5 * 0.8D + d4 * d6;
-                     d8 = this.posZ - d4 * d5 * 0.8D - d2 * d6;
-                     this.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, d7, this.posY - 0.125D, d8, this.motionX, this.motionY, this.motionZ, new int[0]);
--                }
--                else
--                {
-+                } else {
-                     d7 = this.posX + d2 + d4 * d5 * 0.7D;
-                     d8 = this.posZ + d4 - d2 * d5 * 0.7D;
-                     this.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, d7, this.posY - 0.125D, d8, this.motionX, this.motionY, this.motionZ, new int[0]);
-                 }
-             }
-         }
- 
-         double d10;
-         double d11;
- 
--        if (this.worldObj.isRemote && this.isBoatEmpty)
--        {
--            if (this.boatPosRotationIncrements > 0)
--            {
--                d2 = this.posX + (this.boatX - this.posX) / (double)this.boatPosRotationIncrements;
--                d4 = this.posY + (this.boatY - this.posY) / (double)this.boatPosRotationIncrements;
--                d10 = this.posZ + (this.boatZ - this.posZ) / (double)this.boatPosRotationIncrements;
--                d11 = MathHelper.wrapAngleTo180_double(this.boatYaw - (double)this.rotationYaw);
--                this.rotationYaw = (float)((double)this.rotationYaw + d11 / (double)this.boatPosRotationIncrements);
--                this.rotationPitch = (float)((double)this.rotationPitch + (this.boatPitch - (double)this.rotationPitch) / (double)this.boatPosRotationIncrements);
-+        if (this.worldObj.isRemote && this.isBoatEmpty) {
-+            if (this.boatPosRotationIncrements > 0) {
-+                d2 = this.posX + (this.boatX - this.posX) / (double) this.boatPosRotationIncrements;
-+                d4 = this.posY + (this.boatY - this.posY) / (double) this.boatPosRotationIncrements;
-+                d10 = this.posZ + (this.boatZ - this.posZ) / (double) this.boatPosRotationIncrements;
-+                d11 = MathHelper.wrapAngleTo180_double(this.boatYaw - (double) this.rotationYaw);
-+                this.rotationYaw = (float) ((double) this.rotationYaw + d11 / (double) this.boatPosRotationIncrements);
-+                this.rotationPitch = (float) ((double) this.rotationPitch + (this.boatPitch - (double) this.rotationPitch) / (double) this.boatPosRotationIncrements);
-                 --this.boatPosRotationIncrements;
-                 this.setPosition(d2, d4, d10);
-                 this.setRotation(this.rotationYaw, this.rotationPitch);
--            }
--            else
--            {
-+            } else {
-                 d2 = this.posX + this.motionX;
-                 d4 = this.posY + this.motionY;
-                 d10 = this.posZ + this.motionZ;
-                 this.setPosition(d2, d4, d10);
- 
--                if (this.onGround)
--                {
-+                if (this.onGround) {
-                     this.motionX *= 0.5D;
-                     this.motionY *= 0.5D;
-                     this.motionZ *= 0.5D;
-                 }
- 
-                 this.motionX *= 0.9900000095367432D;
-                 this.motionY *= 0.949999988079071D;
-                 this.motionZ *= 0.9900000095367432D;
-             }
--        }
--        else
--        {
--            if (d0 < 1.0D)
--            {
-+        } else {
-+            if (d0 < 1.0D) {
-                 d2 = d0 * 2.0D - 1.0D;
-                 this.motionY += 0.03999999910593033D * d2;
--            }
--            else
--            {
--                if (this.motionY < 0.0D)
--                {
-+            } else {
-+                if (this.motionY < 0.0D) {
-                     this.motionY /= 2.0D;
-                 }
- 
-                 this.motionY += 0.007000000216066837D;
-             }
- 
--            if (this.riddenByEntity instanceof EntityLivingBase)
--            {
--                EntityLivingBase entitylivingbase = (EntityLivingBase)this.riddenByEntity;
-+            if (this.riddenByEntity instanceof EntityLivingBase) {
-+                EntityLivingBase entitylivingbase = (EntityLivingBase) this.riddenByEntity;
+@@ -326,11 +321,29 @@
+                 EntityLivingBase entitylivingbase = (EntityLivingBase)this.riddenByEntity;
                  float f = this.riddenByEntity.rotationYaw + -entitylivingbase.moveStrafing * 90.0F;
--                this.motionX += -Math.sin((double)(f * (float)Math.PI / 180.0F)) * this.speedMultiplier * (double)entitylivingbase.moveForward * 0.05000000074505806D;
--                this.motionZ += Math.cos((double)(f * (float)Math.PI / 180.0F)) * this.speedMultiplier * (double)entitylivingbase.moveForward * 0.05000000074505806D;
-+                this.motionX += -Math.sin((double) (f * (float) Math.PI / 180.0F)) * this.speedMultiplier * (double) entitylivingbase.moveForward * 0.05000000074505806D;
-+                this.motionZ += Math.cos((double) (f * (float) Math.PI / 180.0F)) * this.speedMultiplier * (double) entitylivingbase.moveForward * 0.05000000074505806D;
+                 this.motionX += -Math.sin((double)(f * (float)Math.PI / 180.0F)) * this.speedMultiplier * (double)entitylivingbase.moveForward * 0.05000000074505806D;
+                 this.motionZ += Math.cos((double)(f * (float)Math.PI / 180.0F)) * this.speedMultiplier * (double)entitylivingbase.moveForward * 0.05000000074505806D;
              }
 +            // CraftBukkit start - Support unoccupied deceleration
-+            else if (unoccupiedDeceleration >= 0) {
++            else if (unoccupiedDeceleration >= 0)
++            {
 +                this.motionX *= unoccupiedDeceleration;
 +                this.motionZ *= unoccupiedDeceleration;
+ 
 +                // Kill lingering speed
-+                if (motionX <= 0.00001) {
++                if (motionX <= 0.00001)
++                {
 +                    motionX = 0;
 +                }
-+                if (motionZ <= 0.00001) {
++
++                if (motionZ <= 0.00001)
++                {
 +                    motionZ = 0;
 +                }
 +            }
++
 +            // CraftBukkit end
- 
              d2 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
  
--            if (d2 > 0.35D)
--            {
-+            if (d2 > 0.35D) {
+             if (d2 > 0.35D)
+             {
                  d4 = 0.35D / d2;
-                 this.motionX *= d4;
-                 this.motionZ *= d4;
-                 d2 = 0.35D;
-             }
- 
--            if (d2 > d9 && this.speedMultiplier < 0.35D)
--            {
-+            if (d2 > d9 && this.speedMultiplier < 0.35D) {
-                 this.speedMultiplier += (0.35D - this.speedMultiplier) / 35.0D;
- 
--                if (this.speedMultiplier > 0.35D)
--                {
-+                if (this.speedMultiplier > 0.35D) {
-                     this.speedMultiplier = 0.35D;
-                 }
--            }
--            else
--            {
-+            } else {
-                 this.speedMultiplier -= (this.speedMultiplier - 0.07D) / 35.0D;
- 
--                if (this.speedMultiplier < 0.07D)
--                {
-+                if (this.speedMultiplier < 0.07D) {
-                     this.speedMultiplier = 0.07D;
-                 }
-             }
- 
-             int l;
- 
--            for (l = 0; l < 4; ++l)
--            {
--                int i1 = MathHelper.floor_double(this.posX + ((double)(l % 2) - 0.5D) * 0.8D);
--                j = MathHelper.floor_double(this.posZ + ((double)(l / 2) - 0.5D) * 0.8D);
-+            for (l = 0; l < 4; ++l) {
-+                int i1 = MathHelper.floor_double(this.posX + ((double) (l % 2) - 0.5D) * 0.8D);
-+                j = MathHelper.floor_double(this.posZ + ((double) (l / 2) - 0.5D) * 0.8D);
- 
--                for (int j1 = 0; j1 < 2; ++j1)
--                {
-+                for (int j1 = 0; j1 < 2; ++j1) {
-                     int k = MathHelper.floor_double(this.posY) + j1;
+@@ -371,22 +384,36 @@
                      BlockPos blockpos = new BlockPos(i1, k, j);
                      Block block = this.worldObj.getBlockState(blockpos).getBlock();
  
--                    if (block == Blocks.snow_layer)
--                    {
-+                    if (block == Blocks.snow_layer) {
+                     if (block == Blocks.snow_layer)
+                     {
 +                        // CraftBukkit start
-+                        if (CraftEventFactory.callEntityChangeBlockEvent(this, i1, j1, j, Blocks.air, 0).isCancelled()) {
++                        if (CraftEventFactory.callEntityChangeBlockEvent(this, i1, j1, j, Blocks.air, 0).isCancelled())
++                        {
 +                            continue;
 +                        }
++
 +                        // CraftBukkit end
                          this.worldObj.setBlockToAir(blockpos);
                          this.isCollidedHorizontally = false;
--                    }
--                    else if (block == Blocks.waterlily)
--                    {
-+                    } else if (block == Blocks.waterlily) {
+                     }
+                     else if (block == Blocks.waterlily)
+                     {
 +                        // CraftBukkit start
-+                        if (CraftEventFactory.callEntityChangeBlockEvent(this, i1, j1, j, Blocks.air, 0).isCancelled()) {
++                        if (CraftEventFactory.callEntityChangeBlockEvent(this, i1, j1, j, Blocks.air, 0).isCancelled())
++                        {
 +                            continue;
 +                        }
++
 +                        // CraftBukkit end
                          this.worldObj.destroyBlock(blockpos, true);
                          this.isCollidedHorizontally = false;
@@ -542,260 +286,148 @@
                  this.motionY *= 0.5D;
                  this.motionZ *= 0.5D;
              }
+@@ -395,21 +422,31 @@
  
-             this.moveEntity(this.motionX, this.motionY, this.motionZ);
- 
--            if (this.isCollidedHorizontally && d9 > 0.2D)
--            {
--                if (!this.worldObj.isRemote && !this.isDead)
--                {
+             if (this.isCollidedHorizontally && d9 > 0.2D)
+             {
+                 if (!this.worldObj.isRemote && !this.isDead)
+                 {
 -                    this.setDead();
-+            if (this.isCollidedHorizontally && d9 > 0.2D) {
-+                if (!this.worldObj.isRemote && !this.isDead) {
 +                    // CraftBukkit start
-+                    Vehicle vehicle = (Vehicle) this.getBukkitEntity();
++                    Vehicle vehicle = (Vehicle)this.getBukkitEntity();
 +                    VehicleDestroyEvent destroyEvent = new VehicleDestroyEvent(vehicle, null);
 +                    this.worldObj.getServer().getPluginManager().callEvent(destroyEvent);
-+                    if (!destroyEvent.isCancelled()) {
-+                        this.setDead();
  
 -                    for (l = 0; l < 3; ++l)
--                    {
++                    if (!destroyEvent.isCancelled())
+                     {
 -                        this.dropItemWithOffset(Item.getItemFromBlock(Blocks.planks), 1, 0.0F);
 -                    }
-+                        for (l = 0; l < 3; ++l) {
-+                            this.dropItemWithOffset(Item.getItemFromBlock(Blocks.planks), 1, 0.0F);
-+                        }
++                        this.setDead();
  
 -                    for (l = 0; l < 2; ++l)
 -                    {
 -                        this.dropItemWithOffset(Items.stick, 1, 0.0F);
-+                        for (l = 0; l < 2; ++l) {
++                        for (l = 0; l < 3; ++l)
++                        {
++                            this.dropItemWithOffset(Item.getItemFromBlock(Blocks.planks), 1, 0.0F);
++                        }
++
++                        for (l = 0; l < 2; ++l)
++                        {
 +                            this.dropItemWithOffset(Items.stick, 1, 0.0F);
 +                        }
                      }
++
 +                    // CraftBukkit end
                  }
--            }
--            else
--            {
-+            } else {
+             }
+             else
+             {
                  this.motionX *= 0.9900000095367432D;
-                 this.motionY *= 0.949999988079071D;
-                 this.motionZ *= 0.9900000095367432D;
-             }
- 
-             this.rotationPitch = 0.0F;
--            d4 = (double)this.rotationYaw;
-+            d4 = (double) this.rotationYaw;
-             d10 = this.prevPosX - this.posX;
-             d11 = this.prevPosZ - this.posZ;
- 
--            if (d10 * d10 + d11 * d11 > 0.001D)
--            {
--                d4 = (double)((float)(Math.atan2(d11, d10) * 180.0D / Math.PI));
-+            if (d10 * d10 + d11 * d11 > 0.001D) {
-+                d4 = (double) ((float) (Math.atan2(d11, d10) * 180.0D / Math.PI));
-             }
- 
--            double d12 = MathHelper.wrapAngleTo180_double(d4 - (double)this.rotationYaw);
-+            double d12 = MathHelper.wrapAngleTo180_double(d4 - (double) this.rotationYaw);
- 
--            if (d12 > 20.0D)
--            {
-+            if (d12 > 20.0D) {
-                 d12 = 20.0D;
-             }
- 
--            if (d12 < -20.0D)
--            {
-+            if (d12 < -20.0D) {
+@@ -439,11 +476,26 @@
                  d12 = -20.0D;
              }
  
--            this.rotationYaw = (float)((double)this.rotationYaw + d12);
-+            this.rotationYaw = (float) ((double) this.rotationYaw + d12);
+             this.rotationYaw = (float)((double)this.rotationYaw + d12);
              this.setRotation(this.rotationYaw, this.rotationPitch);
- 
--            if (!this.worldObj.isRemote)
--            {
-+
 +            // CraftBukkit start
 +            org.bukkit.Server server = this.worldObj.getServer();
 +            org.bukkit.World bworld = this.worldObj.getWorld();
-+
 +            Location from = new Location(bworld, prevX, prevY, prevZ, prevYaw, prevPitch);
 +            Location to = new Location(bworld, this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-+            Vehicle vehicle = (Vehicle) this.getBukkitEntity();
-+
++            Vehicle vehicle = (Vehicle)this.getBukkitEntity();
 +            server.getPluginManager().callEvent(new VehicleUpdateEvent(vehicle));
-+
-+            if (!from.equals(to)) {
+ 
++            if (!from.equals(to))
++            {
 +                VehicleMoveEvent event = new VehicleMoveEvent(vehicle, from, to);
 +                server.getPluginManager().callEvent(event);
 +            }
++
 +            // CraftBukkit end
 +
-+            if (!this.worldObj.isRemote) {
+             if (!this.worldObj.isRemote)
+             {
                  List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
  
--                if (list != null && !list.isEmpty())
--                {
--                    for (int k1 = 0; k1 < list.size(); ++k1)
--                    {
--                        Entity entity = (Entity)list.get(k1);
-+                if (list != null && !list.isEmpty()) {
-+                    for (int k1 = 0; k1 < list.size(); ++k1) {
-+                        Entity entity = (Entity) list.get(k1);
- 
--                        if (entity != this.riddenByEntity && entity.canBePushed() && entity instanceof EntityBoat)
--                        {
-+                        if (entity != this.riddenByEntity && entity.canBePushed() && entity instanceof EntityBoat) {
-                             entity.applyEntityCollision(this);
-                         }
+                 if (list != null && !list.isEmpty())
+@@ -459,10 +511,11 @@
                      }
                  }
  
--                if (this.riddenByEntity != null && this.riddenByEntity.isDead)
--                {
-+                if (this.riddenByEntity != null && this.riddenByEntity.isDead) {
+                 if (this.riddenByEntity != null && this.riddenByEntity.isDead)
+                 {
 +                    this.riddenByEntity.ridingEntity = null; // CraftBukkit
                      this.riddenByEntity = null;
                  }
              }
          }
      }
- 
--    public void updateRiderPosition()
--    {
--        if (this.riddenByEntity != null)
--        {
--            double d0 = Math.cos((double)this.rotationYaw * Math.PI / 180.0D) * 0.4D;
--            double d1 = Math.sin((double)this.rotationYaw * Math.PI / 180.0D) * 0.4D;
-+    public void updateRiderPosition() {
-+        if (this.riddenByEntity != null) {
-+            double d0 = Math.cos((double) this.rotationYaw * Math.PI / 180.0D) * 0.4D;
-+            double d1 = Math.sin((double) this.rotationYaw * Math.PI / 180.0D) * 0.4D;
+@@ -475,13 +528,17 @@
+             double d1 = Math.sin((double)this.rotationYaw * Math.PI / 180.0D) * 0.4D;
              this.riddenByEntity.setPosition(this.posX + d0, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + d1);
          }
      }
  
 -    protected void writeEntityToNBT(NBTTagCompound tagCompound) {}
-+    protected void writeEntityToNBT(NBTTagCompound tagCompound) {
++    protected void writeEntityToNBT(NBTTagCompound tagCompound)
++    {
 +    }
  
 -    protected void readEntityFromNBT(NBTTagCompound tagCompund) {}
-+    protected void readEntityFromNBT(NBTTagCompound tagCompund) {
++    protected void readEntityFromNBT(NBTTagCompound tagCompund)
++    {
 +    }
  
--    public boolean interactFirst(EntityPlayer playerIn)
--    {
--        if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != playerIn)
--        {
-+    public boolean interactFirst(EntityPlayer playerIn) {
-+        if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != playerIn) {
-             return true;
--        }
--        else
--        {
--            if (!this.worldObj.isRemote)
--            {
-+        } else {
-+            if (!this.worldObj.isRemote) {
-                 playerIn.mountEntity(this);
-             }
- 
-             return true;
-         }
-     }
- 
--    protected void func_180433_a(double p_180433_1_, boolean p_180433_3_, Block p_180433_4_, BlockPos p_180433_5_)
--    {
--        if (p_180433_3_)
--        {
--            if (this.fallDistance > 3.0F)
--            {
-+    protected void func_180433_a(double p_180433_1_, boolean p_180433_3_, Block p_180433_4_, BlockPos p_180433_5_) {
-+        if (p_180433_3_) {
-+            if (this.fallDistance > 3.0F) {
+     public boolean interactFirst(EntityPlayer playerIn)
+     {
+         if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != playerIn)
+         {
+@@ -506,22 +563,32 @@
+             {
                  this.fall(this.fallDistance, 1.0F);
  
--                if (!this.worldObj.isRemote && !this.isDead)
--                {
+                 if (!this.worldObj.isRemote && !this.isDead)
+                 {
 -                    this.setDead();
 -                    int i;
-+                if (!this.worldObj.isRemote && !this.isDead) {
 +                    // CraftBukkit start
-+                    Vehicle vehicle = (Vehicle) this.getBukkitEntity();
++                    Vehicle vehicle = (Vehicle)this.getBukkitEntity();
 +                    VehicleDestroyEvent destroyEvent = new VehicleDestroyEvent(vehicle, null);
 +                    this.worldObj.getServer().getPluginManager().callEvent(destroyEvent);
-+                    if (!destroyEvent.isCancelled()) {
-+                        this.setDead();
  
 -                    for (i = 0; i < 3; ++i)
--                    {
++                    if (!destroyEvent.isCancelled())
+                     {
 -                        this.dropItemWithOffset(Item.getItemFromBlock(Blocks.planks), 1, 0.0F);
 -                    }
++                        this.setDead();
 +                        int i;
  
 -                    for (i = 0; i < 2; ++i)
 -                    {
 -                        this.dropItemWithOffset(Items.stick, 1, 0.0F);
-+                        for (i = 0; i < 3; ++i) {
++                        for (i = 0; i < 3; ++i)
++                        {
 +                            this.dropItemWithOffset(Item.getItemFromBlock(Blocks.planks), 1, 0.0F);
 +                        }
 +
-+                        for (i = 0; i < 2; ++i) {
++                        for (i = 0; i < 2; ++i)
++                        {
 +                            this.dropItemWithOffset(Items.stick, 1, 0.0F);
 +                        }
                      }
++
 +                    // CraftBukkit end
                  }
  
                  this.fallDistance = 0.0F;
              }
-+        } else if (this.worldObj.getBlockState((new BlockPos(this)).down()).getBlock().getMaterial() != Material.water && p_180433_1_ < 0.0D) {
-+            this.fallDistance = (float) ((double) this.fallDistance - p_180433_1_);
          }
--        else if (this.worldObj.getBlockState((new BlockPos(this)).down()).getBlock().getMaterial() != Material.water && p_180433_1_ < 0.0D)
--        {
--            this.fallDistance = (float)((double)this.fallDistance - p_180433_1_);
--        }
-     }
- 
--    public void setDamageTaken(float p_70266_1_)
--    {
-+    public void setDamageTaken(float p_70266_1_) {
-         this.dataWatcher.updateObject(19, Float.valueOf(p_70266_1_));
-     }
- 
--    public float getDamageTaken()
--    {
-+    public float getDamageTaken() {
-         return this.dataWatcher.getWatchableObjectFloat(19);
-     }
- 
--    public void setTimeSinceHit(int p_70265_1_)
--    {
-+    public void setTimeSinceHit(int p_70265_1_) {
-         this.dataWatcher.updateObject(17, Integer.valueOf(p_70265_1_));
-     }
- 
--    public int getTimeSinceHit()
--    {
-+    public int getTimeSinceHit() {
-         return this.dataWatcher.getWatchableObjectInt(17);
-     }
- 
--    public void setForwardDirection(int p_70269_1_)
--    {
-+    public void setForwardDirection(int p_70269_1_) {
-         this.dataWatcher.updateObject(18, Integer.valueOf(p_70269_1_));
-     }
- 
--    public int getForwardDirection()
--    {
-+    public int getForwardDirection() {
+@@ -559,11 +626,6 @@
+     public int getForwardDirection()
+     {
          return this.dataWatcher.getWatchableObjectInt(18);
      }
  

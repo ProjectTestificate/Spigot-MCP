@@ -9,7 +9,7 @@
  import java.io.ByteArrayOutputStream;
  import java.io.DataInputStream;
  import java.io.DataOutputStream;
-@@ -11,332 +10,302 @@
+@@ -11,14 +10,18 @@
  import java.io.RandomAccessFile;
  import java.util.List;
  import java.util.zip.DeflaterOutputStream;
@@ -18,64 +18,25 @@
 +
  import net.minecraft.server.MinecraftServer;
  
--public class RegionFile
--{
 +import com.google.common.collect.Lists;
 +
-+public class RegionFile {
+ public class RegionFile
+ {
 +
      private static final byte[] emptySector = new byte[4096];
      private final File fileName;
      private RandomAccessFile dataFile;
      private final int[] offsets = new int[1024];
      private final int[] chunkTimestamps = new int[1024];
-     private List sectorFree;
-     private int sizeDelta;
-     private long lastModified;
-     private static final String __OBFID = "CL_00000381";
- 
--    public RegionFile(File fileNameIn)
--    {
-+    public RegionFile(File fileNameIn) {
-         this.fileName = fileNameIn;
-         this.sizeDelta = 0;
- 
--        try
--        {
--            if (fileNameIn.exists())
--            {
-+        try {
-+            if (fileNameIn.exists()) {
-                 this.lastModified = fileNameIn.lastModified();
-             }
- 
-             this.dataFile = new RandomAccessFile(fileNameIn, "rw");
-             int i;
- 
--            if (this.dataFile.length() < 4096L)
--            {
--                for (i = 0; i < 1024; ++i)
--                {
-+            if (this.dataFile.length() < 4096L) {
-+                for (i = 0; i < 1024; ++i) {
-                     this.dataFile.writeInt(0);
-                 }
- 
--                for (i = 0; i < 1024; ++i)
--                {
-+                for (i = 0; i < 1024; ++i) {
-                     this.dataFile.writeInt(0);
-                 }
- 
+@@ -57,17 +60,17 @@
                  this.sizeDelta += 8192;
              }
  
--            if ((this.dataFile.length() & 4095L) != 0L)
--            {
+             if ((this.dataFile.length() & 4095L) != 0L)
+             {
 -                for (i = 0; (long)i < (this.dataFile.length() & 4095L); ++i)
--                {
-+            if ((this.dataFile.length() & 4095L) != 0L) {
-+                for (i = 0; (long) i < (this.dataFile.length() & 4095L); ++i) {
++                for (i = 0; (long) i < (this.dataFile.length() & 4095L); ++i)
+                 {
                      this.dataFile.write(0);
                  }
              }
@@ -85,370 +46,146 @@
              this.sectorFree = Lists.newArrayListWithCapacity(i);
              int j;
  
--            for (j = 0; j < i; ++j)
--            {
-+            for (j = 0; j < i; ++j) {
-                 this.sectorFree.add(Boolean.valueOf(true));
-             }
- 
-             this.sectorFree.set(0, Boolean.valueOf(false));
-             this.sectorFree.set(1, Boolean.valueOf(false));
-             this.dataFile.seek(0L);
-             int k;
- 
--            for (j = 0; j < 1024; ++j)
--            {
-+            for (j = 0; j < 1024; ++j) {
-                 k = this.dataFile.readInt();
-                 this.offsets[j] = k;
- 
--                if (k != 0 && (k >> 8) + (k & 255) <= this.sectorFree.size())
--                {
--                    for (int l = 0; l < (k & 255); ++l)
--                    {
-+                if (k != 0 && (k >> 8) + (k & 255) <= this.sectorFree.size()) {
-+                    for (int l = 0; l < (k & 255); ++l) {
-                         this.sectorFree.set((k >> 8) + l, Boolean.valueOf(false));
-                     }
-                 }
-             }
- 
--            for (j = 0; j < 1024; ++j)
--            {
-+            for (j = 0; j < 1024; ++j) {
-                 k = this.dataFile.readInt();
-                 this.chunkTimestamps[j] = k;
-             }
--        }
--        catch (IOException ioexception)
--        {
-+        } catch (IOException ioexception) {
+             for (j = 0; j < i; ++j)
+             {
+@@ -103,10 +106,65 @@
+         {
              ioexception.printStackTrace();
          }
      }
  
--    public synchronized DataInputStream getChunkDataInputStream(int x, int z)
--    {
--        if (this.outOfBounds(x, z))
--        {
--            return null;
 +    // CraftBukkit start - This is a copy (sort of) of the method below it, make sure they stay in sync
-+    public synchronized boolean chunkExists(int i, int j) {
-+        if (this.outOfBounds(i, j)) {
++
++    public synchronized boolean chunkExists(int i, int j)
++    {
++        if (this.outOfBounds(i, j))
++        {
 +            return false;
-+        } else {
-+            try {
++        }
++        else
++        {
++            try
++            {
 +                int k = this.getOffset(i, j);
 +
-+                if (k == 0) {
++                if (k == 0)
++                {
 +                    return false;
-+                } else {
++                }
++                else
++                {
 +                    int l = k >> 8;
 +                    int i1 = k & 255;
 +
-+                    if (l + i1 > this.sectorFree.size()) {
++                    if (l + i1 > this.sectorFree.size())
++                    {
 +                        return false;
 +                    }
 +
-+                    this.dataFile.seek((long) (l * 4096));
++                    this.dataFile.seek((long)(l * 4096));
 +                    int j1 = this.dataFile.readInt();
 +
-+                    if (j1 > 4096 * i1 || j1 <= 0) {
++                    if (j1 > 4096 * i1 || j1 <= 0)
++                    {
 +                        return false;
 +                    }
 +
 +                    byte b0 = this.dataFile.readByte();
-+                    if (b0 == 1 || b0 == 2) {
++
++                    if (b0 == 1 || b0 == 2)
++                    {
 +                        return true;
 +                    }
 +                }
-+            } catch (IOException ioexception) {
++            }
++            catch (IOException ioexception)
++            {
 +                return false;
 +            }
-         }
--        else
--        {
--            try
--            {
++        }
 +
 +        return false;
 +    }
++
 +    // CraftBukkit end
 +
-+    public synchronized DataInputStream getChunkDataInputStream(int x, int z) {
-+        if (this.outOfBounds(x, z)) {
-+            return null;
-+        } else {
-+            try {
-                 int k = this.getOffset(x, z);
- 
--                if (k == 0)
--                {
-+                if (k == 0) {
-                     return null;
--                }
--                else
--                {
-+                } else {
-                     int l = k >> 8;
-                     int i1 = k & 255;
- 
--                    if (l + i1 > this.sectorFree.size())
--                    {
-+                    if (l + i1 > this.sectorFree.size()) {
-                         return null;
--                    }
--                    else
--                    {
--                        this.dataFile.seek((long)(l * 4096));
-+                    } else {
-+                        this.dataFile.seek((long) (l * 4096));
-                         int j1 = this.dataFile.readInt();
- 
--                        if (j1 > 4096 * i1)
--                        {
-+                        if (j1 > 4096 * i1) {
-                             return null;
--                        }
--                        else if (j1 <= 0)
--                        {
-+                        } else if (j1 <= 0) {
-                             return null;
--                        }
--                        else
--                        {
-+                        } else {
-                             byte b0 = this.dataFile.readByte();
-                             byte[] abyte;
- 
--                            if (b0 == 1)
--                            {
-+                            if (b0 == 1) {
-                                 abyte = new byte[j1 - 1];
-                                 this.dataFile.read(abyte);
-                                 return new DataInputStream(new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(abyte))));
--                            }
--                            else if (b0 == 2)
--                            {
-+                            } else if (b0 == 2) {
-                                 abyte = new byte[j1 - 1];
-                                 this.dataFile.read(abyte);
-                                 return new DataInputStream(new BufferedInputStream(new InflaterInputStream(new ByteArrayInputStream(abyte))));
--                            }
--                            else
--                            {
-+                            } else {
-                                 return null;
-                             }
-                         }
-                     }
-                 }
--            }
--            catch (IOException ioexception)
--            {
-+            } catch (IOException ioexception) {
-                 return null;
-             }
-         }
-     }
- 
--    public DataOutputStream getChunkDataOutputStream(int x, int z)
--    {
-+    public DataOutputStream getChunkDataOutputStream(int x, int z) {
-         return this.outOfBounds(x, z) ? null : new DataOutputStream(new DeflaterOutputStream(new RegionFile.ChunkBuffer(x, z)));
-     }
- 
--    protected synchronized void write(int x, int z, byte[] data, int length)
--    {
--        try
--        {
-+    protected synchronized void write(int x, int z, byte[] data, int length) {
-+        try {
-             int l = this.getOffset(x, z);
-             int i1 = l >> 8;
-             int j1 = l & 255;
-             int k1 = (length + 5) / 4096 + 1;
- 
--            if (k1 >= 256)
--            {
-+            if (k1 >= 256) {
-                 return;
-             }
- 
--            if (i1 != 0 && j1 == k1)
--            {
-+            if (i1 != 0 && j1 == k1) {
-                 this.write(i1, data, length);
--            }
--            else
--            {
-+            } else {
-                 int l1;
- 
--                for (l1 = 0; l1 < j1; ++l1)
--                {
-+                for (l1 = 0; l1 < j1; ++l1) {
-                     this.sectorFree.set(i1 + l1, Boolean.valueOf(true));
-                 }
- 
-                 l1 = this.sectorFree.indexOf(Boolean.valueOf(true));
-                 int i2 = 0;
-                 int j2;
- 
--                if (l1 != -1)
--                {
--                    for (j2 = l1; j2 < this.sectorFree.size(); ++j2)
--                    {
--                        if (i2 != 0)
--                        {
+     public synchronized DataInputStream getChunkDataInputStream(int x, int z)
+     {
+         if (this.outOfBounds(x, z))
+         {
+             return null;
+@@ -215,20 +273,20 @@
+                 {
+                     for (j2 = l1; j2 < this.sectorFree.size(); ++j2)
+                     {
+                         if (i2 != 0)
+                         {
 -                            if (((Boolean)this.sectorFree.get(j2)).booleanValue())
--                            {
-+                if (l1 != -1) {
-+                    for (j2 = l1; j2 < this.sectorFree.size(); ++j2) {
-+                        if (i2 != 0) {
-+                            if (((Boolean) this.sectorFree.get(j2)).booleanValue()) {
++                            if (((Boolean) this.sectorFree.get(j2)).booleanValue())
+                             {
                                  ++i2;
--                            }
--                            else
--                            {
-+                            } else {
+                             }
+                             else
+                             {
                                  i2 = 0;
                              }
--                        }
+                         }
 -                        else if (((Boolean)this.sectorFree.get(j2)).booleanValue())
--                        {
-+                        } else if (((Boolean) this.sectorFree.get(j2)).booleanValue()) {
++                        else if (((Boolean) this.sectorFree.get(j2)).booleanValue())
+                         {
                              l1 = j2;
                              i2 = 1;
                          }
  
--                        if (i2 >= k1)
--                        {
-+                        if (i2 >= k1) {
-                             break;
-                         }
-                     }
-                 }
- 
--                if (i2 >= k1)
--                {
-+                if (i2 >= k1) {
-                     i1 = l1;
-                     this.setOffset(x, z, l1 << 8 | k1);
- 
--                    for (j2 = 0; j2 < k1; ++j2)
--                    {
-+                    for (j2 = 0; j2 < k1; ++j2) {
-                         this.sectorFree.set(i1 + j2, Boolean.valueOf(false));
-                     }
- 
-                     this.write(i1, data, length);
--                }
--                else
--                {
-+                } else {
-                     this.dataFile.seek(this.dataFile.length());
-                     i1 = this.sectorFree.size();
- 
--                    for (j2 = 0; j2 < k1; ++j2)
--                    {
-+                    for (j2 = 0; j2 < k1; ++j2) {
-                         this.dataFile.write(emptySector);
-                         this.sectorFree.add(Boolean.valueOf(false));
-                     }
- 
-                     this.sizeDelta += 4096 * k1;
-                     this.write(i1, data, length);
-                     this.setOffset(x, z, i1 << 8 | k1);
-                 }
-             }
- 
--            this.setChunkTimestamp(x, z, (int)(MinecraftServer.getCurrentTimeMillis() / 1000L));
--        }
--        catch (IOException ioexception)
--        {
-+            this.setChunkTimestamp(x, z, (int) (MinecraftServer.getCurrentTimeMillis() / 1000L));
-+        } catch (IOException ioexception) {
+@@ -274,11 +332,11 @@
+         {
              ioexception.printStackTrace();
          }
      }
  
 -    private void write(int sectorNumber, byte[] data, int length) throws IOException
--    {
--        this.dataFile.seek((long)(sectorNumber * 4096));
-+    private void write(int sectorNumber, byte[] data, int length) throws IOException { // CraftBukkit - added throws // SpigotMCP NOTE -- MCP already added
-+        this.dataFile.seek((long) (sectorNumber * 4096));
++    private void write(int sectorNumber, byte[] data, int length) throws IOException   // CraftBukkit - added throws // SpigotMCP NOTE -- MCP already added
+     {
+         this.dataFile.seek((long)(sectorNumber * 4096));
          this.dataFile.writeInt(length + 1);
          this.dataFile.writeByte(2);
          this.dataFile.write(data, 0, length);
-     }
- 
--    private boolean outOfBounds(int x, int z)
--    {
-+    private boolean outOfBounds(int x, int z) {
-         return x < 0 || x >= 32 || z < 0 || z >= 32;
-     }
- 
--    private int getOffset(int x, int z)
--    {
-+    private int getOffset(int x, int z) {
-         return this.offsets[x + z * 32];
-     }
- 
--    public boolean isChunkSaved(int x, int z)
--    {
-+    public boolean isChunkSaved(int x, int z) {
+@@ -297,34 +355,35 @@
+     public boolean isChunkSaved(int x, int z)
+     {
          return this.getOffset(x, z) != 0;
      }
  
 -    private void setOffset(int x, int z, int offset) throws IOException
--    {
-+    private void setOffset(int x, int z, int offset) throws IOException { // CraftBukkit - added throws // SpigotMCP NOTE -- MCP already added
++    private void setOffset(int x, int z, int offset) throws IOException   // CraftBukkit - added throws // SpigotMCP NOTE -- MCP already added
+     {
          this.offsets[x + z * 32] = offset;
--        this.dataFile.seek((long)((x + z * 32) * 4));
-+        this.dataFile.seek((long) ((x + z * 32) * 4));
+         this.dataFile.seek((long)((x + z * 32) * 4));
          this.dataFile.writeInt(offset);
      }
  
 -    private void setChunkTimestamp(int x, int z, int timestamp) throws IOException
--    {
-+    private void setChunkTimestamp(int x, int z, int timestamp) throws IOException { // CraftBukkit - added throws // SpigotMCP NOTE -- MCP already added
++    private void setChunkTimestamp(int x, int z, int timestamp) throws IOException   // CraftBukkit - added throws // SpigotMCP NOTE -- MCP already added
+     {
          this.chunkTimestamps[x + z * 32] = timestamp;
--        this.dataFile.seek((long)(4096 + (x + z * 32) * 4));
-+        this.dataFile.seek((long) (4096 + (x + z * 32) * 4));
+         this.dataFile.seek((long)(4096 + (x + z * 32) * 4));
          this.dataFile.writeInt(timestamp);
      }
  
 -    public void close() throws IOException
--    {
--        if (this.dataFile != null)
--        {
-+    public void close() throws IOException { // CraftBukkit - added throws // SpigotMCP NOTE -- MCP already added
-+        if (this.dataFile != null) {
++    public void close() throws IOException   // CraftBukkit - added throws // SpigotMCP NOTE -- MCP already added
+     {
+         if (this.dataFile != null)
+         {
              this.dataFile.close();
          }
      }
  
--    class ChunkBuffer extends ByteArrayOutputStream
--    {
-+    class ChunkBuffer extends ByteArrayOutputStream {
+     class ChunkBuffer extends ByteArrayOutputStream
+     {
 +
          private int chunkX;
          private int chunkZ;
          private static final String __OBFID = "CL_00000382";
  
--        public ChunkBuffer(int x, int z)
--        {
-+        public ChunkBuffer(int x, int z) {
-             super(8096);
-             this.chunkX = x;
-             this.chunkZ = z;
-         }
- 
--        public void close() throws IOException
--        {
-+        public void close() throws IOException {
-             RegionFile.this.write(this.chunkX, this.chunkZ, this.buf, this.count);
-         }
-     }
- }
+         public ChunkBuffer(int x, int z)

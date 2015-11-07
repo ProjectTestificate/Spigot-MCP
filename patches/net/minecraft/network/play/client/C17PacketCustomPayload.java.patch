@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\client\C17PacketCustomPayload.java
 +++ src\main\java\net\minecraft\network\play\client\C17PacketCustomPayload.java
-@@ -1,72 +1,52 @@
+@@ -1,34 +1,25 @@
  package net.minecraft.network.play.client;
  
 -import io.netty.buffer.ByteBuf;
@@ -13,11 +13,10 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class C17PacketCustomPayload implements Packet
--{
 +import io.netty.buffer.ByteBuf;
 +
-+public class C17PacketCustomPayload implements Packet {
+ public class C17PacketCustomPayload implements Packet
+ {
 +
      private String channel;
      private PacketBuffer data;
@@ -27,7 +26,8 @@
 -
 -    @SideOnly(Side.CLIENT)
 -    public C17PacketCustomPayload(String p_i45945_1_, PacketBuffer p_i45945_2_)
--    {
++    public C17PacketCustomPayload()
+     {
 -        this.channel = p_i45945_1_;
 -        this.data = p_i45945_2_;
 -
@@ -35,57 +35,31 @@
 -        {
 -            throw new IllegalArgumentException("Payload may not be larger than 32767 bytes");
 -        }
-+    public C17PacketCustomPayload() {
      }
  
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
+     public void readPacketData(PacketBuffer buf) throws IOException
+     {
          this.channel = buf.readStringFromBuffer(20);
-         int i = buf.readableBytes();
- 
--        if (i >= 0 && i <= 32767)
--        {
-+        if (i >= 0 && i <= 32767) {
-             this.data = new PacketBuffer(buf.readBytes(i));
--        }
--        else
--        {
-+        } else {
-             throw new IOException("Payload may not be larger than 32767 bytes");
-         }
+@@ -45,11 +36,11 @@
      }
  
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
+     public void writePacketData(PacketBuffer buf) throws IOException
+     {
          buf.writeString(this.channel);
 -        buf.writeBytes((ByteBuf)this.data);
 +        buf.writeBytes((ByteBuf) this.data);
      }
  
--    public void processPacket(INetHandlerPlayServer handler)
--    {
-+    public void processPacket(INetHandlerPlayServer handler) {
+     public void processPacket(INetHandlerPlayServer handler)
+     {
          handler.processVanilla250Packet(this);
-     }
- 
--    public String getChannelName()
--    {
-+    public String getChannelName() {
-         return this.channel;
-     }
- 
--    public PacketBuffer getBufferData()
--    {
-+    public PacketBuffer getBufferData() {
+@@ -65,8 +56,8 @@
          return this.data;
      }
  
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.processPacket((INetHandlerPlayServer)handler);
-+    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
  }

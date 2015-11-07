@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\block\BlockStainedGlassPane.java
 +++ src\main\java\net\minecraft\block\BlockStainedGlassPane.java
-@@ -1,81 +1,52 @@
+@@ -1,25 +1,21 @@
  package net.minecraft.block;
  
 -import java.util.List;
@@ -19,27 +19,19 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class BlockStainedGlassPane extends BlockPane
--{
 +
-+public class BlockStainedGlassPane extends BlockPane {
+ public class BlockStainedGlassPane extends BlockPane
+ {
 +
      public static final PropertyEnum COLOR = PropertyEnum.create("color", EnumDyeColor.class);
      private static final String __OBFID = "CL_00000313";
  
--    public BlockStainedGlassPane()
--    {
-+    public BlockStainedGlassPane() {
-         super(Material.glass, false);
-         this.setDefaultState(this.blockState.getBaseState().withProperty(NORTH, Boolean.valueOf(false)).withProperty(EAST, Boolean.valueOf(false)).withProperty(SOUTH, Boolean.valueOf(false)).withProperty(WEST, Boolean.valueOf(false)).withProperty(COLOR, EnumDyeColor.WHITE));
-         this.setCreativeTab(CreativeTabs.tabDecorations);
-     }
- 
--    public int damageDropped(IBlockState state)
--    {
--        return ((EnumDyeColor)state.getValue(COLOR)).getMetadata();
-+    public int damageDropped(IBlockState state) {
-+        return ((EnumDyeColor) state.getValue(COLOR)).getMetadata();
+     public BlockStainedGlassPane()
+     {
+@@ -31,30 +27,15 @@
+     public int damageDropped(IBlockState state)
+     {
+         return ((EnumDyeColor)state.getValue(COLOR)).getMetadata();
      }
  
 -    @SideOnly(Side.CLIENT)
@@ -51,9 +43,8 @@
 -        }
 -    }
 -
--    public IBlockState getStateFromMeta(int meta)
--    {
-+    public IBlockState getStateFromMeta(int meta) {
+     public IBlockState getStateFromMeta(int meta)
+     {
          return this.getDefaultState().withProperty(COLOR, EnumDyeColor.byMetadata(meta));
      }
  
@@ -61,39 +52,10 @@
 -    public EnumWorldBlockLayer getBlockLayer()
 -    {
 -        return EnumWorldBlockLayer.TRANSLUCENT;
-+    public int getMetaFromState(IBlockState state) {
-+        return ((EnumDyeColor) state.getValue(COLOR)).getMetadata();
-     }
- 
--    public int getMetaFromState(IBlockState state)
--    {
--        return ((EnumDyeColor)state.getValue(COLOR)).getMetadata();
-+    protected BlockState createBlockState() {
-+        return new BlockState(this, new IProperty[]{NORTH, EAST, WEST, SOUTH, COLOR});
-     }
- 
--    protected BlockState createBlockState()
--    {
--        return new BlockState(this, new IProperty[] {NORTH, EAST, WEST, SOUTH, COLOR});
 -    }
 -
--    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
--    {
--        if (!worldIn.isRemote)
--        {
-+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-+        if (!worldIn.isRemote) {
-             BlockBeacon.updateColorAsync(worldIn, pos);
-         }
+     public int getMetaFromState(IBlockState state)
+     {
+         return ((EnumDyeColor)state.getValue(COLOR)).getMetadata();
      }
  
--    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
--    {
--        if (!worldIn.isRemote)
--        {
-+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-+        if (!worldIn.isRemote) {
-             BlockBeacon.updateColorAsync(worldIn, pos);
-         }
-     }
- }

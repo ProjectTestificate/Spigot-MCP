@@ -1,16 +1,15 @@
 --- decompiled\net\minecraft\util\StringUtils.java
 +++ src\main\java\net\minecraft\util\StringUtils.java
-@@ -1,31 +1,14 @@
+@@ -1,31 +1,16 @@
  package net.minecraft.util;
  
  import java.util.regex.Pattern;
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class StringUtils
--{
 +
-+public class StringUtils {
+ public class StringUtils
+ {
 +
      private static final Pattern patternControlCode = Pattern.compile("(?i)\\u00A7[0-9A-FK-OR]");
      private static final String __OBFID = "CL_00001501";
@@ -30,9 +29,8 @@
 -        return patternControlCode.matcher(p_76338_0_).replaceAll("");
 -    }
 -
--    public static boolean isNullOrEmpty(String string)
--    {
-+    public static boolean isNullOrEmpty(String string) {
+     public static boolean isNullOrEmpty(String string)
+     {
          return org.apache.commons.lang3.StringUtils.isEmpty(string);
      }
  }

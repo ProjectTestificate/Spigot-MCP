@@ -1,23 +1,13 @@
 --- decompiled\net\minecraft\tileentity\TileEntityDropper.java
 +++ src\main\java\net\minecraft\tileentity\TileEntityDropper.java
-@@ -1,16 +1,14 @@
+@@ -1,9 +1,10 @@
  package net.minecraft.tileentity;
  
--public class TileEntityDropper extends TileEntityDispenser
--{
-+public class TileEntityDropper extends TileEntityDispenser {
+ public class TileEntityDropper extends TileEntityDispenser
+ {
 +
      private static final String __OBFID = "CL_00000353";
  
--    public String getName()
--    {
-+    public String getName() {
+     public String getName()
+     {
          return this.hasCustomName() ? this.customName : "container.dropper";
-     }
- 
--    public String getGuiID()
--    {
-+    public String getGuiID() {
-         return "minecraft:dropper";
-     }
- }

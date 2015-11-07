@@ -1,13 +1,11 @@
 --- decompiled\net\minecraft\dispenser\ILocation.java
 +++ src\main\java\net\minecraft\dispenser\ILocation.java
-@@ -1,8 +1,8 @@
- package net.minecraft.dispenser;
+@@ -2,7 +2,8 @@
  
  import net.minecraft.world.World;
  
--public interface ILocation extends IPosition
--{
-+public interface ILocation extends IPosition {
+ public interface ILocation extends IPosition
+ {
 +
      World getWorld();
  }

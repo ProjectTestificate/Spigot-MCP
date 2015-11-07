@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\world\chunk\IChunkProvider.java
 +++ src\main\java\net\minecraft\world\chunk\IChunkProvider.java
-@@ -1,15 +1,16 @@
+@@ -1,15 +1,17 @@
  package net.minecraft.world.chunk;
  
  import java.util.List;
@@ -10,9 +10,8 @@
  import net.minecraft.util.IProgressUpdate;
  import net.minecraft.world.World;
  
--public interface IChunkProvider
--{
-+public interface IChunkProvider {
+ public interface IChunkProvider
+ {
 +
      boolean chunkExists(int x, int z);
  

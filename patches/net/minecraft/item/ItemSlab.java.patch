@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\item\ItemSlab.java
 +++ src\main\java\net\minecraft\item\ItemSlab.java
-@@ -6,66 +6,53 @@
+@@ -6,15 +6,15 @@
  import net.minecraft.block.state.IBlockState;
  import net.minecraft.entity.player.EntityPlayer;
  import net.minecraft.util.BlockPos;
@@ -9,80 +9,16 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class ItemSlab extends ItemBlock
--{
 +
-+public class ItemSlab extends ItemBlock {
+ public class ItemSlab extends ItemBlock
+ {
 +
      private final BlockSlab singleSlab;
      private final BlockSlab doubleSlab;
      private static final String __OBFID = "CL_00000071";
  
--    public ItemSlab(Block block, BlockSlab singleSlab, BlockSlab doubleSlab)
--    {
-+    public ItemSlab(Block block, BlockSlab singleSlab, BlockSlab doubleSlab) {
-         super(block);
-         this.singleSlab = singleSlab;
-         this.doubleSlab = doubleSlab;
-         this.setMaxDamage(0);
-         this.setHasSubtypes(true);
-     }
- 
--    public int getMetadata(int damage)
--    {
-+    public int getMetadata(int damage) {
-         return damage;
-     }
- 
--    public String getUnlocalizedName(ItemStack stack)
--    {
-+    public String getUnlocalizedName(ItemStack stack) {
-         return this.singleSlab.getUnlocalizedName(stack.getMetadata());
-     }
- 
--    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
--    {
--        if (stack.stackSize == 0)
--        {
-+    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
-+        if (stack.stackSize == 0) {
-             return false;
--        }
--        else if (!playerIn.canPlayerEdit(pos.offset(side), side, stack))
--        {
-+        } else if (!playerIn.canPlayerEdit(pos.offset(side), side, stack)) {
-             return false;
--        }
--        else
--        {
-+        } else {
-             Object object = this.singleSlab.getVariant(stack);
-             IBlockState iblockstate = worldIn.getBlockState(pos);
- 
--            if (iblockstate.getBlock() == this.singleSlab)
--            {
-+            if (iblockstate.getBlock() == this.singleSlab) {
-                 IProperty iproperty = this.singleSlab.getVariantProperty();
-                 Comparable comparable = iblockstate.getValue(iproperty);
--                BlockSlab.EnumBlockHalf enumblockhalf = (BlockSlab.EnumBlockHalf)iblockstate.getValue(BlockSlab.HALF);
-+                BlockSlab.EnumBlockHalf enumblockhalf = (BlockSlab.EnumBlockHalf) iblockstate.getValue(BlockSlab.HALF);
- 
--                if ((side == EnumFacing.UP && enumblockhalf == BlockSlab.EnumBlockHalf.BOTTOM || side == EnumFacing.DOWN && enumblockhalf == BlockSlab.EnumBlockHalf.TOP) && comparable == object)
--                {
-+                if ((side == EnumFacing.UP && enumblockhalf == BlockSlab.EnumBlockHalf.BOTTOM || side == EnumFacing.DOWN && enumblockhalf == BlockSlab.EnumBlockHalf.TOP) && comparable == object) {
-                     IBlockState iblockstate1 = this.doubleSlab.getDefaultState().withProperty(iproperty, comparable);
- 
--                    if (worldIn.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBox(worldIn, pos, iblockstate1)) && worldIn.setBlockState(pos, iblockstate1, 3))
--                    {
--                        worldIn.playSoundEffect((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), this.doubleSlab.stepSound.getPlaceSound(), (this.doubleSlab.stepSound.getVolume() + 1.0F) / 2.0F, this.doubleSlab.stepSound.getFrequency() * 0.8F);
-+                    if (worldIn.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBox(worldIn, pos, iblockstate1)) && worldIn.setBlockState(pos, iblockstate1, 3)) {
-+                        worldIn.playSoundEffect((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), this.doubleSlab.stepSound.getPlaceSound(), (this.doubleSlab.stepSound.getVolume() + 1.0F) / 2.0F, this.doubleSlab.stepSound.getFrequency() * 0.8F);
-                         --stack.stackSize;
-                     }
- 
-                     return true;
-                 }
-@@ -73,48 +60,21 @@
+     public ItemSlab(Block block, BlockSlab singleSlab, BlockSlab doubleSlab)
+@@ -73,33 +73,10 @@
  
              return this.tryPlace(stack, worldIn, pos.offset(side), object) ? true : super.onItemUse(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ);
          }
@@ -94,9 +30,8 @@
 -        BlockPos blockpos1 = pos;
 -        IProperty iproperty = this.singleSlab.getVariantProperty();
 -        Object object = this.singleSlab.getVariant(stack);
-+    private boolean tryPlace(ItemStack stack, World worldIn, BlockPos pos, Object variantInStack) {
-         IBlockState iblockstate = worldIn.getBlockState(pos);
- 
+-        IBlockState iblockstate = worldIn.getBlockState(pos);
+-
 -        if (iblockstate.getBlock() == this.singleSlab)
 -        {
 -            boolean flag = iblockstate.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.TOP;
@@ -112,27 +47,8 @@
 -        return iblockstate1.getBlock() == this.singleSlab && object == iblockstate1.getValue(iproperty) ? true : super.canPlaceBlockOnSide(worldIn, blockpos1, side, player, stack);
 -    }
 -
--    private boolean tryPlace(ItemStack stack, World worldIn, BlockPos pos, Object variantInStack)
--    {
--        IBlockState iblockstate = worldIn.getBlockState(pos);
--
--        if (iblockstate.getBlock() == this.singleSlab)
--        {
-+        if (iblockstate.getBlock() == this.singleSlab) {
-             Comparable comparable = iblockstate.getValue(this.singleSlab.getVariantProperty());
+     private boolean tryPlace(ItemStack stack, World worldIn, BlockPos pos, Object variantInStack)
+     {
+         IBlockState iblockstate = worldIn.getBlockState(pos);
  
--            if (comparable == variantInStack)
--            {
-+            if (comparable == variantInStack) {
-                 IBlockState iblockstate1 = this.doubleSlab.getDefaultState().withProperty(this.singleSlab.getVariantProperty(), comparable);
- 
--                if (worldIn.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBox(worldIn, pos, iblockstate1)) && worldIn.setBlockState(pos, iblockstate1, 3))
--                {
--                    worldIn.playSoundEffect((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), this.doubleSlab.stepSound.getPlaceSound(), (this.doubleSlab.stepSound.getVolume() + 1.0F) / 2.0F, this.doubleSlab.stepSound.getFrequency() * 0.8F);
-+                if (worldIn.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBox(worldIn, pos, iblockstate1)) && worldIn.setBlockState(pos, iblockstate1, 3)) {
-+                    worldIn.playSoundEffect((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), this.doubleSlab.stepSound.getPlaceSound(), (this.doubleSlab.stepSound.getVolume() + 1.0F) / 2.0F, this.doubleSlab.stepSound.getFrequency() * 0.8F);
-                     --stack.stackSize;
-                 }
- 
-                 return true;
-             }
+         if (iblockstate.getBlock() == this.singleSlab)

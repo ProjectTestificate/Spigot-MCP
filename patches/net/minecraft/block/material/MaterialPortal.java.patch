@@ -1,35 +1,13 @@
 --- decompiled\net\minecraft\block\material\MaterialPortal.java
 +++ src\main\java\net\minecraft\block\material\MaterialPortal.java
-@@ -1,26 +1,22 @@
+@@ -1,9 +1,10 @@
  package net.minecraft.block.material;
  
--public class MaterialPortal extends Material
--{
-+public class MaterialPortal extends Material {
+ public class MaterialPortal extends Material
+ {
 +
      private static final String __OBFID = "CL_00000545";
  
--    public MaterialPortal(MapColor color)
--    {
-+    public MaterialPortal(MapColor color) {
+     public MaterialPortal(MapColor color)
+     {
          super(color);
-     }
- 
--    public boolean isSolid()
--    {
-+    public boolean isSolid() {
-         return false;
-     }
- 
--    public boolean blocksLight()
--    {
-+    public boolean blocksLight() {
-         return false;
-     }
- 
--    public boolean blocksMovement()
--    {
-+    public boolean blocksMovement() {
-         return false;
-     }
- }

@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\item\ItemEditableBook.java
 +++ src\main\java\net\minecraft\item\ItemEditableBook.java
-@@ -1,147 +1,98 @@
+@@ -1,28 +1,25 @@
  package net.minecraft.item;
  
 -import java.util.List;
@@ -22,60 +22,16 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class ItemEditableBook extends Item
--{
 +
-+public class ItemEditableBook extends Item {
+ public class ItemEditableBook extends Item
+ {
 +
      private static final String __OBFID = "CL_00000077";
  
--    public ItemEditableBook()
--    {
-+    public ItemEditableBook() {
+     public ItemEditableBook()
+     {
          this.setMaxStackSize(1);
-     }
- 
--    public static boolean validBookTagContents(NBTTagCompound nbt)
--    {
--        if (!ItemWritableBook.isNBTValid(nbt))
--        {
-+    public static boolean validBookTagContents(NBTTagCompound nbt) {
-+        if (!ItemWritableBook.isNBTValid(nbt)) {
-             return false;
--        }
--        else if (!nbt.hasKey("title", 8))
--        {
-+        } else if (!nbt.hasKey("title", 8)) {
-             return false;
--        }
--        else
--        {
-+        } else {
-             String s = nbt.getString("title");
-             return s != null && s.length() <= 32 ? nbt.hasKey("author", 8) : false;
-         }
-     }
- 
--    public static int getGeneration(ItemStack book)
--    {
-+    public static int getGeneration(ItemStack book) {
-         return book.getTagCompound().getInteger("generation");
-     }
- 
--    public String getItemStackDisplayName(ItemStack stack)
--    {
--        if (stack.hasTagCompound())
--        {
-+    public String getItemStackDisplayName(ItemStack stack) {
-+        if (stack.hasTagCompound()) {
-             NBTTagCompound nbttagcompound = stack.getTagCompound();
-             String s = nbttagcompound.getString("title");
- 
--            if (!StringUtils.isNullOrEmpty(s))
--            {
-+            if (!StringUtils.isNullOrEmpty(s)) {
-                 return s;
-             }
+@@ -64,27 +61,10 @@
          }
  
          return super.getItemStackDisplayName(stack);
@@ -98,68 +54,12 @@
 -        }
 -    }
 -
--    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
--    {
--        if (!worldIn.isRemote)
--        {
-+    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
-+        if (!worldIn.isRemote) {
+     public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
+     {
+         if (!worldIn.isRemote)
+         {
              this.resolveContents(itemStackIn, playerIn);
-         }
- 
-         playerIn.displayGUIBook(itemStackIn);
-         playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
-         return itemStackIn;
-     }
- 
--    private void resolveContents(ItemStack stack, EntityPlayer player)
--    {
--        if (stack != null && stack.getTagCompound() != null)
--        {
-+    private void resolveContents(ItemStack stack, EntityPlayer player) {
-+        if (stack != null && stack.getTagCompound() != null) {
-             NBTTagCompound nbttagcompound = stack.getTagCompound();
- 
--            if (!nbttagcompound.getBoolean("resolved"))
--            {
-+            if (!nbttagcompound.getBoolean("resolved")) {
-                 nbttagcompound.setBoolean("resolved", true);
- 
--                if (validBookTagContents(nbttagcompound))
--                {
-+                if (validBookTagContents(nbttagcompound)) {
-                     NBTTagList nbttaglist = nbttagcompound.getTagList("pages", 8);
- 
--                    for (int i = 0; i < nbttaglist.tagCount(); ++i)
--                    {
-+                    for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-                         String s = nbttaglist.getStringTagAt(i);
-                         Object object;
- 
--                        try
--                        {
-+                        try {
-                             IChatComponent ichatcomponent = IChatComponent.Serializer.jsonToComponent(s);
-                             object = ChatComponentProcessor.func_179985_a(player, ichatcomponent, player);
--                        }
--                        catch (Exception exception)
--                        {
-+                        } catch (Exception exception) {
-                             object = new ChatComponentText(s);
-                         }
- 
--                        nbttaglist.set(i, new NBTTagString(IChatComponent.Serializer.componentToJson((IChatComponent)object)));
-+                        nbttaglist.set(i, new NBTTagString(IChatComponent.Serializer.componentToJson((IChatComponent) object)));
-                     }
- 
-                     nbttagcompound.setTag("pages", nbttaglist);
- 
--                    if (player instanceof EntityPlayerMP && player.getCurrentEquippedItem() == stack)
--                    {
-+                    if (player instanceof EntityPlayerMP && player.getCurrentEquippedItem() == stack) {
-                         Slot slot = player.openContainer.getSlotFromInventory(player.inventory, player.inventory.currentItem);
--                        ((EntityPlayerMP)player).playerNetServerHandler.sendPacket(new S2FPacketSetSlot(0, slot.slotNumber, stack));
-+                        ((EntityPlayerMP) player).playerNetServerHandler.sendPacket(new S2FPacketSetSlot(0, slot.slotNumber, stack));
+@@ -136,12 +116,6 @@
                      }
                  }
              }

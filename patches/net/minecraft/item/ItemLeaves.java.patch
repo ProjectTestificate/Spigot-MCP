@@ -1,32 +1,24 @@
 --- decompiled\net\minecraft\item\ItemLeaves.java
 +++ src\main\java\net\minecraft\item\ItemLeaves.java
-@@ -1,35 +1,25 @@
+@@ -1,13 +1,13 @@
  package net.minecraft.item;
  
  import net.minecraft.block.BlockLeaves;
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class ItemLeaves extends ItemBlock
--{
 +
-+public class ItemLeaves extends ItemBlock {
+ public class ItemLeaves extends ItemBlock
+ {
 +
      private final BlockLeaves leaves;
      private static final String __OBFID = "CL_00000046";
  
--    public ItemLeaves(BlockLeaves block)
--    {
-+    public ItemLeaves(BlockLeaves block) {
-         super(block);
-         this.leaves = block;
-         this.setMaxDamage(0);
-         this.setHasSubtypes(true);
-     }
- 
--    public int getMetadata(int damage)
--    {
-+    public int getMetadata(int damage) {
+     public ItemLeaves(BlockLeaves block)
+     {
+@@ -20,16 +20,10 @@
+     public int getMetadata(int damage)
+     {
          return damage | 4;
      }
  
@@ -36,9 +28,8 @@
 -        return this.leaves.getRenderColor(this.leaves.getStateFromMeta(stack.getMetadata()));
 -    }
 -
--    public String getUnlocalizedName(ItemStack stack)
--    {
-+    public String getUnlocalizedName(ItemStack stack) {
+     public String getUnlocalizedName(ItemStack stack)
+     {
          return super.getUnlocalizedName() + "." + this.leaves.getWoodType(stack.getMetadata()).getUnlocalizedName();
      }
  }

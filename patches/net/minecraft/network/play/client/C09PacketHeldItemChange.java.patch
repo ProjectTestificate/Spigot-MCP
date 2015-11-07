@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\client\C09PacketHeldItemChange.java
 +++ src\main\java\net\minecraft\network\play\client\C09PacketHeldItemChange.java
-@@ -1,48 +1,38 @@
+@@ -1,26 +1,23 @@
  package net.minecraft.network.play.client;
  
  import java.io.IOException;
@@ -12,10 +12,9 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class C09PacketHeldItemChange implements Packet
--{
 +
-+public class C09PacketHeldItemChange implements Packet {
+ public class C09PacketHeldItemChange implements Packet
+ {
 +
      private int slotId;
      private static final String __OBFID = "CL_00001368";
@@ -24,39 +23,21 @@
 -
 -    @SideOnly(Side.CLIENT)
 -    public C09PacketHeldItemChange(int slotId)
--    {
++    public C09PacketHeldItemChange()
+     {
 -        this.slotId = slotId;
-+    public C09PacketHeldItemChange() {
      }
  
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
+     public void readPacketData(PacketBuffer buf) throws IOException
+     {
          this.slotId = buf.readShort();
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeShort(this.slotId);
-     }
- 
--    public void processPacket(INetHandlerPlayServer handler)
--    {
-+    public void processPacket(INetHandlerPlayServer handler) {
-         handler.processHeldItemChange(this);
-     }
- 
--    public int getSlotId()
--    {
-+    public int getSlotId() {
+@@ -41,8 +38,8 @@
          return this.slotId;
      }
  
--    public void processPacket(INetHandler handler)
--    {
+     public void processPacket(INetHandler handler)
+     {
 -        this.processPacket((INetHandlerPlayServer)handler);
-+    public void processPacket(INetHandler handler) {
 +        this.processPacket((INetHandlerPlayServer) handler);
      }
  }

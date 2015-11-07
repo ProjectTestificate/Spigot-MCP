@@ -1,13 +1,11 @@
 --- decompiled\net\minecraft\world\ILockableContainer.java
 +++ src\main\java\net\minecraft\world\ILockableContainer.java
-@@ -1,11 +1,11 @@
- package net.minecraft.world;
+@@ -2,10 +2,11 @@
  
  import net.minecraft.inventory.IInventory;
  
--public interface ILockableContainer extends IInventory, IInteractionObject
--{
-+public interface ILockableContainer extends IInventory, IInteractionObject {
+ public interface ILockableContainer extends IInventory, IInteractionObject
+ {
 +
      boolean isLocked();
  

@@ -1,14 +1,13 @@
 --- decompiled\net\minecraft\item\ItemSimpleFoiled.java
 +++ src\main\java\net\minecraft\item\ItemSimpleFoiled.java
-@@ -1,15 +1,8 @@
+@@ -1,15 +1,9 @@
  package net.minecraft.item;
  
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class ItemSimpleFoiled extends Item
--{
-+public class ItemSimpleFoiled extends Item {
+ public class ItemSimpleFoiled extends Item
+ {
 +
      private static final String __OBFID = "CL_00000065";
  

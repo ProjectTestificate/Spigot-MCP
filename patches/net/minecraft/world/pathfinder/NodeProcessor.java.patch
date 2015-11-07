@@ -1,48 +1,29 @@
 --- decompiled\net\minecraft\world\pathfinder\NodeProcessor.java
 +++ src\main\java\net\minecraft\world\pathfinder\NodeProcessor.java
-@@ -4,37 +4,35 @@
- import net.minecraft.pathfinding.PathPoint;
- import net.minecraft.util.IntHashMap;
+@@ -6,10 +6,11 @@
  import net.minecraft.util.MathHelper;
  import net.minecraft.world.IBlockAccess;
  
--public abstract class NodeProcessor
--{
-+public abstract class NodeProcessor {
+ public abstract class NodeProcessor
+ {
 +
      protected IBlockAccess field_176169_a;
      protected IntHashMap field_176167_b = new IntHashMap();
      protected int field_176168_c;
      protected int field_176165_d;
      protected int field_176166_e;
-     private static final String __OBFID = "CL_00001967";
- 
--    public void func_176162_a(IBlockAccess p_176162_1_, Entity p_176162_2_)
--    {
-+    public void func_176162_a(IBlockAccess p_176162_1_, Entity p_176162_2_) {
-         this.field_176169_a = p_176162_1_;
-         this.field_176167_b.clearMap();
+@@ -22,11 +23,13 @@
          this.field_176168_c = MathHelper.floor_float(p_176162_2_.width + 1.0F);
          this.field_176165_d = MathHelper.floor_float(p_176162_2_.height + 1.0F);
          this.field_176166_e = MathHelper.floor_float(p_176162_2_.width + 1.0F);
      }
  
 -    public void func_176163_a() {}
-+    public void func_176163_a() {
++    public void func_176163_a()
++    {
 +    }
  
--    protected PathPoint func_176159_a(int p_176159_1_, int p_176159_2_, int p_176159_3_)
--    {
-+    protected PathPoint func_176159_a(int p_176159_1_, int p_176159_2_, int p_176159_3_) {
+     protected PathPoint func_176159_a(int p_176159_1_, int p_176159_2_, int p_176159_3_)
+     {
          int l = PathPoint.makeHash(p_176159_1_, p_176159_2_, p_176159_3_);
--        PathPoint pathpoint = (PathPoint)this.field_176167_b.lookup(l);
-+        PathPoint pathpoint = (PathPoint) this.field_176167_b.lookup(l);
- 
--        if (pathpoint == null)
--        {
-+        if (pathpoint == null) {
-             pathpoint = new PathPoint(p_176159_1_, p_176159_2_, p_176159_3_);
-             this.field_176167_b.addKey(l, pathpoint);
-         }
- 
-         return pathpoint;
+         PathPoint pathpoint = (PathPoint)this.field_176167_b.lookup(l);

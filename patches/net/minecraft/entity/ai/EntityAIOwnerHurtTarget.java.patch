@@ -1,68 +1,27 @@
 --- decompiled\net\minecraft\entity\ai\EntityAIOwnerHurtTarget.java
 +++ src\main\java\net\minecraft\entity\ai\EntityAIOwnerHurtTarget.java
-@@ -1,54 +1,44 @@
- package net.minecraft.entity.ai;
- 
+@@ -3,10 +3,11 @@
  import net.minecraft.entity.EntityLivingBase;
  import net.minecraft.entity.passive.EntityTameable;
  
--public class EntityAIOwnerHurtTarget extends EntityAITarget
--{
-+public class EntityAIOwnerHurtTarget extends EntityAITarget {
+ public class EntityAIOwnerHurtTarget extends EntityAITarget
+ {
 +
      EntityTameable theEntityTameable;
      EntityLivingBase theTarget;
      private int field_142050_e;
      private static final String __OBFID = "CL_00001625";
  
--    public EntityAIOwnerHurtTarget(EntityTameable p_i1668_1_)
--    {
-+    public EntityAIOwnerHurtTarget(EntityTameable p_i1668_1_) {
-         super(p_i1668_1_, false);
-         this.theEntityTameable = p_i1668_1_;
-         this.setMutexBits(1);
-     }
- 
--    public boolean shouldExecute()
--    {
--        if (!this.theEntityTameable.isTamed())
--        {
-+    public boolean shouldExecute() {
-+        if (!this.theEntityTameable.isTamed()) {
-             return false;
--        }
--        else
--        {
-+        } else {
-             EntityLivingBase entitylivingbase = this.theEntityTameable.getOwnerEntity();
- 
--            if (entitylivingbase == null)
--            {
-+            if (entitylivingbase == null) {
-                 return false;
--            }
--            else
--            {
-+            } else {
-                 this.theTarget = entitylivingbase.getLastAttacker();
-                 int i = entitylivingbase.getLastAttackerTime();
-                 return i != this.field_142050_e && this.isSuitableTarget(this.theTarget, false) && this.theEntityTameable.func_142018_a(this.theTarget, entitylivingbase);
-             }
+@@ -40,11 +41,11 @@
          }
      }
  
--    public void startExecuting()
--    {
+     public void startExecuting()
+     {
 -        this.taskOwner.setAttackTarget(this.theTarget);
-+    public void startExecuting() {
 +        this.taskOwner.setGoalTarget(this.theTarget, org.bukkit.event.entity.EntityTargetEvent.TargetReason.OWNER_ATTACKED_TARGET, true); // CraftBukkit - reason);
          EntityLivingBase entitylivingbase = this.theEntityTameable.getOwnerEntity();
  
--        if (entitylivingbase != null)
--        {
-+        if (entitylivingbase != null) {
+         if (entitylivingbase != null)
+         {
              this.field_142050_e = entitylivingbase.getLastAttackerTime();
-         }
- 
-         super.startExecuting();
-     }

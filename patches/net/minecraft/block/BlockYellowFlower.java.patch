@@ -1,17 +1,13 @@
 --- decompiled\net\minecraft\block\BlockYellowFlower.java
 +++ src\main\java\net\minecraft\block\BlockYellowFlower.java
-@@ -1,11 +1,10 @@
+@@ -1,9 +1,10 @@
  package net.minecraft.block;
  
--public class BlockYellowFlower extends BlockFlower
--{
-+public class BlockYellowFlower extends BlockFlower {
+ public class BlockYellowFlower extends BlockFlower
+ {
 +
      private static final String __OBFID = "CL_00002045";
  
--    public BlockFlower.EnumFlowerColor getBlockType()
--    {
-+    public BlockFlower.EnumFlowerColor getBlockType() {
+     public BlockFlower.EnumFlowerColor getBlockType()
+     {
          return BlockFlower.EnumFlowerColor.YELLOW;
-     }
- }

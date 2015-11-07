@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\world\gen\GeneratorBushFeature.java
 +++ src\main\java\net\minecraft\world\gen\GeneratorBushFeature.java
-@@ -1,31 +1,28 @@
+@@ -1,15 +1,17 @@
  package net.minecraft.world.gen;
  
  import java.util.Random;
@@ -10,32 +10,11 @@
  import net.minecraft.world.World;
  import net.minecraft.world.gen.feature.WorldGenerator;
  
--public class GeneratorBushFeature extends WorldGenerator
--{
-+public class GeneratorBushFeature extends WorldGenerator {
+ public class GeneratorBushFeature extends WorldGenerator
+ {
 +
      private BlockBush field_175908_a;
      private static final String __OBFID = "CL_00002000";
  
--    public GeneratorBushFeature(BlockBush p_i45633_1_)
--    {
-+    public GeneratorBushFeature(BlockBush p_i45633_1_) {
-         this.field_175908_a = p_i45633_1_;
-     }
- 
--    public boolean generate(World worldIn, Random p_180709_2_, BlockPos p_180709_3_)
--    {
--        for (int i = 0; i < 64; ++i)
--        {
-+    public boolean generate(World worldIn, Random p_180709_2_, BlockPos p_180709_3_) {
-+        for (int i = 0; i < 64; ++i) {
-             BlockPos blockpos1 = p_180709_3_.add(p_180709_2_.nextInt(8) - p_180709_2_.nextInt(8), p_180709_2_.nextInt(4) - p_180709_2_.nextInt(4), p_180709_2_.nextInt(8) - p_180709_2_.nextInt(8));
- 
--            if (worldIn.isAirBlock(blockpos1) && (!worldIn.provider.getHasNoSky() || blockpos1.getY() < 255) && this.field_175908_a.canBlockStay(worldIn, blockpos1, this.field_175908_a.getDefaultState()))
--            {
-+            if (worldIn.isAirBlock(blockpos1) && (!worldIn.provider.getHasNoSky() || blockpos1.getY() < 255) && this.field_175908_a.canBlockStay(worldIn, blockpos1, this.field_175908_a.getDefaultState())) {
-                 worldIn.setBlockState(blockpos1, this.field_175908_a.getDefaultState(), 2);
-             }
-         }
- 
-         return true;
+     public GeneratorBushFeature(BlockBush p_i45633_1_)
+     {

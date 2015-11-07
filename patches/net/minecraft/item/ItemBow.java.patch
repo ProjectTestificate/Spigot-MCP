@@ -1,163 +1,70 @@
 --- decompiled\net\minecraft\item\ItemBow.java
 +++ src\main\java\net\minecraft\item\ItemBow.java
-@@ -7,114 +7,116 @@
+@@ -7,12 +7,15 @@
  import net.minecraft.entity.projectile.EntityArrow;
  import net.minecraft.init.Items;
  import net.minecraft.stats.StatList;
  import net.minecraft.world.World;
  
--public class ItemBow extends Item
--{
--    public static final String[] bowPullIconNameArray = new String[] {"pulling_0", "pulling_1", "pulling_2"};
 +import org.bukkit.event.entity.EntityCombustEvent;
 +
-+public class ItemBow extends Item {
+ public class ItemBow extends Item
+ {
 +
-+    public static final String[] bowPullIconNameArray = new String[]{"pulling_0", "pulling_1", "pulling_2"};
+     public static final String[] bowPullIconNameArray = new String[] {"pulling_0", "pulling_1", "pulling_2"};
      private static final String __OBFID = "CL_00001777";
  
--    public ItemBow()
--    {
-+    public ItemBow() {
-         this.maxStackSize = 1;
-         this.setMaxDamage(384);
-         this.setCreativeTab(CreativeTabs.tabCombat);
-     }
- 
--    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityPlayer playerIn, int timeLeft)
--    {
-+    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityPlayer playerIn, int timeLeft) {
-         boolean flag = playerIn.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, stack) > 0;
- 
--        if (flag || playerIn.inventory.hasItem(Items.arrow))
--        {
-+        if (flag || playerIn.inventory.hasItem(Items.arrow)) {
-             int j = this.getMaxItemUseDuration(stack) - timeLeft;
--            float f = (float)j / 20.0F;
-+            float f = (float) j / 20.0F;
-             f = (f * f + f * 2.0F) / 3.0F;
- 
--            if ((double)f < 0.1D)
--            {
-+            if ((double) f < 0.1D) {
-                 return;
-             }
- 
--            if (f > 1.0F)
--            {
-+            if (f > 1.0F) {
-                 f = 1.0F;
-             }
- 
-             EntityArrow entityarrow = new EntityArrow(worldIn, playerIn, f * 2.0F);
- 
--            if (f == 1.0F)
--            {
-+            if (f == 1.0F) {
-                 entityarrow.setIsCritical(true);
-             }
- 
-             int k = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, stack);
- 
--            if (k > 0)
--            {
--                entityarrow.setDamage(entityarrow.getDamage() + (double)k * 0.5D + 0.5D);
-+            if (k > 0) {
-+                entityarrow.setDamage(entityarrow.getDamage() + (double) k * 0.5D + 0.5D);
-             }
- 
-             int l = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, stack);
- 
--            if (l > 0)
--            {
-+            if (l > 0) {
+     public ItemBow()
+     {
+@@ -62,13 +65,37 @@
                  entityarrow.setKnockbackStrength(l);
              }
  
--            if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, stack) > 0)
--            {
+             if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, stack) > 0)
+             {
 -                entityarrow.setFire(100);
-+            if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, stack) > 0) {
 +                // CraftBukkit start - call EntityCombustEvent
 +                EntityCombustEvent event = new EntityCombustEvent(entityarrow.getBukkitEntity(), 100);
 +                entityarrow.worldObj.getServer().getPluginManager().callEvent(event);
 +
-+                if (!event.isCancelled()) {
++                if (!event.isCancelled())
++                {
 +                    entityarrow.setFire(event.getDuration());
 +                }
++
 +                // CraftBukkit end
              }
  
 +            // CraftBukkit start
 +            org.bukkit.event.entity.EntityShootBowEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callEntityShootBowEvent(playerIn, stack, entityarrow, f);
-+            if (event.isCancelled()) {
++
++            if (event.isCancelled())
++            {
 +                event.getProjectile().remove();
 +                return;
 +            }
 +
-+            if (event.getProjectile() == entityarrow.getBukkitEntity()) {
++            if (event.getProjectile() == entityarrow.getBukkitEntity())
++            {
 +                worldIn.spawnEntityInWorld(entityarrow);
 +            }
-+            // CraftBukkit end
 +
++            // CraftBukkit end
              stack.damageItem(1, playerIn);
              worldIn.playSoundAtEntity(playerIn, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
  
--            if (flag)
--            {
-+            if (flag) {
-                 entityarrow.canBePickedUp = 2;
--            }
--            else
--            {
-+            } else {
-                 playerIn.inventory.consumeInventoryItem(Items.arrow);
-             }
+             if (flag)
+             {
+@@ -81,11 +108,11 @@
  
              playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
  
--            if (!worldIn.isRemote)
--            {
+             if (!worldIn.isRemote)
+             {
 -                worldIn.spawnEntityInWorld(entityarrow);
-+            if (!worldIn.isRemote) {
 +                // worldIn.spawnEntityInWorld(entityarrow); // CraftBukkit - moved up
              }
          }
      }
  
--    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn)
--    {
-+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn) {
-         return stack;
-     }
- 
--    public int getMaxItemUseDuration(ItemStack stack)
--    {
-+    public int getMaxItemUseDuration(ItemStack stack) {
-         return 72000;
-     }
- 
--    public EnumAction getItemUseAction(ItemStack stack)
--    {
-+    public EnumAction getItemUseAction(ItemStack stack) {
-         return EnumAction.BOW;
-     }
- 
--    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
--    {
--        if (playerIn.capabilities.isCreativeMode || playerIn.inventory.hasItem(Items.arrow))
--        {
-+    public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
-+        if (playerIn.capabilities.isCreativeMode || playerIn.inventory.hasItem(Items.arrow)) {
-             playerIn.setItemInUse(itemStackIn, this.getMaxItemUseDuration(itemStackIn));
-         }
- 
-         return itemStackIn;
-     }
- 
--    public int getItemEnchantability()
--    {
-+    public int getItemEnchantability() {
-         return 1;
-     }
- }
+     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn)

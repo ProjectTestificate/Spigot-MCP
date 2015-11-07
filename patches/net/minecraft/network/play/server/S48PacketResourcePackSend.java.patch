@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\network\play\server\S48PacketResourcePackSend.java
 +++ src\main\java\net\minecraft\network\play\server\S48PacketResourcePackSend.java
-@@ -1,63 +1,46 @@
+@@ -1,22 +1,25 @@
  package net.minecraft.network.play.server;
  
  import java.io.IOException;
@@ -12,49 +12,26 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class S48PacketResourcePackSend implements Packet
--{
 +
-+public class S48PacketResourcePackSend implements Packet {
+ public class S48PacketResourcePackSend implements Packet
+ {
 +
      private String url;
      private String hash;
      private static final String __OBFID = "CL_00002293";
  
 -    public S48PacketResourcePackSend() {}
-+    public S48PacketResourcePackSend() {
++    public S48PacketResourcePackSend()
++    {
 +    }
  
--    public S48PacketResourcePackSend(String url, String hash)
--    {
-+    public S48PacketResourcePackSend(String url, String hash) {
+     public S48PacketResourcePackSend(String url, String hash)
+     {
          this.url = url;
          this.hash = hash;
- 
--        if (hash.length() > 40)
--        {
-+        if (hash.length() > 40) {
-             throw new IllegalArgumentException("Hash is too long (max 40, was " + hash.length() + ")");
-         }
-     }
- 
--    public void readPacketData(PacketBuffer buf) throws IOException
--    {
-+    public void readPacketData(PacketBuffer buf) throws IOException {
-         this.url = buf.readStringFromBuffer(32767);
-         this.hash = buf.readStringFromBuffer(40);
-     }
- 
--    public void writePacketData(PacketBuffer buf) throws IOException
--    {
-+    public void writePacketData(PacketBuffer buf) throws IOException {
-         buf.writeString(this.url);
-         buf.writeString(this.hash);
-     }
- 
--    public void processPacket(INetHandlerPlayClient handler)
--    {
-+    public void processPacket(INetHandlerPlayClient handler) {
+@@ -42,22 +45,10 @@
+     public void processPacket(INetHandlerPlayClient handler)
+     {
          handler.handleResourcePack(this);
      }
  
@@ -62,14 +39,13 @@
 -    public String func_179783_a()
 -    {
 -        return this.url;
-+    public void processPacket(INetHandler handler) {
+-    }
+-
+     public void processPacket(INetHandler handler)
+     {
+-        this.processPacket((INetHandlerPlayClient)handler);
 +        this.processPacket((INetHandlerPlayClient) handler);
      }
--
--    public void processPacket(INetHandler handler)
--    {
--        this.processPacket((INetHandlerPlayClient)handler);
--    }
 -
 -    @SideOnly(Side.CLIENT)
 -    public String func_179784_b()

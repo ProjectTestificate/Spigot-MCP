@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\item\ItemFirework.java
 +++ src\main\java\net\minecraft\item\ItemFirework.java
-@@ -1,79 +1,27 @@
+@@ -1,23 +1,16 @@
  package net.minecraft.item;
  
 -import com.google.common.collect.Lists;
@@ -17,33 +17,17 @@
 -import net.minecraftforge.fml.relauncher.Side;
 -import net.minecraftforge.fml.relauncher.SideOnly;
  
--public class ItemFirework extends Item
--{
-+public class ItemFirework extends Item {
+ public class ItemFirework extends Item
+ {
 +
      private static final String __OBFID = "CL_00000031";
  
--    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
--    {
--        if (!worldIn.isRemote)
--        {
--            EntityFireworkRocket entityfireworkrocket = new EntityFireworkRocket(worldIn, (double)((float)pos.getX() + hitX), (double)((float)pos.getY() + hitY), (double)((float)pos.getZ() + hitZ), stack);
-+    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
-+        if (!worldIn.isRemote) {
-+            EntityFireworkRocket entityfireworkrocket = new EntityFireworkRocket(worldIn, (double) ((float) pos.getX() + hitX), (double) ((float) pos.getY() + hitY), (double) ((float) pos.getZ() + hitZ), stack);
-             worldIn.spawnEntityInWorld(entityfireworkrocket);
- 
--            if (!playerIn.capabilities.isCreativeMode)
--            {
-+            if (!playerIn.capabilities.isCreativeMode) {
-                 --stack.stackSize;
-             }
- 
-             return true;
--        }
--        else
--        {
-+        } else {
+     public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+     {
+         if (!worldIn.isRemote)
+@@ -35,45 +28,6 @@
+         else
+         {
              return false;
          }
      }

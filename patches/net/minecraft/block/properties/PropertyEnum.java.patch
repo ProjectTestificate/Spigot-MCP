@@ -1,6 +1,6 @@
 --- decompiled\net\minecraft\block\properties\PropertyEnum.java
 +++ src\main\java\net\minecraft\block\properties\PropertyEnum.java
-@@ -1,74 +1,66 @@
+@@ -1,20 +1,23 @@
  package net.minecraft.block.properties;
  
 +import java.util.Collection;
@@ -20,80 +20,24 @@
 -import java.util.Map;
 -import net.minecraft.util.IStringSerializable;
  
--public class PropertyEnum extends PropertyHelper
--{
-+public class PropertyEnum extends PropertyHelper {
+ public class PropertyEnum extends PropertyHelper
+ {
 +
      private final ImmutableSet allowedValues;
      private final Map nameToValue = Maps.newHashMap();
      private static final String __OBFID = "CL_00002015";
  
--    protected PropertyEnum(String name, Class valueClass, Collection allowedValues)
--    {
-+    protected PropertyEnum(String name, Class valueClass, Collection allowedValues) {
-         super(name, valueClass);
-         this.allowedValues = ImmutableSet.copyOf(allowedValues);
-         Iterator iterator = allowedValues.iterator();
- 
--        while (iterator.hasNext())
--        {
--            Enum oenum = (Enum)iterator.next();
--            String s1 = ((IStringSerializable)oenum).getName();
-+        while (iterator.hasNext()) {
-+            Enum oenum = (Enum) iterator.next();
-+            String s1 = ((IStringSerializable) oenum).getName();
- 
--            if (this.nameToValue.containsKey(s1))
--            {
-+            if (this.nameToValue.containsKey(s1)) {
-                 throw new IllegalArgumentException("Multiple values have the same name \'" + s1 + "\'");
-             }
- 
-             this.nameToValue.put(s1, oenum);
-         }
-     }
- 
--    public Collection getAllowedValues()
--    {
-+    public Collection getAllowedValues() {
-         return this.allowedValues;
-     }
- 
--    public String getName(Enum value)
--    {
--        return ((IStringSerializable)value).getName();
-+    public String getName(Enum value) {
-+        return ((IStringSerializable) value).getName();
-     }
- 
--    public static PropertyEnum create(String name, Class clazz)
--    {
-+    public static PropertyEnum create(String name, Class clazz) {
-         return create(name, clazz, Predicates.alwaysTrue());
-     }
- 
--    public static PropertyEnum create(String name, Class clazz, Predicate filter)
--    {
-+    public static PropertyEnum create(String name, Class clazz, Predicate filter) {
+     protected PropertyEnum(String name, Class valueClass, Collection allowedValues)
+@@ -55,11 +58,11 @@
+     public static PropertyEnum create(String name, Class clazz, Predicate filter)
+     {
          return create(name, clazz, Collections2.filter(Lists.newArrayList(clazz.getEnumConstants()), filter));
      }
  
 -    public static PropertyEnum create(String name, Class clazz, Enum ... values)
--    {
-+    public static PropertyEnum create(String name, Class clazz, Enum... values) {
++    public static PropertyEnum create(String name, Class clazz, Enum... values)
+     {
          return create(name, clazz, Lists.newArrayList(values));
      }
  
--    public static PropertyEnum create(String name, Class clazz, Collection values)
--    {
-+    public static PropertyEnum create(String name, Class clazz, Collection values) {
-         return new PropertyEnum(name, clazz, values);
-     }
- 
--    public String getName(Comparable value)
--    {
--        return this.getName((Enum)value);
-+    public String getName(Comparable value) {
-+        return this.getName((Enum) value);
-     }
- }
+     public static PropertyEnum create(String name, Class clazz, Collection values)
