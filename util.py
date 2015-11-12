@@ -55,7 +55,7 @@ def run_jdiff(*args):
         exit(1)
     if shutil.which("jdiff"):
         cmd = ["jdiff"]
-        download_jdiff()
     else:
+        download_jdiff()
         cmd = ["java", "-jar", "JDiff.jar"]
     subprocess.check_call(cmd + list(args), stdout=sys.stdout, stderr=sys.stderr)
